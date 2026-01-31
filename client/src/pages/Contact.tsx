@@ -38,7 +38,8 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-bold text-primary">Email Us</h3>
-                      <p className="text-muted-foreground">info@darwishco.com</p>
+                      <p className="text-muted-foreground">fouadarwish@darwish-co.com</p>
+                      <p className="text-muted-foreground text-sm">fouadarwish@gmail.com</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -50,7 +51,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-bold text-primary">Call Us</h3>
-                      <p className="text-muted-foreground">+971 4 123 4567</p>
+                      <p className="text-muted-foreground">+20 110 110 1090</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -62,7 +63,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-bold text-primary">Visit Us</h3>
-                      <p className="text-muted-foreground">Dubai, United Arab Emirates</p>
+                      <p className="text-muted-foreground">www.darwish-co.com</p>
                     </div>
                   </CardContent>
                 </Card>
