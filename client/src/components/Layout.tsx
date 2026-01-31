@@ -22,9 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container flex h-20 items-center justify-between">
           <Link href="/">
             <div className="flex items-center space-x-2 cursor-pointer">
-              <span className="font-heading text-2xl font-bold text-primary tracking-tight">
-                Darwish & Co.
-              </span>
+              <img src="/images/logo.png" alt="Darwish & Co." className="h-12 w-auto object-contain" />
             </div>
           </Link>
 
