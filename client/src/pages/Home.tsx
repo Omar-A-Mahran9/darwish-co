@@ -1,211 +1,217 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, CheckCircle2, Shield, Users, Lightbulb } from "lucide-react";
+import { ArrowRight, CheckCircle2, Shield, Users, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-primary text-primary-foreground">
-        <div 
-          className="absolute inset-0 z-0 opacity-40"
-          style={{
-            backgroundImage: "url('/images/hero-bg.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40 z-0" />
+    <div className="flex flex-col min-h-screen font-body">
+      {/* Hero Section - Clean, White, Swiss Style */}
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-white">
+        {/* Geometric Background Accents */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-bl from-secondary/30 to-transparent z-0" />
+        <div className="absolute bottom-0 left-0 w-1/4 h-1/2 bg-gradient-to-tr from-chart-2/10 to-transparent z-0" />
         
-        <div className="container relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6 animate-in slide-in-from-left-10 duration-700 fade-in">
-            <h1 className="font-heading text-4xl md:text-6xl font-bold leading-tight text-chart-1">
-              A Wise Word in the <br/>
-              <span className="text-white">Right Moment.</span>
+        <div className="container relative z-10 grid lg:grid-cols-2 gap-16 items-center pt-20 pb-12">
+          <div className="space-y-8 animate-in slide-in-from-left-10 duration-700 fade-in">
+            <div className="inline-block px-4 py-1.5 rounded-full bg-secondary text-primary font-bold text-sm tracking-wide uppercase mb-2">
+              Consulting & Business Development
+            </div>
+            <h1 className="font-heading text-5xl md:text-7xl font-bold leading-[1.1] text-foreground tracking-tight">
+              A Wise Word <br/>
+              <span className="text-primary">In The Right Moment.</span>
             </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/90 max-w-lg leading-relaxed">
+            <p className="text-xl text-muted-foreground max-w-lg leading-relaxed font-light">
               Navigating complexity and unlocking potential for SMEs in the MENA region through expert GRC and HR consulting.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-5 pt-6">
               <Link href="/contact">
-                <Button size="lg" className="bg-chart-1 text-primary hover:bg-chart-1/90 font-bold text-base px-8">
+                <Button size="lg" className="bg-primary text-white hover:bg-primary/90 font-bold text-base px-10 h-14 rounded-none">
                   Get Started
                 </Button>
               </Link>
               <Link href="/services">
-                <Button size="lg" variant="outline" className="border-chart-1 text-chart-1 hover:bg-chart-1/10 font-bold text-base px-8">
+                <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold text-base px-10 h-14 rounded-none transition-all">
                   Explore Services
                 </Button>
               </Link>
             </div>
           </div>
-          <div className="hidden md:block relative animate-in slide-in-from-right-10 duration-1000 fade-in delay-200">
-             {/* Abstract visual representation of "Insight" */}
-             <div className="relative w-full aspect-square max-w-md mx-auto">
-                <div className="absolute inset-0 border-2 border-chart-1/30 rounded-full animate-[spin_20s_linear_infinite]" />
-                <div className="absolute inset-4 border border-chart-1/20 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <img 
-                    src="/images/grc-icon.png" 
-                    alt="GRC Excellence" 
-                    className="w-32 h-32 object-contain drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]"
-                  />
-                </div>
+          
+          {/* Hero Visual - Geometric & Logo Centric */}
+          <div className="relative hidden lg:flex justify-center items-center animate-in slide-in-from-right-10 duration-1000 fade-in delay-200">
+             <div className="relative w-full max-w-md aspect-square">
+                {/* Abstract Geometric Shapes mimicking the logo */}
+                <div className="absolute top-0 right-0 w-3/4 h-3/4 bg-secondary rounded-tr-[100px] z-0 opacity-50" />
+                <div className="absolute bottom-0 left-10 w-1/2 h-1/2 bg-chart-2/20 rounded-bl-[80px] z-0" />
+                <div className="absolute top-10 left-0 w-20 h-20 bg-chart-3/20 rounded-full z-0" />
+                
+                <img 
+                  src="/images/logo.png" 
+                  alt="Darwish & Co. Emblem" 
+                  className="relative z-10 w-full h-full object-contain p-12 drop-shadow-2xl"
+                />
              </div>
           </div>
         </div>
       </section>
 
-      {/* Value Proposition Section */}
-      <section className="py-24 bg-background">
+      {/* Value Proposition Section - White with High Contrast */}
+      <section className="py-32 bg-white">
         <div className="container">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary">
-              Guiding SMEs with Precision and Care
-            </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              We understand that SMEs often face critical decision points where the right advice can define their future trajectory. Our mission is to be there at those pivotal moments.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-none shadow-lg bg-card hover:shadow-xl transition-all duration-300 group">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-primary/5 flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
-                  <Shield className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle className="font-heading text-xl text-primary">Governance & Risk</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Establish robust frameworks that protect your business while enabling sustainable growth. We turn compliance into a competitive advantage.
-                </p>
-                <Link href="/services">
-                  <span className="text-chart-2 font-bold text-sm flex items-center hover:underline cursor-pointer">
-                    Learn more <ArrowRight className="w-4 h-4 ml-1" />
-                  </span>
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg bg-card hover:shadow-xl transition-all duration-300 group">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-primary/5 flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
-                  <Users className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle className="font-heading text-xl text-primary">Human Resources</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Build a thriving workforce with strategic HR planning, talent acquisition, and policy development tailored for the MENA region.
-                </p>
-                <Link href="/services">
-                  <span className="text-chart-2 font-bold text-sm flex items-center hover:underline cursor-pointer">
-                    Learn more <ArrowRight className="w-4 h-4 ml-1" />
-                  </span>
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg bg-card hover:shadow-xl transition-all duration-300 group">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-primary/5 flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
-                  <Lightbulb className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle className="font-heading text-xl text-primary">Strategic Insight</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Receive the "wise word" exactly when you need it. Our advisory services provide clarity during complex business transitions.
-                </p>
-                <Link href="/services">
-                  <span className="text-chart-2 font-bold text-sm flex items-center hover:underline cursor-pointer">
-                    Learn more <ArrowRight className="w-4 h-4 ml-1" />
-                  </span>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Image Break Section */}
-      <section className="relative py-32 bg-fixed bg-cover bg-center" style={{ backgroundImage: "url('/images/meeting-insight.jpg')" }}>
-        <div className="absolute inset-0 bg-primary/80" />
-        <div className="container relative z-10 text-center text-primary-foreground">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-6">
-            "The difference between a missed opportunity <br/>and a strategic breakthrough."
-          </h2>
-          <Link href="/about">
-            <Button size="lg" className="bg-chart-1 text-primary hover:bg-chart-1/90 font-bold mt-8">
-              Read Our Story
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* Why Choose Us */}
-      <section className="py-24 bg-muted/30">
-        <div className="container">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary">
-                Why Partner with Darwish & Co?
+          <div className="grid lg:grid-cols-12 gap-12">
+            <div className="lg:col-span-4 space-y-6">
+              <h2 className="font-heading text-4xl font-bold text-foreground leading-tight">
+                Guiding SMEs with <span className="text-chart-2">Precision</span> and <span className="text-chart-3">Care</span>
               </h2>
-              <div className="space-y-6">
-                <div className="flex gap-4">
-                  <div className="mt-1">
-                    <CheckCircle2 className="w-6 h-6 text-chart-2" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-primary">Deep Regional Expertise</h3>
-                    <p className="text-muted-foreground">Rooted in the MENA region, we understand the unique cultural and regulatory nuances that impact your business.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="mt-1">
-                    <CheckCircle2 className="w-6 h-6 text-chart-2" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-primary">Tailored for SMEs</h3>
-                    <p className="text-muted-foreground">We don't offer one-size-fits-all corporate solutions. Our strategies are agile, practical, and designed for growth-stage companies.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="mt-1">
-                    <CheckCircle2 className="w-6 h-6 text-chart-2" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-primary">Integrated Approach</h3>
-                    <p className="text-muted-foreground">We bridge the gap between GRC and HR, ensuring your people and your policies work in perfect harmony.</p>
-                  </div>
-                </div>
-              </div>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                We understand that SMEs often face critical decision points where the right advice can define their future trajectory. Our mission is to be there at those pivotal moments.
+              </p>
+              <div className="w-20 h-1 bg-primary mt-8" />
             </div>
-            <div className="relative">
-              <div className="absolute -inset-4 bg-chart-1/20 rounded-xl transform rotate-3" />
-              <img 
-                src="/images/meeting-insight.jpg" 
-                alt="Consulting Session" 
-                className="relative rounded-xl shadow-2xl w-full object-cover aspect-[4/3]"
-              />
+
+            <div className="lg:col-span-8 grid md:grid-cols-3 gap-6">
+              {/* Card 1: Governance (Blue) */}
+              <Card className="border-t-4 border-t-primary border-x-0 border-b-0 shadow-lg hover:-translate-y-2 transition-transform duration-300 bg-white rounded-none">
+                <CardHeader>
+                  <Shield className="w-10 h-10 text-primary mb-4" />
+                  <CardTitle className="font-heading text-xl text-foreground">Governance & Risk</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed mb-6 text-sm">
+                    Establish robust frameworks that protect your business while enabling sustainable growth.
+                  </p>
+                  <Link href="/services">
+                    <span className="text-primary font-bold text-sm flex items-center hover:underline cursor-pointer group">
+                      Learn more <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Card 2: HR (Green) */}
+              <Card className="border-t-4 border-t-chart-2 border-x-0 border-b-0 shadow-lg hover:-translate-y-2 transition-transform duration-300 bg-white rounded-none">
+                <CardHeader>
+                  <Users className="w-10 h-10 text-chart-2 mb-4" />
+                  <CardTitle className="font-heading text-xl text-foreground">Human Resources</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed mb-6 text-sm">
+                    Build a thriving workforce with strategic HR planning and talent acquisition tailored for MENA.
+                  </p>
+                  <Link href="/services">
+                    <span className="text-chart-2 font-bold text-sm flex items-center hover:underline cursor-pointer group">
+                      Learn more <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Card 3: Biz Dev (Orange) */}
+              <Card className="border-t-4 border-t-chart-3 border-x-0 border-b-0 shadow-lg hover:-translate-y-2 transition-transform duration-300 bg-white rounded-none">
+                <CardHeader>
+                  <TrendingUp className="w-10 h-10 text-chart-3 mb-4" />
+                  <CardTitle className="font-heading text-xl text-foreground">Business Dev</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed mb-6 text-sm">
+                    Strategic partnerships and market entry strategies to accelerate your business expansion.
+                  </p>
+                  <Link href="/services">
+                    <span className="text-chart-3 font-bold text-sm flex items-center hover:underline cursor-pointer group">
+                      Learn more <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-primary text-primary-foreground">
-        <div className="container text-center max-w-2xl mx-auto space-y-8">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold">
+      {/* Image Break Section - Clean & Impactful */}
+      <section className="relative py-32 bg-secondary/30">
+        <div className="container grid md:grid-cols-2 gap-16 items-center">
+          <div className="relative">
+            <div className="absolute -top-6 -left-6 w-24 h-24 bg-chart-3/20 z-0" />
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 z-0" />
+            <img 
+              src="/images/meeting-insight.jpg" 
+              alt="Strategic Meeting" 
+              className="relative z-10 w-full h-auto shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
+            />
+          </div>
+          <div className="space-y-8">
+            <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground leading-tight">
+              "The difference between a missed opportunity and a <span className="text-primary">strategic breakthrough</span>."
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              We don't just advise; we partner. Our integrated approach ensures that your governance structures support your people, and your people drive your growth.
+            </p>
+            <Link href="/about">
+              <Button size="lg" className="bg-foreground text-white hover:bg-foreground/90 font-bold rounded-none px-8">
+                Read Our Story
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us - Minimalist List */}
+      <section className="py-32 bg-white">
+        <div className="container max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Why Partner with Darwish & Co?
+            </h2>
+            <div className="w-16 h-1 bg-chart-2 mx-auto" />
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-12">
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto text-primary">
+                <CheckCircle2 className="w-8 h-8" />
+              </div>
+              <h3 className="font-bold text-xl text-foreground">Regional Expertise</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Deeply rooted in MENA culture and regulations, ensuring compliance and cultural alignment.
+              </p>
+            </div>
+            
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-chart-2/10 rounded-full flex items-center justify-center mx-auto text-chart-2">
+                <CheckCircle2 className="w-8 h-8" />
+              </div>
+              <h3 className="font-bold text-xl text-foreground">Tailored for SMEs</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Agile, practical strategies designed specifically for growth-stage companies, not corporations.
+              </p>
+            </div>
+            
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-chart-3/10 rounded-full flex items-center justify-center mx-auto text-chart-3">
+                <CheckCircle2 className="w-8 h-8" />
+              </div>
+              <h3 className="font-bold text-xl text-foreground">Integrated Approach</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Bridging the gap between GRC and HR for a holistic business strategy.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Bold Footer */}
+      <section className="py-24 bg-primary text-white">
+        <div className="container text-center max-w-3xl mx-auto space-y-8">
+          <h2 className="font-heading text-4xl md:text-5xl font-bold">
             Ready to Navigate Your Future?
           </h2>
-          <p className="text-lg text-primary-foreground/80">
-            Let's build a resilient and thriving future for your business, together. Contact us today for a consultation.
+          <p className="text-xl text-white/90 font-light">
+            Let's build a resilient and thriving future for your business, together.
           </p>
           <Link href="/contact">
-            <Button size="lg" className="bg-chart-1 text-primary hover:bg-chart-1/90 font-bold text-lg px-10 py-6 h-auto">
+            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 font-bold text-lg px-12 py-8 h-auto rounded-none mt-8 shadow-xl">
               Get in Touch
             </Button>
           </Link>
