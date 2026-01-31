@@ -14,8 +14,13 @@ export default function Home() {
         
         <div className="container relative z-10 grid lg:grid-cols-2 gap-16 items-center pt-20 pb-12">
           <div className="space-y-8 animate-in slide-in-from-left-10 duration-700 fade-in">
-            <div className="inline-block px-4 py-1.5 rounded-full bg-secondary text-primary font-bold text-sm tracking-wide uppercase mb-2">
-              Consulting & Business Development
+            <div className="mb-4">
+              <h2 className="font-heading text-4xl md:text-5xl font-bold text-primary tracking-tight mb-2">
+                Darwish & Co.
+              </h2>
+              <div className="inline-block px-4 py-1.5 rounded-full bg-secondary text-primary font-bold text-sm tracking-wide uppercase">
+                Consulting & Business Development
+              </div>
             </div>
             <h1 className="font-heading text-5xl md:text-7xl font-bold leading-[1.1] text-foreground tracking-tight">
               A Wise Word <br/>
