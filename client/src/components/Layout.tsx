@@ -21,27 +21,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-20 items-center justify-between">
           <Link href="/">
-            <a className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 cursor-pointer">
               <span className="font-heading text-2xl font-bold text-primary tracking-tight">
                 Darwish & Co.
               </span>
-            </a>
+            </div>
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link key={item.path} href={item.path}>
-                <a
+                <span
                   className={cn(
-                    "text-sm font-medium transition-colors hover:text-primary",
+                    "text-sm font-medium transition-colors hover:text-primary cursor-pointer",
                     location === item.path
                       ? "text-primary font-bold"
                       : "text-muted-foreground"
                   )}
                 >
                   {item.name}
-                </a>
+                </span>
               </Link>
             ))}
             <Button variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 font-heading">
@@ -63,9 +63,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="md:hidden border-t border-border bg-background p-4 space-y-4 animate-in slide-in-from-top-5">
             {navItems.map((item) => (
               <Link key={item.path} href={item.path}>
-                <a
+                <span
                   className={cn(
-                    "block py-2 text-base font-medium transition-colors hover:text-primary",
+                    "block py-2 text-base font-medium transition-colors hover:text-primary cursor-pointer",
                     location === item.path
                       ? "text-primary font-bold"
                       : "text-muted-foreground"
@@ -73,7 +73,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
-                </a>
+                </span>
               </Link>
             ))}
             <Button className="w-full bg-primary text-primary-foreground font-heading">
@@ -110,9 +110,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div>
             <h4 className="font-bold mb-4 text-primary">Company</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/about">About Us</Link></li>
-              <li><Link href="/services">Our Services</Link></li>
-              <li><Link href="/contact">Contact</Link></li>
+              <li><Link href="/about"><span className="cursor-pointer hover:underline">About Us</span></Link></li>
+              <li><Link href="/services"><span className="cursor-pointer hover:underline">Our Services</span></Link></li>
+              <li><Link href="/contact"><span className="cursor-pointer hover:underline">Contact</span></Link></li>
               <li>Privacy Policy</li>
             </ul>
           </div>

@@ -82,9 +82,9 @@ export default function Home() {
                   Establish robust frameworks that protect your business while enabling sustainable growth. We turn compliance into a competitive advantage.
                 </p>
                 <Link href="/services">
-                  <a className="text-chart-2 font-bold text-sm flex items-center hover:underline">
+                  <span className="text-chart-2 font-bold text-sm flex items-center hover:underline cursor-pointer">
                     Learn more <ArrowRight className="w-4 h-4 ml-1" />
-                  </a>
+                  </span>
                 </Link>
               </CardContent>
             </Card>
@@ -101,9 +101,9 @@ export default function Home() {
                   Build a thriving workforce with strategic HR planning, talent acquisition, and policy development tailored for the MENA region.
                 </p>
                 <Link href="/services">
-                  <a className="text-chart-2 font-bold text-sm flex items-center hover:underline">
+                  <span className="text-chart-2 font-bold text-sm flex items-center hover:underline cursor-pointer">
                     Learn more <ArrowRight className="w-4 h-4 ml-1" />
-                  </a>
+                  </span>
                 </Link>
               </CardContent>
             </Card>
@@ -120,9 +120,9 @@ export default function Home() {
                   Receive the "wise word" exactly when you need it. Our advisory services provide clarity during complex business transitions.
                 </p>
                 <Link href="/services">
-                  <a className="text-chart-2 font-bold text-sm flex items-center hover:underline">
+                  <span className="text-chart-2 font-bold text-sm flex items-center hover:underline cursor-pointer">
                     Learn more <ArrowRight className="w-4 h-4 ml-1" />
-                  </a>
+                  </span>
                 </Link>
               </CardContent>
             </Card>
