@@ -141,7 +141,7 @@ export default function Home() {
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-chart-3/20 z-0" />
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 z-0" />
             <img 
-              src="/images/meeting-insight.jpg" 
+              src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663028612285/AsHruRkJkzlwgKNG.jpg" 
               alt="Strategic Meeting" 
               className="relative z-10 w-full h-auto shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
             />

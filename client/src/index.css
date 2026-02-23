@@ -47,25 +47,25 @@
 :root {
   /* 
      Brand Colors:
-     Cyan Blue: #0099CC -> OKLCH: 0.62 0.16 235
-     Emerald Green: #00CC66 -> OKLCH: 0.72 0.21 150
-     Golden Orange: #FF9900 -> OKLCH: 0.75 0.20 65
+     Deep Purple: #6B46C1 -> OKLCH: 0.50 0.18 290
+     Coral Pink: #FF6B9D -> OKLCH: 0.68 0.20 0
+     Amber Gold: #F59E0B -> OKLCH: 0.75 0.17 70
      
      Background: White / Light Gray
      Text: Dark Gray / Black
   */
 
-  --primary: oklch(0.62 0.16 235); /* Cyan Blue */
+  --primary: oklch(0.50 0.18 290); /* Deep Purple */
   --primary-foreground: oklch(1 0 0); /* White */
   
-  --sidebar-primary: oklch(0.62 0.16 235);
+  --sidebar-primary: oklch(0.50 0.18 290);
   --sidebar-primary-foreground: oklch(1 0 0);
   
-  --chart-1: oklch(0.62 0.16 235); /* Cyan Blue */
-  --chart-2: oklch(0.72 0.21 150); /* Emerald Green */
-  --chart-3: oklch(0.75 0.20 65);  /* Golden Orange */
-  --chart-4: oklch(0.5 0.1 235);   /* Darker Blue */
-  --chart-5: oklch(0.8 0.1 150);   /* Lighter Green */
+  --chart-1: oklch(0.50 0.18 290); /* Deep Purple */
+  --chart-2: oklch(0.68 0.20 0); /* Coral Pink */
+  --chart-3: oklch(0.75 0.17 70);  /* Amber Gold */
+  --chart-4: oklch(0.40 0.15 290);   /* Darker Purple */
+  --chart-5: oklch(0.78 0.15 0);   /* Lighter Coral */
   
   --radius: 0.5rem;
   
@@ -78,28 +78,28 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.2 0.02 260);
   
-  --secondary: oklch(0.96 0.01 235); /* Very Light Blue */
-  --secondary-foreground: oklch(0.62 0.16 235); /* Cyan Blue */
+  --secondary: oklch(0.96 0.01 290); /* Very Light Purple */
+  --secondary-foreground: oklch(0.50 0.18 290); /* Deep Purple */
   
-  --muted: oklch(0.96 0.01 235);
-  --muted-foreground: oklch(0.5 0.05 235);
+  --muted: oklch(0.96 0.01 290);
+  --muted-foreground: oklch(0.5 0.05 290);
   
-  --accent: oklch(0.96 0.01 235); /* Very Light Blue */
-  --accent-foreground: oklch(0.62 0.16 235);
+  --accent: oklch(0.96 0.01 290); /* Very Light Purple */
+  --accent-foreground: oklch(0.50 0.18 290);
   
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
   
-  --border: oklch(0.9 0.02 235);
-  --input: oklch(0.9 0.02 235);
-  --ring: oklch(0.62 0.16 235); /* Cyan Blue */
+  --border: oklch(0.9 0.02 290);
+  --input: oklch(0.9 0.02 290);
+  --ring: oklch(0.50 0.18 290); /* Deep Purple */
   
   --sidebar: oklch(0.99 0 0);
   --sidebar-foreground: oklch(0.2 0.02 260);
-  --sidebar-accent: oklch(0.96 0.01 235);
-  --sidebar-accent-foreground: oklch(0.62 0.16 235);
-  --sidebar-border: oklch(0.9 0.02 235);
-  --sidebar-ring: oklch(0.62 0.16 235);
+  --sidebar-accent: oklch(0.96 0.01 290);
+  --sidebar-accent-foreground: oklch(0.50 0.18 290);
+  --sidebar-border: oklch(0.9 0.02 290);
+  --sidebar-ring: oklch(0.50 0.18 290);
 }
 
 .dark {
@@ -109,10 +109,10 @@
      Text: White/Light Gray
      Primary: Cyan Blue (kept vibrant)
   */
-  --primary: oklch(0.62 0.16 235); /* Cyan Blue */
+  --primary: oklch(0.50 0.18 290); /* Deep Purple */
   --primary-foreground: oklch(1 0 0);
   
-  --sidebar-primary: oklch(0.62 0.16 235);
+  --sidebar-primary: oklch(0.50 0.18 290);
   --sidebar-primary-foreground: oklch(1 0 0);
   
   --background: oklch(0.15 0.04 260); /* Dark Navy */
@@ -138,20 +138,20 @@
   
   --border: oklch(0.3 0.04 260);
   --input: oklch(0.3 0.04 260);
-  --ring: oklch(0.62 0.16 235); /* Cyan Blue */
+  --ring: oklch(0.50 0.18 290); /* Deep Purple */
   
-  --chart-1: oklch(0.62 0.16 235);
-  --chart-2: oklch(0.72 0.21 150);
-  --chart-3: oklch(0.75 0.20 65);
-  --chart-4: oklch(0.5 0.1 235);
-  --chart-5: oklch(0.8 0.1 150);
+  --chart-1: oklch(0.50 0.18 290);
+  --chart-2: oklch(0.68 0.20 0);
+  --chart-3: oklch(0.75 0.17 70);
+  --chart-4: oklch(0.40 0.15 290);
+  --chart-5: oklch(0.78 0.15 0);
   
   --sidebar: oklch(0.2 0.04 260);
   --sidebar-foreground: oklch(0.98 0 0);
   --sidebar-accent: oklch(0.25 0.04 260);
   --sidebar-accent-foreground: oklch(0.98 0 0);
   --sidebar-border: oklch(0.3 0.04 260);
-  --sidebar-ring: oklch(0.62 0.16 235);
+  --sidebar-ring: oklch(0.50 0.18 290);
 }
 
 @layer base {
