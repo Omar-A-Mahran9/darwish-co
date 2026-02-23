@@ -38,7 +38,7 @@ export default function About() {
             </div>
             <div className="relative h-80 rounded-xl overflow-hidden shadow-xl">
                <img 
-                src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663028612285/AsHruRkJkzlwgKNG.jpg" 
+                src="/images/meeting-insight.jpg" 
                 alt="Team Collaboration" 
                 className="absolute inset-0 w-full h-full object-cover"
               />
