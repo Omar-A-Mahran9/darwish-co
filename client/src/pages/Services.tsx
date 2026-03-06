@@ -51,7 +51,7 @@ export default function Services() {
       </section>
 
       {/* GRC Section */}
-      <section id="grc" className="py-20">
+      <section id="grc" className="py-20" style={{ scrollMarginTop: '5rem' }}>
         <div className="container">
           <div className="flex items-center gap-4 mb-12">
             <div className="p-3 bg-primary/10 rounded-xl">
@@ -82,7 +82,7 @@ export default function Services() {
       </section>
 
       {/* HR Section */}
-      <section id="hr" className="py-20 bg-muted/30">
+      <section id="hr" className="py-20 bg-muted/30" style={{ scrollMarginTop: '5rem' }}>
         <div className="container">
           <div className="flex items-center gap-4 mb-12">
             <div className="p-3 bg-chart-2/10 rounded-xl">
@@ -113,7 +113,7 @@ export default function Services() {
       </section>
 
       {/* Business Development Section */}
-      <section id="bizdev" className="py-20">
+      <section id="bizdev" className="py-20" style={{ scrollMarginTop: '5rem' }}>
         <div className="container">
           <div className="flex items-center gap-4 mb-12">
             <div className="p-3 bg-chart-3/10 rounded-xl">
@@ -154,7 +154,7 @@ export default function Services() {
       </section>
 
       {/* Strategy & Performance Section */}
-      <section id="strategy" className="py-20 bg-muted/30">
+      <section id="strategy" className="py-20 bg-muted/30" style={{ scrollMarginTop: '5rem' }}>
         <div className="container">
           <div className="flex items-center gap-4 mb-12">
             <div className="p-3 bg-primary/10 rounded-xl">

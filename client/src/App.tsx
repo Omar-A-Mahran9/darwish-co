@@ -11,8 +11,10 @@ import Services from "./pages/Services";
 import Contact from './pages/Contact';
 import AdminInbox from './pages/AdminInbox';
 import Projects from './pages/Projects';
+import { useHashScroll } from "./hooks/useHashScroll";
 
 function Router() {
+  useHashScroll();
   return (
     <Layout>
       <Switch>

@@ -59,3 +59,10 @@
 ## Homepage Projects Teaser
 
 - [x] Add two-card Projects preview section to Home page (AI POC + Hebei-Egypt)
+
+## Hash Anchor Navigation Fix
+
+- [x] Create useHashScroll hook that scrolls to anchor after page navigation
+- [x] Wire hook into App.tsx so it fires on every route change
+- [x] Fix dropdown links to correctly navigate cross-page with hash
+- [x] Add scroll-margin-top offset to all anchor sections (accounts for sticky header)

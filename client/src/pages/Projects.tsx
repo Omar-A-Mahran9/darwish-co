@@ -171,7 +171,7 @@ export default function Projects() {
       </section>
 
       {/* ── PROJECT 1: AI POC Platform ── */}
-      <section id="ai-poc" className="py-20 border-b border-border">
+      <section id="ai-poc" className="py-20 border-b border-border" style={{ scrollMarginTop: '5rem' }}>
         <div className="container max-w-6xl mx-auto">
           {/* Section Label */}
           <div className="flex items-center gap-3 mb-4">
@@ -427,7 +427,7 @@ export default function Projects() {
       </section>
 
       {/* ── PROJECT 2: Hebei-Egypt International Trade Portal ── */}
-      <section id="trade-portal" className="py-20 border-b border-border bg-muted/20">
+      <section id="trade-portal" className="py-20 border-b border-border bg-muted/20" style={{ scrollMarginTop: '5rem' }}>
         <div className="container max-w-6xl mx-auto">
           {/* Section Label */}
           <div className="flex items-center gap-3 mb-4">

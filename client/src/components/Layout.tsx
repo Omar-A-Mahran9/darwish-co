@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
 
 type NavItem = {
@@ -35,9 +35,41 @@ const navItems: NavItem[] = [
   { name: "Contact", path: "/contact" },
 ];
 
+/**
+ * Navigate to a path that may contain a hash anchor.
+ * - If we're already on the target page, scrolls directly to the anchor.
+ * - If we're on a different page, navigates there and lets useHashScroll handle the scroll.
+ */
+function useHashNav() {
+  const [location, navigate] = useLocation();
+
+  return useCallback(
+    (path: string, onDone?: () => void) => {
+      const [pagePath, hash] = path.split("#");
+      const targetPage = pagePath || "/";
+      const currentPage = location.split("#")[0];
+
+      if (hash && currentPage === targetPage) {
+        // Same page — scroll directly without re-navigating
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      } else {
+        // Different page — navigate; useHashScroll will scroll after render
+        navigate(path);
+      }
+
+      onDone?.();
+    },
+    [location, navigate]
+  );
+}
+
 function DropdownMenu({ item, location }: { item: NavItem; location: string }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const go = useHashNav();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -73,24 +105,22 @@ function DropdownMenu({ item, location }: { item: NavItem; location: string }) {
           className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-md shadow-lg z-50 py-1"
           onMouseLeave={() => setOpen(false)}
         >
-          {/* Parent page link */}
-          <Link href={item.path}>
-            <span
-              className="block px-4 py-2 text-sm font-semibold text-primary hover:bg-secondary/50 cursor-pointer border-b border-border"
-              onClick={() => setOpen(false)}
-            >
-              All {item.name}
-            </span>
-          </Link>
+          {/* Parent page link — goes to top of page */}
+          <button
+            className="block w-full text-left px-4 py-2 text-sm font-semibold text-primary hover:bg-secondary/50 cursor-pointer border-b border-border"
+            onClick={() => go(item.path, () => setOpen(false))}
+          >
+            All {item.name}
+          </button>
+
           {item.children?.map((child) => (
-            <Link key={child.path} href={child.path}>
-              <span
-                className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-secondary/50 cursor-pointer transition-colors"
-                onClick={() => setOpen(false)}
-              >
-                {child.name}
-              </span>
-            </Link>
+            <button
+              key={child.path}
+              className="block w-full text-left px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-secondary/50 cursor-pointer transition-colors"
+              onClick={() => go(child.path, () => setOpen(false))}
+            >
+              {child.name}
+            </button>
           ))}
         </div>
       )}
@@ -102,6 +132,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
+  const go = useHashNav();
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setOpenMobileSection(null);
+  }, [location]);
 
   return (
     <div className="min-h-screen flex flex-col font-body bg-background text-foreground">
@@ -183,23 +220,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </button>
                     {openMobileSection === item.path && (
                       <div className="pl-4 space-y-1 pb-2 border-l-2 border-primary/30 ml-2">
-                        <Link href={item.path}>
-                          <span
-                            className="block py-1.5 text-sm font-semibold text-primary cursor-pointer"
-                            onClick={() => { setIsMenuOpen(false); setOpenMobileSection(null); }}
-                          >
-                            All {item.name}
-                          </span>
-                        </Link>
+                        <button
+                          className="block w-full text-left py-1.5 text-sm font-semibold text-primary cursor-pointer"
+                          onClick={() => go(item.path, () => { setIsMenuOpen(false); setOpenMobileSection(null); })}
+                        >
+                          All {item.name}
+                        </button>
                         {item.children.map((child) => (
-                          <Link key={child.path} href={child.path}>
-                            <span
-                              className="block py-1.5 text-sm text-muted-foreground hover:text-primary cursor-pointer"
-                              onClick={() => { setIsMenuOpen(false); setOpenMobileSection(null); }}
-                            >
-                              {child.name}
-                            </span>
-                          </Link>
+                          <button
+                            key={child.path}
+                            className="block w-full text-left py-1.5 text-sm text-muted-foreground hover:text-primary cursor-pointer"
+                            onClick={() => go(child.path, () => { setIsMenuOpen(false); setOpenMobileSection(null); })}
+                          >
+                            {child.name}
+                          </button>
                         ))}
                       </div>
                     )}
