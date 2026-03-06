@@ -20,3 +20,7 @@
 - [x] Build admin Contact Inbox page (view/manage messages)
 - [x] Protect inbox with owner-only authentication
 - [x] Test full flow end-to-end (9/9 tests passing)
+
+## Admin Inbox Link
+
+- [x] Add discreet admin inbox link to the website footer

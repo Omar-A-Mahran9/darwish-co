@@ -119,6 +119,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <li><Link href="/services"><span className="cursor-pointer hover:underline">Our Services</span></Link></li>
               <li><Link href="/contact"><span className="cursor-pointer hover:underline">Contact</span></Link></li>
               <li>Privacy Policy</li>
+              <li><Link href="/admin/inbox"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Admin Inbox</span></Link></li>
             </ul>
           </div>
 
