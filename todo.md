@@ -31,3 +31,10 @@
 - [x] Update footer email to info@darwish-co.com
 - [x] Update contact form email forwarding to info@darwish-co.com
 - [x] Update server-side contact handler email address
+
+## Projects Section
+
+- [x] Extract AI POC project data from Manus shared task
+- [x] Create /projects page with D&Co design identity
+- [x] Add AI POC project card with full details
+- [x] Add Projects link to navigation menu

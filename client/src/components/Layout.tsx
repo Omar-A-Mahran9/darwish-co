@@ -13,6 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
+    { name: "Projects", path: "/projects" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -117,6 +118,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link href="/about"><span className="cursor-pointer hover:underline">About Us</span></Link></li>
               <li><Link href="/services"><span className="cursor-pointer hover:underline">Our Services</span></Link></li>
+              <li><Link href="/projects"><span className="cursor-pointer hover:underline">Projects</span></Link></li>
               <li><Link href="/contact"><span className="cursor-pointer hover:underline">Contact</span></Link></li>
               <li>Privacy Policy</li>
               <li><Link href="/admin/inbox"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Admin Inbox</span></Link></li>
