@@ -10,3 +10,13 @@
 ## Bug Fixes
 
 - [x] Fix contact form: no response/toast shown when message is submitted
+
+## Contact Inbox & Email Forwarding
+
+- [x] Add contact_submissions table to database schema
+- [x] Push DB schema migration
+- [x] Update /api/contact to save submissions to database
+- [x] Add email forwarding via Resend API on form submission
+- [x] Build admin Contact Inbox page (view/manage messages)
+- [x] Protect inbox with owner-only authentication
+- [x] Test full flow end-to-end (9/9 tests passing)

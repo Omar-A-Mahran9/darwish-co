@@ -93,12 +93,13 @@ async function devNotifyOwner(title: string, content: string): Promise<boolean> 
 }
 
 /**
- * Vite plugin that adds /api/contact endpoint during development
+ * Vite plugin that adds /api/contact and /api/admin/* endpoints during development
  */
 function vitePluginContactApi(): Plugin {
   return {
     name: "manus-contact-api",
     configureServer(server: ViteDevServer) {
+      // ── POST /api/contact ────────────────────────────────────────────────
       server.middlewares.use("/api/contact", (req, res, next) => {
         if (req.method !== "POST") return next();
 
@@ -125,13 +126,42 @@ function vitePluginContactApi(): Plugin {
 
             console.log(`[Contact] New submission from ${name} <${email}>`);
 
+            // Save to DB
+            try {
+              const { saveContactSubmission } = await import("./server/db.js");
+              await saveContactSubmission({
+                name: name.trim(), email: email.trim(),
+                subject: subject?.trim() || null,
+                message: message.trim(), isRead: false, createdAt: Date.now(),
+              });
+            } catch (dbErr) {
+              console.error("[Contact] DB save failed:", dbErr);
+            }
+
+            // Send email
+            const resendKey = process.env.RESEND_API_KEY;
+            if (resendKey) {
+              try {
+                const { Resend } = await import("resend");
+                const resend = new Resend(resendKey);
+                await resend.emails.send({
+                  from: "Darwish & Co. Website <onboarding@resend.dev>",
+                  to: ["fouadarwish@gmail.com"],
+                  subject: `📩 New Contact: ${subject || name}`,
+                  html: `<p><b>From:</b> ${name} (${email})</p><p><b>Subject:</b> ${subject || "(none)"}</p><p><b>Message:</b></p><p>${message.replace(/\n/g, "<br>")}</p>`,
+                });
+              } catch (emailErr) {
+                console.error("[Contact] Email failed:", emailErr);
+              }
+            }
+
+            // Manus push notification
             const notificationContent = [
               `**From:** ${name} (${email})`,
               `**Subject:** ${subject || "(no subject)"}`,
               `**Message:**\n${message}`,
             ].join("\n\n");
-
-            await devNotifyOwner(`📩 New Contact: ${name}`, notificationContent);
+            devNotifyOwner(`📩 New Contact: ${name}`, notificationContent).catch(console.error);
 
             res.writeHead(200, { "Content-Type": "application/json" });
             res.end(JSON.stringify({ success: true, message: "Your message has been received. We'll be in touch soon!" }));
@@ -140,6 +170,31 @@ function vitePluginContactApi(): Plugin {
             res.end(JSON.stringify({ success: false, error: "Server error. Please try again." }));
           }
         });
+      });
+
+      // ── GET /api/admin/messages ──────────────────────────────────────────
+      server.middlewares.use("/api/admin/messages", (req, res, next) => {
+        const adminToken = process.env.ADMIN_TOKEN || "darwish-admin-2026";
+        const token = (req as any).headers["x-admin-token"] || new URL(req.url || "", "http://localhost").searchParams.get("token");
+        if (token !== adminToken) {
+          res.writeHead(401, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ success: false, error: "Unauthorized" }));
+          return;
+        }
+
+        if (req.method === "GET") {
+          import("./server/db.js").then(async ({ getAllContactSubmissions, getUnreadCount }) => {
+            const messages = await getAllContactSubmissions();
+            const unreadCount = await getUnreadCount();
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: true, messages, unreadCount }));
+          }).catch(e => {
+            res.writeHead(500, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: false, error: String(e) }));
+          });
+          return;
+        }
+        next();
       });
     },
   };

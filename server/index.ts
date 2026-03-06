@@ -2,6 +2,14 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import { Resend } from "resend";
+import {
+  saveContactSubmission,
+  getAllContactSubmissions,
+  markSubmissionAsRead,
+  deleteSubmission,
+  getUnreadCount,
+} from "./db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,6 +39,82 @@ async function notifyOwner(title: string, content: string): Promise<boolean> {
     console.error("[Notification] Failed to send owner notification:", err);
     return false;
   }
+}
+
+// ── Email via Resend ─────────────────────────────────────────────────────────
+async function sendEmailNotification(
+  name: string,
+  email: string,
+  subject: string | undefined,
+  message: string
+): Promise<boolean> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn("[Email] RESEND_API_KEY not set — skipping email notification.");
+    return false;
+  }
+
+  const resend = new Resend(apiKey);
+
+  try {
+    const { error } = await resend.emails.send({
+      from: "Darwish & Co. Website <onboarding@resend.dev>",
+      to: ["fouadarwish@gmail.com"],
+      subject: `📩 New Contact: ${subject || name}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <div style="background: #0099CC; padding: 20px; border-radius: 6px 6px 0 0; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 22px;">New Contact Form Submission</h1>
+            <p style="color: rgba(255,255,255,0.85); margin: 6px 0 0; font-size: 14px;">Darwish & Co. Website</p>
+          </div>
+          <div style="padding: 24px; background: #fff;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-weight: bold; color: #555; width: 100px;">Name</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #222;">${name}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-weight: bold; color: #555;">Email</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #222;"><a href="mailto:${email}" style="color: #0099CC;">${email}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-weight: bold; color: #555;">Subject</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #222;">${subject || "(no subject)"}</td>
+              </tr>
+            </table>
+            <div style="margin-top: 20px;">
+              <p style="font-weight: bold; color: #555; margin-bottom: 8px;">Message:</p>
+              <div style="background: #f8f9fa; padding: 16px; border-radius: 6px; color: #333; line-height: 1.6; white-space: pre-wrap;">${message}</div>
+            </div>
+          </div>
+          <div style="padding: 16px 24px; background: #f8f9fa; border-radius: 0 0 6px 6px; text-align: center;">
+            <p style="color: #888; font-size: 12px; margin: 0;">Darwish & Co. — Consulting & Business Development</p>
+            <p style="color: #888; font-size: 12px; margin: 4px 0 0;">www.darwish-co.com</p>
+          </div>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error("[Email] Resend error:", error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("[Email] Failed to send email:", err);
+    return false;
+  }
+}
+
+// ── Simple owner auth middleware ─────────────────────────────────────────────
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "darwish-admin-2026";
+
+function requireAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
+  const token = req.headers["x-admin-token"] || req.query.token;
+  if (token !== ADMIN_TOKEN) {
+    return res.status(401).json({ success: false, error: "Unauthorized" });
+  }
+  next();
 }
 
 async function startServer() {
@@ -64,23 +148,73 @@ async function startServer() {
       });
     }
 
-    // Log the submission
     console.log(`[Contact] New submission from ${name} <${email}>`);
 
-    // Notify the owner
-    const notificationTitle = `📩 New Contact: ${name}`;
+    // Save to database
+    try {
+      await saveContactSubmission({
+        name: name.trim(),
+        email: email.trim(),
+        subject: subject?.trim() || null,
+        message: message.trim(),
+        isRead: false,
+        createdAt: Date.now(),
+      });
+    } catch (err) {
+      console.error("[Contact] Failed to save to database:", err);
+    }
+
+    // Send email notification
+    sendEmailNotification(name, email, subject, message).catch(console.error);
+
+    // Send Manus push notification
     const notificationContent = [
       `**From:** ${name} (${email})`,
       `**Subject:** ${subject || "(no subject)"}`,
       `**Message:**\n${message}`,
     ].join("\n\n");
-
-    await notifyOwner(notificationTitle, notificationContent);
+    notifyOwner(`📩 New Contact: ${name}`, notificationContent).catch(console.error);
 
     return res.json({
       success: true,
       message: "Your message has been received. We'll be in touch soon!",
     });
+  });
+
+  // ── Admin Inbox API ───────────────────────────────────────────────────────
+  app.get("/api/admin/messages", requireAdmin, async (_req, res) => {
+    try {
+      const messages = await getAllContactSubmissions();
+      const unreadCount = await getUnreadCount();
+      return res.json({ success: true, messages, unreadCount });
+    } catch (err) {
+      console.error("[Admin] Failed to fetch messages:", err);
+      return res.status(500).json({ success: false, error: "Failed to fetch messages." });
+    }
+  });
+
+  app.patch("/api/admin/messages/:id/read", requireAdmin, async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ success: false, error: "Invalid ID." });
+    try {
+      await markSubmissionAsRead(id);
+      return res.json({ success: true });
+    } catch (err) {
+      console.error("[Admin] Failed to mark as read:", err);
+      return res.status(500).json({ success: false, error: "Failed to update message." });
+    }
+  });
+
+  app.delete("/api/admin/messages/:id", requireAdmin, async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ success: false, error: "Invalid ID." });
+    try {
+      await deleteSubmission(id);
+      return res.json({ success: true });
+    } catch (err) {
+      console.error("[Admin] Failed to delete message:", err);
+      return res.status(500).json({ success: false, error: "Failed to delete message." });
+    }
   });
 
   // ── Static Files ──────────────────────────────────────────────────────────
