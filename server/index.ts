@@ -59,7 +59,7 @@ async function sendEmailNotification(
   try {
     const { error } = await resend.emails.send({
       from: "Darwish & Co. Website <onboarding@resend.dev>",
-      to: ["fouadarwish@gmail.com"],
+      to: ["info@darwish-co.com"],
       subject: `📩 New Contact: ${subject || name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">

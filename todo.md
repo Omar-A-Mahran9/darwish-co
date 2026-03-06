@@ -24,3 +24,10 @@
 ## Admin Inbox Link
 
 - [x] Add discreet admin inbox link to the website footer
+
+## Email Address Updates
+
+- [x] Update Contact page email to info@darwish-co.com
+- [x] Update footer email to info@darwish-co.com
+- [x] Update contact form email forwarding to info@darwish-co.com
+- [x] Update server-side contact handler email address

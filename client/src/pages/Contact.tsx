@@ -137,7 +137,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-bold text-primary">Email Us</h3>
-                      <p className="text-muted-foreground">fouadarwish@gmail.com</p>
+                      <p className="text-muted-foreground">info@darwish-co.com</p>
                     </div>
                   </CardContent>
                 </Card>

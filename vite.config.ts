@@ -146,7 +146,7 @@ function vitePluginContactApi(): Plugin {
                 const resend = new Resend(resendKey);
                 await resend.emails.send({
                   from: "Darwish & Co. Website <onboarding@resend.dev>",
-                  to: ["fouadarwish@gmail.com"],
+                  to: ["info@darwish-co.com"],
                   subject: `📩 New Contact: ${subject || name}`,
                   html: `<p><b>From:</b> ${name} (${email})</p><p><b>Subject:</b> ${subject || "(none)"}</p><p><b>Message:</b></p><p>${message.replace(/\n/g, "<br>")}</p>`,
                 });

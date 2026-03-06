@@ -126,7 +126,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div>
             <h4 className="font-bold mb-4 text-primary">Contact</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>fouadarwish@darwish-co.com</li>
+              <li>info@darwish-co.com</li>
               <li>+20 110 110 1090</li>
               <li>www.darwish-co.com</li>
             </ul>
