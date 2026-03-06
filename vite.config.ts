@@ -74,6 +74,77 @@ function writeToLogFile(source: LogSource, entries: unknown[]) {
  * - Files: browserConsole.log, networkRequests.log, sessionReplay.log
  * - Auto-trimmed when exceeding 1MB (keeps newest entries)
  */
+// ── Owner notification helper (dev mode) ─────────────────────────────────────
+async function devNotifyOwner(title: string, content: string): Promise<boolean> {
+  const apiUrl = process.env.BUILT_IN_FORGE_API_URL;
+  const apiKey = process.env.BUILT_IN_FORGE_API_KEY;
+  const appId = process.env.VITE_APP_ID;
+  if (!apiUrl || !apiKey || !appId) return false;
+  try {
+    const res = await fetch(`${apiUrl}/notification/send`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({ appId, title, content }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Vite plugin that adds /api/contact endpoint during development
+ */
+function vitePluginContactApi(): Plugin {
+  return {
+    name: "manus-contact-api",
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use("/api/contact", (req, res, next) => {
+        if (req.method !== "POST") return next();
+
+        let body = "";
+        req.on("data", (chunk) => { body += chunk.toString(); });
+        req.on("end", async () => {
+          try {
+            const { name, email, subject, message } = JSON.parse(body) as {
+              name?: string; email?: string; subject?: string; message?: string;
+            };
+
+            if (!name?.trim() || !email?.trim() || !message?.trim()) {
+              res.writeHead(400, { "Content-Type": "application/json" });
+              res.end(JSON.stringify({ success: false, error: "Name, email, and message are required." }));
+              return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+              res.writeHead(400, { "Content-Type": "application/json" });
+              res.end(JSON.stringify({ success: false, error: "Please provide a valid email address." }));
+              return;
+            }
+
+            console.log(`[Contact] New submission from ${name} <${email}>`);
+
+            const notificationContent = [
+              `**From:** ${name} (${email})`,
+              `**Subject:** ${subject || "(no subject)"}`,
+              `**Message:**\n${message}`,
+            ].join("\n\n");
+
+            await devNotifyOwner(`📩 New Contact: ${name}`, notificationContent);
+
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: true, message: "Your message has been received. We'll be in touch soon!" }));
+          } catch (e) {
+            res.writeHead(500, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: false, error: "Server error. Please try again." }));
+          }
+        });
+      });
+    },
+  };
+}
+
 function vitePluginManusDebugCollector(): Plugin {
   return {
     name: "manus-debug-collector",
@@ -150,7 +221,7 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginContactApi(), vitePluginManusDebugCollector()];
 
 export default defineConfig({
   plugins,
