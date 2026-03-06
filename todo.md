@@ -43,3 +43,8 @@
 
 - [x] Extract project data from Manus shared task
 - [x] Add Hebei-Egypt Industrial Partnership Portal section to Projects page
+
+## Navigation Dropdown Submenus
+
+- [x] Add dropdown submenu to Services nav item (GRC, HR, Business Dev sub-pages)
+- [x] Add dropdown submenu to Projects nav item (AI POC, Trade Portal sub-pages)
