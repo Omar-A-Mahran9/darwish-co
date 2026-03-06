@@ -55,3 +55,7 @@
 - [x] Add id="ai-poc", id="trade-portal" to Projects page sections
 - [x] Ensure smooth scroll works for hash navigation
 - [x] Fix mobile "Get Started" button to navigate to /contact
+
+## Homepage Projects Teaser
+
+- [x] Add two-card Projects preview section to Home page (AI POC + Hebei-Egypt)

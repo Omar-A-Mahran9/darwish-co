@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, CheckCircle2, Shield, Users, TrendingUp } from "lucide-react";
+import { ArrowRight, CheckCircle2, Shield, Users, TrendingUp, Brain, Globe, ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Home() {
@@ -202,6 +202,155 @@ export default function Home() {
                 Bridging the gap between GRC and HR for a holistic business strategy.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Teaser Section */}
+      <section className="py-24 bg-foreground text-white">
+        <div className="container">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+            <div className="space-y-3">
+              <span className="text-xs font-bold uppercase tracking-widest text-primary">Our Work</span>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight">
+                Platforms We've Built
+              </h2>
+              <p className="text-white/60 text-lg max-w-xl">
+                Beyond consulting, we deliver digital solutions that create lasting operational impact for our clients.
+              </p>
+            </div>
+            <Link href="/projects">
+              <span className="flex items-center gap-2 text-primary font-bold text-sm hover:underline cursor-pointer whitespace-nowrap">
+                View all projects <ArrowRight className="w-4 h-4" />
+              </span>
+            </Link>
+          </div>
+
+          {/* Project Cards */}
+          <div className="grid md:grid-cols-2 gap-8">
+
+            {/* Card 1: AI POC Platform */}
+            <div className="group relative bg-white/5 border border-white/10 hover:border-primary/50 transition-all duration-300 overflow-hidden">
+              {/* Top accent bar */}
+              <div className="h-1 w-full bg-primary" />
+              <div className="p-8 space-y-6">
+                {/* Icon + Label */}
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Brain className="w-5 h-5 text-primary" />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-primary">AI Initiative</span>
+                </div>
+
+                {/* Title & Description */}
+                <div className="space-y-3">
+                  <h3 className="font-heading text-2xl font-bold text-white">
+                    AI POC Collaboration Platform
+                  </h3>
+                  <p className="text-white/60 leading-relaxed text-sm">
+                    A full-stack platform enabling Techno-Management and Widebot to collaboratively manage AI proof-of-concept projects — from structured submission through evaluation, approval, and delivery.
+                  </p>
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2">
+                  {["React", "tRPC", "MySQL", "Resend Email"].map((tag) => (
+                    <span key={tag} className="px-2.5 py-1 text-xs font-medium bg-white/10 text-white/70 rounded-sm">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Stats row */}
+                <div className="flex gap-8 pt-2 border-t border-white/10">
+                  <div>
+                    <div className="text-2xl font-bold text-primary font-heading">7</div>
+                    <div className="text-xs text-white/50 mt-0.5">Form Sections</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-primary font-heading">2</div>
+                    <div className="text-xs text-white/50 mt-0.5">Partner Orgs</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-primary font-heading">100%</div>
+                    <div className="text-xs text-white/50 mt-0.5">Digital Pipeline</div>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <Link href="/projects#ai-poc">
+                  <span className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:underline cursor-pointer group-hover:gap-3 transition-all">
+                    Explore platform <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 2: Hebei-Egypt Trade Portal */}
+            <div className="group relative bg-white/5 border border-white/10 hover:border-chart-3/50 transition-all duration-300 overflow-hidden">
+              {/* Top accent bar */}
+              <div className="h-1 w-full bg-chart-3" />
+              <div className="p-8 space-y-6">
+                {/* Icon + Label */}
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-chart-3/20 flex items-center justify-center">
+                    <Globe className="w-5 h-5 text-chart-3" />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-chart-3">International Trade</span>
+                </div>
+
+                {/* Title & Description */}
+                <div className="space-y-3">
+                  <h3 className="font-heading text-2xl font-bold text-white">
+                    Hebei–Egypt Industrial Partnership Portal
+                  </h3>
+                  <p className="text-white/60 leading-relaxed text-sm">
+                    A bilingual trade intelligence platform connecting Egyptian investors with Hebei Province's 107 industrial clusters — bridging two economies across 8 strategic sectors.
+                  </p>
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2">
+                  {["React", "Bilingual", "Trade Data", "Sector Maps"].map((tag) => (
+                    <span key={tag} className="px-2.5 py-1 text-xs font-medium bg-white/10 text-white/70 rounded-sm">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Stats row */}
+                <div className="flex gap-8 pt-2 border-t border-white/10">
+                  <div>
+                    <div className="text-2xl font-bold text-chart-3 font-heading">107</div>
+                    <div className="text-xs text-white/50 mt-0.5">Industrial Clusters</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-chart-3 font-heading">8</div>
+                    <div className="text-xs text-white/50 mt-0.5">Sectors</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-chart-3 font-heading">2</div>
+                    <div className="text-xs text-white/50 mt-0.5">Countries</div>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="flex items-center gap-6">
+                  <Link href="/projects#trade-portal">
+                    <span className="inline-flex items-center gap-2 text-chart-3 font-bold text-sm hover:underline cursor-pointer group-hover:gap-3 transition-all">
+                      Explore platform <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </Link>
+                  <a href="https://hebeiegypt-c9cmqhug.manus.space" target="_blank" rel="noopener noreferrer">
+                    <span className="inline-flex items-center gap-1.5 text-white/40 hover:text-white/70 text-xs font-medium transition-colors cursor-pointer">
+                      <ExternalLink className="w-3.5 h-3.5" /> Live site
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
