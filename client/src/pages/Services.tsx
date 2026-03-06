@@ -51,7 +51,7 @@ export default function Services() {
       </section>
 
       {/* GRC Section */}
-      <section className="py-20">
+      <section id="grc" className="py-20">
         <div className="container">
           <div className="flex items-center gap-4 mb-12">
             <div className="p-3 bg-primary/10 rounded-xl">
@@ -82,7 +82,7 @@ export default function Services() {
       </section>
 
       {/* HR Section */}
-      <section className="py-20 bg-muted/30">
+      <section id="hr" className="py-20 bg-muted/30">
         <div className="container">
           <div className="flex items-center gap-4 mb-12">
             <div className="p-3 bg-chart-2/10 rounded-xl">
@@ -105,6 +105,88 @@ export default function Services() {
                   <p className="text-muted-foreground leading-relaxed">
                     {service.description}
                   </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Business Development Section */}
+      <section id="bizdev" className="py-20">
+        <div className="container">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="p-3 bg-chart-3/10 rounded-xl">
+              <BarChart3 className="w-8 h-8 text-chart-3" />
+            </div>
+            <div>
+              <h2 className="font-heading text-3xl font-bold text-primary">Business Development</h2>
+              <p className="text-muted-foreground">Accelerating growth and unlocking new market opportunities.</p>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Market Entry Strategy",
+                description: "Comprehensive market research and entry strategies to help SMEs expand into new MENA markets with confidence and clarity.",
+              },
+              {
+                title: "Strategic Partnerships",
+                description: "Identifying and facilitating high-value partnerships, joint ventures, and alliances that create sustainable competitive advantage.",
+              },
+              {
+                title: "International Trade Facilitation",
+                description: "End-to-end support for cross-border trade, including regulatory navigation, partner identification, and deal structuring.",
+              },
+            ].map((service, index) => (
+              <Card key={index} className="border-border/50 shadow-sm hover:shadow-md transition-shadow">
+                <CardHeader>
+                  <div className="mb-4"><BarChart3 className="w-6 h-6 text-chart-3" /></div>
+                  <CardTitle className="font-heading text-xl text-primary">{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed">{service.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Strategy & Performance Section */}
+      <section id="strategy" className="py-20 bg-muted/30">
+        <div className="container">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="p-3 bg-primary/10 rounded-xl">
+              <Scale className="w-8 h-8 text-primary" />
+            </div>
+            <div>
+              <h2 className="font-heading text-3xl font-bold text-primary">Strategy & Performance Management</h2>
+              <p className="text-muted-foreground">Digital excellence for MENA SMEs through integrated performance systems.</p>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Balanced Scorecard Implementation",
+                description: "Design and deploy BSC frameworks that align strategic objectives with measurable KPIs across all organizational levels.",
+              },
+              {
+                title: "OKR Framework Design",
+                description: "Implement Objectives and Key Results methodology to drive focus, alignment, and accountability throughout your organization.",
+              },
+              {
+                title: "Performance Dashboard Systems",
+                description: "Build real-time digital dashboards that give leadership instant visibility into business performance and strategic progress.",
+              },
+            ].map((service, index) => (
+              <Card key={index} className="border-border/50 shadow-sm hover:shadow-md transition-shadow bg-background">
+                <CardHeader>
+                  <div className="mb-4"><Scale className="w-6 h-6 text-primary" /></div>
+                  <CardTitle className="font-heading text-xl text-primary">{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed">{service.description}</p>
                 </CardContent>
               </Card>
             ))}

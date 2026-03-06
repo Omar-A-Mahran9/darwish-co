@@ -48,3 +48,10 @@
 
 - [x] Add dropdown submenu to Services nav item (GRC, HR, Business Dev sub-pages)
 - [x] Add dropdown submenu to Projects nav item (AI POC, Trade Portal sub-pages)
+
+## Anchor Navigation Fix
+
+- [x] Add id="grc", id="hr", id="bizdev", id="strategy" to Services page sections
+- [x] Add id="ai-poc", id="trade-portal" to Projects page sections
+- [x] Ensure smooth scroll works for hash navigation
+- [x] Fix mobile "Get Started" button to navigate to /contact

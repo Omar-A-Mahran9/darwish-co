@@ -219,9 +219,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 )}
               </div>
             ))}
-            <Button className="w-full bg-primary text-primary-foreground font-heading mt-2">
-              Get Started
-            </Button>
+            <Link href="/contact">
+              <Button className="w-full bg-primary text-primary-foreground font-heading mt-2" onClick={() => setIsMenuOpen(false)}>
+                Get Started
+              </Button>
+            </Link>
           </div>
         )}
       </header>
