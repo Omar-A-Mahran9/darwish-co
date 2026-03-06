@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -17,6 +18,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col font-body bg-background text-foreground">
+      {/* Announcement Banner */}
+      <AnnouncementBanner
+        message="📢 Introducing our Strategy & Performance Management System — digital excellence for MENA SMEs."
+        linkText="Explore Services →"
+        linkHref="/services"
+      />
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-20 items-center justify-between">
