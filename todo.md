@@ -38,3 +38,8 @@
 - [x] Create /projects page with D&Co design identity
 - [x] Add AI POC project card with full details
 - [x] Add Projects link to navigation menu
+
+## International Trade Advisor Project Section
+
+- [x] Extract project data from Manus shared task
+- [x] Add Hebei-Egypt Industrial Partnership Portal section to Projects page
