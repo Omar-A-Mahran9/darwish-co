@@ -66,3 +66,13 @@
 - [x] Wire hook into App.tsx so it fires on every route change
 - [x] Fix dropdown links to correctly navigate cross-page with hash
 - [x] Add scroll-margin-top offset to all anchor sections (accounts for sticky header)
+
+## Partners & Corporate Partners Sections
+
+- [x] Add partners and corporatePartners tables to Drizzle schema
+- [x] Add API procedures to fetch partners and corporate partners
+- [x] Run pnpm db:push to migrate schema
+- [x] Build Partners & Consultants page (individual professionals)
+- [x] Build Corporate Partners & Licences page (organisations)
+- [x] Add navigation links for both new pages
+- [x] Add footer links for both new pages

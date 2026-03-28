@@ -32,6 +32,14 @@ const navItems: NavItem[] = [
       { name: "Hebei-Egypt Trade Portal", path: "/projects#trade-portal" },
     ],
   },
+  {
+    name: "Partners",
+    path: "/partners",
+    children: [
+      { name: "Consultants & Advisors", path: "/partners" },
+      { name: "Corporate Partners & Licences", path: "/corporate-partners" },
+    ],
+  },
   { name: "Contact", path: "/contact" },
 ];
 
@@ -290,8 +298,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link href="/about"><span className="cursor-pointer hover:underline">About Us</span></Link></li>
               <li><Link href="/projects"><span className="cursor-pointer hover:underline">Projects</span></Link></li>
+              <li><Link href="/partners"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Partners & Consultants</span></Link></li>
+              <li><Link href="/corporate-partners"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Corporate Partners</span></Link></li>
               <li><Link href="/contact"><span className="cursor-pointer hover:underline">Contact</span></Link></li>
-              <li>Privacy Policy</li>
               <li><Link href="/admin/inbox"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Admin Inbox</span></Link></li>
             </ul>
           </div>

@@ -11,6 +11,8 @@ import Services from "./pages/Services";
 import Contact from './pages/Contact';
 import AdminInbox from './pages/AdminInbox';
 import Projects from './pages/Projects';
+import Partners from './pages/Partners';
+import CorporatePartners from './pages/CorporatePartners';
 import { useHashScroll } from "./hooks/useHashScroll";
 
 function Router() {
@@ -24,6 +26,8 @@ function Router() {
         <Route path="/contact" component={Contact} />
         <Route path="/projects" component={Projects} />
         <Route path="/admin/inbox" component={AdminInbox} />
+        <Route path="/partners" component={Partners} />
+        <Route path="/corporate-partners" component={CorporatePartners} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

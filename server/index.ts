@@ -9,6 +9,14 @@ import {
   markSubmissionAsRead,
   deleteSubmission,
   getUnreadCount,
+  getAllPartners,
+  insertPartner,
+  updatePartner,
+  deletePartner,
+  getAllCorporatePartners,
+  insertCorporatePartner,
+  updateCorporatePartner,
+  deleteCorporatePartner,
 } from "./db.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -179,6 +187,93 @@ async function startServer() {
       success: true,
       message: "Your message has been received. We'll be in touch soon!",
     });
+  });
+
+  // ── Partners API (public) ─────────────────────────────────────────────────
+  app.get("/api/partners", async (_req, res) => {
+    try {
+      const data = await getAllPartners();
+      return res.json({ success: true, data });
+    } catch (err) {
+      console.error("[Partners] Failed to fetch:", err);
+      return res.status(500).json({ success: false, error: "Failed to fetch partners." });
+    }
+  });
+
+  // ── Partners Admin API ────────────────────────────────────────────────────
+  app.post("/api/admin/partners", requireAdmin, async (req, res) => {
+    try {
+      await insertPartner({ ...req.body, createdAt: Date.now() });
+      return res.json({ success: true });
+    } catch (err) {
+      console.error("[Partners] Insert failed:", err);
+      return res.status(500).json({ success: false, error: "Failed to add partner." });
+    }
+  });
+
+  app.patch("/api/admin/partners/:id", requireAdmin, async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ success: false, error: "Invalid ID." });
+    try {
+      await updatePartner(id, req.body);
+      return res.json({ success: true });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: "Failed to update partner." });
+    }
+  });
+
+  app.delete("/api/admin/partners/:id", requireAdmin, async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ success: false, error: "Invalid ID." });
+    try {
+      await deletePartner(id);
+      return res.json({ success: true });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: "Failed to delete partner." });
+    }
+  });
+
+  // ── Corporate Partners API (public) ───────────────────────────────────────
+  app.get("/api/corporate-partners", async (_req, res) => {
+    try {
+      const data = await getAllCorporatePartners();
+      return res.json({ success: true, data });
+    } catch (err) {
+      console.error("[CorporatePartners] Failed to fetch:", err);
+      return res.status(500).json({ success: false, error: "Failed to fetch corporate partners." });
+    }
+  });
+
+  // ── Corporate Partners Admin API ──────────────────────────────────────────
+  app.post("/api/admin/corporate-partners", requireAdmin, async (req, res) => {
+    try {
+      await insertCorporatePartner({ ...req.body, createdAt: Date.now() });
+      return res.json({ success: true });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: "Failed to add corporate partner." });
+    }
+  });
+
+  app.patch("/api/admin/corporate-partners/:id", requireAdmin, async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ success: false, error: "Invalid ID." });
+    try {
+      await updateCorporatePartner(id, req.body);
+      return res.json({ success: true });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: "Failed to update corporate partner." });
+    }
+  });
+
+  app.delete("/api/admin/corporate-partners/:id", requireAdmin, async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ success: false, error: "Invalid ID." });
+    try {
+      await deleteCorporatePartner(id);
+      return res.json({ success: true });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: "Failed to delete corporate partner." });
+    }
   });
 
   // ── Admin Inbox API ───────────────────────────────────────────────────────
