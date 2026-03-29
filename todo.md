@@ -76,3 +76,16 @@
 - [x] Build Corporate Partners & Licences page (organisations)
 - [x] Add navigation links for both new pages
 - [x] Add footer links for both new pages
+
+## Partner Data Verification & VisionEthics Addition
+
+- [x] Research VisionEthics (visionethics.com) — verified: Malaysia, GRC/anti-corruption advisory
+- [x] Verify Widebot data — verified: Egypt, Arabic AI platform, widebot.ai
+- [x] Replace all placeholder partners with verified real data (removed unverifiable entries)
+- [x] Add VisionEthics as a new corporate partner entry with contact details
+
+## New Consultants Addition
+
+- [ ] Extract Sherin Hamouda Ibrahim data from CV PDF
+- [ ] Extract Teh Chau Chin data from VisionEthics profile PDF
+- [ ] Add both consultants to Partners page with verified data

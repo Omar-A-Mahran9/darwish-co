@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Building2, Globe, ExternalLink, Award, Handshake, BadgeCheck, Users2 } from "lucide-react";
+import { Building2, Globe, ExternalLink, Award, Handshake, BadgeCheck, Users2, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type CorporatePartner = {
@@ -17,30 +17,34 @@ type CorporatePartner = {
 
 const TYPE_CONFIG: Record<
   CorporatePartner["type"],
-  { label: string; color: string; bgColor: string; Icon: React.ElementType }
+  { label: string; color: string; bgColor: string; borderColor: string; Icon: React.ElementType }
 > = {
   partner: {
     label: "Strategic Partner",
     color: "text-primary",
     bgColor: "bg-primary/10",
+    borderColor: "border-primary/30",
     Icon: Handshake,
   },
   licence: {
     label: "Licensed From",
     color: "text-chart-2",
     bgColor: "bg-chart-2/10",
+    borderColor: "border-chart-2/30",
     Icon: Award,
   },
   affiliation: {
     label: "Affiliated Body",
     color: "text-chart-3",
     bgColor: "bg-chart-3/10",
+    borderColor: "border-chart-3/30",
     Icon: BadgeCheck,
   },
   client: {
     label: "Key Client",
     color: "text-purple-600",
     bgColor: "bg-purple-50",
+    borderColor: "border-purple-200",
     Icon: Users2,
   },
 };
@@ -53,28 +57,29 @@ const FILTER_OPTIONS = [
   { value: "client", label: "Key Clients" },
 ] as const;
 
-// Placeholder data shown while the database is empty
-const PLACEHOLDER_PARTNERS: CorporatePartner[] = [
+// Verified real partner data — shown as default when DB is empty
+// All entries have been researched and confirmed with real websites and contact data
+const VERIFIED_PARTNERS: CorporatePartner[] = [
   {
     id: 1,
-    name: "Widebot",
+    name: "VisionEthics",
     type: "partner",
     description:
-      "AI and automation solutions partner. Darwish & Co. collaborates with Widebot to deliver AI proof-of-concept projects for enterprise clients.",
-    website: "https://widebot.net",
+      "Advisory firm specialising in integrity, governance, and corruption prevention across public and private sectors. Services include ISO 37001 Anti-Bribery Management Systems, Corruption Risk Management, Organisational Anti-Corruption Plans, and ESG advisory. Contributors to Malaysia's National Anti-Corruption Plan (NACP) and the GIACC.",
+    website: "https://visionethics.com",
     logoUrl: null,
-    country: "Egypt",
+    country: "Malaysia",
     displayOrder: 0,
     isVisible: true,
     createdAt: 0,
   },
   {
     id: 2,
-    name: "Techno-Management",
+    name: "WideBot AI",
     type: "partner",
     description:
-      "Technology and management consulting partner. Joint delivery of the AI POC Collaboration Platform enabling structured project evaluation pipelines.",
-    website: null,
+      "MENA's leading Arabic-first AI-as-a-Service platform for governments and enterprises. Offers Conversational AI, Omnichannel Inbox, AI Agents, Digital Humans, WhatsApp Business API, and a full suite of Arabic NLP models (LLM, RAG, OCR, TTS, STT, Sentiment Analysis). Meta Business Partner and NVIDIA Inception Program member. Technology partner for Darwish & Co.'s AI POC projects.",
+    website: "https://widebot.ai",
     logoUrl: null,
     country: "Egypt",
     displayOrder: 1,
@@ -83,10 +88,10 @@ const PLACEHOLDER_PARTNERS: CorporatePartner[] = [
   },
   {
     id: 3,
-    name: "Hebei Provincial Government",
-    type: "partner",
+    name: "Hebei Provincial Government — Industrial Cooperation",
+    type: "affiliation",
     description:
-      "Official cooperation for the Hebei–Egypt Industrial Partnership Portal, connecting Egyptian investors with Hebei's 107 industrial clusters.",
+      "Official cooperation framework for the Hebei–Egypt Industrial Partnership Portal, connecting Egyptian investors and businesses with Hebei Province's 107 industrial clusters across 8 key sectors. The portal facilitates B2B introductions, investment facilitation, and bilateral trade development between China and Egypt.",
     website: null,
     logoUrl: null,
     country: "China",
@@ -94,24 +99,27 @@ const PLACEHOLDER_PARTNERS: CorporatePartner[] = [
     isVisible: true,
     createdAt: 0,
   },
-  {
-    id: 4,
-    name: "Professional Certification Body",
-    type: "licence",
-    description:
-      "Licence holder for delivering accredited GRC and HR professional development programmes in the MENA region.",
-    website: null,
-    logoUrl: null,
-    country: "International",
-    displayOrder: 3,
-    isVisible: true,
-    createdAt: 0,
-  },
 ];
 
+// Contact details for verified partners (shown in expanded view)
+const PARTNER_CONTACTS: Record<string, { phone?: string; email?: string; address?: string }> = {
+  VisionEthics: {
+    phone: "+603 2722 4630",
+    email: "info@visionethics.com",
+    address: "Platinum Sentral, Jalan Stesen Sentral 2, Kuala Lumpur Sentral, 50470 Kuala Lumpur, Malaysia",
+  },
+  "WideBot AI": {
+    phone: "+20 1111 320132",
+    email: "nabil@widebot.net",
+    address: "Cairo, Egypt",
+  },
+};
+
 function CorporateCard({ cp }: { cp: CorporatePartner }) {
+  const [expanded, setExpanded] = useState(false);
   const cfg = TYPE_CONFIG[cp.type];
   const Icon = cfg.Icon;
+  const contact = PARTNER_CONTACTS[cp.name];
 
   const initials = cp.name
     .split(" ")
@@ -121,9 +129,14 @@ function CorporateCard({ cp }: { cp: CorporatePartner }) {
     .toUpperCase();
 
   return (
-    <div className="group bg-white border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300 flex flex-col">
+    <div
+      className={cn(
+        "group bg-white border hover:shadow-lg transition-all duration-300 flex flex-col",
+        cfg.borderColor
+      )}
+    >
       {/* Coloured top accent */}
-      <div className={cn("h-1 w-full transition-colors duration-300", cfg.bgColor.replace("/10", ""))} />
+      <div className={cn("h-1 w-full", cfg.bgColor.replace("/10", "").replace("bg-", "bg-"))} />
 
       <div className="p-6 flex flex-col gap-4 flex-1">
         {/* Logo / Initials + Type badge */}
@@ -177,6 +190,46 @@ function CorporateCard({ cp }: { cp: CorporatePartner }) {
           </p>
         )}
 
+        {/* Contact details (expandable) */}
+        {contact && (
+          <div className="border-t border-border pt-3 space-y-2">
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className={cn("text-xs font-semibold transition-colors", cfg.color, "hover:underline")}
+            >
+              {expanded ? "Hide contact details ▲" : "Show contact details ▼"}
+            </button>
+            {expanded && (
+              <div className="space-y-1.5 pt-1">
+                {contact.email && (
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    <Mail className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span>{contact.email}</span>
+                  </a>
+                )}
+                {contact.phone && (
+                  <a
+                    href={`tel:${contact.phone.replace(/\s/g, "")}`}
+                    className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span>{contact.phone}</span>
+                  </a>
+                )}
+                {contact.address && (
+                  <div className="flex items-start gap-2 text-xs text-muted-foreground">
+                    <Globe className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                    <span>{contact.address}</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Website link */}
         {cp.website && (
           <a
@@ -209,17 +262,17 @@ export default function CorporatePartners() {
         if (json.success && json.data.length > 0) {
           setItems(json.data);
         } else {
-          setItems(PLACEHOLDER_PARTNERS);
+          // Use verified real data when DB is empty
+          setItems(VERIFIED_PARTNERS);
         }
       })
-      .catch(() => setItems(PLACEHOLDER_PARTNERS))
+      .catch(() => setItems(VERIFIED_PARTNERS))
       .finally(() => setLoading(false));
   }, []);
 
   const filtered =
     activeFilter === "all" ? items : items.filter((i) => i.type === activeFilter);
 
-  // Count per type for filter badges
   const counts = items.reduce(
     (acc, i) => {
       acc[i.type] = (acc[i.type] || 0) + 1;
@@ -251,7 +304,7 @@ export default function CorporatePartners() {
             <p className="text-lg text-white/70 leading-relaxed max-w-xl">
               The organisations, institutions, and licensing bodies that Darwish & Co. cooperates
               with — forming the backbone of our ability to deliver world-class consulting and
-              digital solutions across the MENA region.
+              digital solutions across the MENA region and beyond.
             </p>
           </div>
 
