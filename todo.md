@@ -90,3 +90,8 @@
 - [x] Extract Teh Chau Chin data from VisionEthics profile PDF
 - [x] Add both consultants to Partners page with verified data
 - [x] Extract Fouad's data from CV and add as first entry in Partners page
+
+## Techno-Management Partner Addition
+
+- [x] Research techno-management.com and extract verified company data
+- [x] Add Techno-Management to Corporate Partners page

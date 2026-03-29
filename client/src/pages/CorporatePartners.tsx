@@ -88,6 +88,19 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
   },
   {
     id: 3,
+    name: "Techno-Management",
+    type: "partner",
+    description:
+      "A pioneering management consulting firm specialising in Strategy Development, Strategy Execution & Tracking, Project Management, and Performance Management. Delivers world-class consulting services and training programmes to help organisations better manage their operations. Offers Microsoft Project Portfolio Management (PPM) implementation and a proprietary Strategy Tracking System for monitoring Strategic Objectives, KPIs, and Initiatives. Training is conducted by practising consultants in interactive workshops.",
+    website: "https://techno-management.com",
+    logoUrl: null,
+    country: "Egypt",
+    displayOrder: 2,
+    isVisible: true,
+    createdAt: 0,
+  },
+  {
+    id: 4,
     name: "Hebei Provincial Government — Industrial Cooperation",
     type: "affiliation",
     description:
@@ -95,7 +108,7 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
     website: null,
     logoUrl: null,
     country: "China",
-    displayOrder: 2,
+    displayOrder: 3,
     isVisible: true,
     createdAt: 0,
   },
@@ -112,6 +125,9 @@ const PARTNER_CONTACTS: Record<string, { phone?: string; email?: string; address
     phone: "+20 1111 320132",
     email: "nabil@widebot.net",
     address: "Cairo, Egypt",
+  },
+  "Techno-Management": {
+    address: "Egypt",
   },
 };
 
