@@ -95,3 +95,9 @@
 
 - [x] Research techno-management.com and extract verified company data
 - [x] Add Techno-Management to Corporate Partners page
+
+## VisionEthics Services Integration
+
+- [x] Research all VisionEthics services from their website (14 services across 4 categories)
+- [x] Add VisionEthics services as a new section on the Services page (id="integrity")
+- [x] Add Integrity & Anti-Corruption link to Services dropdown in navigation

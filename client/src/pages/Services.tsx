@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Users, CheckCircle, BarChart3, FileText, Scale } from "lucide-react";
+import { Shield, Users, CheckCircle, BarChart3, FileText, Scale, ShieldCheck, BookOpen, Cpu, Globe2, ExternalLink } from "lucide-react";
 
 export default function Services() {
   const grcServices = [
@@ -190,6 +190,202 @@ export default function Services() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* VisionEthics Partnership Services Section */}
+      <section id="integrity" className="py-20" style={{ scrollMarginTop: '5rem' }}>
+        <div className="container">
+          {/* Section header with partnership badge */}
+          <div className="mb-14">
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <div className="p-3 bg-blue-600/10 rounded-xl">
+                <ShieldCheck className="w-8 h-8 text-blue-600" />
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-1">
+                  <h2 className="font-heading text-3xl font-bold text-primary">Integrity & Anti-Corruption Services</h2>
+                  <a
+                    href="https://visionethics.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-blue-600/10 text-blue-600 hover:bg-blue-600/20 transition-colors"
+                  >
+                    In partnership with VisionEthics <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+                <p className="text-muted-foreground">Delivered in partnership with VisionEthics (Malaysia) — specialists in governance, integrity, and corruption prevention across public and private sectors.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Category 1: Anti-Corruption Compliance */}
+          <div className="mb-14">
+            <div className="flex items-center gap-2 mb-6">
+              <ShieldCheck className="w-5 h-5 text-blue-600" />
+              <h3 className="font-heading text-xl font-bold text-foreground">Anti-Corruption Compliance</h3>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  title: "Corruption Risk Management (CRM)",
+                  description: "Identifies areas of potential corruption risk and develops targeted preventative measures. Based on international risk management principles and adaptable into Enterprise Risk Management (ERM) frameworks. Covers consultation, risk profiling, action plans, and continuous dashboard reporting.",
+                },
+                {
+                  title: "Anti-Bribery Management System (ISO 37001 ABMS)",
+                  description: "Globally recognised ISO standard for Anti-Bribery Management Systems. Covers bribery risk assessment, leadership responsibilities, HR practices, due diligence, anti-corruption policies, financial controls, supply chain integrity, whistle-blowing, and monitoring. VisionEthics guides organisations through full certification.",
+                },
+                {
+                  title: "Organisational Anti-Corruption Plan (OACP)",
+                  description: "Structured plan helping organisations systematically address corruption risks at the organisational level. Aligns with MACC Adequate Procedures and Malaysia's National Anti-Corruption Plan (NACP). Covers governance structures, risk identification, policy development, and monitoring frameworks.",
+                },
+                {
+                  title: "Corporate Liability Provisions — S17A MACC Act",
+                  description: "Advisory on Malaysia's Corporate Liability Provision under Section 17A of the MACC Act 2009. Helps organisations understand legal obligations, implement adequate procedures, and defend against corporate liability. Covers board responsibilities, compliance programme design, and evidence of top-management commitment.",
+                },
+                {
+                  title: "Adequate Procedures & Gap Analysis",
+                  description: "Assessment and gap analysis of an organisation's existing anti-corruption controls against the MACC Adequate Procedures Guidelines. Identifies weaknesses, prioritises remediation actions, and provides a roadmap to full compliance.",
+                },
+                {
+                  title: "Anti-Corruption Policies & Procedures — Monitoring and Evaluation",
+                  description: "Development, review, and monitoring of anti-corruption policies and procedures. Covers gifts and hospitality, donations and sponsorship controls, conflict of interest declarations, and whistle-blowing procedures. Includes ongoing monitoring and evaluation to ensure policies remain effective.",
+                },
+                {
+                  title: "Integrity Assessment Advisory (IAA)",
+                  description: "Independent assessment of an organisation's integrity culture, governance practices, and anti-corruption controls. Provides a structured evaluation of existing integrity programmes and recommends improvements to support boards and senior management in demonstrating commitment to ethical governance.",
+                },
+                {
+                  title: "Effectiveness Indicators Assessment",
+                  description: "Measurement and evaluation of the effectiveness of anti-corruption compliance programmes using defined indicators. Provides evidence-based reporting to boards, regulators, and stakeholders on the performance of compliance initiatives.",
+                },
+              ].map((service, index) => (
+                <Card key={index} className="border-blue-200/60 shadow-sm hover:shadow-md transition-shadow bg-background">
+                  <CardHeader>
+                    <div className="mb-3"><ShieldCheck className="w-5 h-5 text-blue-600" /></div>
+                    <CardTitle className="font-heading text-base text-primary leading-snug">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed text-sm">{service.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Category 2: Training and Education */}
+          <div className="mb-14">
+            <div className="flex items-center gap-2 mb-6">
+              <BookOpen className="w-5 h-5 text-blue-600" />
+              <h3 className="font-heading text-xl font-bold text-foreground">Training & Education</h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "Interactive Training with Prosecutors' Perspectives",
+                  description: "Practical, interactive workshops on anti-corruption, integrity, and compliance. Features real case studies and lessons learned from prosecutors' perspectives to bring legal consequences to life. Designed for boards, management, compliance officers, and employees.",
+                },
+                {
+                  title: "E-Learning Portal",
+                  description: "Digital learning platform providing accessible anti-corruption and integrity training for organisations. Enables scalable, trackable compliance training across large workforces and supports continuous learning and certification.",
+                },
+              ].map((service, index) => (
+                <Card key={index} className="border-blue-200/60 shadow-sm hover:shadow-md transition-shadow bg-background">
+                  <CardHeader>
+                    <div className="mb-3"><BookOpen className="w-5 h-5 text-blue-600" /></div>
+                    <CardTitle className="font-heading text-base text-primary leading-snug">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed text-sm">{service.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Category 3: Technology Solutions */}
+          <div className="mb-14">
+            <div className="flex items-center gap-2 mb-6">
+              <Cpu className="w-5 h-5 text-blue-600" />
+              <h3 className="font-heading text-xl font-bold text-foreground">Advanced Compliance Technology</h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "Corporate Integrity Compliance Framework (CICF)",
+                  description: "A comprehensive GRC technology tool supporting Compliance teams and Internal Audit departments. Evaluates the effectiveness of anti-corruption compliance programmes, monitors adherence to adequate corruption prevention procedures, and provides dashboard reporting for boards and senior management.",
+                },
+                {
+                  title: "ETIKALY — Compliance Intelligence Platform",
+                  description: "VisionEthics' proprietary advanced compliance intelligence and reporting platform. Provides real-time insights, analytics, and dashboard reporting to support governance decision-making and enhance organisational integrity management.",
+                },
+              ].map((service, index) => (
+                <Card key={index} className="border-blue-200/60 shadow-sm hover:shadow-md transition-shadow bg-background">
+                  <CardHeader>
+                    <div className="mb-3"><Cpu className="w-5 h-5 text-blue-600" /></div>
+                    <CardTitle className="font-heading text-base text-primary leading-snug">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed text-sm">{service.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Category 4: Community & ESG */}
+          <div>
+            <div className="flex items-center gap-2 mb-6">
+              <Globe2 className="w-5 h-5 text-blue-600" />
+              <h3 className="font-heading text-xl font-bold text-foreground">Community Integrity & ESG</h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "Community Integrity Building (CIB) & Collective Action",
+                  description: "Fosters a collaborative approach to integrity and transparency within communities and organisations. Champions community integrity building and collective action, providing governance software tools that enable precise dashboard reporting with real-time insights and analytics.",
+                },
+                {
+                  title: "Sustainability Building & ESG Principles",
+                  description: "Helps organisations integrate sustainable practices into their operations, promoting Environmental, Social, and Governance (ESG) principles to drive ethical excellence across all spheres of business activity.",
+                },
+              ].map((service, index) => (
+                <Card key={index} className="border-blue-200/60 shadow-sm hover:shadow-md transition-shadow bg-background">
+                  <CardHeader>
+                    <div className="mb-3"><Globe2 className="w-5 h-5 text-blue-600" /></div>
+                    <CardTitle className="font-heading text-base text-primary leading-snug">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed text-sm">{service.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA strip */}
+          <div className="mt-14 p-8 bg-blue-600/5 border border-blue-200/60 rounded-none flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <p className="font-heading font-bold text-foreground text-lg">Interested in Integrity & Anti-Corruption services?</p>
+              <p className="text-muted-foreground text-sm mt-1">These services are delivered in partnership with VisionEthics. Contact us to discuss your organisation's needs.</p>
+            </div>
+            <div className="flex gap-3 flex-shrink-0">
+              <a
+                href="/contact"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold text-sm hover:bg-primary/90 transition-colors"
+              >
+                Contact Us
+              </a>
+              <a
+                href="https://visionethics.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 font-bold text-sm hover:bg-blue-600 hover:text-white transition-colors"
+              >
+                Visit VisionEthics <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
       </section>

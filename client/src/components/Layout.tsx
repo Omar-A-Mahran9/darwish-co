@@ -22,6 +22,7 @@ const navItems: NavItem[] = [
       { name: "Human Resources", path: "/services#hr" },
       { name: "Business Development", path: "/services#bizdev" },
       { name: "Strategy & Performance System", path: "/services#strategy" },
+      { name: "Integrity & Anti-Corruption", path: "/services#integrity" },
     ],
   },
   {
