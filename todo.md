@@ -101,3 +101,8 @@
 - [x] Research all VisionEthics services from their website (14 services across 4 categories)
 - [x] Add VisionEthics services as a new section on the Services page (id="integrity")
 - [x] Add Integrity & Anti-Corruption link to Services dropdown in navigation
+
+## Services Page — Remove Malaysia-Specific Legal References
+
+- [x] Remove S17A MACC Act, MACC Adequate Procedures, NACP, GIACC references from all VisionEthics service descriptions
+- [x] Rewrite affected descriptions to be universally applicable

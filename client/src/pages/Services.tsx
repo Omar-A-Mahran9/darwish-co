@@ -238,15 +238,15 @@ export default function Services() {
                 },
                 {
                   title: "Organisational Anti-Corruption Plan (OACP)",
-                  description: "Structured plan helping organisations systematically address corruption risks at the organisational level. Aligns with MACC Adequate Procedures and Malaysia's National Anti-Corruption Plan (NACP). Covers governance structures, risk identification, policy development, and monitoring frameworks.",
+                  description: "A structured plan helping organisations systematically address corruption risks at the organisational level. Covers governance structures, risk identification, policy development, and monitoring frameworks — aligned with internationally recognised anti-corruption standards and best practices.",
                 },
                 {
-                  title: "Corporate Liability Provisions — S17A MACC Act",
-                  description: "Advisory on Malaysia's Corporate Liability Provision under Section 17A of the MACC Act 2009. Helps organisations understand legal obligations, implement adequate procedures, and defend against corporate liability. Covers board responsibilities, compliance programme design, and evidence of top-management commitment.",
+                  title: "Corporate Liability & Adequate Procedures Advisory",
+                  description: "Advisory on corporate liability obligations under applicable anti-corruption legislation. Helps organisations understand their legal responsibilities, implement adequate procedures, and build a defensible compliance programme. Covers board responsibilities, compliance design, and evidence of top-management commitment.",
                 },
                 {
                   title: "Adequate Procedures & Gap Analysis",
-                  description: "Assessment and gap analysis of an organisation's existing anti-corruption controls against the MACC Adequate Procedures Guidelines. Identifies weaknesses, prioritises remediation actions, and provides a roadmap to full compliance.",
+                  description: "Assessment and gap analysis of an organisation's existing anti-corruption controls against internationally recognised adequate procedures guidelines. Identifies weaknesses, prioritises remediation actions, and provides a clear roadmap to full compliance.",
                 },
                 {
                   title: "Anti-Corruption Policies & Procedures — Monitoring and Evaluation",
