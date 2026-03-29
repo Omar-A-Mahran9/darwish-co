@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Users, Linkedin, Mail, Briefcase, Search } from "lucide-react";
+import { Users, Linkedin, Mail, Briefcase, Search, Globe, Award } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 type Partner = {
   id: number;
@@ -10,69 +11,121 @@ type Partner = {
   bio: string | null;
   email: string | null;
   linkedin: string | null;
+  website: string | null;
   photoUrl: string | null;
+  certifications: string[];
   displayOrder: number;
   isVisible: boolean;
   createdAt: number;
 };
 
-// Placeholder data shown while the database is empty
-const PLACEHOLDER_PARTNERS: Partner[] = [
+// Verified real consultants — sourced from official CVs and company profiles
+const VERIFIED_PARTNERS: Partner[] = [
   {
     id: 1,
-    name: "Ahmed Darwish",
-    title: "Managing Partner",
-    specialisation: "GRC & Business Development",
-    bio: "Over 15 years of experience guiding SMEs across the MENA region in governance, risk management, and strategic growth.",
-    email: "info@darwish-co.com",
-    linkedin: null,
+    name: "Fouad Ismail Fouad Darwish",
+    title: "Managing Partner — Political & Strategic Consultant",
+    specialisation: "Anti-Corruption, Governance & Peacebuilding",
+    bio: "Political and strategic consultant with over 20 years of experience at the intersection of anti-corruption policy, governance reform, and international relations. Former Director of the Research Centre for the Prevention and Combating of Corruption (CRSPCC) at the Egyptian Academy for Anti-Corruption, and former Director-General of Human Resources & Institutional Development at the Egyptian Space Agency (EgSA). Served for 15 years with Egypt's Administrative Control Authority (ACA) across roles in international cooperation, data analytics, and forensic investigation. Holds an MA in Political Science from Cairo University (thesis: corruption as a foreign policy variable — Ukraine case study), with a PhD in Political Science currently in progress. Published researcher and speaker on national anti-corruption strategy, forensic investigation, and public sector ethics. Deputy Editor of the Journal of Governance for the Prevention and Combating of Corruption (JGPCC).",
+    email: "fouadarwish@gmail.com",
+    linkedin: "https://linkedin.com/in/fouadarwish",
+    website: null,
     photoUrl: null,
+    certifications: [
+      "PMP — Arab Academy for Science, Technology & Maritime Transport",
+      "Certificate of Data Analysis for Business — IMP (Excel & Power BI, 40hrs)",
+      "Digital Technologies in Anti-Corruption Policy — UNDP (2025)",
+      "Anti-Corruption Programme — ENA France (2018)",
+      "Corruption Risk Management — MACA Malaysia (2015)",
+      "Advanced Cybercrime Investigations — UNODC (2015)",
+    ],
     displayOrder: 0,
     isVisible: true,
     createdAt: 0,
   },
   {
     id: 2,
-    name: "Senior HR Consultant",
-    title: "HR & Talent Acquisition Lead",
-    specialisation: "Human Resources & Organisational Design",
-    bio: "Specialist in building people-first organisations, with deep expertise in MENA labour law, talent acquisition, and performance management frameworks.",
-    email: null,
-    linkedin: null,
+    name: "Sherin Hamouda Ibrahim",
+    title: "Senior Consultant — Project Management & Quality",
+    specialisation: "Project Management, IT & Construction",
+    bio: "Senior project manager and strategic leader with over 26 years of experience spanning Information Technology and the Construction industry. Most recently served as Senior Project Lead at MetLife Egypt (2013–2025), managing complex multi-phase IT and business transformation projects. Previously Quality Control & QA Manager and Deputy Projects Manager at Talent Engineering Company (Egypt & UAE), where she led the company's ISO 9001:2008 certification programme as Management Representative. Holds an MBA in Globalisation & International Business from Maastricht School of Management (Netherlands), a BSc in Civil Engineering from Mansoura University, and a PMP® certification from PMI (USA). Also holds ASCE Certified Construction Project Manager (CPM), Professional Certified Trainer (PCT), and SAFe® 6 Scrum Master (SSM) credentials. Nominated by MetLife senior management to represent Egypt at the EMEA Emerging Women Leaders' Summit (Warsaw, 2016) and the EMEA Leadership & Innovation Summit (Lisbon, 2014).",
+    email: "Sherin.Teg@gmail.com",
+    linkedin: "https://www.linkedin.com/in/sherin-hamouda",
+    website: null,
     photoUrl: null,
+    certifications: [
+      "PMP® — Project Management Institute, USA (#1728179)",
+      "SAFe® 6 Scrum Master (SSM) — Scaled Agile, USA (2024)",
+      "ASCE Certified Construction Project Manager (CPM) — AUC",
+      "Professional Certified Trainer (PCT) — AUC",
+      "ISO 9001 Lead Auditor — IRCA (Ref. A17497)",
+    ],
     displayOrder: 1,
     isVisible: true,
     createdAt: 0,
   },
   {
     id: 3,
-    name: "Strategy Consultant",
-    title: "Strategy & Performance Advisor",
-    specialisation: "Strategy & Performance Management",
-    bio: "Certified strategy professional helping SMEs translate vision into measurable outcomes through OKRs, KPIs, and balanced scorecards.",
-    email: null,
+    name: "Teh Chau Chin",
+    title: "Principal Consultant — Anti-Corruption & Risk Advisory",
+    specialisation: "GRC, Anti-Bribery & Enterprise Risk Management",
+    bio: "Principal Consultant and co-founder of VisionEthics Advisory Services Sdn Bhd (Malaysia), with over 25 years of experience in financial and internal audits, enterprise risk management, and governance, risk & compliance (GRC) advisory. Former Executive Director at KPMG Bangkok and Associate Director at KPMG Malaysia (Risk Advisory & Compliance Services). Served as Chief Risk Officer of a public listed company in Malaysia. Completed a 2-year Contract for Service with the Malaysian Anti-Corruption Commission (MACC), where he was one of three core team members who developed the Corruption Risk Management (CRM) methodology — later adopted as Malaysian Standard MS 2764:2022. Represented MACC in the Jabatan Standard Malaysia working group that made the CRM methodology an international standard. Certified HRDF Trainer and qualified Chartered Accountant (MIA). Works closely with Boards and senior management on ISO 37001 Anti-Bribery Management Systems, Adequate Procedures (S17A MACC Act), OACP development, and ERM frameworks.",
+    email: "chauchin.teh@visionethics.com",
     linkedin: null,
+    website: "https://visionethics.com",
     photoUrl: null,
+    certifications: [
+      "Chartered Accountant — Malaysian Institute of Accountants (MIA)",
+      "Certified HRDF Trainer — HRD Corporation Malaysia",
+      "ISO 37001 ABMS Specialist",
+      "MS 2764:2022 CRM — Co-developer (MACC / Jabatan Standard Malaysia)",
+    ],
     displayOrder: 2,
     isVisible: true,
     createdAt: 0,
   },
 ];
 
+function CertBadge({ text }: { text: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-xs bg-primary/5 text-primary border border-primary/20 px-2 py-0.5 font-medium">
+      <Award className="w-3 h-3 flex-shrink-0" />
+      {text}
+    </span>
+  );
+}
+
 function PartnerCard({ partner }: { partner: Partner }) {
+  const [showCerts, setShowCerts] = useState(false);
+
   const initials = partner.name
     .split(" ")
+    .filter((w) => /^[A-Za-z\u0600-\u06FF]/.test(w))
     .map((w) => w[0])
     .slice(0, 2)
     .join("")
     .toUpperCase();
 
-  return (
-    <div className="group bg-white border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300">
-      {/* Top accent */}
-      <div className="h-1 w-full bg-primary group-hover:bg-chart-2 transition-colors duration-300" />
+  const isFirst = partner.displayOrder === 0;
 
-      <div className="p-6 space-y-4">
+  return (
+    <div
+      className={cn(
+        "group bg-white border hover:shadow-xl transition-all duration-300 flex flex-col",
+        isFirst
+          ? "border-primary/50 shadow-md ring-1 ring-primary/20"
+          : "border-border hover:border-primary/30"
+      )}
+    >
+      {/* Top accent */}
+      <div
+        className={cn(
+          "h-1.5 w-full transition-colors duration-300",
+          isFirst ? "bg-primary" : "bg-muted group-hover:bg-primary/60"
+        )}
+      />
+
+      <div className="p-6 space-y-4 flex flex-col flex-1">
         {/* Avatar + Name */}
         <div className="flex items-start gap-4">
           {partner.photoUrl ? (
@@ -82,15 +135,36 @@ function PartnerCard({ partner }: { partner: Partner }) {
               className="w-16 h-16 rounded-full object-cover border-2 border-border flex-shrink-0"
             />
           ) : (
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 border-2 border-primary/20">
-              <span className="text-primary font-bold text-lg font-heading">{initials}</span>
+            <div
+              className={cn(
+                "w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 border-2 font-bold text-lg font-heading",
+                isFirst
+                  ? "bg-primary text-white border-primary"
+                  : "bg-primary/10 text-primary border-primary/20"
+              )}
+            >
+              {initials}
             </div>
           )}
-          <div className="min-w-0">
-            <h3 className="font-heading font-bold text-foreground text-lg leading-tight">
-              {partner.name}
-            </h3>
-            <p className="text-primary text-sm font-semibold mt-0.5">{partner.title}</p>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="font-heading font-bold text-foreground text-lg leading-tight">
+                {partner.name}
+              </h3>
+              {isFirst && (
+                <span className="flex-shrink-0 text-xs font-bold bg-primary text-white px-2 py-0.5 uppercase tracking-wide">
+                  Managing Partner
+                </span>
+              )}
+            </div>
+            <p
+              className={cn(
+                "text-sm font-semibold mt-0.5",
+                isFirst ? "text-primary" : "text-primary/80"
+              )}
+            >
+              {partner.title}
+            </p>
             {partner.specialisation && (
               <div className="flex items-center gap-1.5 mt-1.5">
                 <Briefcase className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
@@ -102,36 +176,66 @@ function PartnerCard({ partner }: { partner: Partner }) {
 
         {/* Bio */}
         {partner.bio && (
-          <p className="text-sm text-muted-foreground leading-relaxed border-t border-border pt-4">
+          <p className="text-sm text-muted-foreground leading-relaxed border-t border-border pt-4 flex-1">
             {partner.bio}
           </p>
         )}
 
-        {/* Contact Links */}
-        {(partner.email || partner.linkedin) && (
-          <div className="flex items-center gap-3 pt-2 border-t border-border">
-            {partner.email && (
-              <a
-                href={`mailto:${partner.email}`}
-                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Mail className="w-3.5 h-3.5" />
-                <span>Email</span>
-              </a>
-            )}
-            {partner.linkedin && (
-              <a
-                href={partner.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Linkedin className="w-3.5 h-3.5" />
-                <span>LinkedIn</span>
-              </a>
+        {/* Certifications toggle */}
+        {partner.certifications.length > 0 && (
+          <div className="border-t border-border pt-3 space-y-2">
+            <button
+              onClick={() => setShowCerts(!showCerts)}
+              className="text-xs font-semibold text-primary hover:underline transition-colors"
+            >
+              {showCerts
+                ? "Hide certifications ▲"
+                : `View ${partner.certifications.length} certifications ▼`}
+            </button>
+            {showCerts && (
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {partner.certifications.map((cert) => (
+                  <CertBadge key={cert} text={cert} />
+                ))}
+              </div>
             )}
           </div>
         )}
+
+        {/* Contact Links */}
+        <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-border">
+          {partner.email && (
+            <a
+              href={`mailto:${partner.email}`}
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Mail className="w-3.5 h-3.5" />
+              <span>Email</span>
+            </a>
+          )}
+          {partner.linkedin && (
+            <a
+              href={partner.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Linkedin className="w-3.5 h-3.5" />
+              <span>LinkedIn</span>
+            </a>
+          )}
+          {partner.website && (
+            <a
+              href={partner.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>Website</span>
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -149,11 +253,10 @@ export default function Partners() {
         if (json.success && json.data.length > 0) {
           setPartners(json.data);
         } else {
-          // Show placeholder cards when DB is empty
-          setPartners(PLACEHOLDER_PARTNERS);
+          setPartners(VERIFIED_PARTNERS);
         }
       })
-      .catch(() => setPartners(PLACEHOLDER_PARTNERS))
+      .catch(() => setPartners(VERIFIED_PARTNERS))
       .finally(() => setLoading(false));
   }, []);
 
@@ -186,7 +289,7 @@ export default function Partners() {
             <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
               The professionals behind Darwish & Co. — a curated network of senior consultants,
               subject-matter experts, and strategic advisors committed to delivering results across
-              the MENA region.
+              the MENA region and beyond.
             </p>
           </div>
         </div>

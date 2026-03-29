@@ -86,6 +86,7 @@
 
 ## New Consultants Addition
 
-- [ ] Extract Sherin Hamouda Ibrahim data from CV PDF
-- [ ] Extract Teh Chau Chin data from VisionEthics profile PDF
-- [ ] Add both consultants to Partners page with verified data
+- [x] Extract Sherin Hamouda Ibrahim data from CV PDF
+- [x] Extract Teh Chau Chin data from VisionEthics profile PDF
+- [x] Add both consultants to Partners page with verified data
+- [x] Extract Fouad's data from CV and add as first entry in Partners page
