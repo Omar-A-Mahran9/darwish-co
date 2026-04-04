@@ -106,3 +106,9 @@
 
 - [x] Remove S17A MACC Act, MACC Adequate Procedures, NACP, GIACC references from all VisionEthics service descriptions
 - [x] Rewrite affected descriptions to be universally applicable
+
+## Partner Logos Banner
+
+- [x] Download logos for VisionEthics, WideBot, Techno-Management from their websites
+- [x] Upload logos to CDN
+- [x] Add partner logos banner section to homepage (below hero, above value proposition)

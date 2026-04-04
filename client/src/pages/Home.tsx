@@ -61,6 +61,62 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Partner Logos Banner */}
+      <section className="py-10 bg-gray-50 border-y border-gray-100">
+        <div className="container">
+          <p className="text-center text-xs font-bold tracking-widest uppercase text-muted-foreground mb-8">Trusted Partners & Alliances</p>
+          <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
+            {/* VisionEthics */}
+            <a
+              href="https://visionethics.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
+              title="VisionEthics — Integrity & Anti-Corruption Advisory"
+            >
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp"
+                alt="VisionEthics"
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            {/* WideBot */}
+            <a
+              href="https://widebot.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
+              title="WideBot — Arabic AI Platform"
+            >
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp"
+                alt="WideBot AI"
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            {/* Techno-Management */}
+            <a
+              href="https://techno-management.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
+              title="Techno-Management — Strategy & Performance Management"
+            >
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp"
+                alt="Techno-Management"
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/corporate-partners">
+              <span className="text-xs font-bold text-primary hover:underline cursor-pointer tracking-wide uppercase">View All Partners →</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Value Proposition Section - White with High Contrast */}
       <section className="py-32 bg-white">
         <div className="container">
