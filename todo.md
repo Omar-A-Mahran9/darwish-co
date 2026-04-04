@@ -127,3 +127,9 @@
 
 - [x] Upload official Keheilan logo to CDN
 - [x] Replace old screenshot logo URL in Home.tsx and CorporatePartners.tsx
+
+## Training Portal
+
+- [x] Research shared Manus task for training functions and course content
+- [x] Build Training Portal page (/training) with 14 courses across 6 categories
+- [x] Add Training Academy to Services navigation dropdown and footer

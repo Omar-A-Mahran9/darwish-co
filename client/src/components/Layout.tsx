@@ -23,6 +23,7 @@ const navItems: NavItem[] = [
       { name: "Business Development", path: "/services#bizdev" },
       { name: "Strategy & Performance System", path: "/services#strategy" },
       { name: "Integrity & Anti-Corruption", path: "/services#integrity" },
+      { name: "Training Academy", path: "/training" },
     ],
   },
   {
@@ -291,6 +292,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <li><Link href="/services#hr"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Human Resources</span></Link></li>
               <li><Link href="/services#bizdev"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Business Development</span></Link></li>
               <li><Link href="/services#strategy"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Strategy & Performance</span></Link></li>
+              <li><Link href="/services#integrity"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Integrity & Anti-Corruption</span></Link></li>
+              <li><Link href="/training"><span className="cursor-pointer hover:text-primary hover:underline transition-colors font-medium">Training Academy</span></Link></li>
             </ul>
           </div>
 
