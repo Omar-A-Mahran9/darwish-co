@@ -112,3 +112,13 @@
 - [x] Download logos for VisionEthics, WideBot, Techno-Management from their websites
 - [x] Upload logos to CDN
 - [x] Add partner logos banner section to homepage (below hero, above value proposition)
+
+## Keheilan & New Consultants
+
+- [x] Extract Ahmed Barakat CV data
+- [x] Extract Ahmed Mohamed GRC CV data
+- [x] Research Keheilan (keheilan.com) — hedge fund & venture capital
+- [x] Add Ahmed Barakat to Partners page
+- [x] Add Ahmed Mohamed to Partners page
+- [x] Add Keheilan to Corporate Partners page
+- [x] Add Keheilan logo to homepage partner banner

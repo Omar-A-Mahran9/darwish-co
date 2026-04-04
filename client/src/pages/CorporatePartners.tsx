@@ -101,6 +101,19 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
   },
   {
     id: 4,
+    name: "Keheilan Asset Management",
+    type: "partner",
+    description:
+      "A diversified investment and asset management firm dedicated to delivering sophisticated investment solutions aligned with global trends. Services span Hedge Funds (broad market exposure, stable long-term returns), Venture Capital (funding innovative startups from seed stage to market leader), and Venture Building (active startup development with resources, mentorship, and strategic guidance). Advisory services cater to corporations, family offices, high-net-worth individuals, fund managers, and policymakers — providing strategic guidance for corporate venture programmes, tailored investment advice, and policy advisory for sustainable economic growth.",
+    website: "https://www.keheilan.com",
+    logoUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-logo_b3f9196f.webp",
+    country: "International",
+    displayOrder: 3,
+    isVisible: true,
+    createdAt: 0,
+  },
+  {
+    id: 5,
     name: "Hebei Provincial Government — Industrial Cooperation",
     type: "affiliation",
     description:
@@ -108,7 +121,7 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
     website: null,
     logoUrl: null,
     country: "China",
-    displayOrder: 3,
+    displayOrder: 4,
     isVisible: true,
     createdAt: 0,
   },
@@ -128,6 +141,9 @@ const PARTNER_CONTACTS: Record<string, { phone?: string; email?: string; address
   },
   "Techno-Management": {
     address: "Egypt",
+  },
+  "Keheilan Asset Management": {
+    email: "info@keheilan.com",
   },
 };
 

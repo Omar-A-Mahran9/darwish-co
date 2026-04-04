@@ -108,6 +108,20 @@ export default function Home() {
                 className="h-10 w-auto object-contain"
               />
             </a>
+            {/* Keheilan */}
+            <a
+              href="https://www.keheilan.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
+              title="Keheilan Asset Management — Hedge Fund & Venture Capital"
+            >
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-logo_b3f9196f.webp"
+                alt="Keheilan Asset Management"
+                className="h-10 w-auto object-contain"
+              />
+            </a>
           </div>
           <div className="text-center mt-8">
             <Link href="/corporate-partners">
