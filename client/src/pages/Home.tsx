@@ -117,7 +117,7 @@ export default function Home() {
               title="Keheilan Asset Management — Hedge Fund & Venture Capital"
             >
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-logo_b3f9196f.webp"
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png"
                 alt="Keheilan Asset Management"
                 className="h-10 w-auto object-contain"
               />

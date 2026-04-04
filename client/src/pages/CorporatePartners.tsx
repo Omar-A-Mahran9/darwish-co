@@ -106,7 +106,7 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
     description:
       "A diversified investment and asset management firm dedicated to delivering sophisticated investment solutions aligned with global trends. Services span Hedge Funds (broad market exposure, stable long-term returns), Venture Capital (funding innovative startups from seed stage to market leader), and Venture Building (active startup development with resources, mentorship, and strategic guidance). Advisory services cater to corporations, family offices, high-net-worth individuals, fund managers, and policymakers — providing strategic guidance for corporate venture programmes, tailored investment advice, and policy advisory for sustainable economic growth.",
     website: "https://www.keheilan.com",
-    logoUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-logo_b3f9196f.webp",
+    logoUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png",
     country: "International",
     displayOrder: 3,
     isVisible: true,

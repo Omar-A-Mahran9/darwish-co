@@ -122,3 +122,8 @@
 - [x] Add Ahmed Mohamed to Partners page
 - [x] Add Keheilan to Corporate Partners page
 - [x] Add Keheilan logo to homepage partner banner
+
+## Keheilan Logo Update
+
+- [x] Upload official Keheilan logo to CDN
+- [x] Replace old screenshot logo URL in Home.tsx and CorporatePartners.tsx
