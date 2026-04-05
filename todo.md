@@ -133,3 +133,11 @@
 - [x] Research shared Manus task for training functions and course content
 - [x] Build Training Portal page (/training) with 14 courses across 6 categories
 - [x] Add Training Academy to Services navigation dropdown and footer
+
+## Fouad Certifications Update
+
+- [ ] Replace placeholder certifications in Fouad's Partners profile with 12 verified credentials across 4 categories
+
+## Ahmed Tharwat Certifications Update
+
+- [x] Replace placeholder certifications in Ahmed Mohamed (Ahmed Tharwat)'s Partners profile with 12 verified credentials across 4 categories

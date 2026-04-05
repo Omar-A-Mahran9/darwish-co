@@ -107,21 +107,30 @@ const VERIFIED_PARTNERS: Partner[] = [
   {
     id: 5,
     name: "Ahmed Mohamed",
-    title: "Executive GRC & Financial Crime Advisor — Sovereign Governance Architect",
-    specialisation: "Enterprise Risk Management, Financial Crime & Anti-Corruption",
-    bio: "Sovereign Governance Architect and Strategic Risk Advisor with over 25 years of elite, multi-jurisdictional leadership specialising in Enterprise Risk Management (ERM), Financial Crime Mitigation, and National Security Resilience. Currently Head of Fraud Prevention & Investigation at BankNXT, Cairo. Former Lieutenant Colonel at Egypt's Administrative Control Authority (ACA), where he led complex national and transnational financial crime and anti-corruption investigations in collaboration with UNODC and ICPO–INTERPOL. Established the first integrated Risk & Crisis Management Unit at the Egyptian Ministry of Electricity and Renewable Energy, training 14 staff into sector-leading experts. Holds expertise in COSO ERM, ISO 31000, ISO 22301, UNCAC, Basel III/IV, and Lean Six Sigma (DMAIC/DMADV). TOT-certified executive trainer who has trained over 200 key employees. Delivered measurable impact: 20% reduction in fraud incidents and 15% reduction in operational losses through predictive analytics strategy realignment.",
+    title: "Principal Advisor — Executive GRC, Financial Crime & Sovereign Governance",
+    specialisation: "Enterprise Risk Management, Business Modeling & Anti-Corruption",
+    bio: "Sovereign Governance Architect and Strategic Risk Advisor with over 25 years of elite, multi-jurisdictional leadership spanning Enterprise Risk Management (ERM), Financial Crime Mitigation, Anti-Corruption Enforcement, and Institutional Transformation. He brings deep operational authority in Enterprise Fraud Risk Management (EFRM) within the banking sector, having architected enterprise fraud prevention frameworks, directed forensic investigations, and led high-stakes structural interventions across major financial institutions. A former Lieutenant Colonel at Egypt's Administrative Control Authority (ACA), he directed complex transnational financial crime investigations in direct collaboration with UNODC and ICPO–INTERPOL. During his tenure, he authored institutional architecture blueprints that drove the restructuring and merger of key government ministries. He subsequently pioneered the first integrated Risk & Crisis Management Unit at the Egyptian Ministry of Electricity and Renewable Energy, authoring ten foundational institutional guides—covering Strategy, ERM, Crisis Management, and Process Optimization—and training a specialized cohort into sector-leading experts. He holds practitioner-level mastery of COSO ERM, ISO 31000, ISO 22301, UNCAC, Basel III/IV, the Sendai Framework, and Lean Six Sigma (DMAIC/DMADV). Crucially, this technical rigor is complemented by advanced executive education in Business Management, Business Modeling, and CEO-level strategy. This dual proficiency allows him to align stringent sovereign de-risking and Public-Private Partnership (PPP) integrity assurance with sustainable commercial growth. A TOT-certified executive trainer, his operational background includes investigative leadership during high-profile national security events, underpinning a career defined by building resilience in the face of complex, systemic threats.",
     email: null,
     linkedin: "https://www.linkedin.com/in/ahmed-mohamed-executive-grc-financial-crime-advisor/",
     website: null,
     photoUrl: null,
     certifications: [
-      "Lean Six Sigma Yellow Belt — CSSC / OpexLeader.com",
-      "Lean Six Sigma White Belt — CSSC / OpexLeader.com",
-      "TOT Certified — Leadership Development Centre / EEHC",
+      // Executive GRC & Sovereign Resilience
+      "Diploma in Enterprise Risk Management (ERM) — Bespoke Learning Solutions",
       "Executive Training on Good Governance & Digitalization — Hertie School, Germany",
+      "Directors of Ministries Crisis Management Certification — Nasser Higher Military Academy",
+      "Advanced Anti-Corruption Certification — UNODC",
+      // Financial Crime & Forensic Investigation
+      "Financial Investigation Methods Certification — French Interior Ministry",
       "Corruption Risk Management Workshop — Malaysian Anti-Corruption Academy (MACA)",
-      "Advanced Anti-Corruption — UNODC",
-      "Bachelor of Law and Police Sciences — Police College, Cairo (2000)",
+      // Executive Strategy & Business Modeling
+      "Executive Diploma: CEO Program — MTF Institute of Management, Technology and Finance",
+      "Executive Diploma in Business Management — MTF Institute of Management, Technology and Finance",
+      "Professional Diploma in Business Models Development — MTF Institute of Management, Technology and Finance",
+      // Operational Excellence & Capacity Building
+      "Lean Six Sigma Green Belt — OPEXLEADER",
+      "Lean Six Sigma Yellow Belt — Council for Six Sigma Certification (CSSC)",
+      "Certified Training of Trainers (TOT) — Leadership Development Centre / EEHC",
     ],
     displayOrder: 4,
     isVisible: true,
