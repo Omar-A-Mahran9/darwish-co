@@ -141,3 +141,9 @@
 ## Ahmed Tharwat Certifications Update
 
 - [x] Replace placeholder certifications in Ahmed Mohamed (Ahmed Tharwat)'s Partners profile with 12 verified credentials across 4 categories
+
+## New Consultants — Dr. Amr Fouad & Mohamed Abdel Sattar
+
+- [x] Extract Dr. Amr Fouad CV data from PDF
+- [x] Extract Mohamed Abdel Sattar CV data from PDF
+- [x] Add both to Partners page with verified data
