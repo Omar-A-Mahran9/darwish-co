@@ -165,11 +165,7 @@ export default function Services() {
               <p className="text-muted-foreground">Strategic digital presence, content creation, and AI-driven marketing for MENA businesses.</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 mb-10">
-            <span className="text-xs font-bold bg-chart-3/10 text-chart-3 border border-chart-3/30 px-3 py-1 rounded-full uppercase tracking-wide">
-              In partnership with Mohamed Abdelsattar — Strategic Media & Technical Operations Consultant
-            </span>
-          </div>
+
 
           {/* Service grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-10">
@@ -177,7 +173,7 @@ export default function Services() {
               {
                 icon: <Globe2 className="w-6 h-6 text-chart-3" />,
                 title: "Digital Strategy & Brand Development",
-                description: "Crafting comprehensive digital strategies that align your brand identity with target audiences across Egyptian and Gulf markets. Includes brand positioning, visual identity direction, and multi-platform content architecture.",
+                description: "Crafting comprehensive digital strategies that align your brand identity with target audiences across Egyptian, Gulf markets, MENA and African markets. Includes brand positioning, visual identity direction, and multi-platform content architecture.",
               },
               {
                 icon: <BarChart3 className="w-6 h-6 text-chart-3" />,
