@@ -152,3 +152,8 @@
 
 - [x] Add Digital Marketing section to Services page (id="digital-marketing") using Abdelsattar's expertise
 - [x] Add Digital Marketing link to Services dropdown in navigation
+
+## Digital Marketing — Subtitle & Homepage Teaser
+
+- [x] Update Digital Marketing section subtitle to include Egyptian, Gulf, MENA and African markets
+- [x] Add Digital Marketing teaser section to homepage (3 cards: Strategy, AI Content, Social Media)

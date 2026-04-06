@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, CheckCircle2, Shield, Users, TrendingUp, Brain, Globe, ExternalLink } from "lucide-react";
+import { ArrowRight, CheckCircle2, Shield, Users, TrendingUp, Brain, Globe, ExternalLink, Megaphone, Cpu, BarChart3 } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Home() {
@@ -421,6 +421,78 @@ export default function Home() {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* Digital Marketing Teaser Section */}
+      <section className="py-24 bg-white">
+        <div className="container">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+            <div className="space-y-3">
+              <span className="text-xs font-bold uppercase tracking-widest text-chart-3">New Service</span>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground leading-tight">
+                Digital Marketing & AI Content
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-xl">
+                Strategic digital presence, AI-driven content production, and social media growth for Egyptian, Gulf, MENA and African businesses.
+              </p>
+            </div>
+            <Link href="/services#digital-marketing">
+              <span className="flex items-center gap-2 text-chart-3 font-bold text-sm hover:underline cursor-pointer whitespace-nowrap">
+                Explore services <ArrowRight className="w-4 h-4" />
+              </span>
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Card 1 */}
+            <div className="group border border-border/50 hover:border-chart-3/50 transition-all duration-300 bg-white p-8 space-y-4">
+              <div className="w-12 h-12 rounded-full bg-chart-3/10 flex items-center justify-center">
+                <Megaphone className="w-6 h-6 text-chart-3" />
+              </div>
+              <h3 className="font-heading text-xl font-bold text-foreground">Digital Strategy & Brand Development</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Brand positioning, visual identity direction, and multi-platform content architecture tailored for MENA and African markets.
+              </p>
+              <Link href="/services#digital-marketing">
+                <span className="inline-flex items-center gap-2 text-chart-3 font-bold text-sm hover:underline cursor-pointer group-hover:gap-3 transition-all">
+                  Learn more <ArrowRight className="w-4 h-4" />
+                </span>
+              </Link>
+            </div>
+
+            {/* Card 2 */}
+            <div className="group border border-border/50 hover:border-chart-3/50 transition-all duration-300 bg-white p-8 space-y-4">
+              <div className="w-12 h-12 rounded-full bg-chart-3/10 flex items-center justify-center">
+                <Cpu className="w-6 h-6 text-chart-3" />
+              </div>
+              <h3 className="font-heading text-xl font-bold text-foreground">Generative AI Content Production</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                AI-driven imagery, video production, motion graphics, and automated content workflows that reduce cost while elevating quality.
+              </p>
+              <Link href="/services#digital-marketing">
+                <span className="inline-flex items-center gap-2 text-chart-3 font-bold text-sm hover:underline cursor-pointer group-hover:gap-3 transition-all">
+                  Learn more <ArrowRight className="w-4 h-4" />
+                </span>
+              </Link>
+            </div>
+
+            {/* Card 3 */}
+            <div className="group border border-border/50 hover:border-chart-3/50 transition-all duration-300 bg-white p-8 space-y-4">
+              <div className="w-12 h-12 rounded-full bg-chart-3/10 flex items-center justify-center">
+                <BarChart3 className="w-6 h-6 text-chart-3" />
+              </div>
+              <h3 className="font-heading text-xl font-bold text-foreground">Social Media Management & Growth</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                End-to-end management of Meta, LinkedIn, TikTok, and YouTube with data-driven content calendars and performance analytics.
+              </p>
+              <Link href="/services#digital-marketing">
+                <span className="inline-flex items-center gap-2 text-chart-3 font-bold text-sm hover:underline cursor-pointer group-hover:gap-3 transition-all">
+                  Learn more <ArrowRight className="w-4 h-4" />
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

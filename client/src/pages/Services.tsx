@@ -162,7 +162,7 @@ export default function Services() {
             </div>
             <div>
               <h2 className="font-heading text-3xl font-bold text-primary">Digital Marketing</h2>
-              <p className="text-muted-foreground">Strategic digital presence, content creation, and AI-driven marketing for MENA businesses.</p>
+              <p className="text-muted-foreground">Strategic digital presence, content creation, and AI-driven marketing for Egyptian, Gulf, MENA and African businesses.</p>
             </div>
           </div>
 
