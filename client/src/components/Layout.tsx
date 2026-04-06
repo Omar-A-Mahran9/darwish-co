@@ -21,6 +21,7 @@ const navItems: NavItem[] = [
       { name: "Governance & Risk (GRC)", path: "/services#grc" },
       { name: "Human Resources", path: "/services#hr" },
       { name: "Business Development", path: "/services#bizdev" },
+      { name: "Digital Marketing", path: "/services#digital-marketing" },
       { name: "Strategy & Performance System", path: "/services#strategy" },
       { name: "Integrity & Anti-Corruption", path: "/services#integrity" },
       { name: "Training Academy", path: "/training" },

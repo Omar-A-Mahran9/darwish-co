@@ -153,8 +153,90 @@ export default function Services() {
         </div>
       </section>
 
+      {/* Digital Marketing Section */}
+      <section id="digital-marketing" className="py-20 bg-muted/30" style={{ scrollMarginTop: '5rem' }}>
+        <div className="container">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-chart-3/10 rounded-xl">
+              <Globe2 className="w-8 h-8 text-chart-3" />
+            </div>
+            <div>
+              <h2 className="font-heading text-3xl font-bold text-primary">Digital Marketing</h2>
+              <p className="text-muted-foreground">Strategic digital presence, content creation, and AI-driven marketing for MENA businesses.</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 mb-10">
+            <span className="text-xs font-bold bg-chart-3/10 text-chart-3 border border-chart-3/30 px-3 py-1 rounded-full uppercase tracking-wide">
+              In partnership with Mohamed Abdelsattar — Strategic Media & Technical Operations Consultant
+            </span>
+          </div>
+
+          {/* Service grid */}
+          <div className="grid md:grid-cols-3 gap-8 mb-10">
+            {[
+              {
+                icon: <Globe2 className="w-6 h-6 text-chart-3" />,
+                title: "Digital Strategy & Brand Development",
+                description: "Crafting comprehensive digital strategies that align your brand identity with target audiences across Egyptian and Gulf markets. Includes brand positioning, visual identity direction, and multi-platform content architecture.",
+              },
+              {
+                icon: <BarChart3 className="w-6 h-6 text-chart-3" />,
+                title: "Social Media Management & Growth",
+                description: "End-to-end management of social media channels (Meta, LinkedIn, TikTok, YouTube) with data-driven content calendars, community engagement, and performance analytics to drive measurable audience growth.",
+              },
+              {
+                icon: <Cpu className="w-6 h-6 text-chart-3" />,
+                title: "Generative AI Content Production",
+                description: "Leveraging cutting-edge Generative AI tools for high-impact content creation — AI-driven imagery, video production, motion graphics, and automated content workflows that reduce cost while elevating quality.",
+              },
+              {
+                icon: <BookOpen className="w-6 h-6 text-chart-3" />,
+                title: "Multimedia Production & Motion Graphics",
+                description: "Full-service multimedia production using Adobe Creative Cloud (Premiere Pro, After Effects, Photoshop, Illustrator) — from corporate video and promotional reels to animated explainers and branded presentations.",
+              },
+              {
+                icon: <ShieldCheck className="w-6 h-6 text-chart-3" />,
+                title: "PR Strategy & Stakeholder Communications",
+                description: "Designing and executing public relations strategies that build institutional credibility, manage stakeholder narratives, and strengthen visibility with government bodies, media, and key industry partners.",
+              },
+              {
+                icon: <FileText className="w-6 h-6 text-chart-3" />,
+                title: "Digital Marketing Training & Capacity Building",
+                description: "Customised corporate training programmes in Digital Marketing, AI-powered content creation, and social media strategy — delivered by an active visiting lecturer at Cairo University and the Egyptian Chinese University.",
+              },
+            ].map((service, index) => (
+              <Card key={index} className="border-border/50 shadow-sm hover:shadow-md transition-shadow bg-background">
+                <CardHeader>
+                  <div className="mb-4">{service.icon}</div>
+                  <CardTitle className="font-heading text-xl text-primary">{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed">{service.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* CTA strip */}
+          <div className="bg-chart-3/5 border border-chart-3/20 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="font-heading text-xl font-bold text-foreground mb-1">Ready to elevate your digital presence?</h3>
+              <p className="text-muted-foreground text-sm">Our Digital Marketing consultant brings 23+ years of strategic communications and AI-driven content expertise to your brand.</p>
+            </div>
+            <div className="flex gap-3 flex-shrink-0">
+              <a href="/contact" className="inline-flex items-center gap-2 bg-chart-3 text-white font-bold px-6 py-3 hover:bg-chart-3/90 transition-colors text-sm">
+                Request a Consultation
+              </a>
+              <a href="/partners" className="inline-flex items-center gap-2 border-2 border-chart-3 text-chart-3 font-bold px-6 py-3 hover:bg-chart-3/5 transition-colors text-sm">
+                Meet Our Expert <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Strategy & Performance Section */}
-      <section id="strategy" className="py-20 bg-muted/30" style={{ scrollMarginTop: '5rem' }}>
+      <section id="strategy" className="py-20" style={{ scrollMarginTop: '5rem' }}>
         <div className="container">
           <div className="flex items-center gap-4 mb-12">
             <div className="p-3 bg-primary/10 rounded-xl">

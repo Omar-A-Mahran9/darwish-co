@@ -147,3 +147,8 @@
 - [x] Extract Dr. Amr Fouad CV data from PDF
 - [x] Extract Mohamed Abdel Sattar CV data from PDF
 - [x] Add both to Partners page with verified data
+
+## Digital Marketing Section (Services / Business Development)
+
+- [x] Add Digital Marketing section to Services page (id="digital-marketing") using Abdelsattar's expertise
+- [x] Add Digital Marketing link to Services dropdown in navigation
