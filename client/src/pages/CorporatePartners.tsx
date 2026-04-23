@@ -114,6 +114,19 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
   },
   {
     id: 5,
+    name: "In Light Consumer Insights",
+    type: "partner",
+    description:
+      "MENA's first consumer research company with a proprietary competitive online panel, delivering fast, flexible, and technology-enabled market insights. Specialises in online qualitative and mixed-method research using AI-supported tools to generate actionable understanding of consumer behaviour. Serves leading global brands across healthcare, FMCG, luxury, and technology sectors. With 10,500+ panel respondents, 405 projects completed in 2025, 20,000+ surveys, and 600+ in-depth interviews, In Light provides the data intelligence layer that informs Darwish & Co.'s market entry and business development strategies across the MENA region.",
+    website: "https://in-light.tech",
+    logoUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_4f6e3e33.png",
+    country: "Egypt / MENA",
+    displayOrder: 4,
+    isVisible: true,
+    createdAt: 0,
+  },
+  {
+    id: 6,
     name: "Hebei Provincial Government — Industrial Cooperation",
     type: "affiliation",
     description:
@@ -121,7 +134,7 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
     website: null,
     logoUrl: null,
     country: "China",
-    displayOrder: 4,
+    displayOrder: 5,
     isVisible: true,
     createdAt: 0,
   },
@@ -144,6 +157,10 @@ const PARTNER_CONTACTS: Record<string, { phone?: string; email?: string; address
   },
   "Keheilan Asset Management": {
     email: "info@keheilan.com",
+  },
+  "In Light Consumer Insights": {
+    email: "info@in-light.tech",
+    address: "Cairo, Egypt",
   },
 };
 

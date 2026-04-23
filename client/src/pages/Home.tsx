@@ -122,6 +122,19 @@ export default function Home() {
                 className="h-10 w-auto object-contain"
               />
             </a>
+            {/* In Light Consumer Insights */}
+            <a
+              href="https://in-light.tech"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
+            >
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_4f6e3e33.png"
+                alt="In Light Consumer Insights"
+                className="h-10 w-auto object-contain"
+              />
+            </a>
           </div>
           <div className="text-center mt-8">
             <Link href="/corporate-partners">

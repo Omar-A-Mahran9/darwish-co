@@ -157,3 +157,11 @@
 
 - [x] Update Digital Marketing section subtitle to include Egyptian, Gulf, MENA and African markets
 - [x] Add Digital Marketing teaser section to homepage (3 cards: Strategy, AI Content, Social Media)
+
+## In-Light Tech Partner Addition
+
+- [x] Research in-light.tech — MENA's first consumer panel, 10,500+ respondents, 405 projects
+- [x] Download/save In-Light Tech logo from their website
+- [x] Upload logo to CDN
+- [x] Add In-Light Tech to Corporate Partners page (id=5, Strategic Partner)
+- [x] Add In-Light Tech logo to homepage partner banner
