@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Users, CheckCircle, BarChart3, FileText, Scale, ShieldCheck, BookOpen, Cpu, Globe2, ExternalLink } from "lucide-react";
+import { Shield, Users, CheckCircle, BarChart3, FileText, Scale, ShieldCheck, BookOpen, Cpu, Globe2, ExternalLink, Search, PieChart, TrendingUp, MessageSquare, Database, Microscope } from "lucide-react";
 
 export default function Services() {
   const grcServices = [
@@ -462,6 +462,116 @@ export default function Services() {
                 className="inline-flex items-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 font-bold text-sm hover:bg-blue-600 hover:text-white transition-colors"
               >
                 Visit VisionEthics <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Market Research & Consumer Insights Section */}
+      <section id="market-research" className="py-20 bg-muted/30" style={{ scrollMarginTop: '5rem' }}>
+        <div className="container">
+          {/* Section header */}
+          <div className="mb-14">
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <div className="p-3 bg-emerald-600/10 rounded-xl">
+                <Search className="w-8 h-8 text-emerald-600" />
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-1">
+                  <h2 className="font-heading text-3xl font-bold text-primary">Market Research & Consumer Insights</h2>
+                  <a
+                    href="https://in-light.tech"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20 transition-colors"
+                  >
+                    In partnership with In Light Consumer Insights <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+                <p className="text-muted-foreground">Delivered in partnership with In Light Consumer Insights — MENA's leading proprietary consumer panel with 10,500+ respondents and 405+ research projects delivered in 2025.</p>
+              </div>
+            </div>
+
+            {/* Stats bar */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+              {[
+                { value: "10,500+", label: "Panel Respondents" },
+                { value: "405+", label: "Projects in 2025" },
+                { value: "MENA", label: "Regional Coverage" },
+                { value: "Quantitative & Qualitative", label: "Research Methods" },
+              ].map((stat, i) => (
+                <div key={i} className="bg-emerald-600/5 border border-emerald-200/60 p-4 text-center">
+                  <div className="font-heading text-xl font-bold text-emerald-700">{stat.value}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Service cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {[
+              {
+                icon: <Users className="w-5 h-5 text-emerald-600" />,
+                title: "Consumer Research & Panel Studies",
+                description: "Access MENA's first proprietary online consumer panel with 10,500+ pre-screened respondents. Quantitative surveys designed to deliver statistically robust insights on consumer attitudes, behaviours, and preferences at speed.",
+              },
+              {
+                icon: <TrendingUp className="w-5 h-5 text-emerald-600" />,
+                title: "Brand Health Tracking",
+                description: "Continuous brand tracking studies measuring awareness, perception, consideration, and loyalty over time. Benchmark your brand against competitors and identify shifts in consumer sentiment before they impact performance.",
+              },
+              {
+                icon: <Globe2 className="w-5 h-5 text-emerald-600" />,
+                title: "Market Entry Research",
+                description: "Comprehensive market sizing, opportunity assessment, and consumer landscape analysis to support market entry decisions. Covers demand estimation, segment profiling, competitive mapping, and regulatory context for MENA markets.",
+              },
+              {
+                icon: <Search className="w-5 h-5 text-emerald-600" />,
+                title: "Competitive Intelligence",
+                description: "Systematic monitoring and analysis of competitor activity, market positioning, pricing strategies, and product developments. Delivers actionable intelligence to sharpen your competitive strategy and identify white-space opportunities.",
+              },
+              {
+                icon: <Database className="w-5 h-5 text-emerald-600" />,
+                title: "Data Analytics & Consumer Insights",
+                description: "Advanced analytics translating raw research data into clear strategic insights. Includes cross-tabulation, segmentation analysis, predictive modelling, and executive-ready dashboards tailored to business decision-making needs.",
+              },
+              {
+                icon: <MessageSquare className="w-5 h-5 text-emerald-600" />,
+                title: "Qualitative Research — FGDs & IDIs",
+                description: "In-depth qualitative research through Focus Group Discussions (FGDs) and In-Depth Interviews (IDIs). Uncovers the 'why' behind consumer behaviour, explores unmet needs, and tests concepts, messaging, and product ideas before launch.",
+              },
+            ].map((service, index) => (
+              <Card key={index} className="border-emerald-200/60 shadow-sm hover:shadow-md transition-shadow bg-background">
+                <CardHeader>
+                  <div className="mb-3">{service.icon}</div>
+                  <CardTitle className="font-heading text-base text-primary leading-snug">{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed text-sm">{service.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* CTA strip */}
+          <div className="bg-emerald-600/5 border border-emerald-200/60 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="font-heading text-xl font-bold text-foreground mb-1">Need consumer insights for your next strategic decision?</h3>
+              <p className="text-muted-foreground text-sm">Our partnership with In Light Consumer Insights gives you direct access to MENA's most comprehensive consumer panel and research capabilities.</p>
+            </div>
+            <div className="flex gap-3 flex-shrink-0">
+              <a href="/contact" className="inline-flex items-center gap-2 bg-emerald-600 text-white font-bold px-6 py-3 hover:bg-emerald-700 transition-colors text-sm">
+                Request a Study
+              </a>
+              <a
+                href="https://in-light.tech"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border-2 border-emerald-600 text-emerald-600 font-bold px-6 py-3 hover:bg-emerald-600/5 transition-colors text-sm"
+              >
+                Visit In Light <ExternalLink className="w-4 h-4" />
               </a>
             </div>
           </div>

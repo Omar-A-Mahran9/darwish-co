@@ -165,3 +165,12 @@
 - [x] Upload logo to CDN
 - [x] Add In-Light Tech to Corporate Partners page (id=5, Strategic Partner)
 - [x] Add In-Light Tech logo to homepage partner banner
+
+## Market Research & Consumer Insights Section
+
+- [x] Add Market Research & Consumer Insights section to Services page (id="market-research")
+- [x] Include In Light Consumer Insights partnership attribution badge
+- [x] Add stats bar (10,500+ respondents, 405+ projects, MENA coverage, Quant & Qual methods)
+- [x] Add 6 service cards: Consumer Research, Brand Health Tracking, Market Entry Research, Competitive Intelligence, Data Analytics, Qualitative Research (FGDs & IDIs)
+- [x] Add CTA strip with "Request a Study" and "Visit In Light" buttons
+- [x] Add "Market Research & Insights" link to Services dropdown in navigation

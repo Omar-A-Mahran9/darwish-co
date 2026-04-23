@@ -24,6 +24,7 @@ const navItems: NavItem[] = [
       { name: "Digital Marketing", path: "/services#digital-marketing" },
       { name: "Strategy & Performance System", path: "/services#strategy" },
       { name: "Integrity & Anti-Corruption", path: "/services#integrity" },
+      { name: "Market Research & Insights", path: "/services#market-research" },
       { name: "Training Academy", path: "/training" },
     ],
   },
