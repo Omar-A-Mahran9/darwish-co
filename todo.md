@@ -174,3 +174,14 @@
 - [x] Add 6 service cards: Consumer Research, Brand Health Tracking, Market Entry Research, Competitive Intelligence, Data Analytics, Qualitative Research (FGDs & IDIs)
 - [x] Add CTA strip with "Request a Study" and "Visit In Light" buttons
 - [x] Add "Market Research & Insights" link to Services dropdown in navigation
+
+## Education Organization Development — Projects Page
+
+- [x] Extract project data from shared Manus task (vF8zzrYg8RWv8X4KzLuqEv)
+- [x] Add Education Organization Development section to Projects page (id="education")
+- [x] Include 6 service pillars: Organizational Design, QA & Accreditation, HR & Talent, Digital Transformation, Financial Governance, Communications
+- [x] Include 4 client segments with descriptions
+- [x] Include programme highlights stats (6 pillars, 4 segments, 19+ years, 100% accreditation rate)
+- [x] Include results banner with 20-30% cost reduction, 100% accreditation rate, 19+ years, 6 pillars
+- [x] Add "Education Organization Development" link to Projects dropdown in navigation
+- [x] Update Projects count bar from 2 to 3 active initiatives

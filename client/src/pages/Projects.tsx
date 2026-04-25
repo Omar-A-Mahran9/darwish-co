@@ -19,6 +19,13 @@ import {
   TrendingUp,
   Building2,
   Handshake,
+  GraduationCap,
+  ShieldCheck,
+  Settings,
+  Cpu,
+  Award,
+  BookOpen,
+  MessageSquare,
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -111,6 +118,74 @@ const tradeFeatures = [
   },
 ];
 
+const educationPillars = [
+  {
+    icon: Settings,
+    title: "Organizational Design & Strategic Planning",
+    description:
+      "Redesigning academic and operational frameworks to align with strategic goals. We establish clear workflows, define departmental responsibilities, develop unified policy frameworks, and standardize procedures across multiple campuses.",
+    color: "text-primary bg-primary/10",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Quality Assurance & Accreditation Readiness",
+    description:
+      "Holistic QA systems spanning academic and operational departments. We guide institutions through IB, IGCSE, and regional quality framework accreditation by establishing data-driven QA databases and tracking institutional metrics.",
+    color: "text-chart-2 bg-chart-2/10",
+  },
+  {
+    icon: Users,
+    title: "HR & Talent Development for Education",
+    description:
+      "Strategic HR planning, staffing strategies, and training programs that ensure sustainable workforce growth. Capability building for new campus locations, people analytics, and performance management tailored to educational institutions.",
+    color: "text-chart-3 bg-chart-3/10",
+  },
+  {
+    icon: Cpu,
+    title: "Digital Transformation & EdTech Integration",
+    description:
+      "Comprehensive digital strategy roadmaps, platform implementation plans, and change management programs. Systems support adoption tracking, performance optimization, and ongoing advisory to maximize technology ROI.",
+    color: "text-primary bg-primary/10",
+  },
+  {
+    icon: BarChart3,
+    title: "Financial Governance & Risk Management",
+    description:
+      "Applying Darwish & Co.'s proven GRC expertise to educational finance — budget governance frameworks, risk registers, compliance programs, and financial controls that protect institutional assets and ensure regulatory adherence.",
+    color: "text-chart-2 bg-chart-2/10",
+  },
+  {
+    icon: MessageSquare,
+    title: "Communications & Stakeholder Engagement",
+    description:
+      "Strategic communications frameworks for parents, staff, regulators, and the wider community. Digital marketing, brand positioning, and stakeholder engagement strategies that build institutional reputation across the MENA region.",
+    color: "text-chart-3 bg-chart-3/10",
+  },
+];
+
+const educationSegments = [
+  {
+    label: "Multi-Campus School Networks",
+    description: "Unified policy & coordination across locations",
+    color: "text-primary bg-primary/10",
+  },
+  {
+    label: "Growing Schools (Expansion-Stage)",
+    description: "Scalable systems for new campus launches",
+    color: "text-chart-2 bg-chart-2/10",
+  },
+  {
+    label: "Accreditation-Seeking Institutions",
+    description: "IB, IGCSE & regional quality frameworks",
+    color: "text-chart-3 bg-chart-3/10",
+  },
+  {
+    label: "Digital Transformation-Focused",
+    description: "EdTech adoption & change management",
+    color: "text-primary bg-primary/10",
+  },
+];
+
 const tradeTechStack = [
   "React + TypeScript",
   "Tailwind CSS",
@@ -146,8 +221,8 @@ export default function Projects() {
       <section className="bg-muted/40 border-b border-border py-8">
         <div className="container flex flex-wrap justify-center gap-12 text-center">
           <div>
-            <p className="font-heading text-3xl font-bold text-primary">2</p>
-            <p className="text-sm text-muted-foreground mt-1">Live Platforms</p>
+            <p className="font-heading text-3xl font-bold text-primary">3</p>
+            <p className="text-sm text-muted-foreground mt-1">Active Initiatives</p>
           </div>
           <div>
             <p className="font-heading text-3xl font-bold text-primary">107</p>
@@ -650,6 +725,203 @@ export default function Projects() {
                   <p className="text-sm text-background/80 mt-1">
                     Portal Status
                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PROJECT 3: Education Organization Development ── */}
+      <section id="education" className="py-20 border-b border-border" style={{ scrollMarginTop: '5rem' }}>
+        <div className="container max-w-6xl mx-auto">
+          {/* Section Label */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-chart-2/10 flex items-center justify-center">
+              <GraduationCap className="w-5 h-5 text-chart-2" />
+            </div>
+            <span className="text-sm font-bold text-chart-2 uppercase tracking-widest">
+              Education Segment
+            </span>
+          </div>
+
+          {/* Project Header */}
+          <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="bg-chart-2/10 text-chart-2 border-chart-2/20 hover:bg-chart-2/20">
+                    Education Consulting
+                  </Badge>
+                  <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
+                    GRC + HR + Strategy
+                  </Badge>
+                  <Badge className="bg-chart-3/10 text-chart-3 border-chart-3/20 hover:bg-chart-3/20">
+                    MENA Region
+                  </Badge>
+                </div>
+                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground leading-tight">
+                  Education Organization Development
+                </h2>
+                <p className="text-lg text-chart-2 font-semibold">
+                  Transform Your Institution Through Strategic Excellence
+                </p>
+              </div>
+
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                A specialized consulting segment that integrates Darwish & Co.'s core competencies —{" "}
+                <strong className="text-foreground">Governance & Risk</strong>,{" "}
+                <strong className="text-foreground">Human Resources</strong>,{" "}
+                <strong className="text-foreground">Strategy & Performance</strong>, and{" "}
+                <strong className="text-foreground">Digital Transformation</strong> — with deep expertise in educational institution management.
+              </p>
+
+              <p className="text-muted-foreground leading-relaxed">
+                Serving mid-to-large-scale educational organizations across the MENA region that are navigating expansion, accreditation, operational optimization, or digital transformation. We bridge the gap between academic excellence, operational efficiency, strategic growth, and digital innovation.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                <Link href="/contact">
+                  <Button className="bg-chart-2 text-white hover:bg-chart-2/90 font-bold rounded-none px-8 gap-2">
+                    Request a Consultation
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+                <Link href="/services">
+                  <Button
+                    variant="outline"
+                    className="border-2 border-chart-2 text-chart-2 hover:bg-chart-2 hover:text-white font-bold rounded-none px-8 gap-2"
+                  >
+                    Explore Our Services
+                    <ExternalLink className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Stats & Segments */}
+            <div className="space-y-6">
+              {/* Key Stats */}
+              <div className="bg-muted/30 border border-border rounded-2xl p-8 space-y-6">
+                <h3 className="font-heading text-lg font-bold text-foreground text-center">
+                  Programme Highlights
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-background border border-border rounded-xl p-5 text-center space-y-1">
+                    <p className="font-heading text-3xl font-bold text-chart-2">6</p>
+                    <p className="text-xs text-muted-foreground">Service Pillars</p>
+                  </div>
+                  <div className="bg-background border border-border rounded-xl p-5 text-center space-y-1">
+                    <p className="font-heading text-3xl font-bold text-primary">4</p>
+                    <p className="text-xs text-muted-foreground">Client Segments</p>
+                  </div>
+                  <div className="bg-background border border-border rounded-xl p-5 text-center space-y-1">
+                    <p className="font-heading text-3xl font-bold text-chart-3">19+</p>
+                    <p className="text-xs text-muted-foreground">Years Sector Experience</p>
+                  </div>
+                  <div className="bg-background border border-border rounded-xl p-5 text-center space-y-1">
+                    <p className="font-heading text-3xl font-bold text-chart-2">100%</p>
+                    <p className="text-xs text-muted-foreground">Accreditation Rate</p>
+                  </div>
+                </div>
+                <div className="border-t border-border pt-4 text-center">
+                  <p className="text-xs text-muted-foreground">An integrated initiative by</p>
+                  <p className="font-heading font-bold text-primary mt-1">Darwish & Co.</p>
+                </div>
+              </div>
+
+              {/* Client Segments */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-bold text-foreground uppercase tracking-widest">
+                  Target Client Segments
+                </h4>
+                <div className="grid grid-cols-1 gap-2">
+                  {educationSegments.map((seg) => (
+                    <div
+                      key={seg.label}
+                      className={`flex items-start gap-3 px-4 py-3 rounded-lg ${seg.color}`}
+                    >
+                      <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-bold">{seg.label}</p>
+                        <p className="text-xs opacity-80">{seg.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Six Pillars Grid */}
+          <div className="space-y-8">
+            <div className="text-center space-y-3">
+              <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
+                Six Integrated Service Pillars
+              </h3>
+              <p className="text-muted-foreground max-w-xl mx-auto">
+                Each pillar draws on Darwish & Co.'s core competencies, delivering comprehensive end-to-end solutions for educational institutions.
+              </p>
+              <div className="w-16 h-1 bg-chart-2 mx-auto" />
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {educationPillars.map((pillar, index) => {
+                const Icon = pillar.icon;
+                return (
+                  <Card
+                    key={index}
+                    className="border border-border shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <CardContent className="p-6 space-y-4">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${pillar.color}`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-foreground mb-2">{pillar.title}</h4>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{pillar.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Results Banner */}
+          <div className="mt-16 bg-chart-2 text-white rounded-2xl p-8 md:p-12 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/4" />
+            <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+              <div className="space-y-4">
+                <h3 className="font-heading text-2xl md:text-3xl font-bold">
+                  Strategic Planning · Operational Excellence · Digital Innovation
+                </h3>
+                <p className="text-white/80 leading-relaxed">
+                  Our integrated approach distinguishes Darwish & Co. from competitors who typically specialize in a single dimension of education consulting. We deliver holistic solutions that address the full complexity of institutional development across the MENA region.
+                </p>
+                <Link href="/contact">
+                  <Button className="bg-white text-chart-2 hover:bg-white/90 font-bold rounded-none px-8 gap-2 mt-2">
+                    Start the Conversation
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/10 rounded-xl p-4 text-center">
+                  <p className="font-heading text-3xl font-bold">20–30%</p>
+                  <p className="text-sm text-white/80 mt-1">Reduction in Operational Costs</p>
+                </div>
+                <div className="bg-white/10 rounded-xl p-4 text-center">
+                  <p className="font-heading text-3xl font-bold">100%</p>
+                  <p className="text-sm text-white/80 mt-1">Accreditation Achievement Rate</p>
+                </div>
+                <div className="bg-white/10 rounded-xl p-4 text-center">
+                  <p className="font-heading text-3xl font-bold">19+</p>
+                  <p className="text-sm text-white/80 mt-1">Years Education Sector Experience</p>
+                </div>
+                <div className="bg-white/10 rounded-xl p-4 text-center">
+                  <p className="font-heading text-3xl font-bold">6</p>
+                  <p className="text-sm text-white/80 mt-1">Core Service Pillars</p>
                 </div>
               </div>
             </div>
