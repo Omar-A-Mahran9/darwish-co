@@ -62,7 +62,7 @@ export default function Home() {
       </section>
 
       {/* Partner Logos Banner */}
-      <section className="py-10 bg-gray-50 border-y border-gray-100">
+      <section className="py-10 border-y" style={{background: 'linear-gradient(135deg, #dff0f7 0%, #dff2ea 100%)', borderColor: '#b8d9e8'}}>
         <div className="container">
           <p className="text-center text-xs font-bold tracking-widest uppercase text-muted-foreground mb-8">Trusted Partners & Alliances</p>
           <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
