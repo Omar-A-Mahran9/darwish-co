@@ -185,3 +185,11 @@
 - [x] Include results banner with 20-30% cost reduction, 100% accreditation rate, 19+ years, 6 pillars
 - [x] Add "Education Organization Development" link to Projects dropdown in navigation
 - [x] Update Projects count bar from 2 to 3 active initiatives
+
+## Consultant Partner Addition — Engy Saeed Morsy
+
+- [x] Extract professional profile from CV (Finance & Investment, Capital Markets, Education)
+- [x] Add Engy Saeed Morsy Ahmed as partner id 8 to Partners page (displayOrder: 7)
+- [x] Title: Finance & Investment Consultant — Financial Analysis & Education
+- [x] Include 8 certifications/credentials from CV
+- [x] Email contact: engy.saeed@gmail.com
