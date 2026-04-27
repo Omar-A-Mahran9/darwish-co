@@ -77,7 +77,7 @@ export default function Home() {
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp"
                 alt="VisionEthics"
-                className="h-10 w-auto object-contain"
+                className="h-12 w-auto object-contain"
                 style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
               />
             </a>
@@ -92,7 +92,7 @@ export default function Home() {
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp"
                 alt="WideBot AI"
-                className="h-10 w-auto object-contain"
+                className="h-12 w-auto object-contain"
                 style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
               />
             </a>
@@ -107,7 +107,7 @@ export default function Home() {
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp"
                 alt="Techno-Management"
-                className="h-10 w-auto object-contain"
+                className="h-12 w-auto object-contain"
                 style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
               />
             </a>
@@ -122,7 +122,7 @@ export default function Home() {
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png"
                 alt="Keheilan Asset Management"
-                className="h-10 w-auto object-contain"
+                className="h-12 w-auto object-contain"
                 style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
               />
             </a>
@@ -136,7 +136,7 @@ export default function Home() {
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg"
                 alt="In Light Consumer Insights"
-                className="h-10 w-auto object-contain"
+                className="h-12 w-auto object-contain"
                 style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
               />
             </a>
