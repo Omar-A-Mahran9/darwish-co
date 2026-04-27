@@ -63,84 +63,62 @@ export default function Home() {
 
       {/* Partner Logos Banner */}
       <section className="py-10 border-y" style={{background: 'linear-gradient(135deg, #dff0f7 0%, #dff2ea 100%)', borderColor: '#b8d9e8'}}>
+        <style>{`
+          @keyframes marquee-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .marquee-track {
+            animation: marquee-scroll 18s linear infinite;
+          }
+          .marquee-track:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
         <div className="container">
           <p className="text-center text-xs font-bold tracking-widest uppercase text-muted-foreground mb-8">Trusted Partners & Alliances</p>
-          <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
-            {/* VisionEthics */}
-            <a
-              href="https://visionethics.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
-              title="VisionEthics — Integrity & Anti-Corruption Advisory"
-            >
-              <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp"
-                alt="VisionEthics"
-                className="h-12 w-auto object-contain"
-                style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
-              />
-            </a>
-            {/* WideBot */}
-            <a
-              href="https://widebot.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
-              title="WideBot — Arabic AI Platform"
-            >
-              <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp"
-                alt="WideBot AI"
-                className="h-12 w-auto object-contain"
-                style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
-              />
-            </a>
-            {/* Techno-Management */}
-            <a
-              href="https://techno-management.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
-              title="Techno-Management — Strategy & Performance Management"
-            >
-              <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp"
-                alt="Techno-Management"
-                className="h-12 w-auto object-contain"
-                style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
-              />
-            </a>
-            {/* Keheilan */}
-            <a
-              href="https://www.keheilan.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
-              title="Keheilan Asset Management — Hedge Fund & Venture Capital"
-            >
-              <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png"
-                alt="Keheilan Asset Management"
-                className="h-12 w-auto object-contain"
-                style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
-              />
-            </a>
-            {/* In Light Consumer Insights */}
-            <a
-              href="https://in-light.tech"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
-            >
-              <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg"
-                alt="In Light Consumer Insights"
-                className="h-12 w-auto object-contain"
-                style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}}
-              />
-            </a>
+
+          {/* Desktop: static centered row */}
+          <div className="hidden md:flex items-center justify-center gap-16">
+            {[
+              { href: 'https://visionethics.com',    src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp',     alt: 'VisionEthics',              title: 'VisionEthics — Integrity & Anti-Corruption Advisory' },
+              { href: 'https://widebot.ai',          src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp',          alt: 'WideBot AI',                title: 'WideBot — Arabic AI Platform' },
+              { href: 'https://techno-management.com', src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp', alt: 'Techno-Management',         title: 'Techno-Management — Strategy & Performance Management' },
+              { href: 'https://www.keheilan.com',    src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png',  alt: 'Keheilan Asset Management', title: 'Keheilan Asset Management — Hedge Fund & Venture Capital' },
+              { href: 'https://in-light.tech',       src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg',           alt: 'In Light Consumer Insights', title: 'In Light — Consumer Insights' },
+            ].map((p) => (
+              <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer"
+                className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300" title={p.title}>
+                <img src={p.src} alt={p.alt} className="h-12 w-auto object-contain"
+                  style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}} />
+              </a>
+            ))}
           </div>
+
+          {/* Mobile: auto-scrolling marquee */}
+          <div className="md:hidden overflow-hidden" style={{maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)'}}>
+            <div className="flex items-center marquee-track" style={{width: 'max-content'}}>
+              {/* Render logos twice for seamless loop */}
+              {[...Array(2)].map((_, setIdx) => (
+                <div key={setIdx} className="flex items-center gap-12 px-6">
+                  {[
+                    { href: 'https://visionethics.com',    src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp',     alt: 'VisionEthics' },
+                    { href: 'https://widebot.ai',          src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp',          alt: 'WideBot AI' },
+                    { href: 'https://techno-management.com', src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp', alt: 'Techno-Management' },
+                    { href: 'https://www.keheilan.com',    src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png',  alt: 'Keheilan Asset Management' },
+                    { href: 'https://in-light.tech',       src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg',           alt: 'In Light Consumer Insights' },
+                  ].map((p) => (
+                    <a key={p.href + setIdx} href={p.href} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
+                      <img src={p.src} alt={p.alt} className="h-12 w-auto object-contain"
+                        style={{filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))'}} />
+                    </a>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="text-center mt-8">
             <Link href="/corporate-partners">
               <span className="text-xs font-bold text-primary hover:underline cursor-pointer tracking-wide uppercase">View All Partners →</span>
