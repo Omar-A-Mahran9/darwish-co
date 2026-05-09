@@ -228,133 +228,21 @@ function FloatingLogos() {
         </div>
       ))}
 
-      {/* Central emblem — magnetic explode/reassemble animation */}
-      <div
+      {/* Central emblem — static slow-spinning logo PNG */}
+      <img
+        src={EMBLEM_URL}
+        alt="Darwish & Co. emblem"
+        aria-hidden="true"
+        className="spin-slow"
         style={{
           position: "relative",
           zIndex: 10,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "6px",
+          width: "150px",
+          height: "150px",
+          objectFit: "contain",
           filter: "drop-shadow(0 6px 24px rgba(49,154,255,0.4))",
         }}
-      >
-        <svg
-          viewBox="0 0 200 200"
-          width="150"
-          height="150"
-          aria-hidden="true"
-          style={{ overflow: "visible" }}
-        >
-          <defs>
-            {/* Explode keyframes per colour group — each flies in a different direction */}
-            <style>{`
-              @keyframes explode-blue {
-                0%,100% { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
-                30%      { transform: translate(-22px,-18px) scale(1.08); opacity:0.85; filter: brightness(0.9); }
-                50%      { transform: translate(-22px,-18px) scale(1.08); opacity:0.85; filter: brightness(0.9); }
-                78%      { transform: translate(0,0) scale(1.12); opacity:1; filter: brightness(1.6); }
-                85%      { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
-              }
-              @keyframes explode-green {
-                0%,100% { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
-                30%      { transform: translate(20px,-18px) scale(1.08); opacity:0.85; filter: brightness(0.9); }
-                50%      { transform: translate(20px,-18px) scale(1.08); opacity:0.85; filter: brightness(0.9); }
-                78%      { transform: translate(0,0) scale(1.12); opacity:1; filter: brightness(1.6); }
-                85%      { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
-              }
-              @keyframes explode-gold {
-                0%,100% { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
-                30%      { transform: translate(0px, 24px) scale(1.06); opacity:0.85; filter: brightness(0.9); }
-                50%      { transform: translate(0px, 24px) scale(1.06); opacity:0.85; filter: brightness(0.9); }
-                78%      { transform: translate(0,0) scale(1.1); opacity:1; filter: brightness(1.6); }
-                85%      { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
-              }
-              /* Shockwave ring — expands outward at the snap-back moment */
-              @keyframes shockwave {
-                0%,72%   { r: 10; opacity: 0; }
-                78%      { r: 10; opacity: 0.9; }
-                90%      { r: 105; opacity: 0; }
-                100%     { r: 105; opacity: 0; }
-              }
-              @keyframes shockwave2 {
-                0%,74%   { r: 10; opacity: 0; }
-                80%      { r: 10; opacity: 0.55; }
-                93%      { r: 130; opacity: 0; }
-                100%     { r: 130; opacity: 0; }
-              }
-              .shockwave-ring  { animation: shockwave  4.5s ease-out infinite; transform-origin: 100px 100px; }
-              .shockwave-ring2 { animation: shockwave2 4.5s ease-out infinite; transform-origin: 100px 100px; }
-              .explode-blue  { animation: explode-blue  4.5s ease-in-out infinite; transform-origin: 100px 100px; }
-              .explode-green { animation: explode-green 4.5s ease-in-out infinite; transform-origin: 100px 100px; }
-              .explode-gold  { animation: explode-gold  4.5s ease-in-out infinite; transform-origin: 100px 100px; }
-            `}</style>
-          </defs>
-
-          {/* ── GOLD / ORANGE accent ring (middle layer) ── */}
-          <g className="explode-gold">
-            {Array.from({length:12},(_,i)=>{
-              const a=(i*30)*Math.PI/180;
-              const r=62;
-              const x=100+r*Math.cos(a);
-              const y=100+r*Math.sin(a);
-              return <circle key={i} cx={x} cy={y} r={7} fill="#F5A623" opacity="0.95"/>;
-            })}
-            <circle cx="100" cy="100" r="14" fill="#F5A623" opacity="0.9"/>
-          </g>
-
-          {/* ── GREEN outer star points ── */}
-          <g className="explode-green">
-            {Array.from({length:12},(_,i)=>{
-              const a=(i*30)*Math.PI/180;
-              const r=82;
-              const cx=100+r*Math.cos(a);
-              const cy=100+r*Math.sin(a);
-              const tip=100+(r+18)*Math.cos(a);
-              const tiy=100+(r+18)*Math.sin(a);
-              const lx=100+(r-10)*Math.cos(a-0.28);
-              const ly=100+(r-10)*Math.sin(a-0.28);
-              const rx=100+(r-10)*Math.cos(a+0.28);
-              const ry=100+(r-10)*Math.sin(a+0.28);
-              return <polygon key={i} points={`${tip},${tiy} ${lx},${ly} ${rx},${ry}`} fill="#2ECC71" opacity="0.92"/>;
-            })}
-          </g>
-
-          {/* ── BLUE inner petals ── */}
-          <g className="explode-blue">
-            {Array.from({length:12},(_,i)=>{
-              const a=(i*30)*Math.PI/180;
-              const r=44;
-              const tipx=100+(r+20)*Math.cos(a);
-              const tipy=100+(r+20)*Math.sin(a);
-              const lx=100+(r-8)*Math.cos(a-0.38);
-              const ly=100+(r-8)*Math.sin(a-0.38);
-              const rx=100+(r-8)*Math.cos(a+0.38);
-              const ry=100+(r-8)*Math.sin(a+0.38);
-              return <polygon key={i} points={`${tipx},${tipy} ${lx},${ly} ${rx},${ry}`}
-                fill={i%2===0?"#1A73E8":"#0D47A1"} opacity="0.93"/>;
-            })}
-            <circle cx="100" cy="100" r="22" fill="#1A73E8" opacity="0.85"/>
-          </g>
-
-          {/* ── Shockwave rings — pulse outward at snap-back moment ── */}
-          <circle
-            cx="100" cy="100" r="10"
-            fill="none"
-            stroke="rgba(49,154,255,0.75)"
-            strokeWidth="2.5"
-            className="shockwave-ring"
-          />
-          <circle
-            cx="100" cy="100" r="10"
-            fill="none"
-            stroke="rgba(49,154,255,0.35)"
-            strokeWidth="1.5"
-            className="shockwave-ring2"
-          />
-        </svg>
-      </div>
+      />
     </div>
   );
 }
