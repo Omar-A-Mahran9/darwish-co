@@ -453,9 +453,8 @@ function HeroSection() {
           <div className="hidden md:flex items-center justify-center" style={{ gap: "100px" }}>
             {PARTNER_LOGOS.map((p) => (
               <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer"
-                className="opacity-40 hover:opacity-70 transition-opacity duration-300 flex items-center">
-                <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain"
-                  style={{ filter: "grayscale(100%)" }} />
+                className="opacity-80 hover:opacity-100 transition-opacity duration-300 flex items-center">
+                <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain" />
               </a>
             ))}
           </div>
@@ -471,9 +470,8 @@ function HeroSection() {
                 <div key={setIdx} className="flex items-center gap-12 px-6">
                   {PARTNER_LOGOS.map((p) => (
                     <a key={p.href + setIdx} href={p.href} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center opacity-40 hover:opacity-70 transition-opacity duration-300 flex-shrink-0">
-                      <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain"
-                        style={{ filter: "grayscale(100%)" }} />
+                      className="flex items-center opacity-80 hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
+                      <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain" />
                     </a>
                   ))}
                 </div>
