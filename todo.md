@@ -221,3 +221,8 @@
 ## Floating WhatsApp Button
 
 - [x] Add floating WhatsApp button (fixed bottom-right, links to +20 110 110 1090)
+
+## SEO Fixes — /about page
+
+- [x] Shorten /about meta description to 50–160 characters (148 chars)
+- [x] Add target keywords to /about page content and meta tags
