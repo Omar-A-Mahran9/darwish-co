@@ -251,18 +251,7 @@ function FloatingLogos() {
             filter: "drop-shadow(0 6px 24px rgba(49,154,255,0.4))",
           }}
         />
-        <span
-          style={{
-            fontFamily: "'Fustat', sans-serif",
-            fontWeight: 700,
-            fontSize: "11px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "rgba(49,154,255,0.8)",
-          }}
-        >
-          Strategy
-        </span>
+
       </div>
     </div>
   );
