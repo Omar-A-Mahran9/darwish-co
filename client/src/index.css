@@ -207,6 +207,30 @@
   }
 }
 
+/* ── Logo animation keyframes ── */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes spin-reverse {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-18px); }
+}
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee-scroll 18s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
 @layer components {
   /**
    * Custom container utility that centers content and adds responsive padding.

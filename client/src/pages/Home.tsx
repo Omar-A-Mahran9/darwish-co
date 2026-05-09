@@ -1,221 +1,417 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ArrowRight, CheckCircle2, Shield, Users, TrendingUp,
-  Brain, Globe, BarChart3, Target, Layers
+  Brain, Globe, BarChart3, Target, Layers, Star
 } from "lucide-react";
 import { Link } from "wouter";
 
-// ── FadeIn wrapper ──────────────────────────────────────────────────────────
-function FadeIn({
-  children,
-  delay = 0,
-  duration = 1000,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  duration?: number;
-  className?: string;
-}) {
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), delay);
-    return () => clearTimeout(t);
-  }, [delay]);
+// ─── CDN assets ────────────────────────────────────────────────────────────
+const EMBLEM_URL =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem_e8526ed4.png";
+const LOGOIN_URL =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-logoin_e0adbc2e.png";
+
+// ─── Partner logo CDN urls ──────────────────────────────────────────────────
+const PARTNER_LOGOS = [
+  { href: "https://visionethics.com",     src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp",      alt: "VisionEthics" },
+  { href: "https://widebot.ai",           src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp",           alt: "WideBot AI" },
+  { href: "https://techno-management.com",src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp", alt: "Techno-Management" },
+  { href: "https://www.keheilan.com",     src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png",  alt: "Keheilan" },
+  { href: "https://in-light.tech",        src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg",           alt: "In Light" },
+];
+
+// ─── Liquid-glass navbar ────────────────────────────────────────────────────
+function GlassNavbar() {
   return (
     <div
-      className={`transition-opacity ${className}`}
-      style={{
-        opacity: visible ? 1 : 0,
-        transitionDuration: `${duration}ms`,
-      }}
+      className="sticky top-[30px] z-50 mx-auto w-fit"
+      style={{ fontFamily: "'Inter', sans-serif" }}
     >
-      {children}
+      <nav
+        style={{
+          backdropFilter: "blur(50px)",
+          WebkitBackdropFilter: "blur(50px)",
+          background: "rgba(255,255,255,0.3)",
+          borderRadius: "16px",
+          border: "1px solid rgba(0,0,0,0.1)",
+          boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.25)",
+          padding: "10px 20px",
+          display: "flex",
+          alignItems: "center",
+          gap: "32px",
+        }}
+      >
+        {/* Logo */}
+        <Link href="/">
+          <span
+            className="flex items-center gap-2 cursor-pointer select-none"
+            style={{ fontFamily: "'Fustat', sans-serif", fontWeight: 700, fontSize: "18px", color: "#111" }}
+          >
+            <img src="/images/logo.png" alt="Darwish & Co." className="h-7 w-auto object-contain" />
+            Darwish &amp; Co.
+          </span>
+        </Link>
+
+        {/* Nav links — hidden on mobile */}
+        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+          {[
+            { label: "Strategy", href: "/services#strategy" },
+            { label: "Services", href: "/services" },
+            { label: "Projects", href: "/projects" },
+            { label: "Partners", href: "/partners" },
+            { label: "Blog", href: "/blog" },
+          ].map((item) => (
+            <Link key={item.href} href={item.href}>
+              <span className="hover:text-gray-900 transition-colors duration-150 cursor-pointer">
+                {item.label}
+              </span>
+            </Link>
+          ))}
+        </div>
+
+        {/* Sign-up / CTA button */}
+        <Link href="/contact">
+          <button
+            style={{
+              background: "rgba(0,132,255,0.85)",
+              backdropFilter: "blur(2px)",
+              WebkitBackdropFilter: "blur(2px)",
+              borderRadius: "12px",
+              border: "none",
+              boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.35)",
+              color: "#fff",
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 500,
+              fontSize: "14px",
+              padding: "8px 18px",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              transition: "transform 200ms ease, opacity 200ms ease",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.02)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
+          >
+            Get Started
+            <span
+              style={{
+                background: "rgba(255,255,255,0.25)",
+                borderRadius: "50%",
+                width: "22px",
+                height: "22px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ArrowRight size={12} strokeWidth={2.5} />
+            </span>
+          </button>
+        </Link>
+      </nav>
     </div>
   );
 }
 
-// ── AnimatedHeading ─────────────────────────────────────────────────────────
-function AnimatedHeading({
-  lines,
-  className = "",
-  initialDelay = 200,
-  charDelay = 30,
-}: {
-  lines: string[];
-  className?: string;
-  initialDelay?: number;
-  charDelay?: number;
-}) {
-  const [animated, setAnimated] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setAnimated(true), initialDelay);
-    return () => clearTimeout(t);
-  }, [initialDelay]);
-
-  let globalCharIndex = 0;
+// ─── Floating animated logo composition ────────────────────────────────────
+function FloatingLogos() {
   return (
-    <h1 className={className} style={{ letterSpacing: "-0.04em" }}>
-      {lines.map((line, lineIdx) => {
-        const chars = line.split("");
-        const lineStartIndex = globalCharIndex;
-        globalCharIndex += chars.length;
-        return (
-          <span key={lineIdx} className="block">
-            {chars.map((char, charIdx) => {
-              const delay = lineStartIndex * charDelay + charIdx * charDelay;
-              return (
-                <span
-                  key={charIdx}
-                  className="inline-block"
-                  style={{
-                    opacity: animated ? 1 : 0,
-                    transform: animated ? "translateX(0)" : "translateX(-18px)",
-                    transition: `opacity 500ms ease ${delay}ms, transform 500ms ease ${delay}ms`,
-                  }}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </span>
-              );
-            })}
-          </span>
-        );
-      })}
-    </h1>
+    <div className="relative w-full h-full flex items-center justify-center">
+      {/* Soft glow behind the logos */}
+      <div
+        style={{
+          position: "absolute",
+          width: "420px",
+          height: "420px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(96,177,255,0.25) 0%, rgba(49,154,255,0.1) 50%, transparent 80%)",
+          filter: "blur(40px)",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%,-50%)",
+        }}
+      />
+
+      {/* Large emblem — slow rotation */}
+      <img
+        src={EMBLEM_URL}
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          width: "340px",
+          height: "340px",
+          objectFit: "contain",
+          animation: "spin-slow 28s linear infinite",
+          filter: "drop-shadow(0 8px 32px rgba(49,154,255,0.35))",
+          opacity: 0.95,
+        }}
+      />
+
+      {/* Smaller logoin — counter-rotation, offset */}
+      <img
+        src={LOGOIN_URL}
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          width: "160px",
+          height: "160px",
+          objectFit: "contain",
+          top: "12%",
+          right: "8%",
+          animation: "spin-reverse 18s linear infinite, float-y 6s ease-in-out infinite",
+          filter: "drop-shadow(0 4px 16px rgba(49,154,255,0.25))",
+          opacity: 0.85,
+        }}
+      />
+
+      {/* Third instance — small, bottom-left, pure float */}
+      <img
+        src={EMBLEM_URL}
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          width: "90px",
+          height: "90px",
+          objectFit: "contain",
+          bottom: "14%",
+          left: "6%",
+          animation: "float-y 8s ease-in-out infinite reverse, spin-slow 40s linear infinite reverse",
+          filter: "drop-shadow(0 2px 8px rgba(49,154,255,0.2))",
+          opacity: 0.6,
+        }}
+      />
+    </div>
   );
 }
 
-// ── Hero Section (standalone, full-viewport) ────────────────────────────────
+// ─── Hero Section ───────────────────────────────────────────────────────────
 function HeroSection() {
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black">
-      {/* Full-screen background video — no overlay */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
+    <section
+      className="relative w-full overflow-hidden"
+      style={{
+        background: "#ffffff",
+        minHeight: "100vh",
+        maxWidth: "1600px",
+        margin: "0 auto",
+        WebkitFontSmoothing: "antialiased",
+      }}
+    >
+      {/* Background gradient glow blobs — top-left */}
+      <div
+        style={{
+          position: "absolute",
+          top: "-120px",
+          left: "-160px",
+          width: "700px",
+          height: "700px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(96,177,255,0.35) 0%, transparent 70%)",
+          filter: "blur(80px)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: "60px",
+          left: "80px",
+          width: "400px",
+          height: "400px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(49,154,255,0.2) 0%, transparent 70%)",
+          filter: "blur(60px)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
       />
 
-      {/* Content layer */}
-      <div className="relative z-10 flex flex-col h-full px-6 md:px-12 lg:px-16">
-        {/* ── Navbar ── */}
-        <nav className="pt-6">
-          <div className="liquid-glass rounded-xl px-4 py-2 flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/">
-              <span className="flex items-center gap-3 cursor-pointer">
-                <img
-                  src="/images/logo.png"
-                  alt="Darwish & Co."
-                  className="h-8 w-auto object-contain"
-                  style={{ filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.5))" }}
-                />
-                <span
-                  className="text-white text-xl font-semibold tracking-tight hidden sm:block"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  Darwish &amp; Co.
-                </span>
-              </span>
-            </Link>
+      {/* Content wrapper */}
+      <div className="relative z-10 flex flex-col" style={{ minHeight: "100vh" }}>
+        {/* Navbar */}
+        <div className="pt-6 px-4">
+          <GlassNavbar />
+        </div>
 
-            {/* Center links — desktop only */}
-            <div
-              className="hidden md:flex items-center gap-8 text-sm text-white/80"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              {[
-                { label: "Strategy", href: "/services#strategy" },
-                { label: "GRC", href: "/services#grc" },
-                { label: "HR", href: "/services#hr" },
-                { label: "Projects", href: "/projects" },
-                { label: "Partners", href: "/partners" },
-              ].map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <span className="hover:text-white transition-colors duration-200 cursor-pointer">
-                    {item.label}
+        {/* Hero body */}
+        <div className="flex-1 flex items-center">
+          <div className="container mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-16 lg:py-24">
+
+            {/* ── Left: copy ── */}
+            <div className="space-y-8 order-2 lg:order-1">
+              {/* Social proof badge */}
+              <div
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
+                style={{
+                  background: "rgba(255,255,255,0.7)",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+                  fontFamily: "'Inter', sans-serif",
+                  color: "#444",
+                }}
+              >
+                <span className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={13} fill="#FF801E" stroke="none" />
+                  ))}
+                </span>
+                <span>Rated 4.9/5 by 200+ clients</span>
+              </div>
+
+              {/* Headline */}
+              <h1
+                style={{
+                  fontFamily: "'Fustat', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "clamp(42px, 5vw, 75px)",
+                  lineHeight: 1.05,
+                  letterSpacing: "-2px",
+                  color: "#0a0a0a",
+                }}
+              >
+                A Wise Word<br />
+                <span style={{ color: "#0084FF" }}>In The Right</span><br />
+                Moment.
+              </h1>
+
+              {/* Sub-headline */}
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "18px",
+                  lineHeight: 1.65,
+                  letterSpacing: "-1px",
+                  color: "#555",
+                  maxWidth: "480px",
+                }}
+              >
+                Navigating complexity and unlocking potential for SMEs in the
+                MENA region through expert strategic management, GRC, HR, and
+                market research consulting.
+              </p>
+
+              {/* CTA */}
+              <div className="flex flex-wrap gap-4 items-center">
+                <Link href="/contact">
+                  <button
+                    style={{
+                      background: "rgba(0,132,255,0.8)",
+                      backdropFilter: "blur(2px)",
+                      WebkitBackdropFilter: "blur(2px)",
+                      borderRadius: "16px",
+                      border: "none",
+                      boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 4px 20px rgba(0,132,255,0.3)",
+                      color: "#fff",
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      padding: "14px 28px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      cursor: "pointer",
+                      transition: "transform 200ms ease, box-shadow 200ms ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      const b = e.currentTarget as HTMLButtonElement;
+                      b.style.transform = "scale(1.02)";
+                      b.style.boxShadow = "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 8px 28px rgba(0,132,255,0.4)";
+                    }}
+                    onMouseLeave={(e) => {
+                      const b = e.currentTarget as HTMLButtonElement;
+                      b.style.transform = "scale(1)";
+                      b.style.boxShadow = "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 4px 20px rgba(0,132,255,0.3)";
+                    }}
+                  >
+                    Get Started Now
+                    <span
+                      style={{
+                        background: "rgba(255,255,255,0.25)",
+                        borderRadius: "50%",
+                        width: "28px",
+                        height: "28px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <ArrowRight size={14} strokeWidth={2.5} />
+                    </span>
+                  </button>
+                </Link>
+
+                <Link href="/services">
+                  <span
+                    className="cursor-pointer flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Explore Services <ArrowRight size={14} />
                   </span>
                 </Link>
+              </div>
+            </div>
+
+            {/* ── Right: animated logos ── */}
+            <div
+              className="order-1 lg:order-2 flex items-center justify-center"
+              style={{ minHeight: "400px" }}
+            >
+              <FloatingLogos />
+            </div>
+          </div>
+        </div>
+
+        {/* ── Trusted-by footer strip ── */}
+        <div
+          className="px-6 lg:px-12 pb-12"
+          style={{ fontFamily: "'Inter', sans-serif" }}
+        >
+          <p
+            className="text-center text-xs font-medium uppercase tracking-widest mb-8"
+            style={{ color: "#999" }}
+          >
+            Trusted by top-tier companies across MENA
+          </p>
+
+          {/* Desktop: static row */}
+          <div className="hidden md:flex items-center justify-center" style={{ gap: "100px" }}>
+            {PARTNER_LOGOS.map((p) => (
+              <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer"
+                className="opacity-40 hover:opacity-70 transition-opacity duration-300 flex items-center">
+                <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain"
+                  style={{ filter: "grayscale(100%)" }} />
+              </a>
+            ))}
+          </div>
+
+          {/* Mobile: marquee */}
+          <div className="md:hidden overflow-hidden"
+            style={{
+              maskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+            }}>
+            <div className="flex items-center marquee-track" style={{ width: "max-content" }}>
+              {[...Array(2)].map((_, setIdx) => (
+                <div key={setIdx} className="flex items-center gap-12 px-6">
+                  {PARTNER_LOGOS.map((p) => (
+                    <a key={p.href + setIdx} href={p.href} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center opacity-40 hover:opacity-70 transition-opacity duration-300 flex-shrink-0">
+                      <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain"
+                        style={{ filter: "grayscale(100%)" }} />
+                    </a>
+                  ))}
+                </div>
               ))}
             </div>
-
-            {/* CTA button */}
-            <Link href="/contact">
-              <Button
-                size="sm"
-                className="bg-white text-black hover:bg-gray-100 rounded-lg text-sm font-medium px-6"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Start a Conversation
-              </Button>
-            </Link>
-          </div>
-        </nav>
-
-        {/* ── Hero content — pushed to bottom ── */}
-        <div className="flex-1 flex flex-col justify-end pb-12 lg:pb-16">
-          <div className="lg:grid lg:grid-cols-2 lg:items-end gap-12">
-            {/* Left: main copy */}
-            <div>
-              <AnimatedHeading
-                lines={["A Wise Word", "In The Right Moment."]}
-                className="text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal mb-4"
-                initialDelay={200}
-                charDelay={30}
-              />
-
-              <FadeIn delay={800} duration={1000}>
-                <p
-                  className="text-base md:text-lg text-gray-300 mb-5 max-w-lg"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  Darwish &amp; Co. partners with MENA's growth-stage businesses
-                  to build the strategic foundations that turn ambition into
-                  measurable results.
-                </p>
-              </FadeIn>
-
-              <FadeIn delay={1200} duration={1000}>
-                <div className="flex flex-wrap gap-4">
-                  <Link href="/services#strategy">
-                    <Button
-                      size="lg"
-                      className="bg-white text-black hover:bg-gray-100 rounded-lg font-medium px-8 py-3"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      Our Strategy Practice
-                    </Button>
-                  </Link>
-                  <Link href="/contact">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="liquid-glass border border-white/20 text-white hover:bg-white hover:text-black rounded-lg font-medium px-8 py-3 transition-all duration-300"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      Explore All Services
-                    </Button>
-                  </Link>
-                </div>
-              </FadeIn>
-            </div>
-
-            {/* Right: tag */}
-            <FadeIn delay={1400} duration={1000} className="flex items-end justify-start lg:justify-end mt-10 lg:mt-0">
-              <div
-                className="liquid-glass border border-white/20 px-6 py-3 rounded-xl"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                <p className="text-white text-lg md:text-xl lg:text-2xl font-light">
-                  Strategy. GRC. HR. Growth.
-                </p>
-              </div>
-            </FadeIn>
           </div>
         </div>
       </div>
@@ -223,93 +419,17 @@ function HeroSection() {
   );
 }
 
-// ── Main Page ───────────────────────────────────────────────────────────────
+// ─── Main Page ──────────────────────────────────────────────────────────────
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* ── HERO (full-viewport, standalone) ── */}
+      {/* ── HERO ── */}
       <HeroSection />
-
-      {/* ── Partner Logos Banner ── */}
-      <section
-        className="py-10 border-y"
-        style={{
-          background: "linear-gradient(135deg, #dff0f7 0%, #dff2ea 100%)",
-          borderColor: "#b8d9e8",
-        }}
-      >
-        <style>{`
-          @keyframes marquee-scroll {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          .marquee-track {
-            animation: marquee-scroll 18s linear infinite;
-          }
-          .marquee-track:hover {
-            animation-play-state: paused;
-          }
-        `}</style>
-        <div className="container">
-          <p className="text-center text-xs font-bold tracking-widest uppercase text-muted-foreground mb-8">
-            Trusted Partners &amp; Alliances
-          </p>
-
-          {/* Desktop: static centred row */}
-          <div className="hidden md:flex items-center justify-center gap-16">
-            {[
-              { href: "https://visionethics.com", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp", alt: "VisionEthics", title: "VisionEthics — Integrity & Anti-Corruption Advisory" },
-              { href: "https://widebot.ai", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp", alt: "WideBot AI", title: "WideBot — Arabic AI Platform" },
-              { href: "https://techno-management.com", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp", alt: "Techno-Management", title: "Techno-Management — Strategy & Performance Management" },
-              { href: "https://www.keheilan.com", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png", alt: "Keheilan Asset Management", title: "Keheilan Asset Management — Hedge Fund & Venture Capital" },
-              { href: "https://in-light.tech", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg", alt: "In Light Consumer Insights", title: "In Light — Consumer Insights" },
-            ].map((p) => (
-              <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer"
-                className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300" title={p.title}>
-                <img src={p.src} alt={p.alt} className="h-12 w-auto object-contain"
-                  style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.15))" }} />
-              </a>
-            ))}
-          </div>
-
-          {/* Mobile: auto-scrolling marquee */}
-          <div className="md:hidden overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)" }}>
-            <div className="flex items-center marquee-track" style={{ width: "max-content" }}>
-              {[...Array(2)].map((_, setIdx) => (
-                <div key={setIdx} className="flex items-center gap-12 px-6">
-                  {[
-                    { href: "https://visionethics.com", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp", alt: "VisionEthics" },
-                    { href: "https://widebot.ai", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp", alt: "WideBot AI" },
-                    { href: "https://techno-management.com", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp", alt: "Techno-Management" },
-                    { href: "https://www.keheilan.com", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png", alt: "Keheilan Asset Management" },
-                    { href: "https://in-light.tech", src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg", alt: "In Light Consumer Insights" },
-                  ].map((p) => (
-                    <a key={p.href + setIdx} href={p.href} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center opacity-70 hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
-                      <img src={p.src} alt={p.alt} className="h-12 w-auto object-contain"
-                        style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.15))" }} />
-                    </a>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="text-center mt-8">
-            <Link href="/corporate-partners">
-              <span className="text-xs font-bold text-primary hover:underline cursor-pointer tracking-wide uppercase">
-                View All Partners →
-              </span>
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* ── Strategic Management — Primary Focus ── */}
       <section className="py-32 bg-white">
         <div className="container">
           <div className="grid lg:grid-cols-12 gap-12 items-start">
-            {/* Left: headline */}
             <div className="lg:col-span-5 space-y-6">
               <span className="text-xs font-bold uppercase tracking-widest text-primary">
                 Core Practice
@@ -324,61 +444,28 @@ export default function Home() {
               </p>
               <div className="w-20 h-1 bg-primary" />
               <Link href="/services#strategy">
-                <Button
-                  size="lg"
-                  className="bg-primary text-white hover:bg-primary/90 font-bold rounded-none px-8 mt-4"
-                >
+                <Button size="lg" className="bg-primary text-white hover:bg-primary/90 font-bold rounded-none px-8 mt-4">
                   Explore Strategy Practice <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </div>
 
-            {/* Right: 3 capability cards */}
             <div className="lg:col-span-7 grid sm:grid-cols-3 gap-6">
-              <Card className="border-t-4 border-t-primary border-x-0 border-b-0 shadow-lg rounded-none bg-white">
-                <CardHeader>
-                  <Target className="w-10 h-10 text-primary mb-4" />
-                  <CardTitle className="font-heading text-lg text-foreground">
-                    Strategic Planning
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    Structured frameworks to define goals, allocate resources,
-                    and set measurable milestones.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-t-4 border-t-chart-2 border-x-0 border-b-0 shadow-lg rounded-none bg-white">
-                <CardHeader>
-                  <BarChart3 className="w-10 h-10 text-chart-2 mb-4" />
-                  <CardTitle className="font-heading text-lg text-foreground">
-                    Performance Systems
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    KPI design, balanced scorecards, and OKR implementation
-                    aligned to your strategic objectives.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-t-4 border-t-chart-3 border-x-0 border-b-0 shadow-lg rounded-none bg-white">
-                <CardHeader>
-                  <Layers className="w-10 h-10 text-chart-3 mb-4" />
-                  <CardTitle className="font-heading text-lg text-foreground">
-                    Org Design
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    Restructuring, role clarity, and governance models that
-                    support your growth trajectory.
-                  </p>
-                </CardContent>
-              </Card>
+              {[
+                { icon: Target, color: "text-primary", border: "border-t-primary", title: "Strategic Planning", desc: "Structured frameworks to define goals, allocate resources, and set measurable milestones." },
+                { icon: BarChart3, color: "text-chart-2", border: "border-t-chart-2", title: "Performance Systems", desc: "KPI design, balanced scorecards, and OKR implementation aligned to your strategic objectives." },
+                { icon: Layers, color: "text-chart-3", border: "border-t-chart-3", title: "Org Design", desc: "Restructuring, role clarity, and governance models that support your growth trajectory." },
+              ].map(({ icon: Icon, color, border, title, desc }) => (
+                <Card key={title} className={`border-t-4 ${border} border-x-0 border-b-0 shadow-lg rounded-none bg-white`}>
+                  <CardHeader>
+                    <Icon className={`w-10 h-10 ${color} mb-4`} />
+                    <CardTitle className="font-heading text-lg text-foreground">{title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
@@ -388,19 +475,12 @@ export default function Home() {
       <section className="py-24 bg-secondary/20">
         <div className="container">
           <div className="text-center mb-14">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">
-              Supporting Practices
-            </span>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mt-3 mb-4">
-              Built Around Your Strategy
-            </h2>
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">Supporting Practices</span>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mt-3 mb-4">Built Around Your Strategy</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Once the strategic direction is set, our specialist practices
-              deliver the governance, people, and growth capabilities that
-              bring it to life.
+              Once the strategic direction is set, our specialist practices deliver the governance, people, and growth capabilities that bring it to life.
             </p>
           </div>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { icon: Shield, color: "text-primary", border: "border-t-primary", title: "Governance & Risk", desc: "Robust GRC frameworks that protect your business while enabling sustainable growth.", href: "/services#grc" },
@@ -445,9 +525,7 @@ export default function Home() {
               <span className="text-primary">strategic breakthrough</span>."
             </h2>
             <p className="text-lg text-muted-foreground">
-              We don't just advise; we partner. Our integrated approach ensures
-              that your governance structures support your people, and your
-              people drive your growth.
+              We don't just advise; we partner. Our integrated approach ensures that your governance structures support your people, and your people drive your growth.
             </p>
             <Link href="/about">
               <Button size="lg" className="bg-foreground text-white hover:bg-foreground/90 font-bold rounded-none px-8">
@@ -462,9 +540,7 @@ export default function Home() {
       <section className="py-32 bg-secondary/10">
         <div className="container max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Why Partner with Darwish &amp; Co?
-            </h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">Why Partner with Darwish &amp; Co?</h2>
             <div className="w-16 h-1 bg-chart-2 mx-auto" />
           </div>
           <div className="grid md:grid-cols-3 gap-12">
@@ -491,13 +567,8 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
             <div className="space-y-3">
               <span className="text-xs font-bold uppercase tracking-widest text-primary">Our Work</span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight">
-                Platforms We've Built
-              </h2>
-              <p className="text-white/60 text-lg max-w-xl">
-                Beyond consulting, we deliver digital solutions that create
-                lasting operational impact for our clients.
-              </p>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight">Platforms We've Built</h2>
+              <p className="text-white/60 text-lg max-w-xl">Beyond consulting, we deliver digital solutions that create lasting operational impact for our clients.</p>
             </div>
             <Link href="/projects">
               <span className="flex items-center gap-2 text-primary font-bold text-sm hover:underline cursor-pointer whitespace-nowrap">
@@ -505,65 +576,37 @@ export default function Home() {
               </span>
             </Link>
           </div>
-
           <div className="grid md:grid-cols-2 gap-8">
-            {/* AI POC Platform */}
-            <div className="group relative bg-white/5 border border-white/10 hover:border-primary/50 transition-all duration-300 overflow-hidden">
-              <div className="h-1 w-full bg-primary" />
-              <div className="p-8 space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Brain className="w-5 h-5 text-primary" />
+            {[
+              { icon: Brain, color: "text-primary", accentColor: "bg-primary", borderHover: "hover:border-primary/50", tagColor: "text-primary", tags: ["React", "tRPC", "MySQL", "Resend Email"], label: "AI Initiative", title: "AI POC Collaboration Platform", desc: "A full-stack platform enabling Techno-Management and Widebot to collaboratively manage AI proof-of-concept projects.", href: "/projects#ai-poc", cta: "Explore platform" },
+              { icon: Globe, color: "text-chart-3", accentColor: "bg-chart-3", borderHover: "hover:border-chart-3/50", tagColor: "text-chart-3", tags: ["React", "Bilingual", "Trade Data", "Sector Maps"], label: "International Trade", title: "Hebei–Egypt Industrial Partnership Portal", desc: "A bilingual trade intelligence platform connecting Egyptian investors with Hebei Province's 107 industrial clusters.", href: "/projects#trade-portal", cta: "Explore portal" },
+            ].map(({ icon: Icon, color, accentColor, borderHover, tagColor, tags, label, title, desc, href, cta }) => (
+              <div key={title} className={`group relative bg-white/5 border border-white/10 ${borderHover} transition-all duration-300 overflow-hidden`}>
+                <div className={`h-1 w-full ${accentColor}`} />
+                <div className="p-8 space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-full ${accentColor}/20 flex items-center justify-center`}>
+                      <Icon className={`w-5 h-5 ${color}`} />
+                    </div>
+                    <span className={`text-xs font-bold uppercase tracking-widest ${tagColor}`}>{label}</span>
                   </div>
-                  <span className="text-xs font-bold uppercase tracking-widest text-primary">AI Initiative</span>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="font-heading text-2xl font-bold text-white">AI POC Collaboration Platform</h3>
-                  <p className="text-white/60 leading-relaxed text-sm">
-                    A full-stack platform enabling Techno-Management and Widebot to collaboratively manage AI proof-of-concept projects.
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {["React", "tRPC", "MySQL", "Resend Email"].map((tag) => (
-                    <span key={tag} className="px-2.5 py-1 text-xs font-medium bg-white/10 text-white/70 rounded-sm">{tag}</span>
-                  ))}
-                </div>
-                <Link href="/projects#ai-poc">
-                  <span className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:underline cursor-pointer">
-                    Explore platform <ArrowRight className="w-4 h-4" />
-                  </span>
-                </Link>
-              </div>
-            </div>
-
-            {/* Hebei-Egypt Trade Portal */}
-            <div className="group relative bg-white/5 border border-white/10 hover:border-chart-3/50 transition-all duration-300 overflow-hidden">
-              <div className="h-1 w-full bg-chart-3" />
-              <div className="p-8 space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-chart-3/20 flex items-center justify-center">
-                    <Globe className="w-5 h-5 text-chart-3" />
+                  <div className="space-y-3">
+                    <h3 className="font-heading text-2xl font-bold text-white">{title}</h3>
+                    <p className="text-white/60 leading-relaxed text-sm">{desc}</p>
                   </div>
-                  <span className="text-xs font-bold uppercase tracking-widest text-chart-3">International Trade</span>
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <span key={tag} className="px-2.5 py-1 text-xs font-medium bg-white/10 text-white/70 rounded-sm">{tag}</span>
+                    ))}
+                  </div>
+                  <Link href={href}>
+                    <span className={`inline-flex items-center gap-2 ${tagColor} font-bold text-sm hover:underline cursor-pointer`}>
+                      {cta} <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </Link>
                 </div>
-                <div className="space-y-3">
-                  <h3 className="font-heading text-2xl font-bold text-white">Hebei–Egypt Industrial Partnership Portal</h3>
-                  <p className="text-white/60 leading-relaxed text-sm">
-                    A bilingual trade intelligence platform connecting Egyptian investors with Hebei Province's 107 industrial clusters.
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {["React", "Bilingual", "Trade Data", "Sector Maps"].map((tag) => (
-                    <span key={tag} className="px-2.5 py-1 text-xs font-medium bg-white/10 text-white/70 rounded-sm">{tag}</span>
-                  ))}
-                </div>
-                <Link href="/projects#trade-portal">
-                  <span className="inline-flex items-center gap-2 text-chart-3 font-bold text-sm hover:underline cursor-pointer">
-                    Explore portal <ArrowRight className="w-4 h-4" />
-                  </span>
-                </Link>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -571,18 +614,10 @@ export default function Home() {
       {/* ── CTA ── */}
       <section className="py-24 bg-primary text-white">
         <div className="container text-center max-w-3xl mx-auto space-y-8">
-          <h2 className="font-heading text-4xl md:text-5xl font-bold">
-            Ready to Navigate Your Future?
-          </h2>
-          <p className="text-xl text-white/90 font-light">
-            Let's build a resilient and thriving future for your business,
-            together.
-          </p>
+          <h2 className="font-heading text-4xl md:text-5xl font-bold">Ready to Navigate Your Future?</h2>
+          <p className="text-xl text-white/90 font-light">Let's build a resilient and thriving future for your business, together.</p>
           <Link href="/contact">
-            <Button
-              size="lg"
-              className="bg-white text-primary hover:bg-gray-100 font-bold text-lg px-12 py-8 h-auto rounded-none mt-8 shadow-xl"
-            >
+            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 font-bold text-lg px-12 py-8 h-auto rounded-none mt-8 shadow-xl">
               Get in Touch
             </Button>
           </Link>
