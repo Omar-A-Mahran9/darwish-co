@@ -9,9 +9,9 @@ import { Link } from "wouter";
 
 // ─── CDN assets ────────────────────────────────────────────────────────────
 const EMBLEM_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem_e8526ed4.png";
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
 const LOGOIN_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-logoin_e0adbc2e.png";
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-logoin-nobg_31b88d82.png";
 
 // ─── Partner logo CDN urls ──────────────────────────────────────────────────
 const PARTNER_LOGOS = [
@@ -147,7 +147,6 @@ function FloatingLogos() {
           objectFit: "contain",
           animation: "spin-slow 28s linear infinite",
           filter: "drop-shadow(0 8px 32px rgba(49,154,255,0.35))",
-          mixBlendMode: "multiply",
           opacity: 0.95,
         }}
       />
@@ -166,7 +165,6 @@ function FloatingLogos() {
           right: "8%",
           animation: "spin-reverse 18s linear infinite, float-y 6s ease-in-out infinite",
           filter: "drop-shadow(0 4px 16px rgba(49,154,255,0.25))",
-          mixBlendMode: "multiply",
           opacity: 0.85,
         }}
       />
@@ -185,7 +183,6 @@ function FloatingLogos() {
           left: "6%",
           animation: "float-y 8s ease-in-out infinite reverse, spin-slow 40s linear infinite reverse",
           filter: "drop-shadow(0 2px 8px rgba(49,154,255,0.2))",
-          mixBlendMode: "multiply",
           opacity: 0.6,
         }}
       />
