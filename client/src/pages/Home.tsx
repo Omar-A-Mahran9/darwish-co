@@ -11,7 +11,7 @@ import { Link } from "wouter";
 const EMBLEM_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
 const LOGOIN_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-logoin-nobg_31b88d82.png";
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-logoin-nobg2_0c782dcc.png";
 
 // ─── Partner logo CDN urls ──────────────────────────────────────────────────
 const PARTNER_LOGOS = [
@@ -49,7 +49,7 @@ function GlassNavbar() {
             className="flex items-center gap-2 cursor-pointer select-none"
             style={{ fontFamily: "'Fustat', sans-serif", fontWeight: 700, fontSize: "18px", color: "#111" }}
           >
-            <img src="/images/logo.png" alt="Darwish & Co." className="h-7 w-auto object-contain" />
+            <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/logo-nobg_7762efbd.png" alt="Darwish & Co." className="h-7 w-auto object-contain" />
             Darwish &amp; Co.
           </span>
         </Link>
