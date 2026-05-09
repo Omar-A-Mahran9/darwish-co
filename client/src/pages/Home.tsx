@@ -147,6 +147,7 @@ function FloatingLogos() {
           objectFit: "contain",
           animation: "spin-slow 28s linear infinite",
           filter: "drop-shadow(0 8px 32px rgba(49,154,255,0.35))",
+          mixBlendMode: "multiply",
           opacity: 0.95,
         }}
       />
@@ -165,6 +166,7 @@ function FloatingLogos() {
           right: "8%",
           animation: "spin-reverse 18s linear infinite, float-y 6s ease-in-out infinite",
           filter: "drop-shadow(0 4px 16px rgba(49,154,255,0.25))",
+          mixBlendMode: "multiply",
           opacity: 0.85,
         }}
       />
@@ -183,6 +185,7 @@ function FloatingLogos() {
           left: "6%",
           animation: "float-y 8s ease-in-out infinite reverse, spin-slow 40s linear infinite reverse",
           filter: "drop-shadow(0 2px 8px rgba(49,154,255,0.2))",
+          mixBlendMode: "multiply",
           opacity: 0.6,
         }}
       />
