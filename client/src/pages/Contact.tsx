@@ -155,13 +155,25 @@ export default function Contact() {
                 </Card>
 
                 <Card className="border-none shadow-md">
-                  <CardContent className="flex items-center gap-4 p-6">
-                    <div className="p-3 bg-primary/10 rounded-full">
+                  <CardContent className="flex items-start gap-4 p-6">
+                    <div className="p-3 bg-primary/10 rounded-full shrink-0">
                       <MapPin className="w-6 h-6 text-primary" />
                     </div>
                     <div>
                       <h3 className="font-bold text-primary">Visit Us</h3>
-                      <p className="text-muted-foreground">www.darwish-co.com</p>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        Office T-10, 3rd Floor, RIO Mall,<br />
+                        Dr. Ahmed Okasha St., off Sadat Axis,<br />
+                        New Cairo 1, Cairo Governorate 11865, Egypt
+                      </p>
+                      <a
+                        href="https://share.google/6tKphgm623sxgJe9m"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-primary hover:underline mt-1 inline-block"
+                      >
+                        Open in Google Maps →
+                      </a>
                     </div>
                   </CardContent>
                 </Card>
@@ -299,6 +311,43 @@ export default function Contact() {
             </div>
 
           </div>
+        </div>
+      </section>
+      {/* Google Maps Section */}
+      <section className="py-0">
+        <div className="w-full" style={{ height: "480px" }}>
+          <iframe
+            title="Darwish & Co. Office Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.8!2d31.4677375!3d30.0560468!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583d2b0e3b3b3b%3A0x1465949206209374709!2sDarwish%26co!5e0!3m2!1sen!2seg!4v1715000000000!5m2!1sen!2seg"
+            width="100%"
+            height="100%"
+            style={{ border: 0, display: "block" }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </section>
+
+      {/* Map CTA strip */}
+      <section className="py-8 bg-primary/5 border-t border-primary/10">
+        <div className="container max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <MapPin className="w-5 h-5 text-primary shrink-0" />
+            <span className="text-sm text-muted-foreground">
+              Office T-10, 3rd Floor, RIO Mall, Dr. Ahmed Okasha St., New Cairo 1, Egypt
+            </span>
+          </div>
+          <a
+            href="https://share.google/6tKphgm623sxgJe9m"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0"
+          >
+            <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white font-semibold">
+              Get Directions
+            </Button>
+          </a>
         </div>
       </section>
     </div>
