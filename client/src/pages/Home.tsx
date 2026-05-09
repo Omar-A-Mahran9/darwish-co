@@ -251,23 +251,41 @@ function FloatingLogos() {
             {/* Explode keyframes per colour group — each flies in a different direction */}
             <style>{`
               @keyframes explode-blue {
-                0%,100% { transform: translate(0,0) scale(1); opacity:1; }
-                30%      { transform: translate(-22px,-18px) scale(1.08); opacity:0.85; }
-                50%      { transform: translate(-22px,-18px) scale(1.08); opacity:0.85; }
-                80%      { transform: translate(0,0) scale(1); opacity:1; }
+                0%,100% { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
+                30%      { transform: translate(-22px,-18px) scale(1.08); opacity:0.85; filter: brightness(0.9); }
+                50%      { transform: translate(-22px,-18px) scale(1.08); opacity:0.85; filter: brightness(0.9); }
+                78%      { transform: translate(0,0) scale(1.12); opacity:1; filter: brightness(1.6); }
+                85%      { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
               }
               @keyframes explode-green {
-                0%,100% { transform: translate(0,0) scale(1); opacity:1; }
-                30%      { transform: translate(20px,-18px) scale(1.08); opacity:0.85; }
-                50%      { transform: translate(20px,-18px) scale(1.08); opacity:0.85; }
-                80%      { transform: translate(0,0) scale(1); opacity:1; }
+                0%,100% { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
+                30%      { transform: translate(20px,-18px) scale(1.08); opacity:0.85; filter: brightness(0.9); }
+                50%      { transform: translate(20px,-18px) scale(1.08); opacity:0.85; filter: brightness(0.9); }
+                78%      { transform: translate(0,0) scale(1.12); opacity:1; filter: brightness(1.6); }
+                85%      { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
               }
               @keyframes explode-gold {
-                0%,100% { transform: translate(0,0) scale(1); opacity:1; }
-                30%      { transform: translate(0px, 24px) scale(1.06); opacity:0.85; }
-                50%      { transform: translate(0px, 24px) scale(1.06); opacity:0.85; }
-                80%      { transform: translate(0,0) scale(1); opacity:1; }
+                0%,100% { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
+                30%      { transform: translate(0px, 24px) scale(1.06); opacity:0.85; filter: brightness(0.9); }
+                50%      { transform: translate(0px, 24px) scale(1.06); opacity:0.85; filter: brightness(0.9); }
+                78%      { transform: translate(0,0) scale(1.1); opacity:1; filter: brightness(1.6); }
+                85%      { transform: translate(0,0) scale(1); opacity:1; filter: brightness(1); }
               }
+              /* Shockwave ring — expands outward at the snap-back moment */
+              @keyframes shockwave {
+                0%,72%   { r: 10; opacity: 0; }
+                78%      { r: 10; opacity: 0.9; }
+                90%      { r: 105; opacity: 0; }
+                100%     { r: 105; opacity: 0; }
+              }
+              @keyframes shockwave2 {
+                0%,74%   { r: 10; opacity: 0; }
+                80%      { r: 10; opacity: 0.55; }
+                93%      { r: 130; opacity: 0; }
+                100%     { r: 130; opacity: 0; }
+              }
+              .shockwave-ring  { animation: shockwave  4.5s ease-out infinite; transform-origin: 100px 100px; }
+              .shockwave-ring2 { animation: shockwave2 4.5s ease-out infinite; transform-origin: 100px 100px; }
               .explode-blue  { animation: explode-blue  4.5s ease-in-out infinite; transform-origin: 100px 100px; }
               .explode-green { animation: explode-green 4.5s ease-in-out infinite; transform-origin: 100px 100px; }
               .explode-gold  { animation: explode-gold  4.5s ease-in-out infinite; transform-origin: 100px 100px; }
@@ -319,6 +337,22 @@ function FloatingLogos() {
             })}
             <circle cx="100" cy="100" r="22" fill="#1A73E8" opacity="0.85"/>
           </g>
+
+          {/* ── Shockwave rings — pulse outward at snap-back moment ── */}
+          <circle
+            cx="100" cy="100" r="10"
+            fill="none"
+            stroke="rgba(49,154,255,0.75)"
+            strokeWidth="2.5"
+            className="shockwave-ring"
+          />
+          <circle
+            cx="100" cy="100" r="10"
+            fill="none"
+            stroke="rgba(49,154,255,0.35)"
+            strokeWidth="1.5"
+            className="shockwave-ring2"
+          />
         </svg>
       </div>
     </div>
