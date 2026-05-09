@@ -193,3 +193,27 @@
 - [x] Title: Finance & Investment Consultant — Financial Analysis & Education
 - [x] Include 8 certifications/credentials from CV
 - [x] Email contact: engy.saeed@gmail.com
+
+## Homepage Redesign — Video Hero & Strategic Management Focus
+
+- [x] Add Inter font to index.html and index.css body
+- [x] Add liquid-glass CSS utility class to index.css
+- [x] Rebuild hero section: full-screen video background, liquid-glass navbar, animated character-by-character heading
+- [x] Reorder homepage sections: Strategic Management as primary focus (first section after hero)
+- [x] Add Supporting Services grid (GRC, HR, Business Dev, Digital & AI)
+- [x] Add Projects Teaser section (AI POC + Hebei-Egypt cards)
+- [x] Retain Why Darwish & Co, Quote/Image Break, and CTA sections
+
+## SEO Improvements
+
+- [x] Update page title to "Strategic Management & Business Consulting | MENA"
+- [x] Add meta description to index.html
+- [x] Add Open Graph and Twitter Card meta tags
+- [x] Add canonical link tag
+- [x] Create sitemap.xml in public/ folder (17 pages)
+- [x] Create robots.txt in public/ folder
+- [x] Add JSON-LD Organization structured data to index.html
+- [x] Add JSON-LD Service ItemList structured data to index.html
+- [x] Create Blog page (/blog) with 3 SEO-targeted articles
+- [x] Add Blog route to App.tsx
+- [x] Add Blog link to main navigation

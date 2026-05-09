@@ -44,6 +44,7 @@ const navItems: NavItem[] = [
       { name: "Corporate Partners & Licences", path: "/corporate-partners" },
     ],
   },
+  { name: "Blog", path: "/blog" },
   { name: "Contact", path: "/contact" },
 ];
 
