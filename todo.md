@@ -217,3 +217,7 @@
 - [x] Create Blog page (/blog) with 3 SEO-targeted articles
 - [x] Add Blog route to App.tsx
 - [x] Add Blog link to main navigation
+
+## Floating WhatsApp Button
+
+- [x] Add floating WhatsApp button (fixed bottom-right, links to +20 110 110 1090)
