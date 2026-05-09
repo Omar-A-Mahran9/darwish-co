@@ -163,7 +163,7 @@ function HeroSection() {
             {/* Left: main copy */}
             <div>
               <AnimatedHeading
-                lines={["Strategic clarity.", "Decisive action."]}
+                lines={["A Wise Word", "In The Right Moment."]}
                 className="text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal mb-4"
                 initialDelay={200}
                 charDelay={30}
