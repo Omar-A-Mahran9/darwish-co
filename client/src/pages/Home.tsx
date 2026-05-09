@@ -228,7 +228,7 @@ function FloatingLogos() {
         </div>
       ))}
 
-      {/* Central emblem — strategy core */}
+      {/* Central emblem — magnetic explode/reassemble animation */}
       <div
         style={{
           position: "relative",
@@ -237,21 +237,89 @@ function FloatingLogos() {
           flexDirection: "column",
           alignItems: "center",
           gap: "6px",
+          filter: "drop-shadow(0 6px 24px rgba(49,154,255,0.4))",
         }}
       >
-        <img
-          src={EMBLEM_URL}
-          alt=""
+        <svg
+          viewBox="0 0 200 200"
+          width="150"
+          height="150"
           aria-hidden="true"
-          style={{
-            width: "130px",
-            height: "130px",
-            objectFit: "contain",
-            animation: "spin-slow 32s linear infinite",
-            filter: "drop-shadow(0 6px 24px rgba(49,154,255,0.4))",
-          }}
-        />
+          style={{ overflow: "visible" }}
+        >
+          <defs>
+            {/* Explode keyframes per colour group — each flies in a different direction */}
+            <style>{`
+              @keyframes explode-blue {
+                0%,100% { transform: translate(0,0) scale(1); opacity:1; }
+                30%      { transform: translate(-22px,-18px) scale(1.08); opacity:0.85; }
+                50%      { transform: translate(-22px,-18px) scale(1.08); opacity:0.85; }
+                80%      { transform: translate(0,0) scale(1); opacity:1; }
+              }
+              @keyframes explode-green {
+                0%,100% { transform: translate(0,0) scale(1); opacity:1; }
+                30%      { transform: translate(20px,-18px) scale(1.08); opacity:0.85; }
+                50%      { transform: translate(20px,-18px) scale(1.08); opacity:0.85; }
+                80%      { transform: translate(0,0) scale(1); opacity:1; }
+              }
+              @keyframes explode-gold {
+                0%,100% { transform: translate(0,0) scale(1); opacity:1; }
+                30%      { transform: translate(0px, 24px) scale(1.06); opacity:0.85; }
+                50%      { transform: translate(0px, 24px) scale(1.06); opacity:0.85; }
+                80%      { transform: translate(0,0) scale(1); opacity:1; }
+              }
+              .explode-blue  { animation: explode-blue  4.5s ease-in-out infinite; transform-origin: 100px 100px; }
+              .explode-green { animation: explode-green 4.5s ease-in-out infinite; transform-origin: 100px 100px; }
+              .explode-gold  { animation: explode-gold  4.5s ease-in-out infinite; transform-origin: 100px 100px; }
+            `}</style>
+          </defs>
 
+          {/* ── GOLD / ORANGE accent ring (middle layer) ── */}
+          <g className="explode-gold">
+            {Array.from({length:12},(_,i)=>{
+              const a=(i*30)*Math.PI/180;
+              const r=62;
+              const x=100+r*Math.cos(a);
+              const y=100+r*Math.sin(a);
+              return <circle key={i} cx={x} cy={y} r={7} fill="#F5A623" opacity="0.95"/>;
+            })}
+            <circle cx="100" cy="100" r="14" fill="#F5A623" opacity="0.9"/>
+          </g>
+
+          {/* ── GREEN outer star points ── */}
+          <g className="explode-green">
+            {Array.from({length:12},(_,i)=>{
+              const a=(i*30)*Math.PI/180;
+              const r=82;
+              const cx=100+r*Math.cos(a);
+              const cy=100+r*Math.sin(a);
+              const tip=100+(r+18)*Math.cos(a);
+              const tiy=100+(r+18)*Math.sin(a);
+              const lx=100+(r-10)*Math.cos(a-0.28);
+              const ly=100+(r-10)*Math.sin(a-0.28);
+              const rx=100+(r-10)*Math.cos(a+0.28);
+              const ry=100+(r-10)*Math.sin(a+0.28);
+              return <polygon key={i} points={`${tip},${tiy} ${lx},${ly} ${rx},${ry}`} fill="#2ECC71" opacity="0.92"/>;
+            })}
+          </g>
+
+          {/* ── BLUE inner petals ── */}
+          <g className="explode-blue">
+            {Array.from({length:12},(_,i)=>{
+              const a=(i*30)*Math.PI/180;
+              const r=44;
+              const tipx=100+(r+20)*Math.cos(a);
+              const tipy=100+(r+20)*Math.sin(a);
+              const lx=100+(r-8)*Math.cos(a-0.38);
+              const ly=100+(r-8)*Math.sin(a-0.38);
+              const rx=100+(r-8)*Math.cos(a+0.38);
+              const ry=100+(r-8)*Math.sin(a+0.38);
+              return <polygon key={i} points={`${tipx},${tipy} ${lx},${ly} ${rx},${ry}`}
+                fill={i%2===0?"#1A73E8":"#0D47A1"} opacity="0.93"/>;
+            })}
+            <circle cx="100" cy="100" r="22" fill="#1A73E8" opacity="0.85"/>
+          </g>
+        </svg>
       </div>
     </div>
   );
