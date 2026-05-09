@@ -208,6 +208,23 @@
 }
 
 /* ── Logo animation keyframes ── */
+/* Orbital animations: the wrapper div rotates, the inner img counter-rotates */
+@keyframes orbit-cw {
+  from { transform: rotate(0deg) translateX(var(--orbit-r, 155px)); }
+  to   { transform: rotate(360deg) translateX(var(--orbit-r, 155px)); }
+}
+@keyframes orbit-ccw {
+  from { transform: rotate(0deg) translateX(var(--orbit-r, 155px)); }
+  to   { transform: rotate(-360deg) translateX(var(--orbit-r, 155px)); }
+}
+@keyframes counter-cw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+@keyframes counter-ccw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }

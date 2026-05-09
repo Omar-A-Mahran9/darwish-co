@@ -11,7 +11,7 @@ import { Link } from "wouter";
 const EMBLEM_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
 const LOGOIN_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-logoin-nobg2_0c782dcc.png";
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-logoin-v3_92cb6d47.png";
 
 // ─── Partner logo CDN urls ──────────────────────────────────────────────────
 const PARTNER_LOGOS = [
@@ -116,76 +116,154 @@ function GlassNavbar() {
   );
 }
 
-// ─── Floating animated logo composition ────────────────────────────────────
+// ─── Floating animated logo composition — hub-and-spoke orbital (rAF) ───────
+// Each satellite orbits at a fixed radius. The wrapper rotates; the img counter-rotates
+// so it always faces upright. Positions calculated with trigonometry each frame.
+const ORBIT_DEFS = [
+  // inner ring — 4 satellites, clockwise
+  { src: LOGOIN_URL,  size: 68,  radius: 150, speed:  0.40, startDeg:   0, opacity: 0.92 },
+  { src: EMBLEM_URL,  size: 54,  radius: 150, speed:  0.40, startDeg:  90, opacity: 0.78 },
+  { src: LOGOIN_URL,  size: 46,  radius: 150, speed:  0.40, startDeg: 180, opacity: 0.65 },
+  { src: EMBLEM_URL,  size: 40,  radius: 150, speed:  0.40, startDeg: 270, opacity: 0.55 },
+  // outer ring — 4 satellites, counter-clockwise
+  { src: EMBLEM_URL,  size: 58,  radius: 225, speed: -0.25, startDeg:  45, opacity: 0.80 },
+  { src: LOGOIN_URL,  size: 46,  radius: 225, speed: -0.25, startDeg: 135, opacity: 0.65 },
+  { src: EMBLEM_URL,  size: 40,  radius: 225, speed: -0.25, startDeg: 225, opacity: 0.55 },
+  { src: LOGOIN_URL,  size: 36,  radius: 225, speed: -0.25, startDeg: 315, opacity: 0.45 },
+];
+
 function FloatingLogos() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
+  const angleRefs = useRef<number[]>(ORBIT_DEFS.map(d => d.startDeg));
+  const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const wrapRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    let last = performance.now();
+    function tick(now: number) {
+      const dt = (now - last) / 1000; // seconds
+      last = now;
+      ORBIT_DEFS.forEach((def, i) => {
+        angleRefs.current[i] += def.speed * dt * 60; // deg per frame at 60fps
+        const rad = (angleRefs.current[i] * Math.PI) / 180;
+        const cx = def.radius * Math.cos(rad);
+        const cy = def.radius * Math.sin(rad);
+        const wrap = wrapRefs.current[i];
+        const img  = imgRefs.current[i];
+        if (wrap) {
+          wrap.style.transform = `translate(${cx - def.size / 2}px, ${cy - def.size / 2}px)`;
+        }
+        if (img) {
+          // counter-rotate so logo stays upright
+          img.style.transform = `rotate(${-angleRefs.current[i]}deg)`;
+        }
+      });
+      rafRef.current = requestAnimationFrame(tick);
+    }
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      {/* Soft glow behind the logos */}
+    <div
+      ref={containerRef}
+      className="relative flex items-center justify-center"
+      style={{ width: "520px", height: "520px" }}
+    >
+      {/* Radial glow backdrop */}
       <div
         style={{
           position: "absolute",
-          width: "420px",
-          height: "420px",
+          inset: 0,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(96,177,255,0.25) 0%, rgba(49,154,255,0.1) 50%, transparent 80%)",
-          filter: "blur(40px)",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%,-50%)",
+          background: "radial-gradient(circle, rgba(96,177,255,0.22) 0%, rgba(49,154,255,0.08) 55%, transparent 80%)",
+          filter: "blur(36px)",
+          pointerEvents: "none",
         }}
       />
 
-      {/* Large emblem — slow rotation */}
-      <img
-        src={EMBLEM_URL}
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          width: "340px",
-          height: "340px",
-          objectFit: "contain",
-          animation: "spin-slow 28s linear infinite",
-          filter: "drop-shadow(0 8px 32px rgba(49,154,255,0.35))",
-          opacity: 0.95,
-        }}
-      />
+      {/* Orbit ring 1 — inner */}
+      <div style={{
+        position: "absolute", width: "300px", height: "300px",
+        borderRadius: "50%", border: "1px dashed rgba(49,154,255,0.2)",
+        top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none",
+      }} />
 
-      {/* Smaller logoin — counter-rotation, offset */}
-      <img
-        src={LOGOIN_URL}
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          width: "160px",
-          height: "160px",
-          objectFit: "contain",
-          top: "12%",
-          right: "8%",
-          animation: "spin-reverse 18s linear infinite, float-y 6s ease-in-out infinite",
-          filter: "drop-shadow(0 4px 16px rgba(49,154,255,0.25))",
-          opacity: 0.85,
-        }}
-      />
+      {/* Orbit ring 2 — outer */}
+      <div style={{
+        position: "absolute", width: "450px", height: "450px",
+        borderRadius: "50%", border: "1px dashed rgba(49,154,255,0.10)",
+        top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none",
+      }} />
 
-      {/* Third instance — small, bottom-left, pure float */}
-      <img
-        src={EMBLEM_URL}
-        alt=""
-        aria-hidden="true"
+      {/* Orbiting satellites — positioned via rAF */}
+      {ORBIT_DEFS.map((def, i) => (
+        <div
+          key={i}
+          ref={el => { wrapRefs.current[i] = el; }}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: `${def.size}px`,
+            height: `${def.size}px`,
+            willChange: "transform",
+          }}
+        >
+          <img
+            ref={el => { imgRefs.current[i] = el; }}
+            src={def.src}
+            alt=""
+            aria-hidden="true"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              opacity: def.opacity,
+              filter: "drop-shadow(0 2px 8px rgba(49,154,255,0.28))",
+              willChange: "transform",
+            }}
+          />
+        </div>
+      ))}
+
+      {/* Central emblem — strategy core */}
+      <div
         style={{
-          position: "absolute",
-          width: "90px",
-          height: "90px",
-          objectFit: "contain",
-          bottom: "14%",
-          left: "6%",
-          animation: "float-y 8s ease-in-out infinite reverse, spin-slow 40s linear infinite reverse",
-          filter: "drop-shadow(0 2px 8px rgba(49,154,255,0.2))",
-          opacity: 0.6,
+          position: "relative",
+          zIndex: 10,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "6px",
         }}
-      />
+      >
+        <img
+          src={EMBLEM_URL}
+          alt=""
+          aria-hidden="true"
+          style={{
+            width: "130px",
+            height: "130px",
+            objectFit: "contain",
+            animation: "spin-slow 32s linear infinite",
+            filter: "drop-shadow(0 6px 24px rgba(49,154,255,0.4))",
+          }}
+        />
+        <span
+          style={{
+            fontFamily: "'Fustat', sans-serif",
+            fontWeight: 700,
+            fontSize: "11px",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "rgba(49,154,255,0.8)",
+          }}
+        >
+          Strategy
+        </span>
+      </div>
     </div>
   );
 }
