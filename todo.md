@@ -240,3 +240,9 @@
 - [x] Hide Hebei-Egypt Industrial Partnership Portal section from Projects page
 - [x] Hide Education Organization Development section from Projects page
 - [x] Remove corresponding nav dropdown links for hidden sections
+
+## Smart Solutions — Audex Image Enrichment
+
+- [ ] Extract images from Audex.pptx
+- [ ] Upload Audex images to CDN
+- [ ] Integrate images into SmartSolutions page (Compass, Command, Perfect sections)

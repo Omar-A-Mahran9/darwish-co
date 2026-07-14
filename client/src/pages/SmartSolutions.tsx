@@ -34,10 +34,9 @@ function AudexCompass() {
   return (
     <section id="audex-compass" className="py-24 bg-white" style={{ scrollMarginTop: "5rem" }}>
       <div className="container">
-        {/* Header */}
+        {/* Header: text left, capability grid right */}
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-6">
-            {/* Product badge */}
             <div className="flex items-center gap-3">
               <span
                 className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-bold uppercase tracking-widest rounded-full"
@@ -89,9 +88,19 @@ function AudexCompass() {
           </div>
         </div>
 
+        {/* Dashboard screenshot — Compass scenario comparison */}
+        <div className="mt-14 rounded-sm overflow-hidden shadow-2xl border border-border">
+          <img
+            src="/manus-storage/image14_dbfa2b21.png"
+            alt="Audex Compass — Scenario Comparison Dashboard"
+            className="w-full h-auto object-contain"
+            style={{ maxHeight: "520px", objectPosition: "top" }}
+          />
+        </div>
+
         {/* Investor use-case strip */}
         <div
-          className="mt-16 rounded-sm p-8 grid md:grid-cols-2 gap-10"
+          className="mt-10 rounded-sm p-8 grid md:grid-cols-2 gap-10"
           style={{ background: "rgba(0,204,102,0.06)", border: "1px solid rgba(0,204,102,0.2)" }}
         >
           <div className="space-y-4">
@@ -116,6 +125,16 @@ function AudexCompass() {
               ))}
             </ul>
           </div>
+        </div>
+
+        {/* Investment Intelligence Platform screenshot */}
+        <div className="mt-8 rounded-sm overflow-hidden shadow-xl border border-border">
+          <img
+            src="/manus-storage/image15_a7fe9eb6.png"
+            alt="Audex Compass — Investment Intelligence Platform"
+            className="w-full h-auto object-contain"
+            style={{ maxHeight: "480px", objectPosition: "top" }}
+          />
         </div>
       </div>
     </section>
@@ -150,7 +169,7 @@ function AudexCommand() {
       style={{ background: "#fafafa", scrollMarginTop: "5rem" }}
     >
       <div className="container">
-        {/* Header */}
+        {/* Header: capability grid left, text right */}
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Capability grid — left */}
           <div className="grid sm:grid-cols-2 gap-4 order-2 lg:order-1">
@@ -210,11 +229,32 @@ function AudexCommand() {
           </div>
         </div>
 
+        {/* Real-world risk scenario screenshot */}
+        <div className="mt-14 rounded-sm overflow-hidden shadow-2xl border border-border">
+          <img
+            src="/manus-storage/image16_d7cff42c.png"
+            alt="Audex Command — Real-World Risk Scenarios"
+            className="w-full h-auto object-contain"
+            style={{ maxHeight: "520px", objectPosition: "top" }}
+          />
+        </div>
+
         {/* Execution workflow */}
-        <div className="mt-16">
+        <div className="mt-14">
           <h3 className="font-heading text-2xl font-bold text-foreground text-center mb-10">
             Controlled Execution Workflow
           </h3>
+
+          {/* Workflow diagram screenshot */}
+          <div className="rounded-sm overflow-hidden shadow-xl border border-border mb-8">
+            <img
+              src="/manus-storage/image18_afccdd10.png"
+              alt="Audex Command — Governance Workflow: Recommendation to Completed Outcome"
+              className="w-full h-auto object-contain"
+              style={{ maxHeight: "420px", objectPosition: "top" }}
+            />
+          </div>
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {workflow.map(({ step, label, desc }) => (
               <div
@@ -235,6 +275,16 @@ function AudexCommand() {
           <p className="text-center text-sm font-bold mt-8" style={{ color: "#FF9900" }}>
             From recommendation to measurable results.
           </p>
+        </div>
+
+        {/* Action tracker dashboard screenshot */}
+        <div className="mt-10 rounded-sm overflow-hidden shadow-xl border border-border">
+          <img
+            src="/manus-storage/image17_11d16a25.png"
+            alt="Audex Command — Action Tracker Dashboard"
+            className="w-full h-auto object-contain"
+            style={{ maxHeight: "460px", objectPosition: "top" }}
+          />
         </div>
       </div>
     </section>
@@ -323,8 +373,18 @@ function AudexPerfect() {
           </div>
         </div>
 
+        {/* Perfect hero visual — split compass */}
+        <div className="mt-14 rounded-sm overflow-hidden shadow-2xl border border-border">
+          <img
+            src="/manus-storage/image19_83f67535.png"
+            alt="Audex Perfect — Simulation meets Real School Intelligence"
+            className="w-full h-auto object-contain"
+            style={{ maxHeight: "520px", objectPosition: "center" }}
+          />
+        </div>
+
         {/* Two-pillar visual */}
-        <div className="mt-16 grid md:grid-cols-2 gap-6">
+        <div className="mt-10 grid md:grid-cols-2 gap-6">
           {pillars.map(({ title, color, items }) => (
             <div
               key={title}
@@ -398,13 +458,25 @@ export default function SmartSolutions() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* ── Page Hero ── */}
-      <section className="py-24 bg-foreground text-white">
-        <div className="container">
+      <section
+        className="relative py-24 overflow-hidden"
+        style={{ background: "linear-gradient(135deg, #0a1628 0%, #0d1f3c 60%, #0a2a1a 100%)" }}
+      >
+        {/* Hero background image */}
+        <div className="absolute inset-0 opacity-20">
+          <img
+            src="/manus-storage/image1_d5dd8cf3.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
+        <div className="container relative z-10">
           <div className="max-w-3xl space-y-6">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               Smart Solutions
             </span>
-            <h1 className="font-heading text-5xl md:text-6xl font-bold leading-tight">
+            <h1 className="font-heading text-5xl md:text-6xl font-bold leading-tight text-white">
               Decision Intelligence for{" "}
               <span className="text-primary">School Leadership</span>
             </h1>
@@ -484,8 +556,8 @@ export default function SmartSolutions() {
 
       {/* ── Business Impact ── */}
       <section className="py-20 bg-secondary/10">
-        <div className="container max-w-4xl mx-auto text-center space-y-10">
-          <div className="space-y-4">
+        <div className="container max-w-5xl mx-auto space-y-10">
+          <div className="text-center space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               Business Impact
             </span>
@@ -493,6 +565,17 @@ export default function SmartSolutions() {
               Real Insights. Controlled Execution. Measurable Results.
             </h2>
           </div>
+
+          {/* Outcomes visual */}
+          <div className="rounded-sm overflow-hidden shadow-xl border border-border">
+            <img
+              src="/manus-storage/image11_97dca0da.png"
+              alt="Audex — Business Impact Outcomes"
+              className="w-full h-auto object-contain"
+              style={{ maxHeight: "460px", objectPosition: "center" }}
+            />
+          </div>
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
             {[
               { label: "Better Executive Decisions", color: "#0099CC" },
