@@ -246,3 +246,12 @@
 - [ ] Extract images from Audex.pptx
 - [ ] Upload Audex images to CDN
 - [ ] Integrate images into SmartSolutions page (Compass, Command, Perfect sections)
+
+## Logo Replacement
+
+- [x] Upload horizontal logo (text beside emblem) to CDN
+- [x] Upload stacked logo (emblem above text) to CDN
+- [x] Replace logo in navbar (Layout.tsx) with horizontal variant
+- [x] Replace logo in hero nav (Home.tsx) with horizontal variant
+- [x] Replace orbital satellite logos (LOGOIN_URL) with stacked variant
+- [x] Replace public/images/logo.png (OG/Twitter/JSON-LD) with horizontal variant

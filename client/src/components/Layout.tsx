@@ -167,7 +167,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container flex h-20 items-center justify-between">
           <Link href="/">
             <div className="flex items-center space-x-2 cursor-pointer">
-              <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/logo-nobg_7762efbd.png" alt="Darwish & Co." className="h-12 w-auto object-contain" />
+              <img src="/manus-storage/logo-horizontal_9c3cf9d8.png" alt="Darwish & Co." className="h-12 w-auto object-contain" />
             </div>
           </Link>
 
