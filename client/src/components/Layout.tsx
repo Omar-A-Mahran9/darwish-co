@@ -164,10 +164,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex flex-col font-body bg-background text-foreground">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-20 items-center justify-between">
+        <div className="container flex h-28 items-center justify-between">
           <Link href="/">
             <div className="flex items-center space-x-2 cursor-pointer">
-              <img src="/manus-storage/logo-horizontal_9c3cf9d8.png" alt="Darwish & Co." className="h-12 w-auto object-contain" />
+              <img src="/manus-storage/logo-horizontal_9c3cf9d8.png" alt="Darwish & Co." className="h-24 w-auto object-contain" />
             </div>
           </Link>
 

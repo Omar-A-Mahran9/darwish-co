@@ -49,7 +49,7 @@ function GlassNavbar() {
             className="flex items-center gap-2 cursor-pointer select-none"
             style={{ fontFamily: "'Fustat', sans-serif", fontWeight: 700, fontSize: "18px", color: "#111" }}
           >
-            <img src="/manus-storage/logo-horizontal_9c3cf9d8.png" alt="Darwish & Co." className="h-7 w-auto object-contain" />
+            <img src="/manus-storage/logo-horizontal_9c3cf9d8.png" alt="Darwish & Co." className="h-14 w-auto object-contain" />
           </span>
         </Link>
 
