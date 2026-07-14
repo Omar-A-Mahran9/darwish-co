@@ -136,7 +136,7 @@
 
 ## Fouad Certifications Update
 
-- [ ] Replace placeholder certifications in Fouad's Partners profile with 12 verified credentials across 4 categories
+- [ ] Replace placeholder certifications in Fouad's Partners profile with 12 verified credentials across 4 categories (pending — requires Fouad's CV)
 
 ## Ahmed Tharwat Certifications Update
 
@@ -234,3 +234,9 @@
 - [x] Create three product sections/cards for Audex Compass, Audex Command, and Audex Perfect using the uploaded presentation content
 - [x] Style the Smart Solutions / Audex section to match the website while reflecting the Audex presentation visual language
 - [x] Validate the new Smart Solutions section and save a checkpoint
+
+## Projects Page — Hide Sections
+
+- [x] Hide Hebei-Egypt Industrial Partnership Portal section from Projects page
+- [x] Hide Education Organization Development section from Projects page
+- [x] Remove corresponding nav dropdown links for hidden sections

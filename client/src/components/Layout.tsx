@@ -32,8 +32,6 @@ const navItems: NavItem[] = [
     path: "/projects",
     children: [
       { name: "AI POC Platform", path: "/projects#ai-poc" },
-      { name: "Hebei-Egypt Trade Portal", path: "/projects#trade-portal" },
-      { name: "Education Organization Development", path: "/projects#education" },
     ],
   },
   {

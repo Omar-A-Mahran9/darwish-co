@@ -211,8 +211,8 @@ export default function Projects() {
             Projects & Innovations
           </h1>
           <p className="text-xl max-w-2xl mx-auto text-primary-foreground/80">
-            Transforming strategy into digital solutions — from AI-powered
-            platforms to international trade portals for the MENA region.
+            Transforming strategy into digital solutions — AI-powered platforms
+            and intelligent tools built for the MENA region.
           </p>
         </div>
       </section>
@@ -221,13 +221,13 @@ export default function Projects() {
       <section className="bg-muted/40 border-b border-border py-8">
         <div className="container flex flex-wrap justify-center gap-12 text-center">
           <div>
-            <p className="font-heading text-3xl font-bold text-primary">3</p>
-            <p className="text-sm text-muted-foreground mt-1">Active Initiatives</p>
+            <p className="font-heading text-3xl font-bold text-primary">1</p>
+            <p className="text-sm text-muted-foreground mt-1">Active Initiative</p>
           </div>
           <div>
-            <p className="font-heading text-3xl font-bold text-primary">107</p>
+            <p className="font-heading text-3xl font-bold text-primary">2</p>
             <p className="text-sm text-muted-foreground mt-1">
-              Industrial Clusters
+              Partner Organizations
             </p>
           </div>
           <div>
@@ -501,8 +501,8 @@ export default function Projects() {
         </div>
       </section>
 
-      {/* ── PROJECT 2: Hebei-Egypt International Trade Portal ── */}
-      <section id="trade-portal" className="py-20 border-b border-border bg-muted/20" style={{ scrollMarginTop: '5rem' }}>
+      {/* ── PROJECT 2: Hebei-Egypt International Trade Portal ── HIDDEN ── */}
+      {false && (<section id="trade-portal" className="py-20 border-b border-border bg-muted/20" style={{ scrollMarginTop: '5rem' }}>
         <div className="container max-w-6xl mx-auto">
           {/* Section Label */}
           <div className="flex items-center gap-3 mb-4">
@@ -732,8 +732,10 @@ export default function Projects() {
         </div>
       </section>
 
-      {/* ── PROJECT 3: Education Organization Development ── */}
-      <section id="education" className="py-20 border-b border-border" style={{ scrollMarginTop: '5rem' }}>
+      )}
+
+      {/* ── PROJECT 3: Education Organization Development ── HIDDEN ── */}
+      {false && (<section id="education" className="py-20 border-b border-border" style={{ scrollMarginTop: '5rem' }}>
         <div className="container max-w-6xl mx-auto">
           {/* Section Label */}
           <div className="flex items-center gap-3 mb-4">
@@ -928,6 +930,7 @@ export default function Projects() {
           </div>
         </div>
       </section>
+      )}
 
       {/* More Projects Coming */}
       <section className="py-16 bg-muted/30 border-t border-border">
