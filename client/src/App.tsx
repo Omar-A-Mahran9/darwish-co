@@ -16,6 +16,7 @@ import CorporatePartners from './pages/CorporatePartners';
 import Training from './pages/Training';
 import Blog from './pages/Blog';
 import Fonts from './pages/Fonts';
+import SmartSolutions from './pages/SmartSolutions';
 import { useHashScroll } from "./hooks/useHashScroll";
 
 function Router() {
@@ -34,6 +35,7 @@ function Router() {
         <Route path="/training" component={Training} />
         <Route path="/blog" component={Blog} />
         <Route path="/fonts" component={Fonts} />
+        <Route path="/smart-solutions" component={SmartSolutions} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

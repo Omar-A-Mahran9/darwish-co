@@ -44,6 +44,15 @@ const navItems: NavItem[] = [
       { name: "Corporate Partners & Licences", path: "/corporate-partners" },
     ],
   },
+  {
+    name: "Smart Solutions",
+    path: "/smart-solutions",
+    children: [
+      { name: "Audex Compass", path: "/smart-solutions#audex-compass" },
+      { name: "Audex Command", path: "/smart-solutions#audex-command" },
+      { name: "Audex Perfect", path: "/smart-solutions#audex-perfect" },
+    ],
+  },
   { name: "Blog", path: "/blog" },
   { name: "Contact", path: "/contact" },
 ];
@@ -337,6 +346,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <li><Link href="/services#strategy"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Strategy & Performance</span></Link></li>
               <li><Link href="/services#integrity"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Integrity & Anti-Corruption</span></Link></li>
               <li><Link href="/training"><span className="cursor-pointer hover:text-primary hover:underline transition-colors font-medium">Training Academy</span></Link></li>
+              <li><Link href="/smart-solutions"><span className="cursor-pointer hover:text-primary hover:underline transition-colors font-medium">Smart Solutions</span></Link></li>
             </ul>
           </div>
 

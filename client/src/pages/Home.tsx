@@ -616,6 +616,49 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Smart Solutions Teaser ── */}
+      <section className="py-24 bg-secondary/10">
+        <div className="container">
+          <div className="text-center mb-14 space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">Smart Solutions</span>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
+              Decision Intelligence for School Leadership
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              The Audex family turns complex school data into clear, actionable decisions — from strategic simulation to governance execution.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: "Audex Compass", tagline: "Test Before You Commit", desc: "Simulate future scenarios and compare strategic options before committing resources or investments.", color: "#00CC66", bg: "rgba(0,204,102,0.07)", border: "rgba(0,204,102,0.2)", anchor: "audex-compass" },
+              { name: "Audex Command", tagline: "Governance Intelligence", desc: "Turn every insight into a tracked, accountable action with controlled execution workflows.", color: "#FF9900", bg: "rgba(255,153,0,0.07)", border: "rgba(255,153,0,0.2)", anchor: "audex-command" },
+              { name: "Audex Perfect", tagline: "Where Simulation Meets Reality", desc: "The complete school digital twin — simulation and live intelligence in one unified platform.", color: "#0099CC", bg: "rgba(0,153,204,0.07)", border: "rgba(0,153,204,0.2)", anchor: "audex-perfect" },
+            ].map(({ name, tagline, desc, color, bg, border, anchor }) => (
+              <Link key={name} href={`/smart-solutions#${anchor}`}>
+                <div
+                  className="p-8 rounded-sm space-y-4 h-full hover:-translate-y-1 transition-transform duration-300 cursor-pointer"
+                  style={{ background: bg, border: `1px solid ${border}` }}
+                >
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color }}>{tagline}</p>
+                  <h3 className="font-heading text-xl font-bold text-foreground">{name}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                  <span className="inline-flex items-center gap-1 text-sm font-bold" style={{ color }}>
+                    Explore <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link href="/smart-solutions">
+              <Button size="lg" className="bg-primary text-white hover:bg-primary/90 font-bold rounded-none px-10">
+                Explore Smart Solutions <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── Projects Teaser ── */}
       <section className="py-24 bg-foreground text-white">
         <div className="container">
