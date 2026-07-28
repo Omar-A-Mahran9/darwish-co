@@ -9,9 +9,9 @@ import { Link } from "wouter";
 
 // ─── CDN assets ────────────────────────────────────────────────────────────
 const EMBLEM_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
+  "/manus-storage/emblem-nobg_937c5c0f.png";
 const LOGOIN_URL =
-  "/manus-storage/logo-stacked_91957284.png";
+  "/manus-storage/emblem-nobg_937c5c0f.png";
 
 // ─── Partner logo CDN urls ──────────────────────────────────────────────────
 const PARTNER_LOGOS = [
