@@ -9,7 +9,7 @@ import { Link } from "wouter";
 
 // ─── CDN assets ────────────────────────────────────────────────────────────
 const EMBLEM_URL =
-  "/manus-storage/emblem-nobg_937c5c0f.png";
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
 const LOGOIN_URL =
   "/manus-storage/emblem-nobg_937c5c0f.png";
 
