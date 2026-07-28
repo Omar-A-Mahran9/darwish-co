@@ -222,6 +222,7 @@ function FloatingLogos() {
               opacity: def.opacity,
               filter: "drop-shadow(0 2px 8px rgba(49,154,255,0.28))",
               willChange: "transform",
+              mixBlendMode: "multiply" as const,
             }}
           />
         </div>
