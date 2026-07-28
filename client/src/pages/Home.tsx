@@ -11,7 +11,7 @@ import { Link } from "wouter";
 const EMBLEM_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
 const LOGOIN_URL =
-  "/manus-storage/emblem-nobg_937c5c0f.png";
+  "/manus-storage/emblem-transparent_58f688d3.png";
 
 // ─── Partner logo CDN urls ──────────────────────────────────────────────────
 const PARTNER_LOGOS = [
@@ -222,7 +222,6 @@ function FloatingLogos() {
               opacity: def.opacity,
               filter: "drop-shadow(0 2px 8px rgba(49,154,255,0.28))",
               willChange: "transform",
-              mixBlendMode: "multiply" as const,
             }}
           />
         </div>
