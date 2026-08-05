@@ -15,6 +15,7 @@ import Partners from './pages/Partners';
 import CorporatePartners from './pages/CorporatePartners';
 import Training from './pages/Training';
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import Fonts from './pages/Fonts';
 import SmartSolutions from './pages/SmartSolutions';
 import { useHashScroll } from "./hooks/useHashScroll";
@@ -34,6 +35,7 @@ function Router() {
         <Route path="/corporate-partners" component={CorporatePartners} />
         <Route path="/training" component={Training} />
         <Route path="/blog" component={Blog} />
+        <Route path="/blog/:slug" component={BlogPost} />
         <Route path="/fonts" component={Fonts} />
         <Route path="/smart-solutions" component={SmartSolutions} />
         <Route component={NotFound} />

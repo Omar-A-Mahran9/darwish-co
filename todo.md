@@ -255,3 +255,11 @@
 - [x] Replace logo in hero nav (Home.tsx) with horizontal variant
 - [x] Replace orbital satellite logos (LOGOIN_URL) with stacked variant
 - [x] Replace public/images/logo.png (OG/Twitter/JSON-LD) with horizontal variant
+
+## Blog — 3 New Articles
+
+- [ ] Find and upload cover images for all 3 articles
+- [ ] Add Article 1: "When AI Accelerates the Wrong Decision" to blog
+- [ ] Add Article 2: "AI in MENA Education: When Automation Reinforces Existing Inequality" to blog
+- [ ] Add Article 3: "AI Does Not Eliminate Institutional Bias—It Can Scale It" to blog
+- [ ] Ensure individual article detail pages render full content with proper formatting
