@@ -28,7 +28,7 @@ const articles: Article[] = [
     category: "AI Governance",
     categoryColor: "text-primary bg-primary/10",
     keywords: ["AI human oversight", "AI governance", "automation bias", "responsible AI"],
-    coverImage: "/manus-storage/blog-ai-governance_a92bc631.jpg",
+    coverImage: "/manus-storage/Article1_4b74ff53.jpg",
     featured: true,
     hasFullPost: true,
   },
@@ -42,7 +42,7 @@ const articles: Article[] = [
     category: "AI & Education",
     categoryColor: "text-chart-2 bg-chart-2/10",
     keywords: ["AI in MENA education", "algorithmic bias in education", "responsible AI in schools"],
-    coverImage: "/manus-storage/blog-ai-education-mena_02068c1d.jpg",
+    coverImage: "/manus-storage/Article2_06325b63.jpg",
     hasFullPost: true,
   },
   {
@@ -55,7 +55,7 @@ const articles: Article[] = [
     category: "AI Governance",
     categoryColor: "text-primary bg-primary/10",
     keywords: ["AI institutional bias", "AI and corruption", "algorithmic accountability"],
-    coverImage: "/manus-storage/blog-ai-institutional-bias_aaa12434.jpg",
+    coverImage: "/manus-storage/Article3_0d24daca.jpg",
     hasFullPost: true,
   },
   // ── Existing articles ─────────────────────────────────────────────────────

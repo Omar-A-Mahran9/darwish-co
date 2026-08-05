@@ -60,7 +60,7 @@ const articles: ArticleData[] = [
     category: "AI Governance",
     categoryColor: "text-primary bg-primary/10",
     keywords: ["AI human oversight", "AI governance", "automation bias", "responsible AI", "AI decision-making", "human-in-the-loop"],
-    coverImage: "/manus-storage/blog-ai-governance_a92bc631.jpg",
+    coverImage: "/manus-storage/Article1_4b74ff53.jpg",
     ctaText:
       "Is your organization using AI without a defined decision-governance framework? Darwish & Co. supports organizations in assessing AI readiness, prioritizing responsible use cases, and establishing practical governance principles linked to operational value.",
     ctaButton: "Assess Your AI Decision Governance",
@@ -240,7 +240,7 @@ const articles: ArticleData[] = [
     category: "AI & Education",
     categoryColor: "text-chart-2 bg-chart-2/10",
     keywords: ["AI in MENA education", "AI education governance", "algorithmic bias in education", "responsible AI in schools", "AI admissions", "automated grading"],
-    coverImage: "/manus-storage/blog-ai-education-mena_02068c1d.jpg",
+    coverImage: "/manus-storage/Article2_06325b63.jpg",
     ctaText:
       "Is your educational institution exploring AI without a clear adoption and governance framework? Darwish & Co. supports educational institutions in assessing AI readiness, prioritizing practical use cases, strengthening governance, and building role-based capabilities for responsible adoption.",
     ctaButton: "Explore Responsible AI for Education",
@@ -381,7 +381,7 @@ const articles: ArticleData[] = [
     category: "AI Governance",
     categoryColor: "text-primary bg-primary/10",
     keywords: ["AI institutional bias", "AI and corruption", "AI governance", "algorithmic accountability", "public sector AI", "responsible digital transformation"],
-    coverImage: "/manus-storage/blog-ai-institutional-bias_aaa12434.jpg",
+    coverImage: "/manus-storage/Article3_0d24daca.jpg",
     ctaText:
       "Before automating an institutional process, verify that the process is ready to be automated. Darwish & Co. supports organizations in reviewing AI readiness, process maturity, governance controls, use-case risk, and implementation priorities.",
     ctaButton: "Request an Institutional AI Governance Review",
