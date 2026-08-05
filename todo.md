@@ -243,9 +243,9 @@
 
 ## Smart Solutions — Audex Image Enrichment
 
-- [ ] Extract images from Audex.pptx
-- [ ] Upload Audex images to CDN
-- [ ] Integrate images into SmartSolutions page (Compass, Command, Perfect sections)
+- [x] Extract images from Audex.pptx
+- [x] Upload Audex images to CDN
+- [x] Integrate images into SmartSolutions page (Compass, Command, Perfect sections)
 
 ## Logo Replacement
 
@@ -258,8 +258,13 @@
 
 ## Blog — 3 New Articles
 
-- [ ] Find and upload cover images for all 3 articles
-- [ ] Add Article 1: "When AI Accelerates the Wrong Decision" to blog
-- [ ] Add Article 2: "AI in MENA Education: When Automation Reinforces Existing Inequality" to blog
-- [ ] Add Article 3: "AI Does Not Eliminate Institutional Bias—It Can Scale It" to blog
-- [ ] Ensure individual article detail pages render full content with proper formatting
+- [x] Find and upload cover images for all 3 articles
+- [x] Add Article 1: "When AI Accelerates the Wrong Decision" to blog
+- [x] Add Article 2: "AI in MENA Education: When Automation Reinforces Existing Inequality" to blog
+- [x] Add Article 3: "AI Does Not Eliminate Institutional Bias—It Can Scale It" to blog
+- [x] Ensure individual article detail pages render full content with proper formatting
+
+## Training Academy — Instructor Registration Section
+
+- [x] Read LinkedIn post content for messaging
+- [x] Add instructor registration section to Training Academy page with Google Form CTA

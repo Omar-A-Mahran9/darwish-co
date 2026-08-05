@@ -21,6 +21,12 @@ import {
   ArrowRight,
   CheckCircle2,
   Play,
+  Cpu,
+  Lock,
+  UserPlus,
+  MapPin,
+  Laptop,
+  ExternalLink,
 } from "lucide-react";
 
 const CATEGORIES = [
@@ -732,6 +738,225 @@ export default function Training() {
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
+        </div>
+      </section>
+
+      {/* Instructor Registration Section */}
+      <section id="join-roster" className="py-24 bg-white scroll-mt-20">
+        <div className="container">
+          {/* Section Header */}
+          <div className="max-w-3xl mb-16">
+            <div className="inline-flex items-center gap-2 bg-chart-2/10 border border-chart-2/30 rounded-full px-4 py-1.5 text-sm font-medium text-chart-2 mb-6">
+              <UserPlus className="w-4 h-4" />
+              Join Our Trainer Roster
+            </div>
+            <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+              Are You an Experienced <span className="text-primary">Corporate Trainer</span>?<br />
+              <span className="text-chart-2">We Want to Hear From You.</span>
+            </h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Darwish &amp; Co. is building a roster of experienced freelance corporate trainers
+              and subject-matter experts. We deliver customised corporate training programmes for
+              private-sector organisations, government entities, educational institutions, and
+              development projects across Egypt and the MENA region.
+            </p>
+          </div>
+
+          {/* Open Training Areas */}
+          <div className="mb-16">
+            <h3 className="font-heading text-2xl font-bold text-foreground mb-8">
+              Open Training Areas
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Management & Leadership */}
+              <div className="border border-border bg-white hover:shadow-md transition-shadow duration-300">
+                <div className="p-5 bg-blue-50 border-b border-border flex items-center gap-3">
+                  <Lightbulb className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                  <h4 className="font-heading font-bold text-foreground">Management &amp; Leadership</h4>
+                </div>
+                <div className="p-5">
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />Leadership, People Management &amp; Executive Communication</li>
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />Change Management &amp; Organisational Development</li>
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />KPIs, Balanced Scorecard &amp; OKRs</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Projects & Contracts */}
+              <div className="border border-border bg-white hover:shadow-md transition-shadow duration-300">
+                <div className="p-5 bg-orange-50 border-b border-border flex items-center gap-3">
+                  <Briefcase className="w-6 h-6 text-orange-600 flex-shrink-0" />
+                  <h4 className="font-heading font-bold text-foreground">Projects &amp; Contracts</h4>
+                </div>
+                <div className="p-5">
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />Project Management, PMP &amp; Agile</li>
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />Primavera P6 &amp; Microsoft Project</li>
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />Contracts, Procurement &amp; Project Risk</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* HSE & Process Safety */}
+              <div className="border border-border bg-white hover:shadow-md transition-shadow duration-300">
+                <div className="p-5 bg-green-50 border-b border-border flex items-center gap-3">
+                  <Shield className="w-6 h-6 text-green-600 flex-shrink-0" />
+                  <h4 className="font-heading font-bold text-foreground">HSE &amp; Process Safety</h4>
+                </div>
+                <div className="p-5">
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />Health, Safety &amp; Environment</li>
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />Process Safety Management</li>
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />Incident Investigation &amp; Root Cause Analysis</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* AI, Data & Digital Transformation */}
+              <div className="border border-border bg-white hover:shadow-md transition-shadow duration-300">
+                <div className="p-5 bg-purple-50 border-b border-border flex items-center gap-3">
+                  <Cpu className="w-6 h-6 text-purple-600 flex-shrink-0" />
+                  <h4 className="font-heading font-bold text-foreground">AI, Data &amp; Digital Transformation</h4>
+                </div>
+                <div className="p-5">
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />Artificial Intelligence for Organisations</li>
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />Generative AI &amp; Prompt Engineering</li>
+                    <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />Data Analytics, Power BI &amp; Management Dashboards</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Cybersecurity & IT */}
+              <div className="border border-border bg-white hover:shadow-md transition-shadow duration-300 md:col-span-2 lg:col-span-2">
+                <div className="p-5 bg-red-50 border-b border-border flex items-center gap-3">
+                  <Lock className="w-6 h-6 text-red-600 flex-shrink-0" />
+                  <h4 className="font-heading font-bold text-foreground">Cybersecurity &amp; IT</h4>
+                </div>
+                <div className="p-5">
+                  <div className="grid sm:grid-cols-2 gap-2">
+                    {[
+                      "Cybersecurity Fundamentals, SOC, SIEM &amp; Threat Analysis",
+                      "Ethical Hacking, Penetration Testing &amp; Digital Forensics",
+                      "GRC, ISO 27001, ISO 27701, ISO 22301, ISO 42001, GDPR &amp; Data Protection",
+                      "Cloud Computing &amp; Cloud Security — Azure, AWS &amp; Google Cloud",
+                      "Identity &amp; Access Management, EDR/XDR &amp; OT/Industrial Security",
+                      "IT Infrastructure &amp; Networking",
+                    ].map((item) => (
+                      <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <ChevronRight className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                        <span dangerouslySetInnerHTML={{ __html: item }} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Requirements + Engagement Details */}
+          <div className="grid lg:grid-cols-2 gap-10 mb-16">
+            {/* Preferred Applicant Requirements */}
+            <div className="bg-gray-50 border border-border p-8">
+              <h3 className="font-heading text-xl font-bold text-foreground mb-6 flex items-center gap-3">
+                <CheckCircle2 className="w-6 h-6 text-chart-2" />
+                Preferred Applicant Profile
+              </h3>
+              <ul className="space-y-4">
+                {[
+                  "Strong practical experience in your area of specialisation.",
+                  "Previous experience delivering corporate or institutional training.",
+                  "Relevant professional or vendor certifications, where applicable.",
+                  "Ability to customise programmes based on client needs and industry context.",
+                  "Ability to deliver training in Arabic, English, or both.",
+                  "Practical case studies, exercises, labs, or assessment methods.",
+                ].map((req) => (
+                  <li key={req} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-chart-2/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-2 h-2 rounded-full bg-chart-2" />
+                    </div>
+                    <span className="text-muted-foreground text-sm leading-relaxed">{req}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Engagement Details */}
+            <div className="bg-primary/5 border border-primary/20 p-8">
+              <h3 className="font-heading text-xl font-bold text-foreground mb-6 flex items-center gap-3">
+                <Briefcase className="w-6 h-6 text-primary" />
+                Engagement Details
+              </h3>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Users className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground text-sm mb-1">Engagement Type</div>
+                    <div className="text-muted-foreground text-sm">Freelance / Project-Based Roster</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Laptop className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground text-sm mb-1">Delivery Mode</div>
+                    <div className="text-muted-foreground text-sm">In-person, online, or hybrid</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground text-sm mb-1">Location</div>
+                    <div className="text-muted-foreground text-sm">Egypt and selected MENA assignments</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Globe className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground text-sm mb-1">Clients Served</div>
+                    <div className="text-muted-foreground text-sm">Private sector, government entities, educational institutions, and development projects</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Block */}
+          <div className="bg-foreground text-white p-12 text-center">
+            <UserPlus className="w-12 h-12 text-chart-2 mx-auto mb-5" />
+            <h3 className="font-heading text-3xl md:text-4xl font-bold mb-4">
+              Ready to Join Our Trainer Roster?
+            </h3>
+            <p className="text-white/80 text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+              Selected professionals will join Darwish &amp; Co.'s trainer and subject-matter expert
+              roster and may be contacted based on programme requirements, client needs, location,
+              and availability.
+            </p>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeNflbSZl6T3fA95Sg5eMhFR-_dzx8Kl20VcYMg-S8aIwLOUg/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                size="lg"
+                className="bg-chart-2 text-white hover:bg-chart-2/90 font-bold rounded-none px-10 h-14 text-base"
+              >
+                Apply to Join the Roster
+                <ExternalLink className="w-5 h-5 ml-2" />
+              </Button>
+            </a>
+            <p className="text-white/50 text-sm mt-5">
+              Applications are reviewed on a rolling basis. Please share this opportunity with qualified trainers in your network.
+            </p>
+          </div>
         </div>
       </section>
     </div>
