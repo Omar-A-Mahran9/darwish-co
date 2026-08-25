@@ -268,3 +268,9 @@
 
 - [x] Read LinkedIn post content for messaging
 - [x] Add instructor registration section to Training Academy page with Google Form CTA
+
+## Website Request Email Notifications
+
+- [x] Audit all website request and enquiry submission flows for email notifications
+- [x] Ensure every supported request submission emails the Darwish & Co. team
+- [x] Add automated test coverage for website request email notifications

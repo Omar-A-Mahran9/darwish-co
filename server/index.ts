@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
-import { Resend } from "resend";
+import { sendContactEmailNotification } from "./contactNotification.js";
 import {
   saveContactSubmission,
   getAllContactSubmissions,
@@ -45,71 +45,6 @@ async function notifyOwner(title: string, content: string): Promise<boolean> {
     return res.ok;
   } catch (err) {
     console.error("[Notification] Failed to send owner notification:", err);
-    return false;
-  }
-}
-
-// ── Email via Resend ─────────────────────────────────────────────────────────
-async function sendEmailNotification(
-  name: string,
-  email: string,
-  subject: string | undefined,
-  message: string
-): Promise<boolean> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn("[Email] RESEND_API_KEY not set — skipping email notification.");
-    return false;
-  }
-
-  const resend = new Resend(apiKey);
-
-  try {
-    const { error } = await resend.emails.send({
-      from: "Darwish & Co. Website <onboarding@resend.dev>",
-      to: ["info@darwish-co.com"],
-      subject: `📩 New Contact: ${subject || name}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-          <div style="background: #0099CC; padding: 20px; border-radius: 6px 6px 0 0; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 22px;">New Contact Form Submission</h1>
-            <p style="color: rgba(255,255,255,0.85); margin: 6px 0 0; font-size: 14px;">Darwish & Co. Website</p>
-          </div>
-          <div style="padding: 24px; background: #fff;">
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-weight: bold; color: #555; width: 100px;">Name</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #222;">${name}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-weight: bold; color: #555;">Email</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #222;"><a href="mailto:${email}" style="color: #0099CC;">${email}</a></td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-weight: bold; color: #555;">Subject</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #222;">${subject || "(no subject)"}</td>
-              </tr>
-            </table>
-            <div style="margin-top: 20px;">
-              <p style="font-weight: bold; color: #555; margin-bottom: 8px;">Message:</p>
-              <div style="background: #f8f9fa; padding: 16px; border-radius: 6px; color: #333; line-height: 1.6; white-space: pre-wrap;">${message}</div>
-            </div>
-          </div>
-          <div style="padding: 16px 24px; background: #f8f9fa; border-radius: 0 0 6px 6px; text-align: center;">
-            <p style="color: #888; font-size: 12px; margin: 0;">Darwish & Co. — Consulting & Business Development</p>
-            <p style="color: #888; font-size: 12px; margin: 4px 0 0;">www.darwish-co.com</p>
-          </div>
-        </div>
-      `,
-    });
-
-    if (error) {
-      console.error("[Email] Resend error:", error);
-      return false;
-    }
-    return true;
-  } catch (err) {
-    console.error("[Email] Failed to send email:", err);
     return false;
   }
 }
@@ -172,8 +107,18 @@ async function startServer() {
       console.error("[Contact] Failed to save to database:", err);
     }
 
-    // Send email notification
-    sendEmailNotification(name, email, subject, message).catch(console.error);
+    // Send the team email before responding so serverless execution cannot end the
+    // notification job prematurely. The submission remains stored in the admin inbox
+    // if the email provider is temporarily unavailable.
+    const emailNotificationSent = await sendContactEmailNotification({
+      name,
+      email,
+      subject,
+      message,
+    });
+    if (!emailNotificationSent) {
+      console.warn("[Contact] Request saved, but email notification was not sent.");
+    }
 
     // Send Manus push notification
     const notificationContent = [
