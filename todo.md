@@ -274,3 +274,10 @@
 - [x] Audit all website request and enquiry submission flows for email notifications
 - [x] Ensure every supported request submission emails the Darwish & Co. team
 - [x] Add automated test coverage for website request email notifications
+
+## Request Email Delivery Bug
+
+- [x] Diagnose why saved website requests are not delivering notification emails (Resend account is in test mode and does not have a verified sending domain)
+- [ ] Fix the email provider configuration or delivery behavior
+- [ ] Verify a request notification email can be delivered
+- [x] Change the website request notification recipient to darwishandcoeg@gamil.com

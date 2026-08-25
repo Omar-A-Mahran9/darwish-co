@@ -56,6 +56,23 @@ describe("website request email notifications", () => {
     expect(emailPayload.html).toContain("&lt;our organisation&gt;");
   });
 
+  it("uses the CONTACT_NOTIFICATION_EMAIL environment setting when no recipient is passed", async () => {
+    mockedSend.mockResolvedValue({ data: { id: "email_456" }, error: null });
+    const configuredRecipient = process.env.CONTACT_NOTIFICATION_EMAIL;
+
+    expect(configuredRecipient).toBe("darwishandcoeg@gamil.com");
+
+    const sent = await sendContactEmailNotification(request, {
+      apiKey: "test-resend-key",
+      from: "Darwish & Co. Website <requests@example.com>",
+    });
+
+    expect(sent).toBe(true);
+    expect(mockedSend).toHaveBeenCalledWith(
+      expect.objectContaining({ to: [configuredRecipient] })
+    );
+  });
+
   it("returns false when the email provider reports an error", async () => {
     mockedSend.mockResolvedValue({ data: null, error: { message: "Delivery failed" } });
 
