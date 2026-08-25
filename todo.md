@@ -281,3 +281,4 @@
 - [ ] Fix the email provider configuration or delivery behavior
 - [ ] Verify a request notification email can be delivered
 - [x] Change the website request notification recipient to darwishandcoeg@gamil.com
+- [x] Correct the website request notification recipient to darwishandcoeg@gmail.com

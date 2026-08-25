@@ -60,7 +60,7 @@ describe("website request email notifications", () => {
     mockedSend.mockResolvedValue({ data: { id: "email_456" }, error: null });
     const configuredRecipient = process.env.CONTACT_NOTIFICATION_EMAIL;
 
-    expect(configuredRecipient).toBe("darwishandcoeg@gamil.com");
+    expect(configuredRecipient).toBe("darwishandcoeg@gmail.com");
 
     const sent = await sendContactEmailNotification(request, {
       apiKey: "test-resend-key",
