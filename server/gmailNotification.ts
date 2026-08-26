@@ -24,8 +24,15 @@ function getGmailAddress(): string {
   return (process.env.GMAIL_SMTP_USER || DEFAULT_GMAIL_ADDRESS).trim();
 }
 
-function getNotificationRecipient(): string {
-  return (process.env.CONTACT_NOTIFICATION_EMAIL || DEFAULT_GMAIL_ADDRESS).trim();
+function getNotificationRecipients(): string[] {
+  const recipients = [
+    process.env.CONTACT_NOTIFICATION_EMAIL || DEFAULT_GMAIL_ADDRESS,
+    process.env.CONTACT_NOTIFICATION_FORWARD_EMAIL,
+  ]
+    .filter((value): value is string => Boolean(value?.trim()))
+    .map(value => value.trim().toLowerCase());
+
+  return Array.from(new Set(recipients));
 }
 
 function getAppPassword(): string | undefined {
@@ -79,7 +86,7 @@ export async function sendGmailWebsiteRequestNotification(
   try {
     await transporter.sendMail({
       from: `Darwish & Co. Website <${getGmailAddress()}>`,
-      to: getNotificationRecipient(),
+      to: getNotificationRecipients(),
       replyTo: request.email.trim(),
       subject: `[Website request] ${request.subject?.trim() || "New website request"}`,
       html: `

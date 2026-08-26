@@ -290,3 +290,13 @@
 - [x] Guide the account owner through checking Gmail App Password eligibility step by step (2-Step Verification enabled)
 - [x] Send a controlled Gmail test notification to confirm end-to-end delivery
 - [x] Submit a controlled request through the website contact endpoint and confirm Gmail delivery completed without errors
+
+## Request Notification Forwarding
+
+- [x] Forward every website request notification to info@darwish-co.com as an additional recipient
+- [x] Test the dual-recipient notification configuration with a controlled Gmail delivery
+
+## Reusable Gmail SMTP Notification Skill
+
+- [x] Create reusable Gmail SMTP website-request notification skill package
+- [x] Validate and deliver the Gmail SMTP notification skill
