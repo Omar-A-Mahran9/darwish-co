@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
-import { sendContactEmailNotification } from "./contactNotification.js";
+import { sendGmailWebsiteRequestNotification } from "./gmailNotification.js";
 import {
   saveContactSubmission,
   getAllContactSubmissions,
@@ -110,7 +110,7 @@ async function startServer() {
     // Send the team email before responding so serverless execution cannot end the
     // notification job prematurely. The submission remains stored in the admin inbox
     // if the email provider is temporarily unavailable.
-    const emailNotificationSent = await sendContactEmailNotification({
+    const emailNotificationSent = await sendGmailWebsiteRequestNotification({
       name,
       email,
       subject,

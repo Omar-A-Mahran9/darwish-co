@@ -278,7 +278,15 @@
 ## Request Email Delivery Bug
 
 - [x] Diagnose why saved website requests are not delivering notification emails (Resend account is in test mode and does not have a verified sending domain)
-- [ ] Fix the email provider configuration or delivery behavior
-- [ ] Verify a request notification email can be delivered
+- [x] Replace the blocked Resend delivery route with Gmail SMTP using a Google App Password
+- [x] Verify a request notification email can be delivered through Gmail SMTP
 - [x] Change the website request notification recipient to darwishandcoeg@gamil.com
 - [x] Correct the website request notification recipient to darwishandcoeg@gmail.com
+
+## Gmail-Based Request Notification Alternative
+
+- [x] Assess whether the connected Manus Gmail account can securely send emails from the deployed website (Manus Gmail access cannot be used by the deployed app; Gmail App Passwords are unavailable for this account)
+- [x] Implement and validate a Gmail-based notification flow using a generated Google App Password
+- [x] Guide the account owner through checking Gmail App Password eligibility step by step (2-Step Verification enabled)
+- [x] Send a controlled Gmail test notification to confirm end-to-end delivery
+- [x] Submit a controlled request through the website contact endpoint and confirm Gmail delivery completed without errors
