@@ -12,6 +12,7 @@ const EMBLEM_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
 const LOGOIN_URL =
   "/manus-storage/emblem-transparent_58f688d3.png";
+const CLIENT_PORTAL_URL = "https://darwishhub-rs8nk5xu.manus.space";
 
 // ─── Partner logo CDN urls ──────────────────────────────────────────────────
 const PARTNER_LOGOS = [
@@ -68,6 +69,14 @@ function GlassNavbar() {
               </span>
             </Link>
           ))}
+          <a
+            href={CLIENT_PORTAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gray-900 transition-colors duration-150"
+          >
+            Client Login
+          </a>
         </div>
 
         {/* Sign-up / CTA button */}
@@ -479,6 +488,40 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* ── HERO ── */}
       <HeroSection />
+
+      {/* ── Client Login ── */}
+      <section id="client-login" className="relative overflow-hidden bg-foreground py-24 text-white">
+        <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at 82% 18%, rgba(0,153,204,0.52), transparent 28%), radial-gradient(circle at 8% 90%, rgba(0,204,102,0.16), transparent 26%)" }} />
+        <div className="container relative z-10 grid items-center gap-12 lg:grid-cols-[1.35fr_0.65fr]">
+          <div className="max-w-2xl space-y-6">
+            <span className="inline-flex items-center border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white/80">
+              Client Access
+            </span>
+            <h2 className="font-heading text-4xl font-bold leading-tight md:text-5xl">Client Login</h2>
+            <p className="max-w-xl text-lg leading-relaxed text-white/75">
+              Access Darwish Hub, our secure client portal for your shared workspace, engagement materials, and collaboration with our consulting team.
+            </p>
+            <a
+              href={CLIENT_PORTAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-white px-7 py-4 text-sm font-bold text-foreground transition-colors hover:bg-chart-2 hover:text-white"
+            >
+              Sign in to Darwish Hub <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+
+          <div className="border border-white/20 bg-white/5 p-8 backdrop-blur-sm">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-chart-2">Darwish Hub</p>
+            <div className="my-6 h-px w-full bg-white/15" />
+            <ul className="space-y-4 text-sm leading-relaxed text-white/75">
+              <li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-chart-2" />Secure client workspace</li>
+              <li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-chart-2" />Direct access to engagement resources</li>
+              <li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-chart-2" />Sign in with your approved client account</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
       {/* ── Strategic Management — Primary Focus ── */}
       <section className="py-32 bg-white">

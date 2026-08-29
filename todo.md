@@ -300,3 +300,8 @@
 
 - [x] Create reusable Gmail SMTP website-request notification skill package
 - [x] Validate and deliver the Gmail SMTP notification skill
+
+## Client Login Portal
+
+- [x] Add a prominent Client Login section linked to the Darwish Hub portal
+- [x] Verify the Client Login link and responsive presentation on desktop and mobile

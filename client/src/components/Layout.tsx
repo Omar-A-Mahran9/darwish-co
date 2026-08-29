@@ -56,6 +56,8 @@ const navItems: NavItem[] = [
   { name: "Contact", path: "/contact" },
 ];
 
+const CLIENT_PORTAL_URL = "https://darwishhub-rs8nk5xu.manus.space";
+
 /**
  * Navigate to a path that may contain a hash anchor.
  * - If we're already on the target page, scrolls directly to the anchor.
@@ -192,6 +194,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               )
             )}
+            <a
+              href={CLIENT_PORTAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              Client Login
+            </a>
             <Link href="/contact">
               <Button variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 font-heading">
                 Get Started
@@ -268,6 +278,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 )}
               </div>
             ))}
+            <a
+              href={CLIENT_PORTAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block py-2 text-base font-medium text-muted-foreground transition-colors hover:text-primary"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Client Login
+            </a>
             <Link href="/contact">
               <Button className="w-full bg-primary text-primary-foreground font-heading mt-2" onClick={() => setIsMenuOpen(false)}>
                 Get Started
@@ -357,6 +376,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <li><Link href="/partners"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Partners & Consultants</span></Link></li>
               <li><Link href="/corporate-partners"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Corporate Partners</span></Link></li>
               <li><Link href="/contact"><span className="cursor-pointer hover:underline">Contact</span></Link></li>
+              <li><a href={CLIENT_PORTAL_URL} target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:underline">Client Login</a></li>
               <li><Link href="/admin/inbox"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Admin Inbox</span></Link></li>
             </ul>
           </div>
