@@ -310,3 +310,8 @@
 
 - [x] Store the Darwish star emblem as darwish-co-star-emblem for mobile app use
 - [x] Verify the uploaded mobile-app icon asset is available through managed storage
+
+## Homepage Section Reordering
+
+- [x] Move the Client Login section to the end of the homepage
+- [x] Verify the reordered homepage layout on desktop and mobile
