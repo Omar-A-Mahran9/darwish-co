@@ -305,3 +305,8 @@
 
 - [x] Add a prominent Client Login section linked to the Darwish Hub portal
 - [x] Verify the Client Login link and responsive presentation on desktop and mobile
+
+## Mobile App Icon Asset
+
+- [x] Store the Darwish star emblem as darwish-co-star-emblem for mobile app use
+- [x] Verify the uploaded mobile-app icon asset is available through managed storage
