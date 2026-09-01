@@ -329,3 +329,10 @@
 - [x] Issue an Amr Soudy account routed to Darwish Hub
 - [x] Issue a Nabta Agency account routed to Nabta Quest
 - [x] Verify both issued accounts route to their assigned portals
+
+## Client Portal Role Accounts
+
+- [x] Create Owner, Editor, and Viewer gateway accounts for Darwish Hub
+- [x] Create Owner, Editor, and Viewer gateway accounts for Nabta Quest
+- [x] Confirm the requested scope is gateway accounts only; internal role enforcement in the two destination portals is deferred
+- [x] Verify all six role-labelled gateway accounts route to their assigned portal
