@@ -323,3 +323,9 @@
 - [x] Build a secure Client Login page using issued usernames and passwords
 - [x] Route authenticated clients exclusively to their assigned portal URL
 - [x] Verify client login lockout end-to-end in development and production, including issuance, routing, deactivation, failed credentials, and deletion
+
+## Initial Client Portal Accounts
+
+- [x] Issue an Amr Soudy account routed to Darwish Hub
+- [x] Issue a Nabta Agency account routed to Nabta Quest
+- [x] Verify both issued accounts route to their assigned portals
