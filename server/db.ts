@@ -4,9 +4,11 @@ import {
   contactSubmissions,
   partners,
   corporatePartners,
+  clientAccounts,
   type NewContactSubmission,
   type NewPartner,
   type NewCorporatePartner,
+  type NewClientAccount,
 } from "../drizzle/schema.js";
 import { desc, eq, asc } from "drizzle-orm";
 
@@ -105,4 +107,59 @@ export async function updateCorporatePartner(id: number, data: Partial<NewCorpor
 
 export async function deleteCorporatePartner(id: number) {
   await db.delete(corporatePartners).where(eq(corporatePartners.id, id));
+}
+
+// ── Client portal access ─────────────────────────────────────────────────────
+
+export async function getAllClientAccounts() {
+  return db
+    .select({
+      id: clientAccounts.id,
+      clientName: clientAccounts.clientName,
+      username: clientAccounts.username,
+      portalUrl: clientAccounts.portalUrl,
+      isActive: clientAccounts.isActive,
+      failedAttempts: clientAccounts.failedAttempts,
+      lockedUntil: clientAccounts.lockedUntil,
+      createdAt: clientAccounts.createdAt,
+      updatedAt: clientAccounts.updatedAt,
+    })
+    .from(clientAccounts)
+    .orderBy(asc(clientAccounts.clientName), asc(clientAccounts.id));
+}
+
+export async function getClientAccountByUsername(username: string) {
+  const records = await db
+    .select()
+    .from(clientAccounts)
+    .where(eq(clientAccounts.username, username))
+    .limit(1);
+  return records[0] ?? null;
+}
+
+export async function insertClientAccount(data: NewClientAccount) {
+  await db.insert(clientAccounts).values(data);
+}
+
+export async function updateClientAccount(id: number, data: Partial<NewClientAccount>) {
+  await db.update(clientAccounts).set(data).where(eq(clientAccounts.id, id));
+}
+
+export async function deleteClientAccount(id: number) {
+  await db.delete(clientAccounts).where(eq(clientAccounts.id, id));
+}
+
+export async function recordFailedClientLogin(id: number, previousAttempts: number) {
+  const failedAttempts = previousAttempts + 1;
+  const lockedUntil =
+    failedAttempts >= 5 ? Date.now() + 15 * 60 * 1000 : null;
+  await updateClientAccount(id, { failedAttempts, lockedUntil, updatedAt: Date.now() });
+}
+
+export async function resetClientLoginAttempts(id: number) {
+  await updateClientAccount(id, {
+    failedAttempts: 0,
+    lockedUntil: null,
+    updatedAt: Date.now(),
+  });
 }

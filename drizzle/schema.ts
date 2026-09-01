@@ -47,3 +47,20 @@ export const corporatePartners = mysqlTable("corporate_partners", {
 
 export type CorporatePartner = typeof corporatePartners.$inferSelect;
 export type NewCorporatePartner = typeof corporatePartners.$inferInsert;
+
+// ── Client portal access (owner-issued credentials and routing) ───────────────
+export const clientAccounts = mysqlTable("client_accounts", {
+  id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
+  clientName: varchar("client_name", { length: 255 }).notNull(),
+  username: varchar("username", { length: 64 }).notNull().unique(),
+  passwordHash: varchar("password_hash", { length: 255 }).notNull(),
+  portalUrl: varchar("portal_url", { length: 1000 }).notNull(),
+  isActive: boolean("is_active").notNull().default(true),
+  failedAttempts: bigint("failed_attempts", { mode: "number" }).notNull().default(0),
+  lockedUntil: bigint("locked_until", { mode: "number" }),
+  createdAt: bigint("created_at", { mode: "number" }).notNull(),
+  updatedAt: bigint("updated_at", { mode: "number" }).notNull(),
+});
+
+export type ClientAccount = typeof clientAccounts.$inferSelect;
+export type NewClientAccount = typeof clientAccounts.$inferInsert;

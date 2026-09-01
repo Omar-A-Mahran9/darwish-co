@@ -198,6 +198,14 @@ export default function AdminInbox() {
             <Button
               variant="outline"
               size="sm"
+              onClick={() => window.location.assign("/admin/client-access")}
+              className="rounded-none"
+            >
+              Client Access
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => fetchMessages(token)}
               disabled={loading}
               className="gap-2"

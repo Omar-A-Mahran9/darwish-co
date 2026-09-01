@@ -315,3 +315,11 @@
 
 - [x] Move the Client Login section to the end of the homepage
 - [x] Verify the reordered homepage layout on desktop and mobile
+
+## Client Credential Login and Portal Routing
+
+- [x] Define the client account, issued-credential, and assigned-portal data model
+- [x] Add owner-only tools to issue, update, deactivate, and delete client credentials
+- [x] Build a secure Client Login page using issued usernames and passwords
+- [x] Route authenticated clients exclusively to their assigned portal URL
+- [x] Verify client login lockout end-to-end in development and production, including issuance, routing, deactivation, failed credentials, and deletion

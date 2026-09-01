@@ -17,7 +17,24 @@ import {
   insertCorporatePartner,
   updateCorporatePartner,
   deleteCorporatePartner,
+  getAllClientAccounts,
+  getClientAccountByUsername,
+  insertClientAccount,
+  updateClientAccount,
+  deleteClientAccount,
+  recordFailedClientLogin,
+  resetClientLoginAttempts,
 } from "./db.js";
+import {
+  CLIENT_LOCKOUT_MS,
+  hashClientPassword,
+  MAX_CLIENT_LOGIN_ATTEMPTS,
+  normalizeUsername,
+  validateClientPassword,
+  validateClientUsername,
+  validatePortalUrl,
+  verifyClientPassword,
+} from "./clientAuth.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,14 +67,27 @@ async function notifyOwner(title: string, content: string): Promise<boolean> {
 }
 
 // ── Simple owner auth middleware ─────────────────────────────────────────────
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "darwish-admin-2026";
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
 
 function requireAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
   const token = req.headers["x-admin-token"] || req.query.token;
-  if (token !== ADMIN_TOKEN) {
+  if (!ADMIN_TOKEN || token !== ADMIN_TOKEN) {
     return res.status(401).json({ success: false, error: "Unauthorized" });
   }
   next();
+}
+
+const loginWindows = new Map<string, { attempts: number; resetAt: number }>();
+
+function isLoginRateLimited(key: string): boolean {
+  const now = Date.now();
+  const window = loginWindows.get(key);
+  if (!window || window.resetAt <= now) {
+    loginWindows.set(key, { attempts: 1, resetAt: now + CLIENT_LOCKOUT_MS });
+    return false;
+  }
+  window.attempts += 1;
+  return window.attempts > MAX_CLIENT_LOGIN_ATTEMPTS;
 }
 
 async function startServer() {
@@ -132,6 +162,38 @@ async function startServer() {
       success: true,
       message: "Your message has been received. We'll be in touch soon!",
     });
+  });
+
+  // ── Client portal login ───────────────────────────────────────────────────
+  app.post("/api/client-login", async (req, res) => {
+    const username = normalizeUsername(String(req.body?.username ?? ""));
+    const password = String(req.body?.password ?? "");
+    const rateLimitKey = `${req.ip}:${username || "unknown"}`;
+
+    if (!username || !password || isLoginRateLimited(rateLimitKey)) {
+      return res.status(401).json({ success: false, error: "Invalid username or password." });
+    }
+
+    try {
+      const account = await getClientAccountByUsername(username);
+      const now = Date.now();
+      if (!account || !account.isActive || (account.lockedUntil && account.lockedUntil > now)) {
+        return res.status(401).json({ success: false, error: "Invalid username or password." });
+      }
+
+      const isValidPassword = await verifyClientPassword(password, account.passwordHash);
+      if (!isValidPassword) {
+        const previousAttempts = account.lockedUntil && account.lockedUntil <= now ? 0 : account.failedAttempts;
+        await recordFailedClientLogin(account.id, previousAttempts);
+        return res.status(401).json({ success: false, error: "Invalid username or password." });
+      }
+
+      await resetClientLoginAttempts(account.id);
+      return res.json({ success: true, portalUrl: account.portalUrl });
+    } catch (error) {
+      console.error("[ClientLogin] Sign-in failed:", error);
+      return res.status(500).json({ success: false, error: "Unable to sign in. Please try again." });
+    }
   });
 
   // ── Partners API (public) ─────────────────────────────────────────────────
@@ -254,6 +316,101 @@ async function startServer() {
     } catch (err) {
       console.error("[Admin] Failed to delete message:", err);
       return res.status(500).json({ success: false, error: "Failed to delete message." });
+    }
+  });
+
+  // ── Client Access Admin API ───────────────────────────────────────────────
+  app.get("/api/admin/client-accounts", requireAdmin, async (_req, res) => {
+    try {
+      return res.json({ success: true, accounts: await getAllClientAccounts() });
+    } catch (error) {
+      console.error("[ClientAccess] Failed to fetch accounts:", error);
+      return res.status(500).json({ success: false, error: "Failed to fetch client accounts." });
+    }
+  });
+
+  app.post("/api/admin/client-accounts", requireAdmin, async (req, res) => {
+    const clientName = String(req.body?.clientName ?? "").trim();
+    const username = normalizeUsername(String(req.body?.username ?? ""));
+    const password = String(req.body?.password ?? "");
+    const portalUrl = String(req.body?.portalUrl ?? "").trim();
+    const validationError =
+      (!clientName && "Client name is required.") ||
+      validateClientUsername(username) ||
+      validateClientPassword(password) ||
+      validatePortalUrl(portalUrl);
+    if (validationError) return res.status(400).json({ success: false, error: validationError });
+
+    try {
+      const now = Date.now();
+      await insertClientAccount({
+        clientName,
+        username,
+        passwordHash: await hashClientPassword(password),
+        portalUrl,
+        isActive: true,
+        failedAttempts: 0,
+        lockedUntil: null,
+        createdAt: now,
+        updatedAt: now,
+      });
+      return res.status(201).json({ success: true });
+    } catch (error) {
+      console.error("[ClientAccess] Failed to issue credentials:", error);
+      return res.status(409).json({ success: false, error: "Unable to issue these credentials. The username may already exist." });
+    }
+  });
+
+  app.patch("/api/admin/client-accounts/:id", requireAdmin, async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id < 1) return res.status(400).json({ success: false, error: "Invalid client account ID." });
+
+    const clientName = req.body?.clientName === undefined ? undefined : String(req.body.clientName).trim();
+    const portalUrl = req.body?.portalUrl === undefined ? undefined : String(req.body.portalUrl).trim();
+    const isActive = req.body?.isActive;
+    const password = req.body?.password === undefined ? undefined : String(req.body.password);
+    const validationError =
+      (clientName !== undefined && !clientName && "Client name is required.") ||
+      (portalUrl !== undefined && validatePortalUrl(portalUrl)) ||
+      (password !== undefined && validateClientPassword(password)) ||
+      (isActive !== undefined && typeof isActive !== "boolean" && "Active status must be true or false.");
+    if (validationError) return res.status(400).json({ success: false, error: validationError });
+
+    try {
+      const update: {
+        clientName?: string;
+        portalUrl?: string;
+        isActive?: boolean;
+        passwordHash?: string;
+        failedAttempts?: number;
+        lockedUntil?: number | null;
+        updatedAt: number;
+      } = { updatedAt: Date.now() };
+      if (clientName !== undefined) update.clientName = clientName;
+      if (portalUrl !== undefined) update.portalUrl = portalUrl;
+      if (typeof isActive === "boolean") update.isActive = isActive;
+      if (password !== undefined) {
+        update.passwordHash = await hashClientPassword(password);
+        update.failedAttempts = 0;
+        update.lockedUntil = null;
+      }
+      await updateClientAccount(id, update);
+      return res.json({ success: true });
+    } catch (error) {
+      console.error("[ClientAccess] Failed to update account:", error);
+      return res.status(500).json({ success: false, error: "Failed to update the client account." });
+    }
+  });
+
+  app.delete("/api/admin/client-accounts/:id", requireAdmin, async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id < 1) return res.status(400).json({ success: false, error: "Invalid client account ID." });
+    try {
+      await deleteClientAccount(id);
+      return res.json({ success: true });
+    } catch (error) {
+      console.error("[ClientAccess] Failed to delete account:", error);
+      return res.status(500).json({ success: false, error: "Failed to delete the client account." });
     }
   });
 

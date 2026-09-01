@@ -96,6 +96,39 @@ async function devNotifyOwner(title: string, content: string): Promise<boolean> 
  * Vite plugin that adds /api/contact and /api/admin/* endpoints during development
  */
 function vitePluginContactApi(): Plugin {
+  const clientLoginWindows = new Map<string, { attempts: number; resetAt: number }>();
+
+  const sendJson = (res: import("node:http").ServerResponse, status: number, body: unknown) => {
+    res.writeHead(status, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(body));
+  };
+
+  const parseRequestBody = (req: import("node:http").IncomingMessage) =>
+    new Promise<Record<string, unknown>>((resolve, reject) => {
+      let body = "";
+      req.on("data", chunk => { body += chunk.toString(); });
+      req.on("end", () => {
+        try { resolve(body ? JSON.parse(body) : {}); } catch (error) { reject(error); }
+      });
+    });
+
+  const isRateLimited = (key: string, lockoutMs: number, maxAttempts: number) => {
+    const now = Date.now();
+    const window = clientLoginWindows.get(key);
+    if (!window || window.resetAt <= now) {
+      clientLoginWindows.set(key, { attempts: 1, resetAt: now + lockoutMs });
+      return false;
+    }
+    window.attempts += 1;
+    return window.attempts > maxAttempts;
+  };
+
+  const hasAdminAccess = (req: import("node:http").IncomingMessage) => {
+    const adminToken = process.env.ADMIN_TOKEN;
+    const token = req.headers["x-admin-token"] || new URL(req.url || "", "http://localhost").searchParams.get("token");
+    return Boolean(adminToken && token === adminToken);
+  };
+
   return {
     name: "manus-contact-api",
     configureServer(server: ViteDevServer) {
@@ -174,9 +207,7 @@ function vitePluginContactApi(): Plugin {
 
       // ── GET /api/admin/messages ──────────────────────────────────────────
       server.middlewares.use("/api/admin/messages", (req, res, next) => {
-        const adminToken = process.env.ADMIN_TOKEN || "darwish-admin-2026";
-        const token = (req as any).headers["x-admin-token"] || new URL(req.url || "", "http://localhost").searchParams.get("token");
-        if (token !== adminToken) {
+        if (!hasAdminAccess(req)) {
           res.writeHead(401, { "Content-Type": "application/json" });
           res.end(JSON.stringify({ success: false, error: "Unauthorized" }));
           return;
@@ -195,6 +226,109 @@ function vitePluginContactApi(): Plugin {
           return;
         }
         next();
+      });
+
+      // ── Client portal sign-in (development parity with Express server) ─────
+      server.middlewares.use("/api/client-login", (req, res, next) => {
+        if (req.method !== "POST") return next();
+        (async () => {
+          try {
+            const body = await parseRequestBody(req);
+            const auth = await import("./server/clientAuth.js");
+            const db = await import("./server/db.js");
+            const username = auth.normalizeUsername(String(body.username ?? ""));
+            const password = String(body.password ?? "");
+            const rateLimitKey = `${req.socket.remoteAddress || "unknown"}:${username || "unknown"}`;
+
+            if (!username || !password || isRateLimited(rateLimitKey, auth.CLIENT_LOCKOUT_MS, auth.MAX_CLIENT_LOGIN_ATTEMPTS)) {
+              return sendJson(res, 401, { success: false, error: "Invalid username or password." });
+            }
+
+            const account = await db.getClientAccountByUsername(username);
+            const now = Date.now();
+            if (!account || !account.isActive || (account.lockedUntil && account.lockedUntil > now)) {
+              return sendJson(res, 401, { success: false, error: "Invalid username or password." });
+            }
+
+            if (!(await auth.verifyClientPassword(password, account.passwordHash))) {
+              const previousAttempts = account.lockedUntil && account.lockedUntil <= now ? 0 : account.failedAttempts;
+              await db.recordFailedClientLogin(account.id, previousAttempts);
+              return sendJson(res, 401, { success: false, error: "Invalid username or password." });
+            }
+
+            await db.resetClientLoginAttempts(account.id);
+            return sendJson(res, 200, { success: true, portalUrl: account.portalUrl });
+          } catch (error) {
+            console.error("[ClientLogin] Development sign-in failed:", error);
+            return sendJson(res, 500, { success: false, error: "Unable to sign in. Please try again." });
+          }
+        })();
+      });
+
+      // ── Client credential administration (development parity) ─────────────
+      server.middlewares.use("/api/admin/client-accounts", (req, res, next) => {
+        if (!hasAdminAccess(req)) return sendJson(res, 401, { success: false, error: "Unauthorized" });
+
+        (async () => {
+          try {
+            const db = await import("./server/db.js");
+            const auth = await import("./server/clientAuth.js");
+            const idMatch = (req.url || "").split("?")[0].match(/^\/(\d+)$/);
+            const id = idMatch ? Number(idMatch[1]) : null;
+
+            if (req.method === "GET" && id === null) {
+              return sendJson(res, 200, { success: true, accounts: await db.getAllClientAccounts() });
+            }
+
+            if (req.method === "POST" && id === null) {
+              const body = await parseRequestBody(req);
+              const clientName = String(body.clientName ?? "").trim();
+              const username = auth.normalizeUsername(String(body.username ?? ""));
+              const password = String(body.password ?? "");
+              const portalUrl = String(body.portalUrl ?? "").trim();
+              const validationError = (!clientName && "Client name is required.") || auth.validateClientUsername(username) || auth.validateClientPassword(password) || auth.validatePortalUrl(portalUrl);
+              if (validationError) return sendJson(res, 400, { success: false, error: validationError });
+              const now = Date.now();
+              await db.insertClientAccount({ clientName, username, passwordHash: await auth.hashClientPassword(password), portalUrl, isActive: true, failedAttempts: 0, lockedUntil: null, createdAt: now, updatedAt: now });
+              return sendJson(res, 201, { success: true });
+            }
+
+            if (req.method === "PATCH" && id !== null) {
+              const body = await parseRequestBody(req);
+              const clientName = body.clientName === undefined ? undefined : String(body.clientName).trim();
+              const portalUrl = body.portalUrl === undefined ? undefined : String(body.portalUrl).trim();
+              const isActive = body.isActive;
+              const password = body.password === undefined ? undefined : String(body.password);
+              const validationError =
+                (clientName !== undefined && !clientName && "Client name is required.") ||
+                (portalUrl !== undefined && auth.validatePortalUrl(portalUrl)) ||
+                (password !== undefined && auth.validateClientPassword(password)) ||
+                (isActive !== undefined && typeof isActive !== "boolean" && "Active status must be true or false.");
+              if (validationError) return sendJson(res, 400, { success: false, error: validationError });
+              const update: { clientName?: string; portalUrl?: string; isActive?: boolean; passwordHash?: string; failedAttempts?: number; lockedUntil?: number | null; updatedAt: number } = { updatedAt: Date.now() };
+              if (clientName !== undefined) update.clientName = clientName;
+              if (portalUrl !== undefined) update.portalUrl = portalUrl;
+              if (typeof isActive === "boolean") update.isActive = isActive;
+              if (password !== undefined) {
+                update.passwordHash = await auth.hashClientPassword(password);
+                update.failedAttempts = 0;
+                update.lockedUntil = null;
+              }
+              await db.updateClientAccount(id, update);
+              return sendJson(res, 200, { success: true });
+            }
+
+            if (req.method === "DELETE" && id !== null) {
+              await db.deleteClientAccount(id);
+              return sendJson(res, 200, { success: true });
+            }
+
+            return next();
+          } catch (error) {
+            console.error("[ClientAccess] Development admin API failed:", error);
+            return sendJson(res, 500, { success: false, error: "Unable to complete the client access request." });
+          }
+        })();
       });
     },
   };

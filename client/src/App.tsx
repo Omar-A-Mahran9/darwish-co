@@ -18,6 +18,8 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Fonts from './pages/Fonts';
 import SmartSolutions from './pages/SmartSolutions';
+import ClientLogin from './pages/ClientLogin';
+import AdminClientAccess from './pages/AdminClientAccess';
 import { useHashScroll } from "./hooks/useHashScroll";
 
 function Router() {
@@ -38,6 +40,8 @@ function Router() {
         <Route path="/blog/:slug" component={BlogPost} />
         <Route path="/fonts" component={Fonts} />
         <Route path="/smart-solutions" component={SmartSolutions} />
+        <Route path="/client-login" component={ClientLogin} />
+        <Route path="/admin/client-access" component={AdminClientAccess} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

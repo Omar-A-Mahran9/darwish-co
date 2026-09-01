@@ -12,7 +12,6 @@ const EMBLEM_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
 const LOGOIN_URL =
   "/manus-storage/emblem-transparent_58f688d3.png";
-const CLIENT_PORTAL_URL = "https://darwishhub-rs8nk5xu.manus.space";
 
 // ─── Partner logo CDN urls ──────────────────────────────────────────────────
 const PARTNER_LOGOS = [
@@ -69,14 +68,7 @@ function GlassNavbar() {
               </span>
             </Link>
           ))}
-          <a
-            href={CLIENT_PORTAL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-gray-900 transition-colors duration-150"
-          >
-            Client Login
-          </a>
+          <Link href="/client-login" className="hover:text-gray-900 transition-colors duration-150">Client Login</Link>
         </div>
 
         {/* Sign-up / CTA button */}
@@ -742,14 +734,9 @@ export default function Home() {
             <p className="max-w-xl text-lg leading-relaxed text-white/75">
               Access Darwish Hub, our secure client portal for your shared workspace, engagement materials, and collaboration with our consulting team.
             </p>
-            <a
-              href={CLIENT_PORTAL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-white px-7 py-4 text-sm font-bold text-foreground transition-colors hover:bg-chart-2 hover:text-white"
-            >
+            <Link href="/client-login" className="inline-flex items-center gap-3 bg-white px-7 py-4 text-sm font-bold text-foreground transition-colors hover:bg-chart-2 hover:text-white">
               Sign in to Darwish Hub <ArrowRight className="h-4 w-4" />
-            </a>
+            </Link>
           </div>
 
           <div className="border border-white/20 bg-white/5 p-8 backdrop-blur-sm">
