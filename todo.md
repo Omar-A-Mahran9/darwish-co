@@ -349,5 +349,14 @@
 - [x] Select central authorization gateway model: one sign-in, automatic portal routing, and shared Owner, Editor, and Viewer roles
 - [x] Gain source access to both portal projects through the linked Darwish Hub and Nabta Quest repositories
 - [x] Build central account roles and short-lived authorization-code exchange
+- [x] Publish the Darwish & Co. central gateway and Nabta Quest callback integration
+- [ ] Publish Darwish Hub central authorization callback and apply its portal-role migration
 - [ ] Implement shared client identities and Owner, Editor, and Viewer permissions across both portals
 - [ ] Retire the redundant login screen after unified authorization is verified
+
+## Central Authorization Exchange Fix
+
+- [x] Diagnose live code exchange failure: authorization codes were marked used but the MySQL update result was read with the wrong shape
+- [x] Correct atomic code consumption and preserve replay protection
+- [x] Verify corrected development exchange succeeds once and rejects code replay
+- [ ] Publish the exchange fix and verify the live Nabta Quest central callback completes successfully

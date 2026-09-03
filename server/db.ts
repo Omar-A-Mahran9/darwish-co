@@ -212,7 +212,8 @@ export async function consumeCentralAuthorizationCode(input: {
       .update(centralAuthCodes)
       .set({ usedAt: now })
       .where(and(eq(centralAuthCodes.id, grant.codeId), isNull(centralAuthCodes.usedAt)));
-    const affectedRows = Number((updateResult as { affectedRows?: number }).affectedRows ?? 0);
+    const updateHeader = (Array.isArray(updateResult) ? updateResult[0] : updateResult) as { affectedRows?: number };
+    const affectedRows = Number(updateHeader?.affectedRows ?? 0);
     if (affectedRows !== 1) return null;
 
     return {
