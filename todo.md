@@ -350,7 +350,7 @@
 - [x] Gain source access to both portal projects through the linked Darwish Hub and Nabta Quest repositories
 - [x] Build central account roles and short-lived authorization-code exchange
 - [x] Publish the Darwish & Co. central gateway and Nabta Quest callback integration
-- [ ] Publish Darwish Hub central authorization callback and apply its portal-role migration
+- [ ] Verify the reported Darwish Hub publication and portal-role migration in the live callback flow
 - [ ] Implement shared client identities and Owner, Editor, and Viewer permissions across both portals
 - [ ] Retire the redundant login screen after unified authorization is verified
 
@@ -360,3 +360,13 @@
 - [x] Correct atomic code consumption and preserve replay protection
 - [x] Verify corrected development exchange succeeds once and rejects code replay
 - [ ] Publish the exchange fix and verify the live Nabta Quest central callback completes successfully
+
+## Nabta Owner Credential Repair
+
+- [x] Diagnose central credential inconsistency: the Nabta Owner password hash is valid, but the existing rate limiter counted successful sign-ins and later rejected repeats
+- [x] Correct failure-only rate limiting and verify seven repeat Nabta Owner logins without another password reset
+
+## Client Login Rate-Limit Correction
+
+- [x] Count only failed sign-ins toward gateway rate limits and clear attempts after a valid login
+- [x] Mirror the correction in the development login route and add automated coverage

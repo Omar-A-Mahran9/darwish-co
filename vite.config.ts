@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+import { ClientLoginRateLimiter } from "./server/clientLoginRateLimit";
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
@@ -96,7 +97,7 @@ async function devNotifyOwner(title: string, content: string): Promise<boolean> 
  * Vite plugin that adds /api/contact and /api/admin/* endpoints during development
  */
 function vitePluginContactApi(): Plugin {
-  const clientLoginWindows = new Map<string, { attempts: number; resetAt: number }>();
+  const clientLoginRateLimiter = new ClientLoginRateLimiter(15 * 60 * 1000, 5);
 
   const sendJson = (res: import("node:http").ServerResponse, status: number, body: unknown) => {
     res.writeHead(status, { "Content-Type": "application/json" });
@@ -111,17 +112,6 @@ function vitePluginContactApi(): Plugin {
         try { resolve(body ? JSON.parse(body) : {}); } catch (error) { reject(error); }
       });
     });
-
-  const isRateLimited = (key: string, lockoutMs: number, maxAttempts: number) => {
-    const now = Date.now();
-    const window = clientLoginWindows.get(key);
-    if (!window || window.resetAt <= now) {
-      clientLoginWindows.set(key, { attempts: 1, resetAt: now + lockoutMs });
-      return false;
-    }
-    window.attempts += 1;
-    return window.attempts > maxAttempts;
-  };
 
   const hasAdminAccess = (req: import("node:http").IncomingMessage) => {
     const adminToken = process.env.ADMIN_TOKEN;
@@ -240,23 +230,27 @@ function vitePluginContactApi(): Plugin {
             const password = String(body.password ?? "");
             const rateLimitKey = `${req.socket.remoteAddress || "unknown"}:${username || "unknown"}`;
 
-            if (!username || !password || isRateLimited(rateLimitKey, auth.CLIENT_LOCKOUT_MS, auth.MAX_CLIENT_LOGIN_ATTEMPTS)) {
+            if (!username || !password || clientLoginRateLimiter.isLimited(rateLimitKey)) {
+              clientLoginRateLimiter.recordFailure(rateLimitKey);
               return sendJson(res, 401, { success: false, error: "Invalid username or password." });
             }
 
             const account = await db.getClientAccountByUsername(username);
             const now = Date.now();
             if (!account || !account.isActive || (account.lockedUntil && account.lockedUntil > now)) {
+              clientLoginRateLimiter.recordFailure(rateLimitKey);
               return sendJson(res, 401, { success: false, error: "Invalid username or password." });
             }
 
             if (!(await auth.verifyClientPassword(password, account.passwordHash))) {
               const previousAttempts = account.lockedUntil && account.lockedUntil <= now ? 0 : account.failedAttempts;
               await db.recordFailedClientLogin(account.id, previousAttempts);
+              clientLoginRateLimiter.recordFailure(rateLimitKey);
               return sendJson(res, 401, { success: false, error: "Invalid username or password." });
             }
 
             await db.resetClientLoginAttempts(account.id);
+            clientLoginRateLimiter.clear(rateLimitKey);
             const central = await import("./server/centralAuth.js");
             const code = central.generateAuthorizationCode();
             await db.createCentralAuthorizationCode({

@@ -46,6 +46,7 @@ import {
   isPortalKey,
   isPortalRole,
 } from "./centralAuth.js";
+import { ClientLoginRateLimiter } from "./clientLoginRateLimit.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -88,18 +89,7 @@ function requireAdmin(req: express.Request, res: express.Response, next: express
   next();
 }
 
-const loginWindows = new Map<string, { attempts: number; resetAt: number }>();
-
-function isLoginRateLimited(key: string): boolean {
-  const now = Date.now();
-  const window = loginWindows.get(key);
-  if (!window || window.resetAt <= now) {
-    loginWindows.set(key, { attempts: 1, resetAt: now + CLIENT_LOCKOUT_MS });
-    return false;
-  }
-  window.attempts += 1;
-  return window.attempts > MAX_CLIENT_LOGIN_ATTEMPTS;
-}
+const clientLoginRateLimiter = new ClientLoginRateLimiter(CLIENT_LOCKOUT_MS, MAX_CLIENT_LOGIN_ATTEMPTS);
 
 async function startServer() {
   const app = express();
@@ -181,7 +171,8 @@ async function startServer() {
     const password = String(req.body?.password ?? "");
     const rateLimitKey = `${req.ip}:${username || "unknown"}`;
 
-    if (!username || !password || isLoginRateLimited(rateLimitKey)) {
+    if (!username || !password || clientLoginRateLimiter.isLimited(rateLimitKey)) {
+      clientLoginRateLimiter.recordFailure(rateLimitKey);
       return res.status(401).json({ success: false, error: "Invalid username or password." });
     }
 
@@ -189,6 +180,7 @@ async function startServer() {
       const account = await getClientAccountByUsername(username);
       const now = Date.now();
       if (!account || !account.isActive || (account.lockedUntil && account.lockedUntil > now)) {
+        clientLoginRateLimiter.recordFailure(rateLimitKey);
         return res.status(401).json({ success: false, error: "Invalid username or password." });
       }
 
@@ -196,10 +188,12 @@ async function startServer() {
       if (!isValidPassword) {
         const previousAttempts = account.lockedUntil && account.lockedUntil <= now ? 0 : account.failedAttempts;
         await recordFailedClientLogin(account.id, previousAttempts);
+        clientLoginRateLimiter.recordFailure(rateLimitKey);
         return res.status(401).json({ success: false, error: "Invalid username or password." });
       }
 
       await resetClientLoginAttempts(account.id);
+      clientLoginRateLimiter.clear(rateLimitKey);
       const code = generateAuthorizationCode();
       await createCentralAuthorizationCode({
         clientAccountId: account.id,
