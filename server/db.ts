@@ -5,12 +5,13 @@ import {
   partners,
   corporatePartners,
   clientAccounts,
+  centralAuthCodes,
   type NewContactSubmission,
   type NewPartner,
   type NewCorporatePartner,
   type NewClientAccount,
 } from "../drizzle/schema.js";
-import { desc, eq, asc } from "drizzle-orm";
+import { and, asc, desc, eq, gt, isNull } from "drizzle-orm";
 
 const pool = mysql.createPool({
   uri: process.env.DATABASE_URL!,
@@ -118,6 +119,8 @@ export async function getAllClientAccounts() {
       clientName: clientAccounts.clientName,
       username: clientAccounts.username,
       portalUrl: clientAccounts.portalUrl,
+      portalKey: clientAccounts.portalKey,
+      portalRole: clientAccounts.portalRole,
       isActive: clientAccounts.isActive,
       failedAttempts: clientAccounts.failedAttempts,
       lockedUntil: clientAccounts.lockedUntil,
@@ -161,5 +164,63 @@ export async function resetClientLoginAttempts(id: number) {
     failedAttempts: 0,
     lockedUntil: null,
     updatedAt: Date.now(),
+  });
+}
+
+export async function createCentralAuthorizationCode(input: {
+  clientAccountId: number;
+  codeHash: string;
+  portalKey: "darwish_hub" | "nabta_quest";
+  expiresAt: number;
+}) {
+  await db.insert(centralAuthCodes).values({
+    ...input,
+    usedAt: null,
+    createdAt: Date.now(),
+  });
+}
+
+export async function consumeCentralAuthorizationCode(input: {
+  codeHash: string;
+  portalKey: "darwish_hub" | "nabta_quest";
+}) {
+  const now = Date.now();
+  return db.transaction(async tx => {
+    const records = await tx
+      .select({
+        codeId: centralAuthCodes.id,
+        clientId: clientAccounts.id,
+        clientName: clientAccounts.clientName,
+        username: clientAccounts.username,
+        portalRole: clientAccounts.portalRole,
+        portalKey: clientAccounts.portalKey,
+        isActive: clientAccounts.isActive,
+      })
+      .from(centralAuthCodes)
+      .innerJoin(clientAccounts, eq(centralAuthCodes.clientAccountId, clientAccounts.id))
+      .where(and(
+        eq(centralAuthCodes.codeHash, input.codeHash),
+        eq(centralAuthCodes.portalKey, input.portalKey),
+        isNull(centralAuthCodes.usedAt),
+        gt(centralAuthCodes.expiresAt, now),
+      ))
+      .limit(1);
+    const grant = records[0];
+    if (!grant || !grant.isActive || grant.portalKey !== input.portalKey) return null;
+
+    const updateResult = await tx
+      .update(centralAuthCodes)
+      .set({ usedAt: now })
+      .where(and(eq(centralAuthCodes.id, grant.codeId), isNull(centralAuthCodes.usedAt)));
+    const affectedRows = Number((updateResult as { affectedRows?: number }).affectedRows ?? 0);
+    if (affectedRows !== 1) return null;
+
+    return {
+      clientId: grant.clientId,
+      clientName: grant.clientName,
+      username: grant.username,
+      portalRole: grant.portalRole,
+      portalKey: grant.portalKey,
+    };
   });
 }

@@ -24,6 +24,8 @@ import {
   deleteClientAccount,
   recordFailedClientLogin,
   resetClientLoginAttempts,
+  createCentralAuthorizationCode,
+  consumeCentralAuthorizationCode,
 } from "./db.js";
 import {
   CLIENT_LOCKOUT_MS,
@@ -35,6 +37,15 @@ import {
   validatePortalUrl,
   verifyClientPassword,
 } from "./clientAuth.js";
+import {
+  CENTRAL_AUTH_CODE_TTL_MS,
+  generateAuthorizationCode,
+  getCentralCallbackUrl,
+  getPortalKeyForUrl,
+  hashAuthorizationCode,
+  isPortalKey,
+  isPortalRole,
+} from "./centralAuth.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -189,10 +200,34 @@ async function startServer() {
       }
 
       await resetClientLoginAttempts(account.id);
-      return res.json({ success: true, portalUrl: account.portalUrl });
+      const code = generateAuthorizationCode();
+      await createCentralAuthorizationCode({
+        clientAccountId: account.id,
+        codeHash: hashAuthorizationCode(code),
+        portalKey: account.portalKey,
+        expiresAt: now + CENTRAL_AUTH_CODE_TTL_MS,
+      });
+      return res.json({ success: true, portalUrl: getCentralCallbackUrl(account.portalKey, code) });
     } catch (error) {
       console.error("[ClientLogin] Sign-in failed:", error);
       return res.status(500).json({ success: false, error: "Unable to sign in. Please try again." });
+    }
+  });
+
+  // ── Central authorization exchange (called server-to-server by each portal) ─
+  app.post("/api/central-auth/exchange", async (req, res) => {
+    const code = String(req.body?.code ?? "");
+    const portalKey = req.body?.portalKey;
+    if (!code || code.length < 32 || !isPortalKey(portalKey)) {
+      return res.status(400).json({ success: false, error: "Invalid authorization exchange request." });
+    }
+    try {
+      const grant = await consumeCentralAuthorizationCode({ codeHash: hashAuthorizationCode(code), portalKey });
+      if (!grant) return res.status(401).json({ success: false, error: "This sign-in link is invalid or has expired." });
+      return res.json({ success: true, grant });
+    } catch (error) {
+      console.error("[CentralAuth] Code exchange failed:", error);
+      return res.status(500).json({ success: false, error: "Unable to complete central authorization." });
     }
   });
 
@@ -334,12 +369,19 @@ async function startServer() {
     const username = normalizeUsername(String(req.body?.username ?? ""));
     const password = String(req.body?.password ?? "");
     const portalUrl = String(req.body?.portalUrl ?? "").trim();
+    const portalKey = getPortalKeyForUrl(portalUrl);
+    const portalRole = req.body?.portalRole ?? "viewer";
     const validationError =
       (!clientName && "Client name is required.") ||
       validateClientUsername(username) ||
       validateClientPassword(password) ||
-      validatePortalUrl(portalUrl);
+      validatePortalUrl(portalUrl) ||
+      (!portalKey && "Choose Darwish Hub or Nabta Quest as the assigned portal.") ||
+      (!isPortalRole(portalRole) && "Choose a valid portal role.");
     if (validationError) return res.status(400).json({ success: false, error: validationError });
+    if (!portalKey || !isPortalRole(portalRole)) {
+      return res.status(400).json({ success: false, error: "Choose a valid portal and role." });
+    }
 
     try {
       const now = Date.now();
@@ -348,6 +390,8 @@ async function startServer() {
         username,
         passwordHash: await hashClientPassword(password),
         portalUrl,
+        portalKey,
+        portalRole,
         isActive: true,
         failedAttempts: 0,
         lockedUntil: null,
@@ -367,11 +411,15 @@ async function startServer() {
 
     const clientName = req.body?.clientName === undefined ? undefined : String(req.body.clientName).trim();
     const portalUrl = req.body?.portalUrl === undefined ? undefined : String(req.body.portalUrl).trim();
+    const portalKey = portalUrl === undefined ? undefined : getPortalKeyForUrl(portalUrl);
+    const portalRole = req.body?.portalRole;
     const isActive = req.body?.isActive;
     const password = req.body?.password === undefined ? undefined : String(req.body.password);
     const validationError =
       (clientName !== undefined && !clientName && "Client name is required.") ||
       (portalUrl !== undefined && validatePortalUrl(portalUrl)) ||
+      (portalUrl !== undefined && !portalKey && "Choose Darwish Hub or Nabta Quest as the assigned portal.") ||
+      (portalRole !== undefined && !isPortalRole(portalRole) && "Choose a valid portal role.") ||
       (password !== undefined && validateClientPassword(password)) ||
       (isActive !== undefined && typeof isActive !== "boolean" && "Active status must be true or false.");
     if (validationError) return res.status(400).json({ success: false, error: validationError });
@@ -380,6 +428,8 @@ async function startServer() {
       const update: {
         clientName?: string;
         portalUrl?: string;
+        portalKey?: "darwish_hub" | "nabta_quest";
+        portalRole?: "owner" | "editor" | "viewer";
         isActive?: boolean;
         passwordHash?: string;
         failedAttempts?: number;
@@ -387,7 +437,11 @@ async function startServer() {
         updatedAt: number;
       } = { updatedAt: Date.now() };
       if (clientName !== undefined) update.clientName = clientName;
-      if (portalUrl !== undefined) update.portalUrl = portalUrl;
+      if (portalUrl !== undefined && portalKey) {
+        update.portalUrl = portalUrl;
+        update.portalKey = portalKey;
+      }
+      if (isPortalRole(portalRole)) update.portalRole = portalRole;
       if (typeof isActive === "boolean") update.isActive = isActive;
       if (password !== undefined) {
         update.passwordHash = await hashClientPassword(password);

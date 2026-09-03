@@ -336,3 +336,18 @@
 - [x] Create Owner, Editor, and Viewer gateway accounts for Nabta Quest
 - [x] Confirm the requested scope is gateway accounts only; internal role enforcement in the two destination portals is deferred
 - [x] Verify all six role-labelled gateway accounts route to their assigned portal
+
+## Nabta Quest Gateway Routing Fix
+
+- [x] Reproduce live Nabta gateway journeys with the original Nabta Agency and Nabta Owner accounts; both land on the Nabta Quest root page
+- [x] Confirm current gateway responses and the Nabta Quest root URL are live and reachable
+- [x] Inspect client-login redirects and all four stored Nabta portal URLs; each uses the same valid root URL with no path, encoding, or trailing-slash mismatch
+- [ ] Obtain the exact URL or screenshot of the user-reported page-not-found screen if it recurs
+
+## Unified Client Authorization Architecture
+
+- [x] Select central authorization gateway model: one sign-in, automatic portal routing, and shared Owner, Editor, and Viewer roles
+- [x] Gain source access to both portal projects through the linked Darwish Hub and Nabta Quest repositories
+- [x] Build central account roles and short-lived authorization-code exchange
+- [ ] Implement shared client identities and Owner, Editor, and Viewer permissions across both portals
+- [ ] Retire the redundant login screen after unified authorization is verified

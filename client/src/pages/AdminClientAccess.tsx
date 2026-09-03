@@ -12,6 +12,8 @@ type ClientAccount = {
   clientName: string;
   username: string;
   portalUrl: string;
+  portalKey: "darwish_hub" | "nabta_quest";
+  portalRole: "owner" | "editor" | "viewer";
   isActive: boolean;
   failedAttempts: number;
   lockedUntil: number | null;
@@ -23,11 +25,17 @@ type AccountForm = {
   username: string;
   password: string;
   portalUrl: string;
+  portalKey: "darwish_hub" | "nabta_quest";
+  portalRole: "owner" | "editor" | "viewer";
   isActive: boolean;
 };
 
 const ADMIN_TOKEN_KEY = "darwish_admin_token";
-const emptyForm: AccountForm = { clientName: "", username: "", password: "", portalUrl: "", isActive: true };
+const portalOptions = {
+  darwish_hub: { label: "Darwish Hub", url: "https://darwishhub-rs8nk5xu.manus.space" },
+  nabta_quest: { label: "Nabta Quest", url: "https://nabtaquest-fvgnftnq.manus.space" },
+} as const;
+const emptyForm: AccountForm = { clientName: "", username: "", password: "", portalUrl: portalOptions.darwish_hub.url, portalKey: "darwish_hub", portalRole: "viewer", isActive: true };
 
 export default function AdminClientAccess() {
   const [token, setToken] = useState(() => sessionStorage.getItem(ADMIN_TOKEN_KEY) || "");
@@ -70,6 +78,7 @@ export default function AdminClientAccess() {
   }, []);
 
   const updateForm = (key: keyof AccountForm, value: string | boolean) => setForm(current => ({ ...current, [key]: value }));
+  const selectPortal = (portalKey: AccountForm["portalKey"]) => setForm(current => ({ ...current, portalKey, portalUrl: portalOptions[portalKey].url }));
 
   const resetForm = () => {
     setForm(emptyForm);
@@ -92,6 +101,7 @@ export default function AdminClientAccess() {
         const data: Partial<AccountForm> = {
           clientName: form.clientName,
           portalUrl: form.portalUrl,
+          portalRole: form.portalRole,
           isActive: form.isActive,
         };
         if (form.password) data.password = form.password;
@@ -114,7 +124,7 @@ export default function AdminClientAccess() {
   const beginEdit = (account: ClientAccount) => {
     setEditing(account);
     setLastIssued(null);
-    setForm({ clientName: account.clientName, username: account.username, password: "", portalUrl: account.portalUrl, isActive: account.isActive });
+    setForm({ clientName: account.clientName, username: account.username, password: "", portalUrl: account.portalUrl, portalKey: account.portalKey, portalRole: account.portalRole, isActive: account.isActive });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -180,13 +190,14 @@ export default function AdminClientAccess() {
       <main className="container grid max-w-7xl gap-8 py-8 lg:grid-cols-[0.85fr_1.15fr]">
         <div className="space-y-6">
           <Card className="border-0 shadow-md">
-            <CardHeader><CardTitle className="font-heading text-xl">{editing ? "Update client access" : "Issue client credentials"}</CardTitle><p className="text-sm text-muted-foreground">Passwords are hashed before they are saved. Share issued credentials securely with your client.</p></CardHeader>
+            <CardHeader><CardTitle className="font-heading text-xl">{editing ? "Update client access" : "Issue client credentials"}</CardTitle><p className="text-sm text-muted-foreground">Passwords are hashed before they are saved. The selected role is carried securely into the assigned portal.</p></CardHeader>
             <CardContent>
               <form onSubmit={handleSave} className="space-y-4">
                 <label className="block space-y-1.5 text-sm font-semibold">Client or organisation<Input value={form.clientName} onChange={(event) => updateForm("clientName", event.target.value)} placeholder="Client organisation name" className="h-11 rounded-none" /></label>
                 <label className="block space-y-1.5 text-sm font-semibold">Username<Input value={form.username} disabled={Boolean(editing)} onChange={(event) => updateForm("username", event.target.value)} placeholder="e.g. acme.client" className="h-11 rounded-none" /></label>
                 <label className="block space-y-1.5 text-sm font-semibold">{editing ? "New password (optional)" : "Temporary password"}<Input type="password" value={form.password} onChange={(event) => updateForm("password", event.target.value)} placeholder={editing ? "Leave empty to keep current password" : "At least 12 characters"} className="h-11 rounded-none" /></label>
-                <label className="block space-y-1.5 text-sm font-semibold">Assigned portal URL<Input type="url" value={form.portalUrl} onChange={(event) => updateForm("portalUrl", event.target.value)} placeholder="https://client-portal.example.com" className="h-11 rounded-none" /></label>
+                <label className="block space-y-1.5 text-sm font-semibold">Assigned portal<select value={form.portalKey} onChange={(event) => selectPortal(event.target.value as AccountForm["portalKey"])} className="h-11 w-full rounded-none border border-input bg-background px-3 text-sm"><option value="darwish_hub">Darwish Hub</option><option value="nabta_quest">Nabta Quest</option></select></label>
+                <label className="block space-y-1.5 text-sm font-semibold">Portal role<select value={form.portalRole} onChange={(event) => updateForm("portalRole", event.target.value)} className="h-11 w-full rounded-none border border-input bg-background px-3 text-sm"><option value="owner">Owner — full administration</option><option value="editor">Editor — can update content</option><option value="viewer">Viewer — read-only access</option></select></label>
                 {editing && <label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" checked={form.isActive} onChange={(event) => updateForm("isActive", event.target.checked)} className="h-4 w-4 accent-primary" />Account is active</label>}
                 <div className="flex gap-3"><Button type="submit" disabled={loading} className="rounded-none bg-primary text-white hover:bg-primary/90">{editing ? "Save changes" : <><Plus className="mr-2 h-4 w-4" />Issue credentials</>}</Button>{editing && <Button type="button" variant="outline" className="rounded-none" onClick={resetForm}>Cancel</Button>}</div>
               </form>

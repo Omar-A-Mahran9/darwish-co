@@ -257,10 +257,41 @@ function vitePluginContactApi(): Plugin {
             }
 
             await db.resetClientLoginAttempts(account.id);
-            return sendJson(res, 200, { success: true, portalUrl: account.portalUrl });
+            const central = await import("./server/centralAuth.js");
+            const code = central.generateAuthorizationCode();
+            await db.createCentralAuthorizationCode({
+              clientAccountId: account.id,
+              codeHash: central.hashAuthorizationCode(code),
+              portalKey: account.portalKey,
+              expiresAt: now + central.CENTRAL_AUTH_CODE_TTL_MS,
+            });
+            return sendJson(res, 200, { success: true, portalUrl: central.getCentralCallbackUrl(account.portalKey, code) });
           } catch (error) {
             console.error("[ClientLogin] Development sign-in failed:", error);
             return sendJson(res, 500, { success: false, error: "Unable to sign in. Please try again." });
+          }
+        })();
+      });
+
+      // ── Central authorization code exchange (development parity) ───────────
+      server.middlewares.use("/api/central-auth/exchange", (req, res, next) => {
+        if (req.method !== "POST") return next();
+        (async () => {
+          try {
+            const body = await parseRequestBody(req);
+            const central = await import("./server/centralAuth.js");
+            const db = await import("./server/db.js");
+            const code = String(body.code ?? "");
+            const portalKey = body.portalKey;
+            if (!code || code.length < 32 || !central.isPortalKey(portalKey)) {
+              return sendJson(res, 400, { success: false, error: "Invalid authorization exchange request." });
+            }
+            const grant = await db.consumeCentralAuthorizationCode({ codeHash: central.hashAuthorizationCode(code), portalKey });
+            if (!grant) return sendJson(res, 401, { success: false, error: "This sign-in link is invalid or has expired." });
+            return sendJson(res, 200, { success: true, grant });
+          } catch (error) {
+            console.error("[CentralAuth] Development exchange failed:", error);
+            return sendJson(res, 500, { success: false, error: "Unable to complete central authorization." });
           }
         })();
       });
@@ -286,10 +317,14 @@ function vitePluginContactApi(): Plugin {
               const username = auth.normalizeUsername(String(body.username ?? ""));
               const password = String(body.password ?? "");
               const portalUrl = String(body.portalUrl ?? "").trim();
-              const validationError = (!clientName && "Client name is required.") || auth.validateClientUsername(username) || auth.validateClientPassword(password) || auth.validatePortalUrl(portalUrl);
+              const central = await import("./server/centralAuth.js");
+              const portalKey = central.getPortalKeyForUrl(portalUrl);
+              const portalRole = body.portalRole ?? "viewer";
+              const validationError = (!clientName && "Client name is required.") || auth.validateClientUsername(username) || auth.validateClientPassword(password) || auth.validatePortalUrl(portalUrl) || (!portalKey && "Choose Darwish Hub or Nabta Quest as the assigned portal.") || (!central.isPortalRole(portalRole) && "Choose a valid portal role.");
               if (validationError) return sendJson(res, 400, { success: false, error: validationError });
+              if (!portalKey || !central.isPortalRole(portalRole)) return sendJson(res, 400, { success: false, error: "Choose a valid portal and role." });
               const now = Date.now();
-              await db.insertClientAccount({ clientName, username, passwordHash: await auth.hashClientPassword(password), portalUrl, isActive: true, failedAttempts: 0, lockedUntil: null, createdAt: now, updatedAt: now });
+              await db.insertClientAccount({ clientName, username, passwordHash: await auth.hashClientPassword(password), portalUrl, portalKey, portalRole, isActive: true, failedAttempts: 0, lockedUntil: null, createdAt: now, updatedAt: now });
               return sendJson(res, 201, { success: true });
             }
 
@@ -297,17 +332,23 @@ function vitePluginContactApi(): Plugin {
               const body = await parseRequestBody(req);
               const clientName = body.clientName === undefined ? undefined : String(body.clientName).trim();
               const portalUrl = body.portalUrl === undefined ? undefined : String(body.portalUrl).trim();
+              const central = await import("./server/centralAuth.js");
+              const portalKey = portalUrl === undefined ? undefined : central.getPortalKeyForUrl(portalUrl);
+              const portalRole = body.portalRole;
               const isActive = body.isActive;
               const password = body.password === undefined ? undefined : String(body.password);
               const validationError =
                 (clientName !== undefined && !clientName && "Client name is required.") ||
                 (portalUrl !== undefined && auth.validatePortalUrl(portalUrl)) ||
+                (portalUrl !== undefined && !portalKey && "Choose Darwish Hub or Nabta Quest as the assigned portal.") ||
+                (portalRole !== undefined && !central.isPortalRole(portalRole) && "Choose a valid portal role.") ||
                 (password !== undefined && auth.validateClientPassword(password)) ||
                 (isActive !== undefined && typeof isActive !== "boolean" && "Active status must be true or false.");
               if (validationError) return sendJson(res, 400, { success: false, error: validationError });
-              const update: { clientName?: string; portalUrl?: string; isActive?: boolean; passwordHash?: string; failedAttempts?: number; lockedUntil?: number | null; updatedAt: number } = { updatedAt: Date.now() };
+              const update: { clientName?: string; portalUrl?: string; portalKey?: "darwish_hub" | "nabta_quest"; portalRole?: "owner" | "editor" | "viewer"; isActive?: boolean; passwordHash?: string; failedAttempts?: number; lockedUntil?: number | null; updatedAt: number } = { updatedAt: Date.now() };
               if (clientName !== undefined) update.clientName = clientName;
-              if (portalUrl !== undefined) update.portalUrl = portalUrl;
+              if (portalUrl !== undefined && portalKey) { update.portalUrl = portalUrl; update.portalKey = portalKey; }
+              if (central.isPortalRole(portalRole)) update.portalRole = portalRole;
               if (typeof isActive === "boolean") update.isActive = isActive;
               if (password !== undefined) {
                 update.passwordHash = await auth.hashClientPassword(password);

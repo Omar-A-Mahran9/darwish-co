@@ -55,6 +55,8 @@ export const clientAccounts = mysqlTable("client_accounts", {
   username: varchar("username", { length: 64 }).notNull().unique(),
   passwordHash: varchar("password_hash", { length: 255 }).notNull(),
   portalUrl: varchar("portal_url", { length: 1000 }).notNull(),
+  portalKey: mysqlEnum("portal_key", ["darwish_hub", "nabta_quest"]).notNull().default("darwish_hub"),
+  portalRole: mysqlEnum("portal_role", ["owner", "editor", "viewer"]).notNull().default("viewer"),
   isActive: boolean("is_active").notNull().default(true),
   failedAttempts: bigint("failed_attempts", { mode: "number" }).notNull().default(0),
   lockedUntil: bigint("locked_until", { mode: "number" }),
@@ -62,5 +64,16 @@ export const clientAccounts = mysqlTable("client_accounts", {
   updatedAt: bigint("updated_at", { mode: "number" }).notNull(),
 });
 
+export const centralAuthCodes = mysqlTable("central_auth_codes", {
+  id: bigint("id", { mode: "number", unsigned: true }).autoincrement().primaryKey(),
+  clientAccountId: bigint("client_account_id", { mode: "number", unsigned: true }).notNull().references(() => clientAccounts.id, { onDelete: "cascade" }),
+  codeHash: varchar("code_hash", { length: 64 }).notNull().unique(),
+  portalKey: mysqlEnum("portal_key", ["darwish_hub", "nabta_quest"]).notNull(),
+  expiresAt: bigint("expires_at", { mode: "number" }).notNull(),
+  usedAt: bigint("used_at", { mode: "number" }),
+  createdAt: bigint("created_at", { mode: "number" }).notNull(),
+});
+
 export type ClientAccount = typeof clientAccounts.$inferSelect;
 export type NewClientAccount = typeof clientAccounts.$inferInsert;
+export type CentralAuthCode = typeof centralAuthCodes.$inferSelect;
