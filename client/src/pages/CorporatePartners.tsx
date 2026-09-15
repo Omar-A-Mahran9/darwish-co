@@ -17,10 +17,11 @@ type CorporatePartner = {
 
 const TYPE_CONFIG: Record<
   CorporatePartner["type"],
-  { label: string; color: string; bgColor: string; borderColor: string; Icon: React.ElementType }
+  { label: string; labelPlural: string; color: string; bgColor: string; borderColor: string; Icon: React.ElementType }
 > = {
   partner: {
     label: "Strategic Partner",
+    labelPlural: "Strategic Partners",
     color: "text-primary",
     bgColor: "bg-primary/10",
     borderColor: "border-primary/30",
@@ -28,6 +29,7 @@ const TYPE_CONFIG: Record<
   },
   licence: {
     label: "Licensed From",
+    labelPlural: "Licences",
     color: "text-chart-2",
     bgColor: "bg-chart-2/10",
     borderColor: "border-chart-2/30",
@@ -35,6 +37,7 @@ const TYPE_CONFIG: Record<
   },
   affiliation: {
     label: "Affiliated Body",
+    labelPlural: "Affiliated Bodies",
     color: "text-chart-3",
     bgColor: "bg-chart-3/10",
     borderColor: "border-chart-3/30",
@@ -42,6 +45,7 @@ const TYPE_CONFIG: Record<
   },
   client: {
     label: "Key Client",
+    labelPlural: "Key Clients",
     color: "text-purple-600",
     bgColor: "bg-purple-50",
     borderColor: "border-purple-200",
@@ -78,7 +82,7 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
     name: "WideBot AI",
     type: "partner",
     description:
-      "MENA's leading Arabic-first AI-as-a-Service platform for governments and enterprises. Offers Conversational AI, Omnichannel Inbox, AI Agents, Digital Humans, WhatsApp Business API, and a full suite of Arabic NLP models (LLM, RAG, OCR, TTS, STT, Sentiment Analysis). Meta Business Partner and NVIDIA Inception Program member. Technology partner for Darwish & Co.'s AI POC projects.",
+      "Arabic-first AI-as-a-Service platform for governments and enterprises. Offers Conversational AI, Omnichannel Inbox, AI Agents, Digital Humans, WhatsApp Business API, and a full suite of Arabic NLP models (LLM, RAG, OCR, TTS, STT, Sentiment Analysis). Meta Business Partner and NVIDIA Inception Program member. Technology partner for Darwish & Co.'s AI POC projects.",
     website: "https://widebot.ai",
     logoUrl: null,
     country: "Egypt",
@@ -117,7 +121,7 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
     name: "In Light Consumer Insights",
     type: "partner",
     description:
-      "MENA's first consumer research company with a proprietary competitive online panel, delivering fast, flexible, and technology-enabled market insights. Specialises in online qualitative and mixed-method research using AI-supported tools to generate actionable understanding of consumer behaviour. Serves leading global brands across healthcare, FMCG, luxury, and technology sectors. With 10,500+ panel respondents, 405 projects completed in 2025, 20,000+ surveys, and 600+ in-depth interviews, In Light provides the data intelligence layer that informs Darwish & Co.'s market entry and business development strategies across the MENA region.",
+      "Consumer research company with a proprietary competitive online panel, delivering fast, flexible, and technology-enabled market insights. Specialises in online qualitative and mixed-method research using AI-supported tools to generate actionable understanding of consumer behaviour. Serves leading global brands across healthcare, FMCG, luxury, and technology sectors. With 10,500+ panel respondents, 405 projects completed in 2025, 20,000+ surveys, and 600+ in-depth interviews, In Light provides the data intelligence layer that informs Darwish & Co.'s market entry and business development strategies across the MENA region.",
     website: "https://in-light.tech",
     logoUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg",
     country: "Egypt / MENA",
@@ -359,14 +363,16 @@ export default function CorporatePartners() {
 
           {/* Stats row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14 pt-10 border-t border-white/10">
-            {(["partner", "licence", "affiliation", "client"] as const).map((type) => {
+            {(["partner", "licence", "affiliation", "client"] as const)
+              .filter((type) => (counts[type] ?? 0) > 0)
+              .map((type) => {
               const cfg = TYPE_CONFIG[type];
               const Icon = cfg.Icon;
               return (
                 <div key={type} className="space-y-1">
                   <div className={cn("flex items-center gap-2", cfg.color)}>
                     <Icon className="w-4 h-4" />
-                    <span className="text-xs font-bold uppercase tracking-wider">{cfg.label}s</span>
+                    <span className="text-xs font-bold uppercase tracking-wider">{cfg.labelPlural}</span>
                   </div>
                   <div className="text-3xl font-bold text-white font-heading">
                     {counts[type] ?? 0}
@@ -383,7 +389,9 @@ export default function CorporatePartners() {
         <div className="container">
           {/* Filter tabs */}
           <div className="flex flex-wrap gap-2 mb-10">
-            {FILTER_OPTIONS.map((opt) => {
+            {FILTER_OPTIONS.filter(
+              (opt) => opt.value === "all" || (counts[opt.value] ?? 0) > 0
+            ).map((opt) => {
               const count =
                 opt.value === "all" ? items.length : counts[opt.value] ?? 0;
               return (

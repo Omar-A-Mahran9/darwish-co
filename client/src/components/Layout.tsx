@@ -24,8 +24,6 @@ const navItems: NavItem[] = [
       { name: "Strategy & Performance System", path: "/services#strategy" },
       { name: "Integrity & Anti-Corruption", path: "/services#integrity" },
       { name: "Market Research & Insights", path: "/services#market-research" },
-      { name: "Training Academy", path: "/training" },
-      { name: "Join Our Trainer Roster", path: "/training#join-roster" },
     ],
   },
   {
@@ -41,15 +39,6 @@ const navItems: NavItem[] = [
     children: [
       { name: "Consultants & Advisors", path: "/partners" },
       { name: "Corporate Partners & Licences", path: "/corporate-partners" },
-    ],
-  },
-  {
-    name: "Smart Solutions",
-    path: "/smart-solutions",
-    children: [
-      { name: "Audex Compass", path: "/smart-solutions#audex-compass" },
-      { name: "Audex Command", path: "/smart-solutions#audex-command" },
-      { name: "Audex Perfect", path: "/smart-solutions#audex-perfect" },
     ],
   },
   { name: "Blog", path: "/blog" },
@@ -195,7 +184,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/client-login"><span className="cursor-pointer text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Client Login</span></Link>
             <Link href="/contact">
               <Button variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 font-heading">
-                Get Started
+                Book a consultation
               </Button>
             </Link>
           </nav>
@@ -272,7 +261,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/client-login"><span className="block cursor-pointer py-2 text-base font-medium text-muted-foreground transition-colors hover:text-primary" onClick={() => setIsMenuOpen(false)}>Client Login</span></Link>
             <Link href="/contact">
               <Button className="w-full bg-primary text-primary-foreground font-heading mt-2" onClick={() => setIsMenuOpen(false)}>
-                Get Started
+                Book a consultation
               </Button>
             </Link>
           </div>
@@ -334,7 +323,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="space-y-4">
             <h3 className="font-heading text-xl font-bold text-primary">Darwish & Co.</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              A wise word in the right moment. Empowering SMEs in the MENA region with expert GRC and HR solutions.
+              A wise word in the right moment. Governance and management consulting for SMEs in the MENA region.
             </p>
           </div>
           
@@ -346,8 +335,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <li><Link href="/services#bizdev"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Business Development</span></Link></li>
               <li><Link href="/services#strategy"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Strategy & Performance</span></Link></li>
               <li><Link href="/services#integrity"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Integrity & Anti-Corruption</span></Link></li>
-              <li><Link href="/training"><span className="cursor-pointer hover:text-primary hover:underline transition-colors font-medium">Training Academy</span></Link></li>
-              <li><Link href="/smart-solutions"><span className="cursor-pointer hover:text-primary hover:underline transition-colors font-medium">Smart Solutions</span></Link></li>
+              <li><Link href="/services#market-research"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Market Research & Insights</span></Link></li>
+              <li><Link href="/services#digital-marketing"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Marketing Strategy</span></Link></li>
             </ul>
           </div>
 
@@ -360,7 +349,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <li><Link href="/corporate-partners"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Corporate Partners</span></Link></li>
               <li><Link href="/contact"><span className="cursor-pointer hover:underline">Contact</span></Link></li>
               <li><Link href="/client-login"><span className="cursor-pointer hover:underline">Client Login</span></Link></li>
-              <li><Link href="/admin/inbox"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Admin Inbox</span></Link></li>
             </ul>
           </div>
 

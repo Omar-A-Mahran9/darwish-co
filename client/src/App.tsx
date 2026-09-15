@@ -13,11 +13,8 @@ import AdminInbox from './pages/AdminInbox';
 import Projects from './pages/Projects';
 import Partners from './pages/Partners';
 import CorporatePartners from './pages/CorporatePartners';
-import Training from './pages/Training';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
-import Fonts from './pages/Fonts';
-import SmartSolutions from './pages/SmartSolutions';
 import ClientLogin from './pages/ClientLogin';
 import AdminClientAccess from './pages/AdminClientAccess';
 import { useHashScroll } from "./hooks/useHashScroll";
@@ -35,11 +32,8 @@ function Router() {
         <Route path="/admin/inbox" component={AdminInbox} />
         <Route path="/partners" component={Partners} />
         <Route path="/corporate-partners" component={CorporatePartners} />
-        <Route path="/training" component={Training} />
         <Route path="/blog" component={Blog} />
         <Route path="/blog/:slug" component={BlogPost} />
-        <Route path="/fonts" component={Fonts} />
-        <Route path="/smart-solutions" component={SmartSolutions} />
         <Route path="/client-login" component={ClientLogin} />
         <Route path="/admin/client-access" component={AdminClientAccess} />
         <Route component={NotFound} />

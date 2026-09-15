@@ -58,40 +58,6 @@ const articles: Article[] = [
     coverImage: "/manus-storage/Article3_0d24daca.jpg",
     hasFullPost: true,
   },
-  // ── Existing articles ─────────────────────────────────────────────────────
-  {
-    slug: "grc-consulting-egypt-2026",
-    title: "GRC Consulting in Egypt 2026: What SMEs Need to Know",
-    excerpt:
-      "Governance, Risk & Compliance is no longer a concern reserved for large corporations. Egyptian SMEs are increasingly required to demonstrate structured GRC frameworks to access financing, win government contracts, and attract international partners.",
-    date: "May 2026",
-    readTime: "6 min read",
-    category: "Governance & Risk",
-    categoryColor: "text-primary bg-primary/10",
-    keywords: ["GRC consulting Egypt", "governance risk compliance MENA", "SME compliance Egypt"],
-  },
-  {
-    slug: "hr-compliance-egypt-2026",
-    title: "HR Compliance in Egypt 2026: Key Labour Law Updates for SMEs",
-    excerpt:
-      "Egypt's labour regulations have seen significant updates affecting contract structures, end-of-service benefits, and remote work policies. This guide covers the most important HR compliance requirements for growth-stage companies in Egypt and the broader MENA region.",
-    date: "April 2026",
-    readTime: "5 min read",
-    category: "Human Resources",
-    categoryColor: "text-chart-2 bg-chart-2/10",
-    keywords: ["HR compliance Egypt 2026", "labour law Egypt SME", "HR consulting MENA"],
-  },
-  {
-    slug: "consumer-research-mena-guide",
-    title: "Consumer Research in MENA: A Practical Guide for Market Entry",
-    excerpt:
-      "Entering a new market in the MENA region without consumer research is one of the most common and costly mistakes businesses make. This guide explains the methodologies that work best in the region.",
-    date: "March 2026",
-    readTime: "7 min read",
-    category: "Market Research",
-    categoryColor: "text-emerald-700 bg-emerald-50",
-    keywords: ["consumer research MENA", "market entry research Egypt", "brand tracking Gulf"],
-  },
 ];
 
 export default function Blog() {

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ArrowRight, CheckCircle2, Shield, Users, TrendingUp,
-  Brain, Globe, BarChart3, Target, Layers, Star
+  Brain, BarChart3, Target, Layers
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -95,7 +95,7 @@ function GlassNavbar() {
             onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.02)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
           >
-            Get Started
+            Book a consultation
             <span
               style={{
                 background: "rgba(255,255,255,0.25)",
@@ -303,26 +303,6 @@ function HeroSection() {
 
             {/* ── Left: copy ── */}
             <div className="space-y-8 order-2 lg:order-1">
-              {/* Social proof badge */}
-              <div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
-                style={{
-                  background: "rgba(255,255,255,0.7)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(0,0,0,0.08)",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-                  fontFamily: "'Inter', sans-serif",
-                  color: "#444",
-                }}
-              >
-                <span className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={13} fill="#FF801E" stroke="none" />
-                  ))}
-                </span>
-                <span>Rated 4.9/5 by 200+ clients</span>
-              </div>
-
               {/* Headline */}
               <h1
                 style={{
@@ -350,9 +330,10 @@ function HeroSection() {
                   maxWidth: "480px",
                 }}
               >
-                Navigating complexity and unlocking potential for SMEs in the
-                MENA region through expert strategic management, GRC, HR, and
-                market research consulting.
+                Darwish &amp; Co. is an Egypt-based governance and management
+                consultancy for SMEs in the MENA region. We help you build the
+                governance, controls and growth strategy that investors, major
+                clients and regulators expect.
               </p>
 
               {/* CTA */}
@@ -388,7 +369,7 @@ function HeroSection() {
                       b.style.boxShadow = "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 4px 20px rgba(0,132,255,0.3)";
                     }}
                   >
-                    Get Started Now
+                    Book a consultation
                     <span
                       style={{
                         background: "rgba(255,255,255,0.25)",
@@ -436,7 +417,7 @@ function HeroSection() {
             className="text-center text-xs font-medium uppercase tracking-widest mb-8"
             style={{ color: "#999" }}
           >
-            Trusted by top-tier companies across MENA
+            Our partner network
           </p>
 
           {/* Desktop: static row */}
@@ -600,7 +581,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-12">
             {[
-              { color: "bg-secondary text-primary", title: "Regional Expertise", desc: "Deeply rooted in MENA culture and regulations, ensuring compliance and cultural alignment." },
+              { color: "bg-secondary text-primary", title: "Regional Expertise", desc: "Egypt-based and working across MENA, with an understanding of local business culture and how decisions get made." },
               { color: "bg-chart-2/10 text-chart-2", title: "Tailored for SMEs", desc: "Agile, practical strategies designed specifically for growth-stage companies, not corporations." },
               { color: "bg-chart-3/10 text-chart-3", title: "Integrated Approach", desc: "Bridging strategy, governance, and people for a holistic, executable business plan." },
             ].map(({ color, title, desc }) => (
@@ -612,49 +593,6 @@ export default function Home() {
                 <p className="text-muted-foreground text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Smart Solutions Teaser ── */}
-      <section className="py-24 bg-secondary/10">
-        <div className="container">
-          <div className="text-center mb-14 space-y-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">Smart Solutions</span>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
-              Decision Intelligence for School Leadership
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              The Audex family turns complex school data into clear, actionable decisions — from strategic simulation to governance execution.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { name: "Audex Compass", tagline: "Test Before You Commit", desc: "Simulate future scenarios and compare strategic options before committing resources or investments.", color: "#00CC66", bg: "rgba(0,204,102,0.07)", border: "rgba(0,204,102,0.2)", anchor: "audex-compass" },
-              { name: "Audex Command", tagline: "Governance Intelligence", desc: "Turn every insight into a tracked, accountable action with controlled execution workflows.", color: "#FF9900", bg: "rgba(255,153,0,0.07)", border: "rgba(255,153,0,0.2)", anchor: "audex-command" },
-              { name: "Audex Perfect", tagline: "Where Simulation Meets Reality", desc: "The complete school digital twin — simulation and live intelligence in one unified platform.", color: "#0099CC", bg: "rgba(0,153,204,0.07)", border: "rgba(0,153,204,0.2)", anchor: "audex-perfect" },
-            ].map(({ name, tagline, desc, color, bg, border, anchor }) => (
-              <Link key={name} href={`/smart-solutions#${anchor}`}>
-                <div
-                  className="p-8 rounded-sm space-y-4 h-full hover:-translate-y-1 transition-transform duration-300 cursor-pointer"
-                  style={{ background: bg, border: `1px solid ${border}` }}
-                >
-                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color }}>{tagline}</p>
-                  <h3 className="font-heading text-xl font-bold text-foreground">{name}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-                  <span className="inline-flex items-center gap-1 text-sm font-bold" style={{ color }}>
-                    Explore <ArrowRight className="w-4 h-4" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Link href="/smart-solutions">
-              <Button size="lg" className="bg-primary text-white hover:bg-primary/90 font-bold rounded-none px-10">
-                Explore Smart Solutions <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
@@ -677,7 +615,6 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8">
             {[
               { icon: Brain, color: "text-primary", accentColor: "bg-primary", borderHover: "hover:border-primary/50", tagColor: "text-primary", tags: ["React", "tRPC", "MySQL", "Resend Email"], label: "AI Initiative", title: "AI POC Collaboration Platform", desc: "A full-stack platform enabling Techno-Management and Widebot to collaboratively manage AI proof-of-concept projects.", href: "/projects#ai-poc", cta: "Explore platform" },
-              { icon: Globe, color: "text-chart-3", accentColor: "bg-chart-3", borderHover: "hover:border-chart-3/50", tagColor: "text-chart-3", tags: ["React", "Bilingual", "Trade Data", "Sector Maps"], label: "International Trade", title: "Hebei–Egypt Industrial Partnership Portal", desc: "A bilingual trade intelligence platform connecting Egyptian investors with Hebei Province's 107 industrial clusters.", href: "/projects#trade-portal", cta: "Explore portal" },
             ].map(({ icon: Icon, color, accentColor, borderHover, tagColor, tags, label, title, desc, href, cta }) => (
               <div key={title} className={`group relative bg-white/5 border border-white/10 ${borderHover} transition-all duration-300 overflow-hidden`}>
                 <div className={`h-1 w-full ${accentColor}`} />

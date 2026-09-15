@@ -45,7 +45,7 @@ export default function Services() {
         <div className="container text-center space-y-6">
           <h1 className="font-heading text-4xl md:text-5xl font-bold">Our Services</h1>
           <p className="text-xl max-w-2xl mx-auto text-primary-foreground/80">
-            Comprehensive GRC and HR solutions tailored for SMEs in the MENA region.
+            Governance, risk and compliance, strategy, people and growth services for SMEs in the MENA region.
           </p>
         </div>
       </section>
@@ -489,7 +489,7 @@ export default function Services() {
                     In partnership with In Light Consumer Insights <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
-                <p className="text-muted-foreground">Delivered in partnership with In Light Consumer Insights — MENA's leading proprietary consumer panel with 10,500+ respondents and 405+ research projects delivered in 2025.</p>
+                <p className="text-muted-foreground">Delivered in partnership with In Light Consumer Insights — a proprietary MENA consumer panel with 10,500+ respondents and 405+ research projects delivered in 2025.</p>
               </div>
             </div>
 
@@ -515,7 +515,7 @@ export default function Services() {
               {
                 icon: <Users className="w-5 h-5 text-emerald-600" />,
                 title: "Consumer Research & Panel Studies",
-                description: "Access MENA's first proprietary online consumer panel with 10,500+ pre-screened respondents. Quantitative surveys designed to deliver statistically robust insights on consumer attitudes, behaviours, and preferences at speed.",
+                description: "Access In Light's proprietary online consumer panel with 10,500+ pre-screened respondents. Quantitative surveys designed to deliver statistically robust insights on consumer attitudes, behaviours, and preferences at speed.",
               },
               {
                 icon: <TrendingUp className="w-5 h-5 text-emerald-600" />,
@@ -559,7 +559,7 @@ export default function Services() {
           <div className="bg-emerald-600/5 border border-emerald-200/60 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h3 className="font-heading text-xl font-bold text-foreground mb-1">Need consumer insights for your next strategic decision?</h3>
-              <p className="text-muted-foreground text-sm">Our partnership with In Light Consumer Insights gives you direct access to MENA's most comprehensive consumer panel and research capabilities.</p>
+              <p className="text-muted-foreground text-sm">Our partnership with In Light Consumer Insights gives you direct access to their consumer panel and research capabilities.</p>
             </div>
             <div className="flex gap-3 flex-shrink-0">
               <a href="/contact" className="inline-flex items-center gap-2 bg-emerald-600 text-white font-bold px-6 py-3 hover:bg-emerald-700 transition-colors text-sm">

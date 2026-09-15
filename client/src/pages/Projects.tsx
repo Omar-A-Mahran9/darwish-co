@@ -230,18 +230,6 @@ export default function Projects() {
               Partner Organizations
             </p>
           </div>
-          <div>
-            <p className="font-heading text-3xl font-bold text-primary">4</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Partner Organizations
-            </p>
-          </div>
-          <div>
-            <p className="font-heading text-3xl font-bold text-primary">14+</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Features Delivered
-            </p>
-          </div>
         </div>
       </section>
 
