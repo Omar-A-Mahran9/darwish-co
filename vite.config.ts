@@ -6,6 +6,7 @@ import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 import { ClientLoginRateLimiter } from "./server/clientLoginRateLimit";
+import { injectSeo } from "./server/seoHtml";
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
@@ -369,6 +370,24 @@ function vitePluginContactApi(): Plugin {
   };
 }
 
+/**
+ * Gives the development and preview servers the same per-page head the Express
+ * server sends in production, so local previews show the real title, description
+ * and canonical address for each route.
+ */
+function vitePluginRouteSeo(): Plugin {
+  return {
+    name: "darwish-route-seo",
+    transformIndexHtml(html, ctx) {
+      // Only for served requests. At build time there is no route to resolve,
+      // and the built shell must keep the homepage head it ships with.
+      if (!ctx.server) return html;
+      const pathname = (ctx.originalUrl || ctx.path || "/").split("?")[0];
+      return injectSeo(html, pathname === "/index.html" ? "/" : pathname);
+    },
+  };
+}
+
 function vitePluginManusDebugCollector(): Plugin {
   return {
     name: "manus-debug-collector",
@@ -491,7 +510,7 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginContactApi(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginContactApi(), vitePluginRouteSeo(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
 
 export default defineConfig({
   plugins,

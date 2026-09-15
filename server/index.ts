@@ -1,6 +1,9 @@
 import express from "express";
+import fs from "fs";
 import { createServer } from "http";
 import path from "path";
+import { isKnownRoute } from "../shared/seo.js";
+import { injectSeo } from "./seoHtml.js";
 import { fileURLToPath } from "url";
 import { sendGmailWebsiteRequestNotification } from "./gmailNotification.js";
 import {
@@ -468,11 +471,27 @@ async function startServer() {
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
 
-  app.use(express.static(staticPath));
+  app.use(express.static(staticPath, { index: false }));
 
-  // Client-side routing fallback
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
+  // Client-side routing fallback. The shell is read once, then each request is
+  // served with the search and social metadata of the page it asked for, so
+  // crawlers that do not run JavaScript see the correct head.
+  const indexHtmlPath = path.join(staticPath, "index.html");
+  let indexHtml: string | null = null;
+
+  app.get("*", (req, res) => {
+    try {
+      if (indexHtml === null) {
+        indexHtml = fs.readFileSync(indexHtmlPath, "utf-8");
+      }
+      res
+        .status(isKnownRoute(req.path) ? 200 : 404)
+        .type("html")
+        .send(injectSeo(indexHtml, req.path));
+    } catch (error) {
+      console.error("[SEO] Falling back to the unmodified shell:", error);
+      res.sendFile(indexHtmlPath);
+    }
   });
 
   const port = process.env.PORT || 3000;

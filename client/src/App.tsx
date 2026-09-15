@@ -18,9 +18,11 @@ import BlogPost from './pages/BlogPost';
 import ClientLogin from './pages/ClientLogin';
 import AdminClientAccess from './pages/AdminClientAccess';
 import { useHashScroll } from "./hooks/useHashScroll";
+import { useSeo } from "./hooks/useSeo";
 
 function Router() {
   useHashScroll();
+  useSeo();
   return (
     <Layout>
       <Switch>

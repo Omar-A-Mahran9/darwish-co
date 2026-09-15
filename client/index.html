@@ -3,6 +3,13 @@
 
   <head>
     <meta charset="UTF-8" />
+    <!--
+      The title, description, canonical address and social tags below are the
+      homepage defaults. Every request is served with the metadata of the page
+      it asked for: the server rewrites this head (server/seoHtml.ts) and the
+      browser keeps it in step during navigation (client/src/hooks/useSeo.ts).
+      Page metadata lives in shared/seo.ts.
+    -->
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1" />
