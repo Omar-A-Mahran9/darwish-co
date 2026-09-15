@@ -9,17 +9,17 @@ import { Link } from "wouter";
 
 // ─── CDN assets ────────────────────────────────────────────────────────────
 const EMBLEM_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
+  "/images/emblem-small.webp";
 const LOGOIN_URL =
-  "/manus-storage/emblem-transparent_58f688d3.png";
+  "/images/emblem.webp";
 
 // ─── Partner logo CDN urls ──────────────────────────────────────────────────
 const PARTNER_LOGOS = [
-  { href: "https://visionethics.com",     src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp",      alt: "VisionEthics" },
-  { href: "https://widebot.ai",           src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp",           alt: "WideBot AI" },
-  { href: "https://techno-management.com",src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp", alt: "Techno-Management" },
-  { href: "https://www.keheilan.com",     src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png",  alt: "Keheilan" },
-  { href: "https://in-light.tech",        src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg",           alt: "In Light" },
+  { href: "https://visionethics.com",     src: "/images/partners/visionethics.webp",      alt: "VisionEthics" },
+  { href: "https://widebot.ai",           src: "/images/partners/widebot.webp",           alt: "WideBot AI" },
+  { href: "https://techno-management.com",src: "/images/partners/techno-management.webp", alt: "Techno-Management" },
+  { href: "https://www.keheilan.com",     src: "/images/partners/keheilan.webp",  alt: "Keheilan" },
+  { href: "https://in-light.tech",        src: "/images/partners/inlight.webp",           alt: "In Light" },
 ];
 
 // ─── Liquid-glass navbar ────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ function GlassNavbar() {
             className="flex items-center gap-2 cursor-pointer select-none"
             style={{ fontFamily: "'Fustat', sans-serif", fontWeight: 700, fontSize: "18px", color: "#111" }}
           >
-            <img src="/manus-storage/logo-horizontal_9c3cf9d8.png" alt="Darwish & Co." className="h-14 w-auto object-contain" />
+            <img src="/images/logo-horizontal.webp" alt="Darwish & Co." className="h-14 w-auto object-contain" />
           </span>
         </Link>
 
@@ -425,7 +425,7 @@ function HeroSection() {
             {PARTNER_LOGOS.map((p) => (
               <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer"
                 className="opacity-80 hover:opacity-100 transition-opacity duration-300 flex items-center">
-                <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain" />
+                <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain" loading="lazy" decoding="async" />
               </a>
             ))}
           </div>
@@ -442,7 +442,7 @@ function HeroSection() {
                   {PARTNER_LOGOS.map((p) => (
                     <a key={p.href + setIdx} href={p.href} target="_blank" rel="noopener noreferrer"
                       className="flex items-center opacity-80 hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
-                      <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain" />
+                      <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain" loading="lazy" decoding="async" />
                     </a>
                   ))}
                 </div>
@@ -550,7 +550,11 @@ export default function Home() {
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-chart-3/20 z-0" />
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 z-0" />
             <img
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/meeting-insight_58b81ff9.jpg"
+              src="/images/meeting-insight.webp"
+              width={1600}
+              height={893}
+              loading="lazy"
+              decoding="async"
               alt="Strategic Meeting"
               className="relative z-10 w-full h-auto shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
             />

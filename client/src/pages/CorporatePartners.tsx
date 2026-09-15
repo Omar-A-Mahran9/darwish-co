@@ -110,7 +110,7 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
     description:
       "A diversified investment and asset management firm dedicated to delivering sophisticated investment solutions aligned with global trends. Services span Hedge Funds (broad market exposure, stable long-term returns), Venture Capital (funding innovative startups from seed stage to market leader), and Venture Building (active startup development with resources, mentorship, and strategic guidance). Advisory services cater to corporations, family offices, high-net-worth individuals, fund managers, and policymakers — providing strategic guidance for corporate venture programmes, tailored investment advice, and policy advisory for sustainable economic growth.",
     website: "https://www.keheilan.com",
-    logoUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png",
+    logoUrl: "/images/partners/keheilan.webp",
     country: "International",
     displayOrder: 3,
     isVisible: true,
@@ -123,7 +123,7 @@ const VERIFIED_PARTNERS: CorporatePartner[] = [
     description:
       "Consumer research company with a proprietary competitive online panel, delivering fast, flexible, and technology-enabled market insights. Specialises in online qualitative and mixed-method research using AI-supported tools to generate actionable understanding of consumer behaviour. Serves leading global brands across healthcare, FMCG, luxury, and technology sectors. With 10,500+ panel respondents, 405 projects completed in 2025, 20,000+ surveys, and 600+ in-depth interviews, In Light provides the data intelligence layer that informs Darwish & Co.'s market entry and business development strategies across the MENA region.",
     website: "https://in-light.tech",
-    logoUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg",
+    logoUrl: "/images/partners/inlight.webp",
     country: "Egypt / MENA",
     displayOrder: 4,
     isVisible: true,

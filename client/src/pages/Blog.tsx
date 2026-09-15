@@ -28,7 +28,7 @@ const articles: Article[] = [
     category: "AI Governance",
     categoryColor: "text-primary bg-primary/10",
     keywords: ["AI human oversight", "AI governance", "automation bias", "responsible AI"],
-    coverImage: "/manus-storage/Article1_4b74ff53.jpg",
+    coverImage: "/images/article-ai-human-oversight-figure.webp",
     featured: true,
     hasFullPost: true,
   },
@@ -42,7 +42,7 @@ const articles: Article[] = [
     category: "AI & Education",
     categoryColor: "text-chart-2 bg-chart-2/10",
     keywords: ["AI in MENA education", "algorithmic bias in education", "responsible AI in schools"],
-    coverImage: "/manus-storage/Article2_06325b63.jpg",
+    coverImage: "/images/article-ai-bias-education-figure.webp",
     hasFullPost: true,
   },
   {
@@ -55,7 +55,7 @@ const articles: Article[] = [
     category: "AI Governance",
     categoryColor: "text-primary bg-primary/10",
     keywords: ["AI institutional bias", "AI and corruption", "algorithmic accountability"],
-    coverImage: "/manus-storage/Article3_0d24daca.jpg",
+    coverImage: "/images/article-ai-institutional-bias-figure.webp",
     hasFullPost: true,
   },
 ];
@@ -92,6 +92,8 @@ export default function Blog() {
                 <div className="relative overflow-hidden aspect-[4/3]">
                   <img
                     src={featured.coverImage}
+                    loading="lazy"
+                    decoding="async"
                     alt={featured.title}
                     className="w-full h-full object-cover"
                   />
@@ -164,6 +166,8 @@ export default function Blog() {
                   <div className="relative h-44 overflow-hidden">
                     <img
                       src={article.coverImage}
+                      loading="lazy"
+                      decoding="async"
                       alt={article.title}
                       className="w-full h-full object-cover"
                     />

@@ -60,7 +60,7 @@ const articles: ArticleData[] = [
     category: "AI Governance",
     categoryColor: "text-primary bg-primary/10",
     keywords: ["AI human oversight", "AI governance", "automation bias", "responsible AI", "AI decision-making", "human-in-the-loop"],
-    coverImage: "/manus-storage/Article1_4b74ff53.jpg",
+    coverImage: "/images/article-ai-human-oversight-figure.webp",
     ctaText:
       "Is your organization using AI without a defined decision-governance framework? Darwish & Co. supports organizations in assessing AI readiness, prioritizing responsible use cases, and establishing practical governance principles linked to operational value.",
     ctaButton: "Assess Your AI Decision Governance",
@@ -72,7 +72,7 @@ const articles: ArticleData[] = [
           "The greater the impact of a decision, the more dangerous it becomes to treat AI-generated output as an automatic instruction rather than one source of evidence within a governed decision process.",
         ],
         image: {
-          src: "/manus-storage/blog-article1-ai-oversight_c469ef22.jpeg",
+          src: "/images/article-ai-human-oversight-cover.webp",
           alt: "Executive reviewing AI-generated analytics dashboard with governance workflow",
           caption: "AI systems can surface powerful insights — but without human oversight, a confident-looking recommendation can mask flawed data, outdated assumptions, or hidden bias.",
         },
@@ -240,7 +240,7 @@ const articles: ArticleData[] = [
     category: "AI & Education",
     categoryColor: "text-chart-2 bg-chart-2/10",
     keywords: ["AI in MENA education", "AI education governance", "algorithmic bias in education", "responsible AI in schools", "AI admissions", "automated grading"],
-    coverImage: "/manus-storage/Article2_06325b63.jpg",
+    coverImage: "/images/article-ai-bias-education-figure.webp",
     ctaText:
       "Is your educational institution exploring AI without a clear adoption and governance framework? Darwish & Co. supports educational institutions in assessing AI readiness, prioritizing practical use cases, strengthening governance, and building role-based capabilities for responsible adoption.",
     ctaButton: "Explore Responsible AI for Education",
@@ -252,7 +252,7 @@ const articles: ArticleData[] = [
           "When these differences are reflected in historical data, an AI system may reproduce them at scale. The risk is not simply that an algorithm might make an occasional mistake. The greater risk is that existing inequality becomes automated, standardized, and presented as an objective result.",
         ],
         image: {
-          src: "/manus-storage/blog-article2-ai-education_390ba7b2.jpeg",
+          src: "/images/article-ai-bias-education-cover.webp",
           alt: "Students and educator at a MENA university campus using AI-enabled tablet technology",
           caption: "AI adoption in MENA education is accelerating — but without local validation and governance frameworks, systems trained on non-regional data may disadvantage the very students they are meant to support.",
         },
@@ -381,7 +381,7 @@ const articles: ArticleData[] = [
     category: "AI Governance",
     categoryColor: "text-primary bg-primary/10",
     keywords: ["AI institutional bias", "AI and corruption", "AI governance", "algorithmic accountability", "public sector AI", "responsible digital transformation"],
-    coverImage: "/manus-storage/Article3_0d24daca.jpg",
+    coverImage: "/images/article-ai-institutional-bias-figure.webp",
     ctaText:
       "Before automating an institutional process, verify that the process is ready to be automated. Darwish & Co. supports organizations in reviewing AI readiness, process maturity, governance controls, use-case risk, and implementation priorities.",
     ctaButton: "Request an Institutional AI Governance Review",
@@ -393,7 +393,7 @@ const articles: ArticleData[] = [
           "If those processes are unfair, inconsistent, politically influenced, poorly documented, or vulnerable to corruption, AI will not automatically correct them. It may make them faster, less visible, and more difficult to challenge.",
         ],
         image: {
-          src: "/manus-storage/blog-article3-ai-bias_1cfd81cd.jpeg",
+          src: "/images/article-ai-institutional-bias-cover.webp",
           alt: "MENA governance professionals reviewing AI-driven institutional workflow and process documentation",
           caption: "AI-driven governance workflows can dramatically improve institutional efficiency — but only when the underlying processes are fair, well-documented, and free from systemic bias before automation begins.",
         },
@@ -598,6 +598,8 @@ export default function BlogPost() {
         <div className="w-full h-72 md:h-96 overflow-hidden">
           <img
             src={article.coverImage}
+            loading="lazy"
+            decoding="async"
             alt={article.title}
             className="w-full h-full object-cover object-center"
           />
@@ -665,6 +667,8 @@ export default function BlogPost() {
                 <figure className="my-8">
                   <img
                     src={section.image.src}
+                    loading="lazy"
+                    decoding="async"
                     alt={section.image.alt}
                     className="w-full object-cover"
                     style={{ maxHeight: "420px" }}
