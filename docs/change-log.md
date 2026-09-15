@@ -5,6 +5,47 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 3 — Every page now has its own title, description and address
+
+**Commit:** `f65ec9e` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Checks:** TypeScript passes · production build passes · 6 new automated tests · every route verified in a local preview, in the served HTML and after clicking through the site
+
+### The problem
+
+The website is built as a single page that swaps its content as you move around it. Every address — the services page, the blog, each article — was delivered with the *same* underlying page information: the homepage's title, the homepage's description, and a line of code telling search engines that every page "is really" the homepage (the canonical address).
+
+The consequences:
+
+- Google and Bing were told, on every page, that the real page is the homepage. Individual pages were competing to be indexed at all.
+- Every search result and every link shared on LinkedIn or WhatsApp showed the same title and the same description, whatever page it pointed to.
+- AI assistants (ChatGPT, Perplexity, Google's AI answers, Claude) mostly read the raw page without running the site's code. They saw one description repeated across the whole site, with nothing to tell one page from another.
+- Private pages — the client login and the admin area — carried no instruction to stay out of search results.
+
+### What we changed
+
+| Change | Result |
+|---|---|
+| Wrote a title, a description and a correct address for each of the 11 public pages | Each page can be found, indexed and ranked on its own terms |
+| The server now builds the correct page information into the HTML before sending it | Search engines and AI assistants see the right information without running any code — this is the part that matters for AI retrieval |
+| The browser keeps it correct as visitors click between pages | The tab title and any shared link stay accurate |
+| Added article information for each of the three blog articles | Articles can appear as articles in search results, with their own image, headline and publication date |
+| Marked the client login and admin pages "do not index" | They stay out of search results |
+| Unknown addresses now answer "page not found" properly | Previously a mistyped address returned a normal, indexable page — search engines call this a "soft 404" and treat it as a quality problem |
+| Social sharing images now match the page | Articles share their own illustration instead of the company logo |
+
+### Why it matters
+
+- **This was the single biggest technical issue in the audit.** A site that tells search engines every page is the homepage cannot rank its individual services or articles.
+- **AI readiness:** assistants that summarise or cite the business now get a distinct, accurate description of each page rather than one repeated paragraph.
+- **Sharing:** a link to an article now shows that article's headline and image.
+
+### Notes
+
+- Page information lives in one file (`shared/seo.ts`), so titles and descriptions can be edited in a single place.
+- The descriptions are all within the 50–160 characters search engines display, and this is now checked automatically by the tests.
+
+---
+
 ## Entry 2 — All images moved into the website and made far lighter
 
 **Commit:** `99803af` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
