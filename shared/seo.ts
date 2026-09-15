@@ -7,6 +7,8 @@
  * side is what crawlers and AI assistants that do not run JavaScript see.
  */
 
+import { getService, SERVICES } from "./services.js";
+
 export const SITE_URL = "https://www.darwish-co.com";
 export const SITE_NAME = "Darwish & Co.";
 const DEFAULT_OG_IMAGE = "/images/logo.png";
@@ -137,6 +139,19 @@ const STATIC_PAGES: Record<string, PageSeo> = {
   }),
 };
 
+// The services hub lists the individual service pages for search engines.
+STATIC_PAGES["/services"].jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Darwish & Co. consulting services",
+  itemListElement: SERVICES.map((service, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: service.name,
+    url: absolute(`/services/${service.slug}`),
+  })),
+};
+
 // The homepage carries the company-wide structured data.
 STATIC_PAGES["/"].jsonLd = {
   "@context": "https://schema.org",
@@ -146,6 +161,71 @@ STATIC_PAGES["/"].jsonLd = {
   description: COMPANY_DESCRIPTION,
   publisher: ORGANISATION_REFERENCE,
 };
+
+function serviceSeo(slug: string): PageSeo | null {
+  const service = getService(slug);
+  if (!service) return null;
+
+  const canonical = absolute(`/services/${service.slug}`);
+
+  return page(`/services/${service.slug}`, {
+    title: service.metaTitle,
+    description: service.metaDescription,
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Service",
+          name: service.name,
+          description: service.metaDescription,
+          serviceType: service.name,
+          areaServed: "MENA",
+          url: canonical,
+          // Partner-delivered work names the partner rather than implying it is ours.
+          provider: service.partner
+            ? {
+                ...ORGANISATION_REFERENCE,
+                subOrganization: {
+                  "@type": "Organization",
+                  name: service.partner.name,
+                  url: service.partner.url,
+                },
+              }
+            : ORGANISATION_REFERENCE,
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: service.name,
+            itemListElement: service.offerings.map((offering, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              item: {
+                "@type": "Service",
+                name: offering.title,
+                description: offering.description,
+              },
+            })),
+          },
+        },
+        {
+          "@type": "FAQPage",
+          mainEntity: service.faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: { "@type": "Answer", text: faq.answer },
+          })),
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+            { "@type": "ListItem", position: 2, name: "Services", item: absolute("/services") },
+            { "@type": "ListItem", position: 3, name: service.name, item: canonical },
+          ],
+        },
+      ],
+    },
+  });
+}
 
 function blogArticleSeo(slug: string): PageSeo | null {
   const article = BLOG_ARTICLES.find((entry) => entry.slug === slug);
@@ -188,6 +268,7 @@ export function normalizePath(pathname: string): string {
 export function isKnownRoute(pathname: string): boolean {
   const path = normalizePath(pathname);
   if (STATIC_PAGES[path] || path.startsWith("/admin/")) return true;
+  if (path.startsWith("/services/")) return getService(path.slice("/services/".length)) !== undefined;
   if (path.startsWith("/blog/")) return blogArticleSeo(path.slice("/blog/".length)) !== null;
   return false;
 }
@@ -198,6 +279,11 @@ export function resolveSeo(pathname: string): PageSeo {
 
   const staticPage = STATIC_PAGES[path];
   if (staticPage) return staticPage;
+
+  if (path.startsWith("/services/")) {
+    const service = serviceSeo(path.slice("/services/".length));
+    if (service) return service;
+  }
 
   if (path.startsWith("/blog/")) {
     const article = blogArticleSeo(path.slice("/blog/".length));

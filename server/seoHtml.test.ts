@@ -1,6 +1,8 @@
+import { readFileSync } from "fs";
 import { describe, expect, it } from "vitest";
 import { injectSeo } from "./seoHtml.js";
 import { BLOG_ARTICLES, isKnownRoute, resolveSeo } from "../shared/seo.js";
+import { LEGACY_ANCHOR_REDIRECTS, SERVICES } from "../shared/services.js";
 
 const SHELL = `<!doctype html>
 <html lang="en">
@@ -70,6 +72,73 @@ describe("per-page metadata", () => {
       expect(html).toContain('data-seo="page"');
       expect(html).toContain('"@type":"Article"');
       expect(html).toContain(`https://www.darwish-co.com${article.image}`);
+    }
+  });
+
+  it("gives each service page its own metadata and service structured data", () => {
+    const titles = new Set<string>();
+
+    for (const service of SERVICES) {
+      const path = `/services/${service.slug}`;
+      const seo = resolveSeo(path);
+      titles.add(seo.title);
+
+      expect(seo.canonical).toBe(`https://www.darwish-co.com${path}`);
+      expect(seo.description.length).toBeGreaterThanOrEqual(50);
+      expect(seo.description.length).toBeLessThanOrEqual(160);
+      expect(isKnownRoute(path)).toBe(true);
+
+      const html = injectSeo(SHELL, path);
+      expect(html).toContain(`href="https://www.darwish-co.com${path}"`);
+      expect(html).toContain('"@type":"Service"');
+      expect(html).toContain('"@type":"FAQPage"');
+      expect(html).toContain('"@type":"BreadcrumbList"');
+      // Every question on the page is exposed as structured data.
+      expect(service.faqs.length).toBeGreaterThanOrEqual(3);
+      for (const faq of service.faqs) {
+        expect(html).toContain(JSON.stringify(faq.question).slice(1, -1));
+      }
+    }
+
+    expect(titles.size).toBe(SERVICES.length);
+    expect(isKnownRoute("/services/not-a-service")).toBe(false);
+  });
+
+  it("names the partner as the provider for partner-delivered services", () => {
+    const partnered = SERVICES.filter((service) => service.partner);
+    expect(partnered.map((service) => service.slug)).toEqual([
+      "integrity-anti-corruption",
+      "market-research",
+    ]);
+
+    for (const service of partnered) {
+      const html = injectSeo(SHELL, `/services/${service.slug}`);
+      expect(html).toContain(`"name":"${service.partner!.name}"`);
+      expect(html).toContain('"subOrganization"');
+    }
+
+    for (const service of SERVICES.filter((entry) => !entry.partner)) {
+      expect(injectSeo(SHELL, `/services/${service.slug}`)).not.toContain('"subOrganization"');
+    }
+  });
+
+  it("points every old services anchor at the page that replaced it", () => {
+    for (const service of SERVICES) {
+      expect(LEGACY_ANCHOR_REDIRECTS[service.legacyAnchor]).toBe(`/services/${service.slug}`);
+      expect(isKnownRoute(LEGACY_ANCHOR_REDIRECTS[service.legacyAnchor])).toBe(true);
+    }
+    expect(Object.keys(LEGACY_ANCHOR_REDIRECTS).sort()).toEqual(
+      ["bizdev", "digital-marketing", "grc", "hr", "integrity", "market-research", "strategy"],
+    );
+  });
+
+  it("lists every service page in the sitemap", () => {
+    const sitemap = readFileSync(
+      new URL("../client/public/sitemap.xml", import.meta.url),
+      "utf-8",
+    );
+    for (const service of SERVICES) {
+      expect(sitemap).toContain(`https://www.darwish-co.com/services/${service.slug}</loc>`);
     }
   });
 

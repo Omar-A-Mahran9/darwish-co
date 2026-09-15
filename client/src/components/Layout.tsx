@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
+import { SERVICES } from "@shared/services";
 import { useState, useRef, useEffect, useCallback } from "react";
 
 type NavItem = {
@@ -16,14 +17,12 @@ const navItems: NavItem[] = [
   {
     name: "Services",
     path: "/services",
+    // The mobile menu adds its own "All Services" entry, so this lists only the pages.
     children: [
-      { name: "Governance & Risk (GRC)", path: "/services#grc" },
-      { name: "Human Resources", path: "/services#hr" },
-      { name: "Business Development", path: "/services#bizdev" },
-      { name: "Digital Marketing", path: "/services#digital-marketing" },
-      { name: "Strategy & Performance System", path: "/services#strategy" },
-      { name: "Integrity & Anti-Corruption", path: "/services#integrity" },
-      { name: "Market Research & Insights", path: "/services#market-research" },
+      ...SERVICES.map((service) => ({
+        name: service.navLabel,
+        path: `/services/${service.slug}`,
+      })),
     ],
   },
   {
@@ -330,13 +329,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div>
             <h4 className="font-bold mb-4 text-primary">Services</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/services#grc"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Governance & Risk</span></Link></li>
-              <li><Link href="/services#hr"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Human Resources</span></Link></li>
-              <li><Link href="/services#bizdev"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Business Development</span></Link></li>
-              <li><Link href="/services#strategy"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Strategy & Performance</span></Link></li>
-              <li><Link href="/services#integrity"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Integrity & Anti-Corruption</span></Link></li>
-              <li><Link href="/services#market-research"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Market Research & Insights</span></Link></li>
-              <li><Link href="/services#digital-marketing"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Marketing Strategy</span></Link></li>
+              {SERVICES.map((service) => (
+                <li key={service.slug}>
+                  <Link href={`/services/${service.slug}`}>
+                    <span className="cursor-pointer hover:text-primary hover:underline transition-colors">
+                      {service.navLabel}
+                    </span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
