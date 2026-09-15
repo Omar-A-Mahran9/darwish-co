@@ -5,6 +5,56 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 5 — The services now follow the agreed positioning
+
+**Commit:** `144d65b` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Checks:** TypeScript passes · production build passes · 11 automated tests on this area · every page and every old address checked on desktop and phone width
+
+### The problem
+
+Entry 4 split the services into separate pages, but using the old list of seven. The
+positioning document was recovered afterwards, and it sets out a different structure: three
+pillars with governance leading, six services rather than seven, and digital marketing off
+the site altogether.
+
+### What we changed
+
+| Change | Result |
+|---|---|
+| Grouped the services into three pillars | Governance first, then Strategy & Organisation, then Growth — the order the positioning sets out |
+| Split the old GRC page in two | **Corporate & Family Governance** (decision rights, delegation, boards, family roles) and **Risk, Compliance & Integrity** (risk, anti-bribery, due diligence) |
+| Merged integrity into Risk, Compliance & Integrity | One page for everything a client compliance questionnaire asks about, instead of two |
+| Merged market research into **Growth & Market Entry** | Research is now shown as part of deciding whether to enter a market, which is what clients buy it for |
+| Renamed the other two | **Strategy & Execution** and **People & Organisation** |
+| Removed Digital Marketing from the site | As agreed. Its address now leads to the services page rather than to nothing |
+| Wrote the **AI Governance** page but did not publish it | It goes live when you name who will deliver it. Until then it is invisible to visitors and search engines |
+| Marked every partner-delivered component individually | Each card carrying VisionEthics or In Light work says so, and each page has a block stating who contracts, who delivers and who is accountable |
+| Added a "Standards we work with" section | Only where standards are genuinely applied |
+| Corrected the ISO 37001 wording | Readiness, implementation and certification are now stated as three different things. Certification is granted by an accredited body — not by us, and not by ISO, which writes the standard but does not certify. The page also cites the current 2025 edition |
+| Kept every previous address working | The seven addresses from Entry 4 and the seven older `#anchor` links all lead to the page that replaced them |
+
+### Why it matters
+
+- **One clear story:** governance leads, and the other services are shown as what makes it work — instead of seven equal practices with no hierarchy.
+- **The two situations clients actually arrive with** — "I have to sign everything" and "a client sent us a compliance questionnaire" — now each have a page that answers them directly.
+- **Honesty about the ISO claim:** the previous wording implied we could take a company through certification. We cannot; no consultancy can certify a company it advises.
+- **Nothing published before it is real:** AI Governance is complete but hidden until someone is named to deliver it.
+
+### What needs your confirmation
+
+`docs/services-copy-review.md` is updated. Two items matter most:
+
+1. **Nobody is named on any service page yet.** The positioning requires a named lead for
+   each service, and none of the five carries one. That is the largest remaining gap.
+2. **Both partners should confirm, in writing, the roles now described on their behalf** —
+   the pages state what VisionEthics and In Light deliver and who is accountable.
+
+Ten components are new rather than renamed — delegation of authority, board design, family
+governance, job architecture, succession, entry readiness and others. Each is listed for
+you to confirm or strike.
+
+---
+
 ## Entry 4 — Each service now has its own page
 
 **Commit:** `13503be` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
