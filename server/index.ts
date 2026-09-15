@@ -3,6 +3,7 @@ import fs from "fs";
 import { createServer } from "http";
 import path from "path";
 import { isKnownRoute } from "../shared/seo.js";
+import { SERVICE_REDIRECTS } from "../shared/services.js";
 import { injectSeo } from "./seoHtml.js";
 import { fileURLToPath } from "url";
 import { sendGmailWebsiteRequestNotification } from "./gmailNotification.js";
@@ -470,6 +471,14 @@ async function startServer() {
     process.env.NODE_ENV === "production"
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
+
+  // Addresses that changed in the v3 service restructure keep their value by
+  // answering with a permanent redirect rather than a 404.
+  app.get("/services/:slug", (req, res, next) => {
+    const destination = SERVICE_REDIRECTS[`/services/${req.params.slug}`];
+    if (destination) return res.redirect(301, destination);
+    return next();
+  });
 
   app.use(express.static(staticPath, { index: false }));
 

@@ -7,7 +7,7 @@
  * side is what crawlers and AI assistants that do not run JavaScript see.
  */
 
-import { getService, SERVICES } from "./services.js";
+import { getService, PUBLISHED_SERVICES } from "./services.js";
 
 export const SITE_URL = "https://www.darwish-co.com";
 export const SITE_NAME = "Darwish & Co.";
@@ -102,9 +102,9 @@ const STATIC_PAGES: Record<string, PageSeo> = {
       "An Egypt-based consultancy serving SMEs across MENA in governance, risk and compliance, human resources and strategic management. Meet the firm and its work.",
   }),
   "/services": page("/services", {
-    title: "Consulting Services — GRC, HR, Strategy & Growth for SMEs | Darwish & Co",
+    title: "Consulting Services — Governance, Strategy & Growth for SMEs | Darwish & Co",
     description:
-      "Governance, risk and compliance, human resources, business development, digital marketing, market research and performance management for SMEs across MENA.",
+      "Corporate and family governance, risk and compliance, strategy execution, people and organisation, and market entry for SMEs in Egypt and the MENA region.",
   }),
   "/projects": page("/projects", {
     title: "Projects & Innovations — AI Platforms for MENA | Darwish & Co",
@@ -144,7 +144,7 @@ STATIC_PAGES["/services"].jsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Darwish & Co. consulting services",
-  itemListElement: SERVICES.map((service, index) => ({
+  itemListElement: PUBLISHED_SERVICES.map((service, index) => ({
     "@type": "ListItem",
     position: index + 1,
     name: service.name,

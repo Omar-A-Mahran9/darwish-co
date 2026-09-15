@@ -2,7 +2,13 @@ import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LEGACY_ANCHOR_REDIRECTS, SERVICES, type Service } from "@shared/services";
+import {
+  LEGACY_ANCHOR_REDIRECTS,
+  PILLARS,
+  servicesInPillar,
+  type Service,
+  type ServicePillar,
+} from "@shared/services";
 import { ACCENT, ServiceIcon } from "@/components/serviceStyles";
 import { ArrowRight } from "lucide-react";
 
@@ -37,7 +43,7 @@ function ServiceCard({ service }: { service: Service }) {
           </CardTitle>
           {service.partner && (
             <span className={`mt-2 inline-flex w-fit items-center gap-1.5 rounded-full ${accent.soft} px-3 py-1 text-xs font-bold ${accent.text}`}>
-              Delivered with {service.partner.name}
+              Partly delivered with {service.partner.name}
             </span>
           )}
         </CardHeader>
@@ -52,11 +58,31 @@ function ServiceCard({ service }: { service: Service }) {
   );
 }
 
+function Pillar({ pillar, muted }: { pillar: ServicePillar; muted?: boolean }) {
+  const services = servicesInPillar(pillar);
+  if (services.length === 0) return null;
+
+  return (
+    <section className={muted ? "border-t border-border bg-muted/20 py-16" : "py-16"}>
+      <div className="container space-y-10">
+        <div className="max-w-3xl space-y-3">
+          <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
+            {PILLARS[pillar].name}
+          </h2>
+          <p className="leading-relaxed text-muted-foreground">{PILLARS[pillar].description}</p>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => (
+            <ServiceCard key={service.slug} service={service} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Services() {
   useLegacyAnchorRedirect();
-
-  const inHouse = SERVICES.filter((service) => !service.partner);
-  const withPartners = SERVICES.filter((service) => service.partner);
 
   return (
     <div className="min-h-screen bg-background font-body">
@@ -65,52 +91,26 @@ export default function Services() {
         <div className="container space-y-6 text-center">
           <h1 className="font-heading text-4xl font-bold md:text-5xl">Our Services</h1>
           <p className="mx-auto max-w-2xl text-xl text-primary-foreground/80">
-            Governance, risk and compliance, strategy, people and growth services for SMEs in the
-            MENA region.
+            Governance first, then the strategy, structure and growth work that depends on it — for
+            SMEs in Egypt and the MENA region.
           </p>
         </div>
       </section>
 
-      {/* Delivered by Darwish & Co. */}
-      <section className="py-16">
-        <div className="container space-y-10">
-          <div className="max-w-3xl space-y-3">
-            <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
-              Delivered by Darwish &amp; Co.
-            </h2>
-            <p className="leading-relaxed text-muted-foreground">
-              Five practices, each with its own page setting out what the work covers, who it
-              suits, what you receive and how an engagement runs.
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {inHouse.map((service) => (
-              <ServiceCard key={service.slug} service={service} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <Pillar pillar="governance" />
+      <Pillar pillar="strategy-organisation" muted />
+      <Pillar pillar="growth" />
 
-      {/* Delivered with partners */}
-      <section className="border-t border-border bg-muted/20 py-16">
-        <div className="container space-y-10">
-          <div className="max-w-3xl space-y-3">
-            <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
-              Delivered with our partner network
-            </h2>
-            <p className="leading-relaxed text-muted-foreground">
-              Two specialist services delivered together with partner firms. Darwish &amp; Co.
-              scopes and manages the engagement; the specialist capability belongs to the partner,
-              and we say which is which.
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            {withPartners.map((service) => (
-              <ServiceCard key={service.slug} service={service} />
-            ))}
-          </div>
-          <p className="text-sm text-muted-foreground">
-            More about the firms we work with on the{" "}
+      {/* Partner note */}
+      <section className="border-t border-border bg-muted/20 py-12">
+        <div className="container max-w-3xl space-y-3 text-center">
+          <h2 className="font-heading text-lg font-bold text-foreground">
+            Where a partner delivers part of the work
+          </h2>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Anti-bribery and integrity work is delivered with VisionEthics, and consumer research
+            with In Light Consumer Insights. Each service page states exactly which components are
+            theirs and who is accountable for what. More about both on the{" "}
             <Link href="/corporate-partners">
               <span className="cursor-pointer font-bold text-primary hover:underline">
                 corporate partners page
@@ -129,8 +129,8 @@ export default function Services() {
           </h2>
           <p className="max-w-2xl leading-relaxed text-muted-foreground">
             Most engagements start with a problem rather than a service — an investor asking
-            questions, a structure that has stopped working, a market decision that needs
-            evidence. Describe it and we will tell you which of these applies, or whether none does.
+            questions, a client sending a compliance questionnaire, a structure that has stopped
+            working. Describe it and we will tell you which of these applies, or whether none does.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link href="/contact">

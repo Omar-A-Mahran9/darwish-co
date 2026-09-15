@@ -1,4 +1,5 @@
-import { Link, useParams } from "wouter";
+import { useEffect } from "react";
+import { Link, useLocation, useParams } from "wouter";
 import {
   Accordion,
   AccordionContent,
@@ -7,15 +8,24 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getService, SERVICES } from "@shared/services";
+import { getService, PUBLISHED_SERVICES, SERVICE_REDIRECTS } from "@shared/services";
 import { ACCENT, ServiceIcon } from "@/components/serviceStyles";
 import { ArrowLeft, ArrowRight, Check, ChevronRight, ExternalLink } from "lucide-react";
 
 export default function ServiceDetail() {
   const params = useParams<{ slug: string }>();
+  const [, navigate] = useLocation();
   const service = params.slug ? getService(params.slug) : undefined;
+  const redirect = params.slug ? SERVICE_REDIRECTS[`/services/${params.slug}`] : undefined;
+
+  // The server answers old addresses with a 301; this covers the same links
+  // followed inside an already-loaded page.
+  useEffect(() => {
+    if (!service && redirect) navigate(redirect, { replace: true });
+  }, [service, redirect, navigate]);
 
   if (!service) {
+    if (redirect) return null;
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 font-body">
         <h1 className="font-heading text-3xl font-bold text-foreground">Service not found</h1>
@@ -29,7 +39,7 @@ export default function ServiceDetail() {
   }
 
   const accent = ACCENT[service.accent];
-  const others = SERVICES.filter((entry) => entry.slug !== service.slug).slice(0, 3);
+  const others = PUBLISHED_SERVICES.filter((entry) => entry.slug !== service.slug).slice(0, 3);
   const groups = service.offerings
     .map((offering) => offering.group ?? "")
     .filter((group, index, all) => all.indexOf(group) === index);
@@ -125,6 +135,11 @@ export default function ServiceDetail() {
                         <CardTitle className="font-heading text-base leading-snug text-primary">
                           {offering.title}
                         </CardTitle>
+                        {offering.byPartner && service.partner && (
+                          <span className={`mt-2 inline-flex w-fit items-center rounded-full ${accent.soft} px-2.5 py-0.5 text-[11px] font-bold ${accent.text}`}>
+                            Delivered by {service.partner.name}
+                          </span>
+                        )}
                       </CardHeader>
                       <CardContent>
                         <p className="text-sm leading-relaxed text-muted-foreground">
@@ -144,9 +159,9 @@ export default function ServiceDetail() {
       <section className="py-16">
         <div className="container grid gap-12 md:grid-cols-2">
           <div className="space-y-6">
-            <h2 className="font-heading text-2xl font-bold text-primary">Who it's for</h2>
+            <h2 className="font-heading text-2xl font-bold text-primary">Is this you?</h2>
             <ul className="space-y-4">
-              {service.whoItsFor.map((item) => (
+              {service.isThisYou.map((item) => (
                 <li key={item} className="flex gap-3 text-muted-foreground">
                   <ArrowRight className={`mt-1 h-4 w-4 flex-shrink-0 ${accent.text}`} aria-hidden="true" />
                   <span className="leading-relaxed">{item}</span>
@@ -168,6 +183,51 @@ export default function ServiceDetail() {
           </div>
         </div>
       </section>
+
+      {/* Who is accountable, where a partner delivers part of the work */}
+      {service.partner && (
+        <section className="pb-16">
+          <div className="container">
+            <div className={`border ${accent.border} ${accent.soft} p-6 md:p-8`}>
+              <h2 className="font-heading text-lg font-bold text-foreground">
+                Who delivers, and who is accountable
+              </h2>
+              <p className="mt-3 max-w-3xl leading-relaxed text-muted-foreground">
+                {service.partner.accountability}
+              </p>
+              <a
+                href={service.partner.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`mt-4 inline-flex items-center gap-1.5 text-sm font-bold ${accent.text} hover:underline`}
+              >
+                About {service.partner.name} <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Standards genuinely applied in the work */}
+      {service.standards && (
+        <section className="border-t border-border py-16">
+          <div className="container space-y-8">
+            <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
+              Standards we work with
+            </h2>
+            <dl className="grid gap-8 md:grid-cols-3">
+              {service.standards.map((standard) => (
+                <div key={standard.name} className="space-y-2">
+                  <dt className={`font-heading text-lg font-bold ${accent.text}`}>
+                    {standard.name}
+                  </dt>
+                  <dd className="text-sm leading-relaxed text-muted-foreground">{standard.note}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      )}
 
       {/* How an engagement runs */}
       <section className="border-y border-border bg-muted/20 py-16">

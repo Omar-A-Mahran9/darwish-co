@@ -2,7 +2,12 @@ import { readFileSync } from "fs";
 import { describe, expect, it } from "vitest";
 import { injectSeo } from "./seoHtml.js";
 import { BLOG_ARTICLES, isKnownRoute, resolveSeo } from "../shared/seo.js";
-import { LEGACY_ANCHOR_REDIRECTS, SERVICES } from "../shared/services.js";
+import {
+  LEGACY_ANCHOR_REDIRECTS,
+  PUBLISHED_SERVICES,
+  SERVICE_REDIRECTS,
+  SERVICES,
+} from "../shared/services.js";
 
 const SHELL = `<!doctype html>
 <html lang="en">
@@ -78,7 +83,7 @@ describe("per-page metadata", () => {
   it("gives each service page its own metadata and service structured data", () => {
     const titles = new Set<string>();
 
-    for (const service of SERVICES) {
+    for (const service of PUBLISHED_SERVICES) {
       const path = `/services/${service.slug}`;
       const seo = resolveSeo(path);
       titles.add(seo.title);
@@ -100,15 +105,15 @@ describe("per-page metadata", () => {
       }
     }
 
-    expect(titles.size).toBe(SERVICES.length);
+    expect(titles.size).toBe(PUBLISHED_SERVICES.length);
     expect(isKnownRoute("/services/not-a-service")).toBe(false);
   });
 
   it("names the partner as the provider for partner-delivered services", () => {
-    const partnered = SERVICES.filter((service) => service.partner);
+    const partnered = PUBLISHED_SERVICES.filter((service) => service.partner);
     expect(partnered.map((service) => service.slug)).toEqual([
-      "integrity-anti-corruption",
-      "market-research",
+      "risk-compliance-integrity",
+      "growth-market-entry",
     ]);
 
     for (const service of partnered) {
@@ -117,19 +122,59 @@ describe("per-page metadata", () => {
       expect(html).toContain('"subOrganization"');
     }
 
-    for (const service of SERVICES.filter((entry) => !entry.partner)) {
+    for (const service of PUBLISHED_SERVICES.filter((entry) => !entry.partner)) {
       expect(injectSeo(SHELL, `/services/${service.slug}`)).not.toContain('"subOrganization"');
     }
   });
 
-  it("points every old services anchor at the page that replaced it", () => {
-    for (const service of SERVICES) {
-      expect(LEGACY_ANCHOR_REDIRECTS[service.legacyAnchor]).toBe(`/services/${service.slug}`);
-      expect(isKnownRoute(LEGACY_ANCHOR_REDIRECTS[service.legacyAnchor])).toBe(true);
+  it("sends every address that existed before the restructure somewhere real", () => {
+    // Anchors from the original single services page.
+    expect(Object.keys(LEGACY_ANCHOR_REDIRECTS).sort()).toEqual([
+      "bizdev",
+      "digital-marketing",
+      "grc",
+      "hr",
+      "integrity",
+      "market-research",
+      "strategy",
+    ]);
+
+    // Slugs from the first split, 16 Sep 2026.
+    expect(Object.keys(SERVICE_REDIRECTS).sort()).toEqual([
+      "/services/business-development",
+      "/services/digital-marketing",
+      "/services/governance-risk-compliance",
+      "/services/human-resources",
+      "/services/integrity-anti-corruption",
+      "/services/market-research",
+      "/services/strategy-performance",
+    ]);
+
+    for (const destination of [
+      ...Object.values(LEGACY_ANCHOR_REDIRECTS),
+      ...Object.values(SERVICE_REDIRECTS),
+    ]) {
+      expect(isKnownRoute(destination)).toBe(true);
+      expect(resolveSeo(destination).robots).toBe("index, follow");
     }
-    expect(Object.keys(LEGACY_ANCHOR_REDIRECTS).sort()).toEqual(
-      ["bizdev", "digital-marketing", "grc", "hr", "integrity", "market-research", "strategy"],
-    );
+
+    // Nothing redirects to a page that was itself replaced.
+    for (const destination of Object.values(SERVICE_REDIRECTS)) {
+      expect(SERVICE_REDIRECTS[destination]).toBeUndefined();
+    }
+  });
+
+  it("keeps an unpublished service off the site entirely", () => {
+    const unpublished = SERVICES.filter((service) => !service.published);
+    expect(unpublished.map((service) => service.slug)).toEqual(["ai-governance"]);
+
+    const sitemap = readFileSync(new URL("../client/public/sitemap.xml", import.meta.url), "utf-8");
+    for (const service of unpublished) {
+      const path = `/services/${service.slug}`;
+      expect(isKnownRoute(path)).toBe(false);
+      expect(resolveSeo(path).robots).toBe("noindex, nofollow");
+      expect(sitemap).not.toContain(path);
+    }
   });
 
   it("lists every service page in the sitemap", () => {
@@ -137,7 +182,7 @@ describe("per-page metadata", () => {
       new URL("../client/public/sitemap.xml", import.meta.url),
       "utf-8",
     );
-    for (const service of SERVICES) {
+    for (const service of PUBLISHED_SERVICES) {
       expect(sitemap).toContain(`https://www.darwish-co.com/services/${service.slug}</loc>`);
     }
   });

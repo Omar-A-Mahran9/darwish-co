@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { SERVICES } from "@shared/services";
+import { PUBLISHED_SERVICES } from "@shared/services";
 import { useState, useRef, useEffect, useCallback } from "react";
 
 type NavItem = {
@@ -19,7 +19,7 @@ const navItems: NavItem[] = [
     path: "/services",
     // The mobile menu adds its own "All Services" entry, so this lists only the pages.
     children: [
-      ...SERVICES.map((service) => ({
+      ...PUBLISHED_SERVICES.map((service) => ({
         name: service.navLabel,
         path: `/services/${service.slug}`,
       })),
@@ -329,7 +329,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div>
             <h4 className="font-bold mb-4 text-primary">Services</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              {SERVICES.map((service) => (
+              {PUBLISHED_SERVICES.map((service) => (
                 <li key={service.slug}>
                   <Link href={`/services/${service.slug}`}>
                     <span className="cursor-pointer hover:text-primary hover:underline transition-colors">

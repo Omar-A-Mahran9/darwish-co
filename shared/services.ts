@@ -1,17 +1,41 @@
 /**
  * The consulting services, one entry per page under /services.
  *
+ * Structure follows docs/positioning.md (v3): three pillars, governance leading.
  * This is the single source for the services hub, each service page, the
- * navigation and footer, the sitemap, and the search and social metadata in
- * shared/seo.ts. Copy lives here so it can be edited without touching layout.
+ * navigation and footer, the sitemap, and the metadata in shared/seo.ts.
  *
- * Wording drawn from the previous single services page is kept as it was.
- * Newly drafted wording (whoItsFor, whatYouGet, howItWorks, faqs) is listed in
- * docs/services-copy-review.md for the client to confirm or correct.
+ * A service with `published: false` is written but not listed, routed, or put in
+ * the sitemap — v3 requires a named delivery lead, a defined scope, a sample
+ * output and relevant experience before a service goes live.
+ *
+ * Newly drafted wording is listed in docs/services-copy-review.md for the client
+ * to confirm or correct.
  */
 
 /** Visual accent, mapped to concrete classes in the page components. */
 export type ServiceAccent = "primary" | "teal" | "amber" | "blue" | "emerald";
+
+/** The three pillars of the service structure. */
+export type ServicePillar = "governance" | "strategy-organisation" | "growth";
+
+export const PILLARS: Record<ServicePillar, { name: string; description: string }> = {
+  governance: {
+    name: "Governance",
+    description:
+      "The structures that let a company show how decisions are made, what its risks are, and that its obligations are met.",
+  },
+  "strategy-organisation": {
+    name: "Strategy & Organisation",
+    description:
+      "What turns governance into performance: a strategy the organisation runs monthly, and a structure that holds as it grows.",
+  },
+  growth: {
+    name: "Growth",
+    description:
+      "Entering a new market on evidence rather than assumption, with the governance prerequisites handled first.",
+  },
+};
 
 export type ServiceOffering = {
   title: string;
@@ -20,17 +44,25 @@ export type ServiceOffering = {
   icon: string;
   /** Optional grouping heading, used where a service has many offerings. */
   group?: string;
+  /** Set where this component is delivered by the partner rather than by us. */
+  byPartner?: boolean;
 };
 
 export type ServiceFaq = { question: string; answer: string };
 
 export type Service = {
   slug: string;
+  pillar: ServicePillar;
+  /**
+   * False until the service passes the four-part test in docs/positioning.md §4:
+   * named delivery lead, defined scope, sample output, relevant experience.
+   */
+  published: boolean;
   /** Page heading. */
   name: string;
   /** Short label for menus and cards. */
   navLabel: string;
-  /** One line under the heading. */
+  /** One line under the heading: the promise, in plain words. */
   tagline: string;
   /** Two or three sentences that open the page and answer "what is this". */
   intro: string;
@@ -39,22 +71,24 @@ export type Service = {
   accent: ServiceAccent;
   icon: string;
   /** Set when the service is delivered with a partner firm. */
-  partner?: { name: string; url: string; note: string };
+  partner?: { name: string; url: string; note: string; accountability: string };
   /** Figures a partner publishes about its own capability. */
   stats?: { value: string; label: string }[];
   offerings: ServiceOffering[];
-  whoItsFor: string[];
+  /** "Is this you?" — the situations in the owner's own words. */
+  isThisYou: string[];
   whatYouGet: string[];
   howItWorks: { title: string; description: string }[];
+  /** Only standards genuinely applied in the work. */
+  standards?: { name: string; note: string }[];
   faqs: ServiceFaq[];
-  /** Anchor on the old single services page, kept so old links still work. */
-  legacyAnchor: string;
 };
 
 const ENGAGEMENT_STEPS = (subject: string) => [
   {
     title: "Scoping conversation",
-    description: `A first discussion to understand your organisation, what has prompted the work, and what a good outcome looks like. No cost and no obligation.`,
+    description:
+      "A first discussion to understand your organisation, what has prompted the work, and what a good outcome looks like. No cost and no obligation.",
   },
   {
     title: "Assessment",
@@ -62,128 +96,77 @@ const ENGAGEMENT_STEPS = (subject: string) => [
   },
   {
     title: "Design and build",
-    description: `We produce the frameworks, documents and systems agreed in the scope, working with your team rather than in isolation so the result fits how you actually operate.`,
+    description:
+      "We produce the frameworks, documents and systems agreed in the scope, working with your team rather than in isolation so the result fits how you actually operate.",
   },
   {
     title: "Handover and support",
-    description: `We train the people who will own the work, hand over the documentation, and stay available for review as it beds in.`,
+    description:
+      "We train the people who will own the work, hand over the documentation, and stay available for review as it beds in.",
   },
 ];
 
 export const SERVICES: Service[] = [
-  // ───────────────────────────────────────────────────────────── strategy ──
+  // ══════════════════════════════════════════════════════════════ GOVERNANCE ══
   {
-    slug: "strategy-performance",
-    name: "Strategy & Performance Management",
-    navLabel: "Strategy & Performance",
-    tagline: "Turning strategy into measures your leadership team can act on.",
+    slug: "corporate-family-governance",
+    pillar: "governance",
+    published: true,
+    name: "Corporate & Family Governance",
+    navLabel: "Corporate & Family Governance",
+    tagline: "Clear decision rights, so the company no longer waits on one person.",
     intro:
-      "Most SMEs have a strategy. Fewer have a way of telling, month to month, whether it is working. We build the measurement layer between the two: clear objectives, indicators that reflect them, and reporting that reaches leadership in time to change something.",
-    metaTitle: "Strategy & Performance Management for SMEs | Darwish & Co",
+      "In most owner-led companies, authority was never written down — it accumulated. That works until the volume of decisions outgrows the person making them, or until someone outside asks how the company is actually governed. This work sets out who decides what, within which limits, and on what record.",
+    metaTitle: "Corporate & Family Governance for Owner-Led SMEs | Darwish & Co",
     metaDescription:
-      "Balanced scorecards, OKRs and performance dashboards that connect strategy to measurable results for SMEs in Egypt and the wider MENA region.",
+      "Decision rights, delegation of authority, board and committee structures and family governance for owner-led SMEs in Egypt and the MENA region.",
     accent: "primary",
     icon: "Scale",
-    legacyAnchor: "strategy",
     offerings: [
       {
-        title: "Balanced Scorecard Implementation",
+        title: "Governance framework development",
         description:
-          "Design and deploy BSC frameworks that align strategic objectives with measurable KPIs across all organizational levels.",
+          "Establishing clear and effective governance structures: defining roles and responsibilities, establishing board and committee charters, and developing the policies and procedures that sit under them.",
         icon: "Scale",
       },
       {
-        title: "OKR Framework Design",
+        title: "Delegation of authority",
         description:
-          "Implement Objectives and Key Results methodology to drive focus, alignment, and accountability throughout your organization.",
-        icon: "Target",
-      },
-      {
-        title: "Performance Dashboard Systems",
-        description:
-          "Build real-time digital dashboards that give leadership instant visibility into business performance and strategic progress.",
-        icon: "BarChart3",
-      },
-    ],
-    whoItsFor: [
-      "Businesses with a written strategy that is not reflected in how teams are measured day to day",
-      "Leadership teams reviewing performance from figures that arrive too late, or that nobody agrees on",
-      "Companies preparing for investment, where an investor will ask how performance is tracked",
-      "Organisations that have grown past the point where the founder can hold the whole picture",
-    ],
-    whatYouGet: [
-      "An objectives map that connects the strategy to the parts of the business responsible for it",
-      "A defined set of indicators, each with an owner, a source and a reporting frequency",
-      "A performance dashboard your leadership team can read without needing it explained",
-      "A review routine — who meets, how often, and what decisions that meeting is allowed to make",
-    ],
-    howItWorks: ENGAGEMENT_STEPS("your current objectives, measures and reporting"),
-    faqs: [
-      {
-        question: "What is the difference between a balanced scorecard and OKRs?",
-        answer:
-          "A balanced scorecard organises performance across several perspectives — usually financial, customer, internal process, and learning and growth — so that one is not improved at the cost of another. OKRs set a small number of objectives with measurable key results over a short cycle, normally a quarter. Scorecards suit organisations that need a stable, complete picture; OKRs suit those that need focus and pace. They can be used together, with the scorecard as the standing frame and OKRs driving the current priorities.",
-      },
-      {
-        question: "Is this worth doing for a company of our size?",
-        answer:
-          "The work scales to the organisation. A company of thirty people does not need the reporting apparatus of a listed group; it needs a short set of measures its managers trust and use. The point at which it becomes worthwhile is usually when the leadership team can no longer see the whole business directly.",
-      },
-      {
-        question: "Do we need new software?",
-        answer:
-          "Not necessarily. Many organisations already hold the data they need across their accounting, HR and operational systems, and the gap is in definition and reporting rather than tooling. Where a dashboard is needed, we build on what you have before proposing anything new.",
-      },
-    ],
-  },
-
-  // ────────────────────────────────────────────────────────────────── grc ──
-  {
-    slug: "governance-risk-compliance",
-    name: "Governance, Risk & Compliance",
-    navLabel: "Governance & Risk (GRC)",
-    tagline: "Protecting your business and ensuring sustainable operations.",
-    intro:
-      "Governance is what lets a business demonstrate that decisions are made properly, risks are known, and obligations are met. For an SME, that usually matters first when someone external asks: an investor, a major client, a lender or a regulator. We build the structures and evidence that answer them.",
-    metaTitle: "Governance, Risk & Compliance Consulting for SMEs | Darwish & Co",
-    metaDescription:
-      "Governance frameworks, risk management and ongoing compliance support for SMEs in Egypt and MENA — built so you can evidence how decisions are made.",
-    accent: "primary",
-    icon: "Shield",
-    legacyAnchor: "grc",
-    offerings: [
-      {
-        title: "Governance Framework Development",
-        description:
-          "Assisting clients in establishing clear and effective governance structures, including defining roles and responsibilities, establishing board and committee charters, and developing policies and procedures.",
-        icon: "Scale",
-      },
-      {
-        title: "Risk Management Solutions",
-        description:
-          "Providing comprehensive risk assessments, developing and implementing risk management frameworks, and advising on risk mitigation strategies tailored to your industry.",
-        icon: "Shield",
-      },
-      {
-        title: "Compliance as a Service",
-        description:
-          "Offering ongoing compliance support to ensure clients adhere to relevant laws, regulations, and industry standards. This includes regulatory monitoring, compliance training, and policy management.",
+          "A written matrix setting out which decisions sit with the owner, the board, management and below — with financial limits, and the approval route for each. The artefact that makes delegation real rather than intended.",
         icon: "CheckCircle",
       },
+      {
+        title: "Board and committee design",
+        description:
+          "Structure, composition and meeting rhythm for a board or advisory board, with the charters that define what it decides and what it only reviews.",
+        icon: "Users",
+      },
+      {
+        title: "Family governance",
+        description:
+          "Separating family, ownership and management roles: how family members hold positions, how decisions involving the family are taken, and how that is recorded.",
+        icon: "Handshake",
+      },
+      {
+        title: "Governance for investors and lenders",
+        description:
+          "Preparing the governance evidence an investor or bank asks for in due diligence — structure, decision records, policies and controls — assembled as a pack rather than gathered under pressure.",
+        icon: "FileText",
+      },
     ],
-    whoItsFor: [
-      "SMEs asked by an investor, lender or corporate client to show a governance structure",
-      "Founder-led businesses where authority and decision rights have never been written down",
-      "Companies entering a regulated relationship or a tender that carries compliance conditions",
-      "Boards that want an independent view of what could go wrong and what is being done about it",
+    isThisYou: [
+      "You sign everything, and decisions wait for you when you travel",
+      "Family members hold roles, but their authority has never been defined",
+      "An investor or a bank has asked about your board and how decisions are recorded",
+      "You are preparing for the next generation, or for a professional CEO",
     ],
     whatYouGet: [
       "A governance structure document: who decides what, within which limits, and who is accountable",
-      "Board and committee charters, and the policies and procedures that sit under them",
-      "A risk register with owners, assessed likelihood and impact, and agreed mitigations",
-      "Ongoing compliance support where you want it maintained rather than handed over",
+      "A delegation of authority matrix, with the approval route for each decision type",
+      "Board or committee charters, and the policies and procedures beneath them",
+      "A governance pack you can hand to an investor, lender or major client",
     ],
-    howItWorks: ENGAGEMENT_STEPS("your governance structure, risk exposure and current controls"),
+    howItWorks: ENGAGEMENT_STEPS("your decision rights, governance structure and records"),
     faqs: [
       {
         question: "We are a small company. Do we really need formal governance?",
@@ -191,517 +174,608 @@ export const SERVICES: Service[] = [
           "Formal is not the same as heavy. A small company needs to be able to show who is authorised to commit it, how significant decisions are recorded, and what its main risks are. That can be a short set of documents. The cost of not having them appears when a client, investor or regulator asks and there is nothing to show.",
       },
       {
-        question: "Which regulations does this cover?",
+        question: "Does this mean giving up control?",
         answer:
-          "The obligations that apply to your business depend on your sector, your markets and how you are structured, so the scope is set during the assessment rather than assumed. Where a specialist legal opinion is required, we say so and work alongside your legal advisers rather than substituting for them.",
+          "The opposite of delegation is not control; it is being the bottleneck. A delegation of authority matrix defines what others may decide and up to what limit, which means the owner keeps the decisions that matter and stops being asked about the ones that do not. Control becomes explicit rather than personal.",
       },
       {
-        question: "How is this different from an audit?",
+        question: "Do we need an actual board of directors?",
         answer:
-          "An audit examines what happened and reports on it. This work builds the structures and controls that determine what happens next, and prepares the evidence an auditor or a counterparty will later look for.",
+          "Not necessarily, and not immediately. Some companies are better served by an advisory board with no statutory authority, which is easier to form and to change. What matters first is that decision rights are defined; the forum that exercises them follows from that.",
       },
     ],
   },
 
-  // ─────────────────────────────────────────────────────────────────── hr ──
   {
-    slug: "human-resources",
-    name: "Human Resources Consulting",
-    navLabel: "Human Resources",
-    tagline: "Empowering your workforce to drive business success.",
+    slug: "risk-compliance-integrity",
+    pillar: "governance",
+    published: true,
+    name: "Risk, Compliance & Integrity",
+    navLabel: "Risk, Compliance & Integrity",
+    tagline: "Evidence that your company can be trusted by clients, regulators and investors.",
     intro:
-      "Growth exposes the parts of an organisation that were never designed — reporting lines that formed by accident, hiring done under pressure, and policies that exist in people's heads. We help SMEs put a deliberate structure in place, and keep it compliant with the labour obligations that apply to them.",
-    metaTitle: "HR Consulting for SMEs — Structure, Talent & Compliance | Darwish & Co",
+      "Compliance is judged on what you can demonstrate, not on what you intended. When a multinational client sends a questionnaire, or a partner asks about anti-bribery controls, the answer has to be a document, a procedure and a record. This work builds them, and the anti-bribery elements are delivered with our partner VisionEthics.",
+    metaTitle: "Risk, Compliance & Integrity — Anti-Bribery & ISO 37001 | Darwish & Co",
     metaDescription:
-      "HR strategy, organisational design, talent acquisition and HR compliance for growing SMEs across Egypt and the MENA region.",
-    accent: "teal",
-    icon: "Users",
-    legacyAnchor: "hr",
-    offerings: [
-      {
-        title: "HR Strategy and Planning",
-        description:
-          "Aligning HR strategies with business objectives, including workforce planning, organizational design, and change management to support your growth.",
-        icon: "BarChart3",
-      },
-      {
-        title: "Talent Acquisition & Management",
-        description:
-          "Supporting clients in attracting, recruiting, and retaining top talent. This includes developing recruitment processes, implementing performance management systems, and creating employee development programs.",
-        icon: "Users",
-      },
-      {
-        title: "HR Compliance & Policy",
-        description:
-          "Ensuring clients are compliant with labor laws and regulations. This includes developing employee handbooks, creating HR policies and procedures, and advising on employee relations issues.",
-        icon: "FileText",
-      },
-    ],
-    whoItsFor: [
-      "Companies that have grown faster than their organisational structure",
-      "Businesses hiring for roles they have never hired for before",
-      "Organisations with no written handbook, policies or performance process",
-      "Leadership teams dealing with turnover they cannot explain",
-    ],
-    whatYouGet: [
-      "An organisation chart with defined roles, reporting lines and decision rights",
-      "A workforce plan tied to what the business intends to do over the next period",
-      "A recruitment process you can run repeatedly, with role profiles and assessment criteria",
-      "An employee handbook and the HR policies that sit behind it",
-      "A performance management cycle your managers are trained to run",
-    ],
-    howItWorks: ENGAGEMENT_STEPS("your structure, roles, HR policies and hiring practice"),
-    faqs: [
-      {
-        question: "Do you recruit on our behalf?",
-        answer:
-          "The focus is on building the process — role definition, assessment criteria, interview structure and onboarding — so your team can hire consistently. Where you want support running a specific search, discuss it during scoping and we will tell you plainly what we can and cannot take on.",
-      },
-      {
-        question: "Can you advise on labour law?",
-        answer:
-          "We build HR policies and practices that reflect the labour obligations applying to your business, and flag where a matter needs a legal opinion. We are consultants, not a law firm, and we say so when the question has crossed that line.",
-      },
-      {
-        question: "Our managers have never run performance reviews. Is that a problem?",
-        answer:
-          "It is the normal starting point. A review process only works if the people running it understand what it is for, so training managers is part of the work rather than an addition to it.",
-      },
-    ],
-  },
-
-  // ───────────────────────────────────────────────────── business development ──
-  {
-    slug: "business-development",
-    name: "Business Development",
-    navLabel: "Business Development",
-    tagline: "Accelerating growth and unlocking new market opportunities.",
-    intro:
-      "Entering a new market or signing a cross-border partnership fails more often on preparation than on ambition. We work through the questions that decide it: whether the demand is there, who the right partner is, and how the arrangement should be structured.",
-    metaTitle: "Business Development & Market Entry Consulting | Darwish & Co",
-    metaDescription:
-      "Market entry strategy, partnership development and international trade support for SMEs expanding across the MENA region.",
-    accent: "amber",
-    icon: "TrendingUp",
-    legacyAnchor: "bizdev",
-    offerings: [
-      {
-        title: "Market Entry Strategy",
-        description:
-          "Comprehensive market research and entry strategies to help SMEs expand into new MENA markets with confidence and clarity.",
-        icon: "Globe2",
-      },
-      {
-        title: "Strategic Partnerships",
-        description:
-          "Identifying and facilitating high-value partnerships, joint ventures, and alliances that create sustainable competitive advantage.",
-        icon: "Handshake",
-      },
-      {
-        title: "International Trade Facilitation",
-        description:
-          "End-to-end support for cross-border trade, including regulatory navigation, partner identification, and deal structuring.",
-        icon: "TrendingUp",
-      },
-    ],
-    whoItsFor: [
-      "Businesses considering a new market and wanting the case tested before committing",
-      "Companies looking for a distributor, joint venture partner or local representative",
-      "Exporters and importers dealing with cross-border requirements for the first time",
-      "Organisations with an opportunity in hand that needs structuring into an agreement",
-    ],
-    whatYouGet: [
-      "A market assessment covering demand, competition, pricing context and entry requirements",
-      "A shortlist of candidate partners with the basis on which each was assessed",
-      "An entry plan setting out route, sequence, cost and the risks that could stop it",
-      "Support through negotiation and deal structuring, alongside your legal advisers",
-    ],
-    howItWorks: ENGAGEMENT_STEPS("the market, the opportunity and your readiness to enter it"),
-    faqs: [
-      {
-        question: "Which markets do you cover?",
-        answer:
-          "Egypt and the wider MENA region are where our own presence and network sit. Where a piece of work reaches beyond that, we say at the outset whether we are drawing on direct experience or on partner capability, so you know which you are buying.",
-      },
-      {
-        question: "Can you introduce us to partners directly?",
-        answer:
-          "Introductions happen where our network genuinely reaches, and we will tell you when it does not rather than promising access we do not have. Identification and assessment of candidates is part of the work in either case.",
-      },
-      {
-        question: "Do you handle the legal side of a partnership agreement?",
-        answer:
-          "We structure the commercial terms and work with your legal advisers on drafting and execution. Legal instruments are signed off by lawyers, not by us.",
-      },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────── digital marketing ──
-  {
-    slug: "digital-marketing",
-    name: "Digital Marketing",
-    navLabel: "Digital Marketing",
-    tagline:
-      "Strategic digital presence, content creation, and AI-driven marketing for Egyptian, Gulf, MENA and African businesses.",
-    intro:
-      "Marketing activity without a strategy produces volume, not results. We start from positioning and audience, then build the channel plan, the content operation and the measurement that shows what is working — including where generative AI genuinely reduces cost.",
-    metaTitle: "Digital Marketing Strategy, Content & AI Production | Darwish & Co",
-    metaDescription:
-      "Digital strategy, social media management, generative AI content, multimedia production and PR for businesses across Egypt, the Gulf, MENA and Africa.",
-    accent: "amber",
-    icon: "Globe2",
-    legacyAnchor: "digital-marketing",
-    offerings: [
-      {
-        title: "Digital Strategy & Brand Development",
-        description:
-          "Crafting comprehensive digital strategies that align your brand identity with target audiences across Egyptian, Gulf markets, MENA and African markets. Includes brand positioning, visual identity direction, and multi-platform content architecture.",
-        icon: "Globe2",
-      },
-      {
-        title: "Social Media Management & Growth",
-        description:
-          "End-to-end management of social media channels (Meta, LinkedIn, TikTok, YouTube) with data-driven content calendars, community engagement, and performance analytics to drive measurable audience growth.",
-        icon: "BarChart3",
-      },
-      {
-        title: "Generative AI Content Production",
-        description:
-          "Leveraging cutting-edge Generative AI tools for high-impact content creation — AI-driven imagery, video production, motion graphics, and automated content workflows that reduce cost while elevating quality.",
-        icon: "Cpu",
-      },
-      {
-        title: "Multimedia Production & Motion Graphics",
-        description:
-          "Full-service multimedia production using Adobe Creative Cloud (Premiere Pro, After Effects, Photoshop, Illustrator) — from corporate video and promotional reels to animated explainers and branded presentations.",
-        icon: "BookOpen",
-      },
-      {
-        title: "PR Strategy & Stakeholder Communications",
-        description:
-          "Designing and executing public relations strategies that build institutional credibility, manage stakeholder narratives, and strengthen visibility with government bodies, media, and key industry partners.",
-        icon: "ShieldCheck",
-      },
-      {
-        title: "Digital Marketing Training & Capacity Building",
-        description:
-          "Customised corporate training programmes in Digital Marketing, AI-powered content creation, and social media strategy — delivered by an active visiting lecturer at Cairo University and the Egyptian Chinese University.",
-        icon: "FileText",
-      },
-    ],
-    whoItsFor: [
-      "Businesses posting regularly without knowing what any of it returns",
-      "Companies whose brand presentation no longer matches what the business has become",
-      "Organisations producing video and campaign content at a cost they want to bring down",
-      "In-house marketing teams that need capability built rather than work outsourced",
-    ],
-    whatYouGet: [
-      "A digital strategy covering positioning, audiences and the channels that suit them",
-      "A content plan and calendar your team or ours can run",
-      "Produced content — imagery, video, motion graphics — to an agreed schedule",
-      "Reporting against the measures agreed at the start, not vanity figures",
-      "Training for your team where you want the capability kept in-house",
-    ],
-    howItWorks: ENGAGEMENT_STEPS("your current positioning, channels, content and results"),
-    faqs: [
-      {
-        question: "Do you run our channels, or teach us to?",
-        answer:
-          "Either. Some clients want the operation managed; others want the strategy, the templates and the training, then run it themselves. The second usually costs less over time and is worth considering if you have someone to own it.",
-      },
-      {
-        question: "How do you use AI in content production?",
-        answer:
-          "For imagery, video elements, motion graphics and production workflow — the stages where it removes cost without removing judgement. Strategy, messaging and anything published in your name stays under human review.",
-      },
-      {
-        question: "Can you work in Arabic and English?",
-        answer:
-          "Yes. Work across Egyptian, Gulf, MENA and African markets is delivered in both, with the choice driven by the audience for each channel.",
-      },
-    ],
-  },
-
-  // ──────────────────────────────────────────── integrity (partner-delivered) ──
-  {
-    slug: "integrity-anti-corruption",
-    name: "Integrity & Anti-Corruption Services",
-    navLabel: "Integrity & Anti-Corruption",
-    tagline:
-      "Corruption risk, anti-bribery management systems, and the evidence that a compliance programme works.",
-    intro:
-      "Anti-corruption compliance is judged on whether an organisation can demonstrate adequate procedures — not on whether it intended well. These services build that demonstrable programme, from corruption risk assessment through to ISO 37001 certification and effectiveness reporting.",
-    metaTitle: "Integrity & Anti-Corruption Services — ISO 37001, Risk & Compliance | Darwish & Co",
-    metaDescription:
-      "Corruption risk management, ISO 37001 anti-bribery systems, integrity assessment and compliance technology, delivered with our partner VisionEthics.",
+      "Risk management, anti-bribery programmes, third-party due diligence and compliance controls for SMEs, with ISO 37001 support delivered with VisionEthics.",
     accent: "blue",
     icon: "ShieldCheck",
-    legacyAnchor: "integrity",
     partner: {
       name: "VisionEthics",
       url: "https://visionethics.com",
-      note: "Delivered in partnership with VisionEthics (Malaysia) — specialists in governance, integrity, and corruption prevention across public and private sectors.",
+      note: "The anti-bribery and integrity components are delivered in partnership with VisionEthics (Malaysia) — specialists in governance, integrity, and corruption prevention across public and private sectors.",
+      accountability:
+        "Darwish & Co. contracts with you, scopes the engagement and is your point of contact throughout. The anti-bribery management system, ISO 37001 support, integrity assessment and the ETIKALY platform are VisionEthics' capability and are delivered by their specialists. Components marked below are theirs; the rest are ours.",
     },
     offerings: [
       {
-        group: "Anti-Corruption Compliance",
+        group: "Risk and compliance",
+        title: "Enterprise risk assessment",
+        description:
+          "Comprehensive risk assessment and the development of a risk management framework, with mitigation strategies tailored to your industry. Produces a risk register with owners, assessed likelihood and impact.",
+        icon: "Shield",
+      },
+      {
+        group: "Risk and compliance",
+        title: "Compliance as a service",
+        description:
+          "Ongoing compliance support to ensure adherence to relevant laws, regulations and industry standards, including regulatory monitoring, compliance training and policy management.",
+        icon: "CheckCircle",
+      },
+      {
+        group: "Risk and compliance",
+        title: "Responding to client compliance questionnaires",
+        description:
+          "Working through the compliance questionnaire a major client or Gulf partner has sent you: what each question is really asking, what evidence satisfies it, and what has to be built before you can answer honestly.",
+        icon: "FileText",
+      },
+      {
+        group: "Anti-bribery and integrity",
         title: "Corruption Risk Management (CRM)",
         description:
           "Identifies areas of potential corruption risk and develops targeted preventative measures. Based on international risk management principles and adaptable into Enterprise Risk Management (ERM) frameworks. Covers consultation, risk profiling, action plans, and continuous dashboard reporting.",
         icon: "ShieldCheck",
+        byPartner: true,
       },
       {
-        group: "Anti-Corruption Compliance",
-        title: "Anti-Bribery Management System (ISO 37001 ABMS)",
+        group: "Anti-bribery and integrity",
+        title: "Anti-bribery management system — ISO 37001 readiness and implementation",
         description:
-          "Globally recognised ISO standard for Anti-Bribery Management Systems. Covers bribery risk assessment, leadership responsibilities, HR practices, due diligence, anti-corruption policies, financial controls, supply chain integrity, whistle-blowing, and monitoring. VisionEthics guides organisations through full certification.",
+          "Gap assessment against ISO 37001:2025 and implementation of the management system: bribery risk assessment, leadership responsibilities, HR practices, due diligence, anti-corruption policies, financial controls, supply chain integrity, whistle-blowing, and monitoring. Certification itself is carried out by an accredited certification body, not by us and not by ISO.",
         icon: "ShieldCheck",
+        byPartner: true,
       },
       {
-        group: "Anti-Corruption Compliance",
-        title: "Organisational Anti-Corruption Plan (OACP)",
+        group: "Anti-bribery and integrity",
+        title: "Adequate procedures and gap analysis",
         description:
-          "A structured plan helping organisations systematically address corruption risks at the organisational level. Covers governance structures, risk identification, policy development, and monitoring frameworks — aligned with internationally recognised anti-corruption standards and best practices.",
-        icon: "ShieldCheck",
+          "Assessment of existing anti-corruption controls against internationally recognised adequate procedures guidance. Identifies weaknesses, prioritises remediation, and provides a roadmap to compliance.",
+        icon: "Search",
+        byPartner: true,
       },
       {
-        group: "Anti-Corruption Compliance",
-        title: "Corporate Liability & Adequate Procedures Advisory",
+        group: "Anti-bribery and integrity",
+        title: "Anti-corruption policies, monitoring and evaluation",
         description:
-          "Advisory on corporate liability obligations under applicable anti-corruption legislation. Helps organisations understand their legal responsibilities, implement adequate procedures, and build a defensible compliance programme. Covers board responsibilities, compliance design, and evidence of top-management commitment.",
-        icon: "Scale",
-      },
-      {
-        group: "Anti-Corruption Compliance",
-        title: "Adequate Procedures & Gap Analysis",
-        description:
-          "Assessment and gap analysis of an organisation's existing anti-corruption controls against internationally recognised adequate procedures guidelines. Identifies weaknesses, prioritises remediation actions, and provides a clear roadmap to full compliance.",
-        icon: "CheckCircle",
-      },
-      {
-        group: "Anti-Corruption Compliance",
-        title: "Anti-Corruption Policies & Procedures — Monitoring and Evaluation",
-        description:
-          "Development, review, and monitoring of anti-corruption policies and procedures. Covers gifts and hospitality, donations and sponsorship controls, conflict of interest declarations, and whistle-blowing procedures. Includes ongoing monitoring and evaluation to ensure policies remain effective.",
+          "Development, review and monitoring of anti-corruption policies and procedures. Covers gifts and hospitality, donations and sponsorship controls, conflict of interest declarations, and whistle-blowing procedures, with ongoing evaluation that they remain effective.",
         icon: "FileText",
+        byPartner: true,
       },
       {
-        group: "Anti-Corruption Compliance",
+        group: "Anti-bribery and integrity",
+        title: "Third-party due diligence",
+        description:
+          "A vetting procedure for agents, distributors and suppliers, with risk-tiered checklists — the exposure that most often sits outside the company but is still attributed to it.",
+        icon: "Search",
+        byPartner: true,
+      },
+      {
+        group: "Anti-bribery and integrity",
         title: "Integrity Assessment Advisory (IAA)",
         description:
-          "Independent assessment of an organisation's integrity culture, governance practices, and anti-corruption controls. Provides a structured evaluation of existing integrity programmes and recommends improvements to support boards and senior management in demonstrating commitment to ethical governance.",
+          "Independent assessment of integrity culture, governance practices and anti-corruption controls, with recommendations that let a board demonstrate its commitment to ethical governance.",
         icon: "Search",
+        byPartner: true,
       },
       {
-        group: "Anti-Corruption Compliance",
-        title: "Effectiveness Indicators Assessment",
+        group: "Anti-bribery and integrity",
+        title: "Effectiveness indicators assessment",
         description:
-          "Measurement and evaluation of the effectiveness of anti-corruption compliance programmes using defined indicators. Provides evidence-based reporting to boards, regulators, and stakeholders on the performance of compliance initiatives.",
+          "Measurement of how well an anti-corruption compliance programme actually works, using defined indicators, producing evidence-based reporting for boards, regulators and stakeholders.",
         icon: "BarChart3",
+        byPartner: true,
       },
       {
-        group: "Training & Education",
-        title: "Interactive Training with Prosecutors' Perspectives",
+        group: "Training and technology",
+        title: "Interactive training with prosecutors' perspectives",
         description:
-          "Practical, interactive workshops on anti-corruption, integrity, and compliance. Features real case studies and lessons learned from prosecutors' perspectives to bring legal consequences to life. Designed for boards, management, compliance officers, and employees.",
+          "Practical, interactive workshops on anti-corruption, integrity and compliance, using real case studies and lessons from prosecutors' perspectives. Designed for boards, management, compliance officers and employees.",
         icon: "BookOpen",
+        byPartner: true,
       },
       {
-        group: "Training & Education",
-        title: "E-Learning Portal",
+        group: "Training and technology",
+        title: "E-learning portal",
         description:
-          "Digital learning platform providing accessible anti-corruption and integrity training for organisations. Enables scalable, trackable compliance training across large workforces and supports continuous learning and certification.",
+          "A digital learning platform for anti-corruption and integrity training, making compliance training scalable and trackable across a large workforce.",
         icon: "BookOpen",
+        byPartner: true,
       },
       {
-        group: "Advanced Compliance Technology",
-        title: "Corporate Integrity Compliance Framework (CICF)",
+        group: "Training and technology",
+        title: "Compliance technology — CICF and ETIKALY",
         description:
-          "A comprehensive GRC technology tool supporting Compliance teams and Internal Audit departments. Evaluates the effectiveness of anti-corruption compliance programmes, monitors adherence to adequate corruption prevention procedures, and provides dashboard reporting for boards and senior management.",
+          "The Corporate Integrity Compliance Framework, a GRC tool for compliance teams and internal audit, and ETIKALY, VisionEthics' compliance intelligence and reporting platform. Both provide dashboard reporting for boards and senior management.",
         icon: "Cpu",
-      },
-      {
-        group: "Advanced Compliance Technology",
-        title: "ETIKALY — Compliance Intelligence Platform",
-        description:
-          "VisionEthics' proprietary advanced compliance intelligence and reporting platform. Provides real-time insights, analytics, and dashboard reporting to support governance decision-making and enhance organisational integrity management.",
-        icon: "Cpu",
-      },
-      {
-        group: "Community Integrity & ESG",
-        title: "Community Integrity Building (CIB) & Collective Action",
-        description:
-          "Fosters a collaborative approach to integrity and transparency within communities and organisations. Champions community integrity building and collective action, providing governance software tools that enable precise dashboard reporting with real-time insights and analytics.",
-        icon: "Globe2",
-      },
-      {
-        group: "Community Integrity & ESG",
-        title: "Sustainability Building & ESG Principles",
-        description:
-          "Helps organisations integrate sustainable practices into their operations, promoting Environmental, Social, and Governance (ESG) principles to drive ethical excellence across all spheres of business activity.",
-        icon: "Globe2",
+        byPartner: true,
       },
     ],
-    whoItsFor: [
-      "Organisations that must show adequate anti-corruption procedures to a client, regulator or funder",
-      "Companies pursuing ISO 37001 certification, or assessing whether to",
-      "Boards wanting an independent view of their integrity culture and controls",
-      "Groups with supply chains or intermediaries where bribery exposure sits outside the company",
+    isThisYou: [
+      "A multinational or Gulf client has sent you a compliance questionnaire",
+      "Someone has asked whether you hold ISO 37001, or intend to",
+      "You rely on agents or distributors you have never formally vetted",
+      "Staff have no way to raise a concern other than telling their manager",
     ],
     whatYouGet: [
-      "A corruption risk profile for your organisation, with prioritised preventative measures",
-      "A gap analysis against internationally recognised adequate procedures guidance",
-      "The policies, controls and whistle-blowing arrangements a defensible programme requires",
-      "Training for boards, management and staff, and reporting that evidences effectiveness",
+      "A risk register with owners, assessed likelihood and impact, and agreed mitigations",
+      "An anti-bribery policy set: gifts and hospitality, conflicts of interest, donations and sponsorship",
+      "A third-party due diligence procedure with risk-tiered checklists",
+      "A speak-up route and a case procedure behind it",
+      "The evidence pack a client questionnaire or an investor asks to see",
     ],
-    howItWorks: ENGAGEMENT_STEPS("your corruption risk exposure and existing compliance controls"),
+    standards: [
+      {
+        name: "ISO 37001:2025",
+        note: "The international standard for anti-bribery management systems. We support readiness and implementation; certification is granted by an accredited certification body.",
+      },
+      {
+        name: "ISO 31000",
+        note: "Risk management principles and guidelines, used as the frame for risk assessment work.",
+      },
+      {
+        name: "OECD anti-corruption guidance",
+        note: "Referenced where adequate procedures and third-party controls are being designed.",
+      },
+    ],
+    howItWorks: ENGAGEMENT_STEPS("your risk exposure, existing controls and compliance evidence"),
     faqs: [
       {
-        question: "Who delivers this work?",
+        question: "What is ISO 37001, and do we need to be certified?",
         answer:
-          "It is delivered in partnership with VisionEthics, a Malaysian firm specialising in governance, integrity and corruption prevention. Darwish & Co. is your point of contact and manages the engagement; the specialist capability, including the ETIKALY platform, is theirs.",
+          "ISO 37001 is the international standard for anti-bribery management systems, currently in its 2025 edition. It sets requirements across risk assessment, leadership responsibility, due diligence, financial and commercial controls, whistle-blowing and monitoring. There are three different things you can buy: readiness (a gap assessment against the standard), implementation (building the management system), and certification (an independent audit). Certification is granted by an accredited certification body — not by us, and not by ISO, which writes standards but does not certify organisations. Many companies implement the standard without certifying, because their client wanted the controls rather than the certificate. Establish which you are being asked for before spending.",
       },
       {
-        question: "What is ISO 37001?",
+        question: "Who delivers the anti-bribery work?",
         answer:
-          "ISO 37001 is the international standard for anti-bribery management systems. It sets requirements across risk assessment, leadership responsibility, due diligence, financial and commercial controls, whistle-blowing and monitoring. An organisation can align with it, or go through certification by an accredited body.",
+          "Darwish & Co. contracts with you and manages the engagement. The anti-bribery management system, ISO 37001 support, integrity assessment and the ETIKALY platform are delivered by VisionEthics, our partner firm, whose specialists carry that capability. Each component on this page is marked so you can see which is which.",
       },
       {
-        question: "Is this relevant outside heavily regulated sectors?",
+        question: "A client sent us a compliance questionnaire. Where do we start?",
         answer:
-          "It is increasingly driven by counterparties rather than regulators. Large customers, international partners and funders often require evidence of anti-bribery controls from their suppliers, whatever the sector.",
+          "Start by separating the questions you can already evidence from those you cannot. Most questionnaires ask for a policy, a procedure, a record and a named responsible person. The gap is usually documentation rather than practice — companies often already behave correctly without having written it down. Answer honestly about what exists today; a questionnaire answered falsely is a worse exposure than one answered with a remediation date.",
       },
     ],
   },
 
-  // ─────────────────────────────────────── market research (partner-delivered) ──
   {
-    slug: "market-research",
-    name: "Market Research & Consumer Insights",
-    navLabel: "Market Research & Insights",
-    tagline: "Evidence about your market and your customers, gathered to a defined method.",
+    slug: "ai-governance",
+    pillar: "governance",
+    // Not live: docs/positioning.md §4 requires a named delivery lead first (assumption A5).
+    published: false,
+    name: "AI Governance",
+    navLabel: "AI Governance",
+    tagline: "Use AI with rules your board, your clients and your staff can rely on.",
     intro:
-      "Strategic decisions taken on assumption are expensive to reverse. These services test the assumption first — through consumer panels, brand tracking, competitive analysis and qualitative research across MENA markets.",
-    metaTitle: "Market Research & Consumer Insights in MENA | Darwish & Co",
+      "Staff in most companies are already using AI tools on company information, usually without a rule saying whether they may. This work establishes what is being used, who is responsible for it, what staff may and may not do, and where a human has to review a decision before it takes effect.",
+    metaTitle: "AI Governance for SMEs — Policy, Oversight & Vendor Review | Darwish & Co",
     metaDescription:
-      "Consumer panel studies, brand health tracking, market entry research and qualitative studies across MENA, delivered with In Light Consumer Insights.",
-    accent: "emerald",
-    icon: "Search",
-    legacyAnchor: "market-research",
-    partner: {
-      name: "In Light Consumer Insights",
-      url: "https://in-light.tech",
-      note: "Delivered in partnership with In Light Consumer Insights — a proprietary MENA consumer panel with 10,500+ respondents and 405+ research projects delivered in 2025.",
-    },
-    stats: [
-      { value: "10,500+", label: "Panel Respondents" },
-      { value: "405+", label: "Projects in 2025" },
-      { value: "MENA", label: "Regional Coverage" },
-      { value: "Quantitative & Qualitative", label: "Research Methods" },
-    ],
+      "AI use policies, risk assessment, human oversight controls and vendor evaluation for SMEs adopting AI across Egypt and the MENA region.",
+    accent: "teal",
+    icon: "Cpu",
     offerings: [
       {
-        title: "Consumer Research & Panel Studies",
+        title: "AI use inventory and risk assessment",
         description:
-          "Access In Light's proprietary online consumer panel with 10,500+ pre-screened respondents. Quantitative surveys designed to deliver statistically robust insights on consumer attitudes, behaviours, and preferences at speed.",
-        icon: "Users",
-      },
-      {
-        title: "Brand Health Tracking",
-        description:
-          "Continuous brand tracking studies measuring awareness, perception, consideration, and loyalty over time. Benchmark your brand against competitors and identify shifts in consumer sentiment before they impact performance.",
-        icon: "TrendingUp",
-      },
-      {
-        title: "Market Entry Research",
-        description:
-          "Comprehensive market sizing, opportunity assessment, and consumer landscape analysis to support market entry decisions. Covers demand estimation, segment profiling, competitive mapping, and regulatory context for MENA markets.",
-        icon: "Globe2",
-      },
-      {
-        title: "Competitive Intelligence",
-        description:
-          "Systematic monitoring and analysis of competitor activity, market positioning, pricing strategies, and product developments. Delivers actionable intelligence to sharpen your competitive strategy and identify white-space opportunities.",
+          "Establishing what AI tools are actually in use across the business, what information goes into them, and rating each use by the impact of it going wrong.",
         icon: "Search",
       },
       {
-        title: "Data Analytics & Consumer Insights",
+        title: "Acceptable-use policy",
         description:
-          "Advanced analytics translating raw research data into clear strategic insights. Includes cross-tabulation, segmentation analysis, predictive modelling, and executive-ready dashboards tailored to business decision-making needs.",
-        icon: "Database",
+          "A staff policy and a short quick-guide covering what may be put into an AI tool, what may not, and what has to be checked before output is used or sent.",
+        icon: "FileText",
       },
       {
-        title: "Qualitative Research — FGDs & IDIs",
+        title: "Human oversight controls",
         description:
-          "In-depth qualitative research through Focus Group Discussions (FGDs) and In-Depth Interviews (IDIs). Uncovers the 'why' behind consumer behaviour, explores unmet needs, and tests concepts, messaging, and product ideas before launch.",
-        icon: "MessageSquare",
+          "Defining which decisions require human review before they take effect, who performs that review, and how it is recorded — applied to the decisions your business actually makes.",
+        icon: "CheckCircle",
+      },
+      {
+        title: "Vendor and procurement evaluation",
+        description:
+          "The questions to ask before buying a tool that makes or supports decisions: what the vendor does with your data, how the system was evaluated, and what happens when it is wrong.",
+        icon: "Shield",
+      },
+      {
+        title: "Leadership briefing",
+        description:
+          "A short executive session on what AI governance requires of a board, and what it does not.",
+        icon: "BookOpen",
       },
     ],
-    whoItsFor: [
-      "Companies about to commit to a market, a product or a positioning decision",
-      "Brands that need to know how they are perceived, and against whom",
-      "Businesses testing a concept, a price or a message before launch",
-      "Teams holding research data they have not been able to turn into a decision",
+    isThisYou: [
+      "Staff are already using ChatGPT or Copilot, sometimes with client information",
+      "You are buying a tool that will make or support decisions about people or money",
+      "A client has asked how you control your use of AI",
+      "Nobody in the company owns the question of what is permitted",
     ],
     whatYouGet: [
-      "A research design stating the method, sample and what the study can and cannot conclude",
-      "Fieldwork through a pre-screened MENA consumer panel, or qualitative sessions where the question needs them",
-      "Analysis that answers the business question, not just a tabulation of responses",
-      "A presented readout your leadership team can take a decision from",
+      "A register of AI uses across the business, rated by impact",
+      "An acceptable-use policy and a one-page staff guide",
+      "A defined human-review requirement for the decisions that need one",
+      "A procurement checklist to use before the next tool is bought",
+    ],
+    standards: [
+      {
+        name: "ISO/IEC 42001",
+        note: "The international standard for AI management systems. It addresses a broader management system than a use policy alone; work here is positioned in relation to it, not as a substitute for it.",
+      },
+    ],
+    howItWorks: ENGAGEMENT_STEPS("the AI tools in use, who owns them, and what they touch"),
+    faqs: [
+      {
+        question: "Our staff already use these tools. Is it too late to set rules?",
+        answer:
+          "No, and that is the normal starting position. The first step is an inventory of what is genuinely in use, which is usually more than leadership expects. Rules written without that inventory tend to ban things people will keep doing quietly.",
+      },
+      {
+        question: "Does Egypt regulate AI?",
+        answer:
+          "This answer is pending qualified review before publication. Any statement this page makes about Egyptian or Gulf regulation will carry a named reviewer and a date.",
+      },
+      {
+        question: "Is a policy enough?",
+        answer:
+          "A policy sets expectations; it does not create oversight. The part that changes outcomes is deciding which decisions require a human review before they take effect, and recording that the review happened. ISO/IEC 42001 describes a fuller management system for organisations that need to go further.",
+      },
+    ],
+  },
+
+  // ═══════════════════════════════════════════════ STRATEGY & ORGANISATION ══
+  {
+    slug: "strategy-execution",
+    pillar: "strategy-organisation",
+    published: true,
+    name: "Strategy & Execution",
+    navLabel: "Strategy & Execution",
+    tagline: "A strategy the organisation actually runs every month.",
+    intro:
+      "Most SMEs have a strategy. Fewer have a way of telling, month to month, whether it is working. This work builds the layer between the two: objectives with named owners, measures that reflect them, and a review rhythm where decisions actually get taken.",
+    metaTitle: "Strategy & Execution — Decision Rights, KPIs & Reviews | Darwish & Co",
+    metaDescription:
+      "Growth strategy turned into clear responsibilities, measures and monthly management reviews for SMEs in Egypt and the MENA region.",
+    accent: "primary",
+    icon: "Target",
+    offerings: [
+      {
+        title: "Strategy diagnostic",
+        description:
+          "An assessment of why the plan is not translating into results: where objectives lose their owner, where measures do not reflect them, and where the review process fails to change anything.",
+        icon: "Search",
+      },
+      {
+        title: "Strategic plan with scenarios",
+        description:
+          "A multi-year plan built with scenario ranges rather than a single forecast — relevant where currency and cost volatility can invalidate a budget mid-year.",
+        icon: "Scale",
+      },
+      {
+        title: "KPI and OKR cascade",
+        description:
+          "Objectives translated from company level to team level, each measure with an owner, a source and a reporting frequency. Balanced scorecard or OKR, chosen to fit how the company is run.",
+        icon: "BarChart3",
+      },
+      {
+        title: "Management review rhythm",
+        description:
+          "The design of the monthly and quarterly review: who attends, what is tabled, and what decisions that meeting is empowered to make.",
+        icon: "Users",
+      },
+      {
+        title: "Performance dashboards",
+        description:
+          "Reporting your leadership team can read without it being explained, built on the data the business already holds wherever possible.",
+        icon: "Database",
+      },
+    ],
+    isThisYou: [
+      "The plan exists as a slide deck and nothing since has referred to it",
+      "KPIs exist, but no individual owns any of them",
+      "Priorities change every quarter and nothing finishes",
+      "Currency or cost volatility made last year's budget meaningless by mid-year",
+    ],
+    whatYouGet: [
+      "An objectives map connecting the strategy to the people responsible for each part",
+      "A defined set of measures, each with an owner, a source and a reporting frequency",
+      "A dashboard your leadership team can read unaided",
+      "A review routine: who meets, how often, and what that meeting decides",
+    ],
+    howItWorks: ENGAGEMENT_STEPS("your objectives, measures, ownership and review process"),
+    faqs: [
+      {
+        question: "What is the difference between a balanced scorecard and OKRs?",
+        answer:
+          "A balanced scorecard organises performance across several perspectives — usually financial, customer, internal process, and learning and growth — so that one is not improved at the cost of another. OKRs set a small number of objectives with measurable key results over a short cycle, normally a quarter. Scorecards suit organisations that need a stable, complete picture; OKRs suit those that need focus and pace. They can be used together, with the scorecard as the standing frame and OKRs driving current priorities.",
+      },
+      {
+        question: "Why do our strategic plans keep failing in execution?",
+        answer:
+          "In most cases the plan was never converted into decision rights. An objective without a named owner, a measure they control and a meeting where they answer for it is a statement of intent. The diagnostic starts by tracing a few objectives from the plan to the person who is supposed to deliver them, which usually locates the break quickly.",
+      },
+      {
+        question: "Do we need new software?",
+        answer:
+          "Not necessarily. Many organisations already hold the data across their accounting, HR and operational systems, and the gap is in definition and reporting rather than tooling. Where a dashboard is needed, we build on what you have before proposing anything new.",
+      },
+    ],
+  },
+
+  {
+    slug: "people-organisation",
+    pillar: "strategy-organisation",
+    published: true,
+    name: "People & Organisation",
+    navLabel: "People & Organisation",
+    tagline: "A structure and people system that holds as the company grows past 100.",
+    intro:
+      "Growth exposes the parts of an organisation that were never designed — reporting lines that formed by accident, titles that mean different things in different departments, and policies that exist only in people's heads. This work puts a deliberate structure in place and keeps it compliant with the labour obligations that apply to you.",
+    metaTitle: "People & Organisation — Structure, Roles & Succession | Darwish & Co",
+    metaDescription:
+      "Organisational structure, role clarity, performance management and succession planning for growing SMEs across Egypt and the MENA region.",
+    accent: "teal",
+    icon: "Users",
+    offerings: [
+      {
+        title: "Organisation design",
+        description:
+          "Structure, spans and layers, and role profiles — aligning how the company is organised with what it is trying to do, including workforce planning and change management.",
+        icon: "BarChart3",
+      },
+      {
+        title: "Job architecture and grading",
+        description:
+          "Job families and a grade structure, so that titles mean the same thing across departments and pay decisions have a frame.",
+        icon: "Scale",
+      },
+      {
+        title: "Talent acquisition",
+        description:
+          "A recruitment process you can run repeatedly: role profiles, assessment criteria, interview structure and onboarding.",
+        icon: "Users",
+      },
+      {
+        title: "Performance management",
+        description:
+          "Objectives, a review cycle and calibration — with training for the managers who have to run it, which is usually the part that decides whether it works.",
+        icon: "CheckCircle",
+      },
+      {
+        title: "Succession for critical roles",
+        description:
+          "Identifying the roles the company cannot afford to lose, and the development plans that make someone ready to take them.",
+        icon: "TrendingUp",
+      },
+      {
+        title: "HR policy and compliance",
+        description:
+          "An employee handbook and the HR policies behind it, reflecting the labour obligations that apply to your business, with employee relations advice where needed.",
+        icon: "FileText",
+      },
+    ],
+    isThisYou: [
+      "Roles overlap, and titles mean different things in different departments",
+      "Performance reviews happen, but nothing follows from them",
+      "Good people are leaving for Gulf salaries",
+      "If a key manager left tomorrow, nobody is ready to replace them",
+    ],
+    whatYouGet: [
+      "An organisation chart with defined roles, reporting lines and decision rights",
+      "A job architecture and grade structure",
+      "A recruitment process with role profiles and assessment criteria",
+      "A performance cycle your managers are trained to run",
+      "A succession map for critical roles, with development plans",
+      "An employee handbook and the HR policies behind it",
+    ],
+    howItWorks: ENGAGEMENT_STEPS("your structure, roles, HR policies and people processes"),
+    faqs: [
+      {
+        question: "Do you recruit on our behalf?",
+        answer:
+          "The focus is on building the process — role definition, assessment criteria, interview structure and onboarding — so your team can hire consistently. Where you want support running a specific search, raise it during scoping and we will tell you plainly what we can and cannot take on.",
+      },
+      {
+        question: "Can you advise on labour law?",
+        answer:
+          "We build HR policies and practices that reflect the labour obligations applying to your business, and flag where a matter needs a legal opinion. We are consultants, not a law firm, and we say so when a question has crossed that line.",
+      },
+      {
+        question: "Our managers have never run performance reviews. Is that a problem?",
+        answer:
+          "It is the normal starting point, and it is why training the managers is part of the work rather than an addition to it. A review process only works if the people running it understand what it is for.",
+      },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════════════════ GROWTH ══
+  {
+    slug: "growth-market-entry",
+    pillar: "growth",
+    published: true,
+    name: "Growth & Market Entry",
+    navLabel: "Growth & Market Entry",
+    tagline: "Enter a new market with evidence, not assumptions.",
+    intro:
+      "Entering a market fails more often on preparation than on ambition. This work tests the assumption first — whether the demand is real, who the right partner is, and what governance and compliance the market expects before you arrive. Consumer and panel research is delivered with our partner In Light.",
+    metaTitle: "Growth & Market Entry — Demand Validation & Expansion | Darwish & Co",
+    metaDescription:
+      "Market readiness, demand validation, partner selection and expansion planning for SMEs, with consumer research delivered with In Light Consumer Insights.",
+    accent: "emerald",
+    icon: "Globe2",
+    partner: {
+      name: "In Light Consumer Insights",
+      url: "https://in-light.tech",
+      note: "Consumer and panel research is delivered in partnership with In Light Consumer Insights — a proprietary MENA consumer panel with 10,500+ respondents and 405+ research projects delivered in 2025.",
+      accountability:
+        "Darwish & Co. scopes the study around the decision you face, and works with you on what the findings mean for the business. Fieldwork, the consumer panel and the research operation are In Light's. Components marked below are theirs.",
+    },
+    stats: [
+      { value: "10,500+", label: "Panel respondents (In Light)" },
+      { value: "405+", label: "Projects in 2025 (In Light)" },
+      { value: "MENA", label: "Regional coverage" },
+      { value: "Quantitative & Qualitative", label: "Research methods" },
+    ],
+    offerings: [
+      {
+        title: "Market-entry readiness assessment",
+        description:
+          "A go/no-go scorecard covering demand, competition, pricing context, entry requirements and the governance and compliance prerequisites the market expects of a supplier.",
+        icon: "CheckCircle",
+      },
+      {
+        title: "Demand validation",
+        description:
+          "Testing whether the demand you are assuming is real, through consumer panel surveys or qualitative sessions, designed around the decision rather than around the method.",
+        icon: "Users",
+        byPartner: true,
+      },
+      {
+        title: "Brand health tracking",
+        description:
+          "Continuous tracking of awareness, perception, consideration and loyalty, benchmarked against competitors, so shifts in sentiment surface before they affect performance.",
+        icon: "TrendingUp",
+        byPartner: true,
+      },
+      {
+        title: "Competitive intelligence",
+        description:
+          "Systematic analysis of competitor activity, positioning, pricing and product development, to sharpen strategy and identify where nobody is currently competing.",
+        icon: "Search",
+        byPartner: true,
+      },
+      {
+        title: "Qualitative research — FGDs and IDIs",
+        description:
+          "Focus group discussions and in-depth interviews that explain the reasoning behind behaviour, and test concepts, pricing and messaging before launch.",
+        icon: "MessageSquare",
+        byPartner: true,
+      },
+      {
+        title: "Partner and distributor selection",
+        description:
+          "A shortlist of candidate partners with the basis on which each was assessed — including the due diligence that Risk, Compliance & Integrity covers, since a distributor's conduct is attributed to you.",
+        icon: "Handshake",
+      },
+      {
+        title: "Entry roadmap",
+        description:
+          "A phased plan setting out route, sequence, cost, the governance and compliance prerequisites, and the risks that could stop it.",
+        icon: "Globe2",
+      },
+    ],
+    isThisYou: [
+      "You are considering Saudi Arabia or the UAE and want the case tested before committing",
+      "You are not certain the demand you are assuming is actually there",
+      "You need a distributor or partner, not an office",
+      "You hold research data you have never been able to turn into a decision",
+    ],
+    whatYouGet: [
+      "A go/no-go readiness scorecard for the market in question",
+      "Research findings from a designed study, stating what it can and cannot conclude",
+      "A shortlist of candidate partners, each with the basis for its assessment",
+      "A phased entry roadmap including the compliance prerequisites",
     ],
     howItWorks: [
       {
         title: "Define the decision",
         description:
-          "We start from the decision the research has to support. That determines the method — a panel survey, a tracker, focus groups — rather than the other way round.",
+          "We start from the decision the work has to support. That determines whether you need a readiness assessment, a panel survey, focus groups, or none of them.",
       },
       {
-        title: "Research design",
+        title: "Design",
         description:
-          "Sample, questionnaire or discussion guide, and analysis plan are agreed in writing before fieldwork, including what the study will not be able to tell you.",
+          "Scope, sample, questionnaire or discussion guide, and analysis plan are agreed in writing before fieldwork — including what the study will not be able to tell you.",
       },
       {
-        title: "Fieldwork",
+        title: "Evidence",
         description:
-          "Data is collected through In Light's consumer panel or qualitative sessions, with quality controls on screening and completion.",
+          "Fieldwork through In Light's consumer panel or qualitative sessions, and assessment of candidate partners where the work includes selection.",
       },
       {
-        title: "Analysis and readout",
+        title: "Decision and roadmap",
         description:
-          "Findings are analysed against the original question and presented to your team, with the underlying data handed over.",
+          "Findings are presented against the original question, with a phased entry plan and the governance prerequisites for the market.",
       },
     ],
     faqs: [
       {
-        question: "Who carries out the fieldwork?",
+        question: "Which markets do you cover?",
+        answer:
+          "Egypt is where our own presence sits, and the Gulf — principally Saudi Arabia and the UAE — is the most common expansion question we are asked. Where a piece of work reaches beyond that, we say at the outset whether we are drawing on direct experience or on partner capability, so you know which you are buying.",
+      },
+      {
+        question: "Who carries out the research?",
         answer:
           "In Light Consumer Insights, our research partner, using their proprietary MENA consumer panel. Darwish & Co. scopes the study with you, frames it around the decision you face, and works with you on what the findings mean for the business.",
       },
       {
-        question: "How large a sample do we need?",
+        question: "What governance do Gulf clients and partners expect?",
         answer:
-          "It depends on the precision the decision requires and how finely you need to read sub-groups. The research design states the sample and the confidence it supports before fieldwork begins, so you are not presented with a number afterwards that the sample cannot carry.",
-      },
-      {
-        question: "Can you research business audiences, not just consumers?",
-        answer:
-          "Qualitative work — in-depth interviews and discussion groups — extends to business and professional audiences. For a specific B2B population, raise it during scoping and we will tell you whether it can be reached to a standard worth paying for.",
+          "Larger buyers increasingly ask suppliers for the same evidence wherever they operate: an anti-bribery policy, third-party due diligence, a speak-up route and named responsibility for compliance. That is why entry readiness here includes the compliance prerequisites rather than treating them as a later problem.",
       },
     ],
   },
 ];
 
-export const SERVICE_SLUGS = SERVICES.map((service) => service.slug);
+/** Services that are live on the site. */
+export const PUBLISHED_SERVICES = SERVICES.filter((service) => service.published);
+
+export const SERVICE_SLUGS = PUBLISHED_SERVICES.map((service) => service.slug);
 
 export function getService(slug: string): Service | undefined {
-  return SERVICES.find((service) => service.slug === slug);
+  return PUBLISHED_SERVICES.find((service) => service.slug === slug);
 }
 
+export function servicesInPillar(pillar: ServicePillar): Service[] {
+  return PUBLISHED_SERVICES.filter((service) => service.pillar === pillar);
+}
+
+/**
+ * Addresses that existed before the v3 restructure, mapped to the page that
+ * replaced them. Keys are paths; the server answers these with a 301 and the
+ * hub handles the old `#anchor` form for links already in circulation.
+ *
+ * Digital Marketing was removed from the site entirely (positioning v3 §4), so
+ * it points at the services hub rather than at a replacement that does not exist.
+ */
+export const SERVICE_REDIRECTS: Record<string, string> = {
+  // Slugs from the first split, 16 Sep 2026
+  "/services/strategy-performance": "/services/strategy-execution",
+  "/services/governance-risk-compliance": "/services/risk-compliance-integrity",
+  "/services/human-resources": "/services/people-organisation",
+  "/services/business-development": "/services/growth-market-entry",
+  "/services/market-research": "/services/growth-market-entry",
+  "/services/integrity-anti-corruption": "/services/risk-compliance-integrity",
+  "/services/digital-marketing": "/services",
+};
+
 /** Old single-page anchors (/services#grc) mapped to the page that replaced them. */
-export const LEGACY_ANCHOR_REDIRECTS: Record<string, string> = SERVICES.reduce(
-  (map, service) => {
-    map[service.legacyAnchor] = `/services/${service.slug}`;
-    return map;
-  },
-  {} as Record<string, string>,
-);
+export const LEGACY_ANCHOR_REDIRECTS: Record<string, string> = {
+  strategy: "/services/strategy-execution",
+  grc: "/services/risk-compliance-integrity",
+  hr: "/services/people-organisation",
+  bizdev: "/services/growth-market-entry",
+  "market-research": "/services/growth-market-entry",
+  integrity: "/services/risk-compliance-integrity",
+  "digital-marketing": "/services",
+};

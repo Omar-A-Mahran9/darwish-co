@@ -56,7 +56,7 @@ function GlassNavbar() {
         {/* Nav links — hidden on mobile */}
         <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
           {[
-            { label: "Strategy", href: "/services/strategy-performance" },
+            { label: "Strategy", href: "/services/strategy-execution" },
             { label: "Services", href: "/services" },
             { label: "Projects", href: "/projects" },
             { label: "Partners", href: "/partners" },
@@ -479,7 +479,7 @@ export default function Home() {
                 performance systems that turn vision into execution.
               </p>
               <div className="w-20 h-1 bg-primary" />
-              <Link href="/services/strategy-performance">
+              <Link href="/services/strategy-execution">
                 <Button size="lg" className="bg-primary text-white hover:bg-primary/90 font-bold rounded-none px-8 mt-4">
                   Explore Strategy Practice <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -519,10 +519,10 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Shield, color: "text-primary", border: "border-t-primary", title: "Governance & Risk", desc: "Robust GRC frameworks that protect your business while enabling sustainable growth.", href: "/services/governance-risk-compliance" },
-              { icon: Users, color: "text-chart-2", border: "border-t-chart-2", title: "Human Resources", desc: "Strategic HR planning and talent acquisition tailored for the MENA market.", href: "/services/human-resources" },
-              { icon: TrendingUp, color: "text-chart-3", border: "border-t-chart-3", title: "Business Development", desc: "Market entry strategies and partnerships to accelerate your expansion.", href: "/services/business-development" },
-              { icon: Brain, color: "text-primary", border: "border-t-primary", title: "Digital & AI", desc: "Digital marketing, AI tools, and consumer insights to sharpen your competitive edge.", href: "/services/digital-marketing" },
+              { icon: Shield, color: "text-primary", border: "border-t-primary", title: "Governance & Risk", desc: "Robust GRC frameworks that protect your business while enabling sustainable growth.", href: "/services/corporate-family-governance" },
+              { icon: Users, color: "text-chart-2", border: "border-t-chart-2", title: "Human Resources", desc: "Strategic HR planning and talent acquisition tailored for the MENA market.", href: "/services/people-organisation" },
+              { icon: TrendingUp, color: "text-chart-3", border: "border-t-chart-3", title: "Business Development", desc: "Market entry strategies and partnerships to accelerate your expansion.", href: "/services/growth-market-entry" },
+              { icon: Brain, color: "text-primary", border: "border-t-primary", title: "Risk & Compliance", desc: "Anti-bribery programmes, due diligence and the compliance evidence major clients ask for.", href: "/services/risk-compliance-integrity" },
             ].map(({ icon: Icon, color, border, title, desc, href }) => (
               <Card key={title} className={`border-t-4 ${border} border-x-0 border-b-0 shadow-md hover:-translate-y-1 transition-transform duration-300 bg-white rounded-none`}>
                 <CardHeader>
