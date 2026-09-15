@@ -5,6 +5,55 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 4 — Each service now has its own page
+
+**Commit:** `13503be` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Checks:** TypeScript passes · production build passes · 9 new automated tests · every page checked on desktop and phone width, including the old links, the menus and the served HTML
+
+### The problem
+
+All seven services sat on one page. That page could carry one title, one description and
+one address — for governance, human resources, strategy, business development, digital
+marketing, integrity, and market research together. Nothing could be found on its own.
+Someone searching for market research in MENA, or for ISO 37001 support, had no page to
+find; an AI assistant had nothing specific to cite.
+
+The page also mixed work you deliver yourself with work delivered by partner firms,
+without always making clear which was which.
+
+### What we changed
+
+| Change | Result |
+|---|---|
+| Split the seven services into seven pages | Each can be found, ranked and cited on its own terms, with its own title and description |
+| Made `/services` a hub | It now introduces the seven and links to them, rather than being a very long scroll |
+| Separated partner-delivered work on that hub | Integrity is shown as delivered with VisionEthics, market research with In Light. Both carry the partner's name on the page itself |
+| Put strategy first | Matches the homepage, which already leads with strategic management |
+| Gave every service page the same five answers | What it is · who it's for · what you get · how an engagement runs · common questions |
+| Added machine-readable service and question data | Search engines and AI assistants can read the questions and answers directly, which is how a page gets quoted rather than just listed |
+| Kept every old link working | `/services#grc` and the other six anchors now take the visitor to the page that replaced them |
+| Updated the menu, footer, homepage cards and sitemap | All point at the new pages; the sitemap lists all seven |
+
+### Why it matters
+
+- **Findability:** seven pages can answer seven different searches. One page could answer none of them well.
+- **AI retrieval:** the questions and answers on each page are published in a form assistants read directly. This is the "answer coverage" gap the audit identified.
+- **Honesty about partners:** a partner's capability is now clearly a partner's, on the page where a buyer sees it — not only on the partners page.
+
+### What needs your confirmation
+
+The service descriptions are unchanged. Four blocks per page are newly drafted: who it's
+for, what you get, how an engagement runs, and the questions. They are listed for review in
+`docs/services-copy-review.md`, along with the facts the drafts deliberately avoid stating
+because there was no source for them — engagement length, pricing model, team size and
+client examples. Those are among the most valuable things these pages could carry.
+
+Separately, `docs/positioning.md` reconstructs the approved positioning. The original was
+agreed in conversation and never saved into the project; the reconstruction is marked where
+it is inferring.
+
+---
+
 ## Entry 3 — Every page now has its own title, description and address
 
 **Commit:** `f65ec9e` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
