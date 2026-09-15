@@ -5,6 +5,34 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 2 — All images moved into the website and made far lighter
+
+**Commit:** `99803af` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Checks:** TypeScript passes · production build passes · all images verified loading in a local preview
+
+### The problem
+
+Every image on the site was loaded from two external stores belonging to the current hosting platform. That meant the website could not display its own pictures without that platform, the files could not be optimised, and some were extremely large: the meeting photograph used on the homepage and About page was a 5.5 MB file, roughly 2,752 pixels wide, for a space that never needs more than 1,600.
+
+### What we changed
+
+| Change | Result |
+|---|---|
+| Brought all 15 images into the website itself | The site no longer depends on an external image store |
+| Converted them to WebP, a modern format, at the sizes actually used | **7.5 MB → 576 KB**, a 92% reduction |
+| The homepage/About photograph specifically | 5.5 MB → 88 KB |
+| Gave files clear names | e.g. `article-ai-human-oversight-cover.webp` instead of `blog-article1-ai-oversight_c469ef22.jpeg` |
+| Set each large image's dimensions in the page | Stops the page jumping around while images load |
+| Images below the visible area now load only when needed | The first screen appears sooner |
+
+### Why it matters
+
+- **Speed:** images were the single biggest cause of the slow mobile loading times recorded in the audit. This is the largest part of that fix.
+- **Independence:** the site can move to any host without images breaking.
+- **Ranking and AI retrieval:** page speed affects search ranking, and slow pages are read less reliably by AI crawlers.
+
+---
+
 ## Entry 1 — Scope cleanup, unsupported claims and new positioning
 
 **Commit:** `7c99416` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
