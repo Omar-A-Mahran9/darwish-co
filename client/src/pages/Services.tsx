@@ -46,6 +46,11 @@ function ServiceCard({ service }: { service: Service }) {
               Partly delivered with {service.partner.name}
             </span>
           )}
+          {!service.deliveryLead && (
+            <span className="mt-2 inline-flex w-fit items-center rounded-full border border-dashed border-amber-500/60 px-3 py-1 text-xs font-bold text-amber-700">
+              Needs delivery lead
+            </span>
+          )}
         </CardHeader>
         <CardContent className="flex flex-1 flex-col justify-between gap-5">
           <p className="leading-relaxed text-muted-foreground">{service.tagline}</p>

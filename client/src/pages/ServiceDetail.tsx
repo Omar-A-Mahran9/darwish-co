@@ -236,6 +236,36 @@ export default function ServiceDetail() {
         </section>
       )}
 
+      {/* Who leads this — v3 requires a named, accountable delivery lead */}
+      <section className="pb-16">
+        <div className="container">
+          {service.deliveryLead ? (
+            <div className="border border-border bg-muted/20 p-6 md:p-8">
+              <h2 className="font-heading text-lg font-bold text-foreground">Who leads this</h2>
+              <p className="mt-3 leading-relaxed text-muted-foreground">
+                <span className="font-bold text-foreground">{service.deliveryLead.name}</span> —{" "}
+                {service.deliveryLead.role}
+              </p>
+            </div>
+          ) : (
+            <div className="border-2 border-dashed border-amber-500/60 bg-amber-50 p-6 md:p-8">
+              <p className="text-xs font-bold uppercase tracking-widest text-amber-700">
+                Needs delivery lead
+              </p>
+              <h2 className="mt-2 font-heading text-lg font-bold text-foreground">Who leads this</h2>
+              <p className="mt-2 max-w-3xl leading-relaxed text-muted-foreground">
+                A named person accountable for delivering this service has not been confirmed.
+                Positioning v3 requires one before the page is published, alongside a defined
+                scope, a sample output and relevant experience.
+              </p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Internal review note — remove before this page goes live.
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Standards genuinely applied in the work */}
       {service.standards && (
         <section className="border-t border-border py-16">

@@ -84,6 +84,12 @@ export type Service = {
   isThisYou: string[];
   whatYouGet: string[];
   howItWorks: { title: string; description: string }[];
+  /**
+   * Who is accountable for delivering this service. Positioning v3 §4 requires
+   * one per service. While it is unset the page shows a visible "delivery lead
+   * needed" notice, and the name never enters structured data until confirmed.
+   */
+  deliveryLead?: { name: string; role: string };
   /** Only standards genuinely applied in the work. */
   standards?: { name: string; note: string }[];
   faqs: ServiceFaq[];

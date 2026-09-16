@@ -199,6 +199,19 @@ describe("per-page metadata", () => {
     }
   });
 
+  it("never puts an unconfirmed delivery lead into structured data", () => {
+    for (const service of PUBLISHED_SERVICES) {
+      const html = injectSeo(SHELL, `/services/${service.slug}`);
+      // The page shows a visible "needs delivery lead" notice; the machine-readable
+      // record stays silent rather than naming nobody.
+      expect(html).not.toContain("Needs delivery lead");
+      expect(html).not.toContain('"employee"');
+      if (!service.deliveryLead) {
+        expect(html).not.toContain('"provider":{"@type":"Person"');
+      }
+    }
+  });
+
   it("claims delivery in Egypt only, whatever the target audience", () => {
     for (const service of PUBLISHED_SERVICES) {
       const html = injectSeo(SHELL, `/services/${service.slug}`);
