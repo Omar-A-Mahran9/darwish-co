@@ -467,8 +467,9 @@ function CaseExampleSection() {
             Placeholder content
           </p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            This engagement is invented, including every figure and the quotation. Replace it with
-            a real one — named with the client&rsquo;s written permission, or anonymised with their
+            This engagement is invented, including every figure, the quotation and the
+            photograph, which is a stock business image and not this client. Replace it with a
+            real one — named with the client&rsquo;s written permission, or anonymised with their
             agreement — before this page goes live. Internal review note.
           </p>
         </div>
@@ -483,38 +484,60 @@ function CaseExampleSection() {
           <p className="leading-relaxed text-muted-foreground">{CASE_EXAMPLE.client}</p>
         </div>
 
-        <div className="grid gap-10 md:grid-cols-3">
-          <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              The situation
-            </p>
-            <p className="leading-relaxed text-muted-foreground">{CASE_EXAMPLE.situation}</p>
+        <div className="grid items-stretch gap-10 lg:grid-cols-2 lg:gap-14">
+          {/* The picture stands for the invented client, and is a placeholder
+              itself — see the review notice above. */}
+          <div className="relative min-h-[300px] lg:min-h-full">
+            <img
+              src="/images/meeting-insight.webp"
+              width={1600}
+              height={893}
+              loading="lazy"
+              decoding="async"
+              alt=""
+              className="h-full w-full object-cover"
+            />
           </div>
-          <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              The work
-            </p>
-            <ul className="space-y-3">
-              {CASE_EXAMPLE.work.map((item) => (
-                <li key={item} className="flex gap-3 leading-relaxed text-muted-foreground">
-                  <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              The outcome
-            </p>
-            <dl className="space-y-5">
-              {CASE_EXAMPLE.outcome.map((result) => (
-                <div key={result.label}>
-                  <dt className="font-heading text-2xl font-bold text-primary">{result.figure}</dt>
-                  <dd className="text-sm leading-relaxed text-muted-foreground">{result.label}</dd>
-                </div>
-              ))}
-            </dl>
+
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                The situation
+              </p>
+              <p className="leading-relaxed text-muted-foreground">{CASE_EXAMPLE.situation}</p>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                The work
+              </p>
+              <ul className="space-y-3">
+                {CASE_EXAMPLE.work.map((item) => (
+                  <li key={item} className="flex gap-3 leading-relaxed text-muted-foreground">
+                    <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-3 border-t border-border pt-6">
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                The outcome
+              </p>
+              <dl className="grid gap-5 sm:grid-cols-3">
+                {CASE_EXAMPLE.outcome.map((result) => (
+                  <div key={result.label}>
+                    <dt className="font-heading text-2xl font-bold leading-tight text-primary">
+                      {result.figure}
+                    </dt>
+                    <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {result.label}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </div>
 
