@@ -29,6 +29,10 @@ These appear as visible page content because they are operational details the bu
 publishes for visitors. They are not repeated as machine-readable identity claims until
 verified, so a wrong value does not propagate into the entity graph.
 
+**Confirmed 16 Sep 2026: these stay published as they are.** This is a decision, not an
+open item — the values below remain on the Contact page and in the footer. Verification
+still applies before any of them is added to structured data.
+
 | Field | Value on site | Why it is not in structured data |
 |---|---|---|
 | Office address | RIO Mall, New Cairo (Contact page) | Which address is registered and which is operational is unresolved — the agreement gives Capital Mall |
