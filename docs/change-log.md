@@ -5,6 +5,44 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 7 — The homepage now leads with governance
+
+**Commit:** `0a6e414` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Checks:** TypeScript passes · production build passes · 39 tests pass · checked at desktop and phone width
+
+### The problem
+
+Two things were wrong with the homepage. First, it still had **two navigation bars** — the
+site header, plus a second floating menu drawn by the homepage itself, left over from an
+earlier design. Second, its content still led with "Strategic Management — Core Practice"
+and a grid of "Supporting Practices" using the old service names, which contradicted the
+agreed positioning and pointed at pages that had since been renamed.
+
+### What we changed
+
+| Change | Result |
+|---|---|
+| Removed the duplicate navigation bar | One menu. The one that remains is the complete one — the homepage's own version had no About, no Contact and no services menu |
+| Reordered the page | Hero → the two situations clients actually arrive with → the five services in their three groups → insights → the people → how we work → projects → contact → client login |
+| Led with the two buying situations | "I have to sign everything" and "a major client sent us a compliance questionnaire", each quoted as an owner would say it, each linking to the service that answers it. Three more situations sit below as smaller entries |
+| Services now read from one source | The homepage lists the same five services as the services pages, drawn from the same file, so the two can never disagree again |
+| Replaced the claims section | "Why partner with us" gave three generic claims. "How we work" now states four things that are actually true and checkable, including that we say when a question needs a lawyer or an accredited certifier |
+| Replaced the closing call to action | "Ready to Navigate Your Future?" and "Get in Touch" became **Book a consultation**, the approved wording, with the office, email, phone and WhatsApp beside it |
+| Fixed a small mobile layout fault | The page was 8 pixels wider than a phone screen, which allowed a slight sideways scroll |
+
+### Why it matters
+
+- **The first screen after the hero now matches how clients actually arrive.** They come with a problem, not with a service name in mind.
+- **One menu, one set of service names.** Both duplications were quietly sending visitors to the wrong places.
+- **No response-time promise, no fees, no invented figures.** The contact section gives the real details and nothing more.
+
+### Still to come on the homepage
+
+The featured article section currently shows the three published articles. When the
+governance guide is written, it takes that position, which is what the plan calls for.
+
+---
+
 ## Entry 6 — The site now says only what can be evidenced
 
 **Commit:** `da4a257` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
