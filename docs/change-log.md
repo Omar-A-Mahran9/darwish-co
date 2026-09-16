@@ -5,6 +5,45 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 10 — The case example and the consultants, finished
+
+**Commits:** `5d4b2a3`, `9d01bce`, `31f92ff`, `7248e4e` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Checks:** TypeScript passes · 39 tests pass · checked at 375, 1024, 1280, 1440 and 1600 pixels wide
+
+This entry finishes the two sections added in Entry 9, and records a decision about how
+unfinished material is marked.
+
+### The case example
+
+| Change | Detail |
+|---|---|
+| A photograph of the client | A generated image of a family-owned manufacturer in Cairo. 92 KB |
+| The situation and the work removed | The homepage now carries only the outcome: three results, stacked, beside the photograph |
+| A way through to the rest | A "Read the full case study" button. **There is no case study page yet**, so it points at the contact page |
+| The picture matches the text | It fills exactly the height the outcomes need, rather than setting the height of the row |
+
+### The consultants
+
+Three supplied portraits replace the initials, each filling the top of its card. The names,
+roles and expertise remain the verified ones from the consultants page.
+
+### What is generated, and what is real
+
+**Four images on the homepage are generated rather than photographed:** the client meeting in
+the case example, and the three consultant portraits. The engagement itself — the client, the
+three figures and the quotation — is invented.
+
+Entry 9 marked both sections with a visible amber notice on the page. **Those notices have been
+removed at the client's instruction**, on the basis that the founder will be told directly.
+The warnings now live only in the code and in this log.
+
+This matters because the two sections exist to establish credibility. A reader has no way to
+tell which parts are real. Before this page is published, either the material should be
+replaced with a real engagement and real photographs, or the founder should decide knowingly
+that generated images stand in their place.
+
+---
+
 ## Entry 9 — A design review: one visual language, and a homepage that shows the work
 
 **Commits:** `1a34aab`, `7a4743b`, `2cabcde` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
