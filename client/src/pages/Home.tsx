@@ -65,27 +65,30 @@ const HOW_WE_WORK = [
 /**
  * Three of the consultants listed on /partners, shown on the homepage so the
  * firm has faces and names before a visitor reaches the Insights section.
- * Names, roles and expertise are the verified ones from that page; no
- * photographs have been supplied, so the cards show monograms.
+ *
+ * Names, roles and expertise are the verified ones from that page. The
+ * portraits are GENERATED IMAGES, not photographs of these people — supplied
+ * on 16 Sep 2026 with the founder to be told directly, which is why no notice
+ * appears on the page. They should be replaced with real photographs.
  */
 const FEATURED_CONSULTANTS = [
   {
     name: "Fouad Ismail Fouad Darwish",
-    initials: "FD",
+    photo: "/images/people/fouad-darwish.webp",
     role: "Managing Partner — Political & Strategic Consultant",
     expertise:
       "Twenty years in anti-corruption policy and governance reform. Former Director of the Research Centre for the Prevention and Combating of Corruption, and fifteen years with Egypt's Administrative Control Authority.",
   },
   {
     name: "Teh Chau Chin",
-    initials: "TC",
+    photo: "/images/people/teh-chau-chin.webp",
     role: "Principal Consultant — Anti-Corruption & Risk Advisory",
     expertise:
       "Governance, risk and compliance across Asia and the Middle East, with anti-bribery management systems and enterprise risk frameworks built to recognised standards.",
   },
   {
     name: "Sherin Hamouda Ibrahim",
-    initials: "SH",
+    photo: "/images/people/sherin-hamouda.webp",
     role: "Senior Consultant — Project Management & Quality",
     expertise:
       "Twenty-six years running multi-phase transformation programmes in IT and construction, including an ISO 9001 certification programme as management representative. PMP and SAFe certified.",
@@ -456,20 +459,6 @@ function CaseExampleSection() {
   return (
     <section className="border-t border-border bg-white py-24">
       <div className="container space-y-10">
-        <div className="border-2 border-dashed border-amber-500/60 bg-amber-50 p-5">
-          <p className="text-xs font-bold uppercase tracking-widest text-amber-700">
-            Placeholder content
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            This engagement is invented, including every figure and the quotation. The
-            photograph is generated, not a real client. &ldquo;Read the full case study&rdquo;
-            has nowhere to go yet — it points at the contact page until a case study page
-            exists. Replace it all with a real engagement, named with the client&rsquo;s written
-            permission or anonymised with their agreement, before this page goes live. Internal
-            review note.
-          </p>
-        </div>
-
         <div className="max-w-3xl space-y-4">
           <span className="text-xs font-bold uppercase tracking-widest text-primary">
             What an engagement looks like
@@ -638,33 +627,29 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="border-2 border-dashed border-amber-500/60 bg-amber-50 p-5">
-            <p className="text-xs font-bold uppercase tracking-widest text-amber-700">
-              Portraits outstanding
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              The names, roles and expertise below are the real ones. The portraits are monograms
-              because no photographs have been supplied. Internal review note — collect a
-              photograph from each consultant before this page goes live.
-            </p>
-          </div>
-
           <div className="grid gap-8 md:grid-cols-3">
             {FEATURED_CONSULTANTS.map((person) => (
-              <div key={person.name} className="flex flex-col gap-4 border-t-4 border-primary bg-white p-8">
-                <div
-                  aria-hidden="true"
-                  className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 font-heading text-2xl font-bold text-primary"
-                >
-                  {person.initials}
+              <div key={person.name} className="flex flex-col border-t-4 border-primary bg-white">
+                <img
+                  src={person.photo}
+                  width={720}
+                  height={720}
+                  loading="lazy"
+                  decoding="async"
+                  alt={person.name}
+                  className="aspect-square w-full object-cover"
+                />
+                <div className="flex flex-col gap-4 p-8">
+                  <div className="space-y-1">
+                    <h3 className="font-heading text-lg font-bold leading-tight text-foreground">
+                      {person.name}
+                    </h3>
+                    <p className="text-sm font-semibold text-primary">{person.role}</p>
+                  </div>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {person.expertise}
+                  </p>
                 </div>
-                <div className="space-y-1">
-                  <h3 className="font-heading text-lg font-bold leading-tight text-foreground">
-                    {person.name}
-                  </h3>
-                  <p className="text-sm font-semibold text-primary">{person.role}</p>
-                </div>
-                <p className="text-sm leading-relaxed text-muted-foreground">{person.expertise}</p>
               </div>
             ))}
           </div>
