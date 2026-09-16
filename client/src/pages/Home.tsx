@@ -1,11 +1,103 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  ArrowRight, CheckCircle2, Shield, Users, TrendingUp,
-  Brain, BarChart3, Target, Layers
-} from "lucide-react";
+import { ArrowRight, Brain, CheckCircle2, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { Link } from "wouter";
+import { PILLARS, servicesInPillar, type ServicePillar } from "@shared/services";
+import { BLOG_ARTICLES } from "@shared/seo";
+import { ACCENT, ServiceIcon } from "@/components/serviceStyles";
+
+/**
+ * The two situations clients most often arrive with (positioning v3 §3), and
+ * the three kept as secondary entry points rather than campaigns of their own.
+ */
+const PRIORITY_SITUATIONS = [
+  {
+    quote: "I have to sign everything. I need to delegate without losing oversight.",
+    body: "Authority was never written down, so every decision comes back to one person. The fix is a delegation of authority matrix: who decides what, up to which limit, and on what record.",
+    href: "/services/corporate-family-governance",
+    cta: "Corporate & Family Governance",
+  },
+  {
+    quote: "A major client sent us a compliance questionnaire and we don't know how to answer it.",
+    body: "Most questionnaires ask for a policy, a procedure, a record and a named responsible person. Usually the practice already exists and the documentation does not.",
+    href: "/services/risk-compliance-integrity",
+    cta: "Risk, Compliance & Integrity",
+  },
+];
+
+const SECONDARY_SITUATIONS = [
+  {
+    label: "Preparing for investment or bank finance",
+    body: "An investor or lender has started asking how decisions are made and recorded.",
+    href: "/services/corporate-family-governance",
+  },
+  {
+    label: "Staff are already using AI at work",
+    body: "Tools are in use on company information, with no rule saying what is permitted.",
+    href: "/services/risk-compliance-integrity",
+  },
+  {
+    label: "Expanding to the Gulf",
+    body: "A market decision that needs evidence, and the compliance a new buyer will expect.",
+    href: "/services/growth-market-entry",
+  },
+];
+
+const HOW_WE_WORK = [
+  {
+    title: "We start from the decision you face",
+    body: "Not from a service. The first conversation establishes what has prompted the work and what a good outcome looks like, at no cost and no obligation.",
+  },
+  {
+    title: "Right-sized, not scaled down",
+    body: "Methods drawn from recognised standards — ISO 37001, ISO 31000, OECD guidance — shaped into something a company of a hundred people can actually run.",
+  },
+  {
+    title: "We say who delivers",
+    body: "Where a partner firm carries the specialist capability, the service page names them and says who is accountable for what. A partner's expertise is theirs, not ours.",
+  },
+  {
+    title: "We say when it is not our work",
+    body: "Where a question needs a legal opinion, or a standard needs an accredited certifier, we say so rather than stretching to cover it.",
+  },
+];
+
+function PillarBlock({ pillar }: { pillar: ServicePillar }) {
+  const services = servicesInPillar(pillar);
+  if (services.length === 0) return null;
+
+  return (
+    <div className="space-y-5">
+      <div className="space-y-2">
+        <h3 className="font-heading text-xl font-bold text-foreground">{PILLARS[pillar].name}</h3>
+        <p className="text-sm leading-relaxed text-muted-foreground">{PILLARS[pillar].description}</p>
+      </div>
+      <ul className="space-y-3 border-t border-border pt-5">
+        {services.map((service) => (
+          <li key={service.slug}>
+            <Link href={`/services/${service.slug}`}>
+              <span className="group flex cursor-pointer items-start gap-3">
+                <ServiceIcon
+                  name={service.icon}
+                  className={`mt-0.5 h-5 w-5 shrink-0 ${ACCENT[service.accent].text}`}
+                />
+                <span>
+                  <span className="block font-bold text-foreground group-hover:underline">
+                    {service.name}
+                  </span>
+                  <span className="block text-sm leading-relaxed text-muted-foreground">
+                    {service.tagline}
+                  </span>
+                </span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 // ─── CDN assets ────────────────────────────────────────────────────────────
 const EMBLEM_URL =
@@ -363,204 +455,267 @@ export default function Home() {
       {/* ── HERO ── */}
       <HeroSection />
 
-      {/* ── Strategic Management — Primary Focus ── */}
-      <section className="py-32 bg-white">
-        <div className="container">
-          <div className="grid lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-5 space-y-6">
-              <span className="text-xs font-bold uppercase tracking-widest text-primary">
-                Core Practice
-              </span>
-              <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground leading-tight">
-                Strategic Management
-              </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Every engagement begins with strategy. We work with leadership
-                teams to define direction, align resources, and build the
-                performance systems that turn vision into execution.
-              </p>
-              <div className="w-20 h-1 bg-primary" />
-              <Link href="/services/strategy-execution">
-                <Button size="lg" className="bg-primary text-white hover:bg-primary/90 font-bold rounded-none px-8 mt-4">
-                  Explore Strategy Practice <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+      {/* ── When companies call us ── */}
+      <section className="bg-white py-24">
+        <div className="container space-y-12">
+          <div className="max-w-3xl space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">
+              When companies call us
+            </span>
+            <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+              Two situations bring most clients here
+            </h2>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-2">
+            {PRIORITY_SITUATIONS.map((situation) => (
+              <div key={situation.href} className="flex flex-col justify-between gap-6 border-l-4 border-primary bg-secondary/20 p-8">
+                <div className="space-y-4">
+                  <p className="font-heading text-xl font-bold leading-snug text-foreground">
+                    &ldquo;{situation.quote}&rdquo;
+                  </p>
+                  <p className="leading-relaxed text-muted-foreground">{situation.body}</p>
+                </div>
+                <Link href={situation.href}>
+                  <span className="inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline">
+                    {situation.cta} <ArrowRight className="h-4 w-4" />
+                  </span>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid gap-6 border-t border-border pt-10 md:grid-cols-3">
+            {SECONDARY_SITUATIONS.map((situation) => (
+              <Link key={situation.label} href={situation.href}>
+                <div className="group cursor-pointer space-y-2">
+                  <p className="font-bold text-foreground group-hover:underline">{situation.label}</p>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{situation.body}</p>
+                </div>
               </Link>
-            </div>
-
-            <div className="lg:col-span-7 grid sm:grid-cols-3 gap-6">
-              {[
-                { icon: Target, color: "text-primary", border: "border-t-primary", title: "Strategic Planning", desc: "Structured frameworks to define goals, allocate resources, and set measurable milestones." },
-                { icon: BarChart3, color: "text-chart-2", border: "border-t-chart-2", title: "Performance Systems", desc: "KPI design, balanced scorecards, and OKR implementation aligned to your strategic objectives." },
-                { icon: Layers, color: "text-chart-3", border: "border-t-chart-3", title: "Org Design", desc: "Restructuring, role clarity, and governance models that support your growth trajectory." },
-              ].map(({ icon: Icon, color, border, title, desc }) => (
-                <Card key={title} className={`border-t-4 ${border} border-x-0 border-b-0 shadow-lg rounded-none bg-white`}>
-                  <CardHeader>
-                    <Icon className={`w-10 h-10 ${color} mb-4`} />
-                    <CardTitle className="font-heading text-lg text-foreground">{title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{desc}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Supporting Services ── */}
-      <section className="py-24 bg-secondary/20">
-        <div className="container">
-          <div className="text-center mb-14">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">Supporting Practices</span>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mt-3 mb-4">Built Around Your Strategy</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Once the strategic direction is set, our specialist practices deliver the governance, people, and growth capabilities that bring it to life.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Shield, color: "text-primary", border: "border-t-primary", title: "Governance & Risk", desc: "Robust GRC frameworks that protect your business while enabling sustainable growth.", href: "/services/corporate-family-governance" },
-              { icon: Users, color: "text-chart-2", border: "border-t-chart-2", title: "Human Resources", desc: "Strategic HR planning and talent acquisition tailored for the MENA market.", href: "/services/people-organisation" },
-              { icon: TrendingUp, color: "text-chart-3", border: "border-t-chart-3", title: "Business Development", desc: "Market entry strategies and partnerships to accelerate your expansion.", href: "/services/growth-market-entry" },
-              { icon: Brain, color: "text-primary", border: "border-t-primary", title: "Risk & Compliance", desc: "Anti-bribery programmes, due diligence and the compliance evidence major clients ask for.", href: "/services/risk-compliance-integrity" },
-            ].map(({ icon: Icon, color, border, title, desc, href }) => (
-              <Card key={title} className={`border-t-4 ${border} border-x-0 border-b-0 shadow-md hover:-translate-y-1 transition-transform duration-300 bg-white rounded-none`}>
-                <CardHeader>
-                  <Icon className={`w-9 h-9 ${color} mb-3`} />
-                  <CardTitle className="font-heading text-lg text-foreground">{title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4">{desc}</p>
-                  <Link href={href}>
-                    <span className={`${color} font-bold text-sm flex items-center hover:underline cursor-pointer group`}>
-                      Learn more <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </Link>
-                </CardContent>
-              </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Quote / Image Break ── */}
-      <section className="relative py-32 bg-white">
-        <div className="container grid md:grid-cols-2 gap-16 items-center">
+      {/* ── What we do ── */}
+      <section className="bg-secondary/20 py-24">
+        <div className="container space-y-12">
+          <div className="max-w-3xl space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">
+              What we do
+            </span>
+            <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+              Governance first, then what depends on it
+            </h2>
+            <p className="leading-relaxed text-muted-foreground">
+              Five services in three groups. Each page sets out what the work covers, who it suits,
+              what you receive and how an engagement runs.
+            </p>
+          </div>
+
+          <div className="grid gap-12 md:grid-cols-3">
+            <PillarBlock pillar="governance" />
+            <PillarBlock pillar="strategy-organisation" />
+            <PillarBlock pillar="growth" />
+          </div>
+
+          <Link href="/services">
+            <Button size="lg" className="rounded-none font-bold">
+              All services <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* ── Insights ── */}
+      <section className="bg-white py-24">
+        <div className="container space-y-10">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl space-y-3">
+              <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                Insights
+              </span>
+              <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+                What we have been writing about
+              </h2>
+            </div>
+            <Link href="/blog">
+              <span className="cursor-pointer whitespace-nowrap text-sm font-bold text-primary hover:underline">
+                All articles →
+              </span>
+            </Link>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {BLOG_ARTICLES.map((article) => (
+              <Link key={article.slug} href={`/blog/${article.slug}`}>
+                <article className="group h-full cursor-pointer space-y-4">
+                  <div className="aspect-[4/3] overflow-hidden bg-muted">
+                    <img
+                      src={article.image}
+                      loading="lazy"
+                      decoding="async"
+                      alt=""
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <h3 className="font-heading text-lg font-bold leading-snug text-foreground group-hover:underline">
+                    {article.headline}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {article.description}
+                  </p>
+                </article>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── The people behind the work ── */}
+      <section className="overflow-hidden bg-secondary/10 py-20">
+        <div className="container grid items-center gap-12 md:grid-cols-2">
           <div className="relative">
-            <div className="absolute -top-6 -left-6 w-24 h-24 bg-chart-3/20 z-0" />
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 z-0" />
+            <div className="absolute -left-6 -top-6 z-0 h-24 w-24 bg-chart-3/20" />
+            <div className="absolute -bottom-6 -right-6 z-0 h-32 w-32 bg-primary/10" />
             <img
               src="/images/meeting-insight.webp"
               width={1600}
               height={893}
               loading="lazy"
               decoding="async"
-              alt="Strategic Meeting"
-              className="relative z-10 w-full h-auto shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
+              alt="A Darwish & Co. working session"
+              className="relative z-10 h-auto w-full shadow-2xl"
             />
           </div>
-          <div className="space-y-8">
-            <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground leading-tight">
-              "The difference between a missed opportunity and a{" "}
-              <span className="text-primary">strategic breakthrough</span>."
+          <div className="space-y-6">
+            <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+              The people behind the work
             </h2>
-            <p className="text-lg text-muted-foreground">
-              We don't just advise; we partner. Our integrated approach ensures that your governance structures support your people, and your people drive your growth.
+            <p className="leading-relaxed text-muted-foreground">
+              Engagements are delivered by named consultants and, where a service calls for
+              specialist capability, by partner firms working alongside us. Both are listed, with
+              what each of them does.
             </p>
-            <Link href="/about">
-              <Button size="lg" className="bg-foreground text-white hover:bg-foreground/90 font-bold rounded-none px-8">
-                Read Our Story
-              </Button>
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/partners">
+                <Button variant="outline" className="rounded-none font-bold">
+                  Consultants &amp; advisers
+                </Button>
+              </Link>
+              <Link href="/corporate-partners">
+                <Button variant="outline" className="rounded-none font-bold">
+                  Partner firms
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Why Darwish & Co ── */}
-      <section className="py-32 bg-secondary/10">
-        <div className="container max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">Why Partner with Darwish &amp; Co?</h2>
-            <div className="w-16 h-1 bg-chart-2 mx-auto" />
-          </div>
-          <div className="grid md:grid-cols-3 gap-12">
-            {[
-              { color: "bg-secondary text-primary", title: "Regional Expertise", desc: "Egypt-based and working across MENA, with an understanding of local business culture and how decisions get made." },
-              { color: "bg-chart-2/10 text-chart-2", title: "Tailored for SMEs", desc: "Agile, practical strategies designed specifically for growth-stage companies, not corporations." },
-              { color: "bg-chart-3/10 text-chart-3", title: "Integrated Approach", desc: "Bridging strategy, governance, and people for a holistic, executable business plan." },
-            ].map(({ color, title, desc }) => (
-              <div key={title} className="text-center space-y-4">
-                <div className={`w-16 h-16 ${color} rounded-full flex items-center justify-center mx-auto`}>
-                  <CheckCircle2 className="w-8 h-8" />
+      {/* ── How we work ── */}
+      <section className="bg-white py-24">
+        <div className="container space-y-12">
+          <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+            How we work
+          </h2>
+          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+            {HOW_WE_WORK.map((principle, index) => (
+              <div key={principle.title} className="space-y-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 font-heading font-bold text-primary">
+                  {index + 1}
                 </div>
-                <h3 className="font-bold text-xl text-foreground">{title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-heading text-lg font-bold text-foreground">{principle.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{principle.body}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Projects Teaser ── */}
-      <section className="py-24 bg-foreground text-white">
-        <div className="container">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-            <div className="space-y-3">
-              <span className="text-xs font-bold uppercase tracking-widest text-primary">Our Work</span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight">Platforms We've Built</h2>
-              <p className="text-white/60 text-lg max-w-xl">Beyond consulting, we deliver digital solutions that create lasting operational impact for our clients.</p>
+      {/* ── Projects ── */}
+      <section className="bg-foreground py-20 text-white">
+        <div className="container grid items-center gap-10 md:grid-cols-[1.2fr_0.8fr]">
+          <div className="space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">Our work</span>
+            <h2 className="font-heading text-2xl font-bold leading-tight text-white md:text-3xl">
+              Platforms we have built
+            </h2>
+            <p className="max-w-xl leading-relaxed text-white/60">
+              Where an engagement calls for software rather than a document, we build it.
+            </p>
+          </div>
+          <div className="border border-white/10 bg-white/5 p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
+                <Brain className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                AI initiative
+              </span>
             </div>
-            <Link href="/projects">
-              <span className="flex items-center gap-2 text-primary font-bold text-sm hover:underline cursor-pointer whitespace-nowrap">
-                View all projects <ArrowRight className="w-4 h-4" />
+            <h3 className="mt-4 font-heading text-xl font-bold text-white">
+              AI POC Collaboration Platform
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-white/60">
+              A platform for managing AI proof-of-concept projects across collaborating teams.
+            </p>
+            <Link href="/projects#ai-poc">
+              <span className="mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline">
+                Explore platform <ArrowRight className="h-4 w-4" />
               </span>
             </Link>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              { icon: Brain, color: "text-primary", accentColor: "bg-primary", borderHover: "hover:border-primary/50", tagColor: "text-primary", tags: ["React", "tRPC", "MySQL", "Resend Email"], label: "AI Initiative", title: "AI POC Collaboration Platform", desc: "A full-stack platform enabling Techno-Management and Widebot to collaboratively manage AI proof-of-concept projects.", href: "/projects#ai-poc", cta: "Explore platform" },
-            ].map(({ icon: Icon, color, accentColor, borderHover, tagColor, tags, label, title, desc, href, cta }) => (
-              <div key={title} className={`group relative bg-white/5 border border-white/10 ${borderHover} transition-all duration-300 overflow-hidden`}>
-                <div className={`h-1 w-full ${accentColor}`} />
-                <div className="p-8 space-y-6">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-full ${accentColor}/20 flex items-center justify-center`}>
-                      <Icon className={`w-5 h-5 ${color}`} />
-                    </div>
-                    <span className={`text-xs font-bold uppercase tracking-widest ${tagColor}`}>{label}</span>
-                  </div>
-                  <div className="space-y-3">
-                    <h3 className="font-heading text-2xl font-bold text-white">{title}</h3>
-                    <p className="text-white/60 leading-relaxed text-sm">{desc}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <span key={tag} className="px-2.5 py-1 text-xs font-medium bg-white/10 text-white/70 rounded-sm">{tag}</span>
-                    ))}
-                  </div>
-                  <Link href={href}>
-                    <span className={`inline-flex items-center gap-2 ${tagColor} font-bold text-sm hover:underline cursor-pointer`}>
-                      {cta} <ArrowRight className="w-4 h-4" />
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section className="py-24 bg-primary text-white">
-        <div className="container text-center max-w-3xl mx-auto space-y-8">
-          <h2 className="font-heading text-4xl md:text-5xl font-bold">Ready to Navigate Your Future?</h2>
-          <p className="text-xl text-white/90 font-light">Let's build a resilient and thriving future for your business, together.</p>
-          <Link href="/contact">
-            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 font-bold text-lg px-12 py-8 h-auto rounded-none mt-8 shadow-xl">
-              Get in Touch
-            </Button>
-          </Link>
+      {/* ── Contact ── */}
+      <section className="bg-primary py-20 text-white">
+        <div className="container grid gap-12 md:grid-cols-[1fr_1fr]">
+          <div className="space-y-6">
+            <h2 className="font-heading text-3xl font-bold leading-tight md:text-4xl">
+              Book a consultation
+            </h2>
+            <p className="max-w-xl leading-relaxed text-white/85">
+              Tell us what has prompted the work — an investor asking questions, a client
+              questionnaire, a structure that has stopped working — and we will tell you which of
+              our services applies, or whether none does.
+            </p>
+            <Link href="/contact">
+              <Button size="lg" variant="secondary" className="rounded-none font-bold">
+                Book a consultation <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+
+          <div className="space-y-5 text-sm text-white/85">
+            <div className="flex gap-3">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+              <span className="leading-relaxed">
+                Office T-10, 3rd Floor, RIO Mall, Dr. Ahmed Okasha St.,
+                <br />
+                New Cairo 1, Cairo Governorate 11865, Egypt
+              </span>
+            </div>
+            <a href="mailto:info@darwish-co.com" className="flex gap-3 hover:underline">
+              <Mail className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+              info@darwish-co.com
+            </a>
+            <a href="tel:+201101101090" className="flex gap-3 hover:underline">
+              <Phone className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+              +20 110 110 1090
+            </a>
+            <a
+              href="https://wa.me/201101101090"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex gap-3 hover:underline"
+            >
+              <MessageCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+              WhatsApp
+            </a>
+          </div>
         </div>
       </section>
 
