@@ -7,7 +7,7 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ## Entry 7 — The homepage now leads with governance
 
-**Commit:** `0a6e414` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Commits:** `a1a6d0a` (duplicate navigation bar) · `0a6e414` (restructure) · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
 **Checks:** TypeScript passes · production build passes · 39 tests pass · checked at desktop and phone width
 
 ### The problem
@@ -45,7 +45,7 @@ governance guide is written, it takes that position, which is what the plan call
 
 ## Entry 6 — The site now says only what can be evidenced
 
-**Commit:** `da4a257` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Commits:** `da4a257` (entity rules) · `c738dda` (delivery-lead markers) · `1e91e17` (contact details kept as published) · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
 **Checks:** TypeScript passes · production build passes · 13 automated tests on this area · identity output and every redirect checked against the built server
 
 ### The problem
@@ -324,3 +324,33 @@ Every image on the site was loaded from two external stores belonging to the cur
 - Every page still shares one description and one canonical address in the underlying page code. This is the single biggest technical issue and is the next phase of work.
 - The services page still uses the old seven-section layout. Restructuring it needs the confirmations listed in the positioning document.
 - Site images still load from the current host, so they don't display in local previews. They move into the project in the next phase.
+
+---
+
+## Appendix — documents, and how to read this log
+
+### Decisions recorded, with no change to the website
+
+| Date | Decision | Where it lives |
+|---|---|---|
+| 16 Sep 2026 | The v3 positioning document was rebuilt after the original was lost | `docs/positioning.md`, commit `8330fa4` |
+| 16 Sep 2026 | The office address, phone, WhatsApp, hours and map link stay published exactly as they are | `docs/entity-facts.md` §2, commit `1e91e17` |
+
+### The four documents
+
+| Document | What it is for |
+|---|---|
+| `docs/change-log.md` | This file. Every change to the website, one entry per piece of work, newest first |
+| `docs/positioning.md` | The agreed positioning, services and content plan. Reconstructed; ⚠️ marks wording rebuilt from memory |
+| `docs/entity-facts.md` | The single record of company facts: what publishes, what is visible text only, and what is withheld until confirmed |
+| `docs/services-copy-review.md` | The service-page wording that needs confirming, and the facts the pages deliberately do not state |
+
+### Reading the entries
+
+Each entry records what was true at that commit. A later entry can revise an earlier one, and
+the earlier entry is left as it was written rather than edited — so the newest entry is always
+the current position. For example, Entry 5 says the digital marketing address leads to the
+services page; Entry 6 changed it to a proper "no longer offered" response.
+
+The remaining commits on the branch are the additions to this log itself, which need no entry
+of their own.
