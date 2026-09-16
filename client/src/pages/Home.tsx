@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Brain, CheckCircle2, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { Link } from "wouter";
 import { PILLARS, servicesInPillar, type ServicePillar } from "@shared/services";
@@ -60,6 +59,36 @@ const HOW_WE_WORK = [
   {
     title: "We say when it is not our work",
     body: "Where a question needs a legal opinion, or a standard needs an accredited certifier, we say so rather than stretching to cover it.",
+  },
+];
+
+/**
+ * Three of the consultants listed on /partners, shown on the homepage so the
+ * firm has faces and names before a visitor reaches the Insights section.
+ * Names, roles and expertise are the verified ones from that page; no
+ * photographs have been supplied, so the cards show monograms.
+ */
+const FEATURED_CONSULTANTS = [
+  {
+    name: "Fouad Ismail Fouad Darwish",
+    initials: "FD",
+    role: "Managing Partner — Political & Strategic Consultant",
+    expertise:
+      "Twenty years in anti-corruption policy and governance reform. Former Director of the Research Centre for the Prevention and Combating of Corruption, and fifteen years with Egypt's Administrative Control Authority.",
+  },
+  {
+    name: "Teh Chau Chin",
+    initials: "TC",
+    role: "Principal Consultant — Anti-Corruption & Risk Advisory",
+    expertise:
+      "Governance, risk and compliance across Asia and the Middle East, with anti-bribery management systems and enterprise risk frameworks built to recognised standards.",
+  },
+  {
+    name: "Sherin Hamouda Ibrahim",
+    initials: "SH",
+    role: "Senior Consultant — Project Management & Quality",
+    expertise:
+      "Twenty-six years running multi-phase transformation programmes in IT and construction, including an ISO 9001 certification programme as management representative. PMP and SAFe certified.",
   },
 ];
 
@@ -295,16 +324,17 @@ function HeroSection() {
         <div className="flex-1 flex items-center">
           <div className="container mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-16 lg:py-24">
 
-            {/* ── Left: copy ── */}
-            <div className="space-y-8 order-2 lg:order-1">
+            {/* ── Left: copy. First in the source order, so on a narrow screen
+                 the headline and the CTA are what the visitor sees first. ── */}
+            <div className="space-y-8 order-1">
               {/* Headline */}
               <h1
+                className="font-heading"
                 style={{
-                  fontFamily: "'Fustat', sans-serif",
                   fontWeight: 700,
-                  fontSize: "clamp(42px, 5vw, 75px)",
-                  lineHeight: 1.05,
-                  letterSpacing: "-2px",
+                  fontSize: "clamp(40px, 5vw, 72px)",
+                  lineHeight: 1.08,
+                  letterSpacing: "-0.02em",
                   color: "#0a0a0a",
                 }}
               >
@@ -316,10 +346,8 @@ function HeroSection() {
               {/* Sub-headline */}
               <p
                 style={{
-                  fontFamily: "'Inter', sans-serif",
                   fontSize: "18px",
                   lineHeight: 1.65,
-                  letterSpacing: "-1px",
                   color: "#555",
                   maxWidth: "480px",
                 }}
@@ -331,73 +359,27 @@ function HeroSection() {
               </p>
 
               {/* CTA */}
-              <div className="flex flex-wrap gap-4 items-center">
+              <div className="flex flex-wrap gap-6 items-center">
                 <Link href="/contact">
-                  <button
-                    style={{
-                      background: "rgba(0,132,255,0.8)",
-                      backdropFilter: "blur(2px)",
-                      WebkitBackdropFilter: "blur(2px)",
-                      borderRadius: "16px",
-                      border: "none",
-                      boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 4px 20px rgba(0,132,255,0.3)",
-                      color: "#fff",
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      padding: "14px 28px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                      cursor: "pointer",
-                      transition: "transform 200ms ease, box-shadow 200ms ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      const b = e.currentTarget as HTMLButtonElement;
-                      b.style.transform = "scale(1.02)";
-                      b.style.boxShadow = "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 8px 28px rgba(0,132,255,0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      const b = e.currentTarget as HTMLButtonElement;
-                      b.style.transform = "scale(1)";
-                      b.style.boxShadow = "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 4px 20px rgba(0,132,255,0.3)";
-                    }}
-                  >
-                    Book a consultation
-                    <span
-                      style={{
-                        background: "rgba(255,255,255,0.25)",
-                        borderRadius: "50%",
-                        width: "28px",
-                        height: "28px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <ArrowRight size={14} strokeWidth={2.5} />
-                    </span>
-                  </button>
+                  <Button size="lg">
+                    Book a consultation <ArrowRight className="ml-1 h-4 w-4" />
+                  </Button>
                 </Link>
 
                 <Link href="/services">
-                  <span
-                    className="cursor-pointer flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    Explore Services <ArrowRight size={14} />
+                  <span className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
+                    Explore services <ArrowRight size={14} />
                   </span>
                 </Link>
               </div>
             </div>
 
-            {/* ── Right: animated logos ── */}
-            <div
-              className="order-1 lg:order-2 flex items-center justify-center"
-              style={{ minHeight: "400px" }}
-            >
-              <FloatingLogos />
+            {/* ── Right: animated logos. Second on a narrow screen, and scaled
+                 down there so it does not fill the first screen. ── */}
+            <div className="order-2 flex h-[280px] items-center justify-center sm:h-[360px] lg:h-auto lg:min-h-[400px]">
+              <div className="scale-[0.52] sm:scale-[0.68] lg:scale-100">
+                <FloatingLogos />
+              </div>
             </div>
           </div>
         </div>
@@ -405,7 +387,6 @@ function HeroSection() {
         {/* ── Trusted-by footer strip ── */}
         <div
           className="px-6 lg:px-12 pb-12"
-          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           <p
             className="text-center text-xs font-medium uppercase tracking-widest mb-8"
@@ -449,12 +430,116 @@ function HeroSection() {
   );
 }
 
+/**
+ * A worked engagement: situation, work delivered, outcome.
+ *
+ * PLACEHOLDER. Every figure, quotation and attribution below is invented to
+ * hold the shape of the section. It must be replaced with a real engagement —
+ * with the client's written permission to name them, or anonymised with their
+ * agreement — before this page is published. The review notice is deliberately
+ * visible so it cannot go live unnoticed.
+ */
+const CASE_EXAMPLE = {
+  client: "A family-owned manufacturer, 140 staff, Greater Cairo",
+  situation:
+    "Every purchase order, contract and hire still needed the founder's signature. A bank reviewing a facility asked how decisions were authorised and recorded, and there was no document that answered.",
+  work: [
+    "Mapped how decisions were actually being taken, against how the shareholders believed they were.",
+    "Wrote a delegation of authority matrix: who decides what, to which financial limit, and on what record.",
+    "Set the board calendar, the standing agenda and the minute format the bank expected to see.",
+  ],
+  outcome: [
+    { figure: "3 of 4", label: "decision types moved off the founder's desk" },
+    { figure: "11 weeks", label: "from first conversation to the board adopting the matrix" },
+    { figure: "Facility approved", label: "governance questions closed at the second review" },
+  ],
+  quote:
+    "The point was never the document. It was that I could take a week off and the company kept deciding.",
+  attribution: "Managing Director",
+};
+
+function CaseExampleSection() {
+  return (
+    <section className="border-t border-border bg-white py-24">
+      <div className="container space-y-10">
+        <div className="border-2 border-dashed border-amber-500/60 bg-amber-50 p-5">
+          <p className="text-xs font-bold uppercase tracking-widest text-amber-700">
+            Placeholder content
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            This engagement is invented, including every figure and the quotation. Replace it with
+            a real one — named with the client&rsquo;s written permission, or anonymised with their
+            agreement — before this page goes live. Internal review note.
+          </p>
+        </div>
+
+        <div className="max-w-3xl space-y-4">
+          <span className="text-xs font-bold uppercase tracking-widest text-primary">
+            What an engagement looks like
+          </span>
+          <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+            One piece of work, start to finish
+          </h2>
+          <p className="leading-relaxed text-muted-foreground">{CASE_EXAMPLE.client}</p>
+        </div>
+
+        <div className="grid gap-10 md:grid-cols-3">
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              The situation
+            </p>
+            <p className="leading-relaxed text-muted-foreground">{CASE_EXAMPLE.situation}</p>
+          </div>
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              The work
+            </p>
+            <ul className="space-y-3">
+              {CASE_EXAMPLE.work.map((item) => (
+                <li key={item} className="flex gap-3 leading-relaxed text-muted-foreground">
+                  <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              The outcome
+            </p>
+            <dl className="space-y-5">
+              {CASE_EXAMPLE.outcome.map((result) => (
+                <div key={result.label}>
+                  <dt className="font-heading text-2xl font-bold text-primary">{result.figure}</dt>
+                  <dd className="text-sm leading-relaxed text-muted-foreground">{result.label}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+
+        <figure className="border-l-4 border-primary bg-secondary/20 p-8">
+          <blockquote className="font-heading text-xl font-bold leading-snug text-foreground">
+            &ldquo;{CASE_EXAMPLE.quote}&rdquo;
+          </blockquote>
+          <figcaption className="mt-4 text-sm text-muted-foreground">
+            {CASE_EXAMPLE.attribution}, {CASE_EXAMPLE.client}
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}
+
 // ─── Main Page ──────────────────────────────────────────────────────────────
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* ── HERO ── */}
       <HeroSection />
+
+      {/* ── A worked example ── */}
+      <CaseExampleSection />
 
       {/* ── When companies call us ── */}
       <section className="bg-white py-24">
@@ -529,6 +614,65 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── The people behind the work ── */}
+      <section className="bg-secondary/10 py-24">
+        <div className="container space-y-10">
+          <div className="max-w-3xl space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">
+              Who does the work
+            </span>
+            <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+              The people behind the work
+            </h2>
+            <p className="leading-relaxed text-muted-foreground">
+              Engagements are delivered by named consultants. Where a service calls for specialist
+              capability, a partner firm works alongside us, and the service page says who is
+              accountable for what.
+            </p>
+          </div>
+
+          <div className="border-2 border-dashed border-amber-500/60 bg-amber-50 p-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-amber-700">
+              Portraits outstanding
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              The names, roles and expertise below are the real ones. The portraits are monograms
+              because no photographs have been supplied. Internal review note — collect a
+              photograph from each consultant before this page goes live.
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {FEATURED_CONSULTANTS.map((person) => (
+              <div key={person.name} className="flex flex-col gap-4 border-t-4 border-primary bg-white p-8">
+                <div
+                  aria-hidden="true"
+                  className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 font-heading text-2xl font-bold text-primary"
+                >
+                  {person.initials}
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-heading text-lg font-bold leading-tight text-foreground">
+                    {person.name}
+                  </h3>
+                  <p className="text-sm font-semibold text-primary">{person.role}</p>
+                </div>
+                <p className="text-sm leading-relaxed text-muted-foreground">{person.expertise}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Link href="/partners">
+              <Button variant="outline">Consultants &amp; advisers</Button>
+            </Link>
+            <Link href="/corporate-partners">
+              <Button variant="outline">Partner firms</Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── Insights ── */}
       <section className="bg-white py-24">
         <div className="container space-y-10">
@@ -570,47 +714,6 @@ export default function Home() {
                 </article>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── The people behind the work ── */}
-      <section className="overflow-hidden bg-secondary/10 py-20">
-        <div className="container grid items-center gap-12 md:grid-cols-2">
-          <div className="relative">
-            <div className="absolute -left-6 -top-6 z-0 h-24 w-24 bg-chart-3/20" />
-            <div className="absolute -bottom-6 -right-6 z-0 h-32 w-32 bg-primary/10" />
-            <img
-              src="/images/meeting-insight.webp"
-              width={1600}
-              height={893}
-              loading="lazy"
-              decoding="async"
-              alt="A Darwish & Co. working session"
-              className="relative z-10 h-auto w-full shadow-2xl"
-            />
-          </div>
-          <div className="space-y-6">
-            <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
-              The people behind the work
-            </h2>
-            <p className="leading-relaxed text-muted-foreground">
-              Engagements are delivered by named consultants and, where a service calls for
-              specialist capability, by partner firms working alongside us. Both are listed, with
-              what each of them does.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/partners">
-                <Button variant="outline" className="rounded-none font-bold">
-                  Consultants &amp; advisers
-                </Button>
-              </Link>
-              <Link href="/corporate-partners">
-                <Button variant="outline" className="rounded-none font-bold">
-                  Partner firms
-                </Button>
-              </Link>
-            </div>
           </div>
         </div>
       </section>
@@ -720,34 +823,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Client Login ── */}
-      <section id="client-login" className="relative overflow-hidden bg-foreground py-24 text-white">
-        <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at 82% 18%, rgba(0,153,204,0.52), transparent 28%), radial-gradient(circle at 8% 90%, rgba(0,204,102,0.16), transparent 26%)" }} />
-        <div className="container relative z-10 grid items-center gap-12 lg:grid-cols-[1.35fr_0.65fr]">
-          <div className="max-w-2xl space-y-6">
-            <span className="inline-flex items-center border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white/80">
-              Client Access
-            </span>
-            <h2 className="font-heading text-4xl font-bold leading-tight md:text-5xl">Client Login</h2>
-            <p className="max-w-xl text-lg leading-relaxed text-white/75">
-              Access Darwish Hub, our secure client portal for your shared workspace, engagement materials, and collaboration with our consulting team.
-            </p>
-            <Link href="/client-login" className="inline-flex items-center gap-3 bg-white px-7 py-4 text-sm font-bold text-foreground transition-colors hover:bg-chart-2 hover:text-white">
-              Sign in to Darwish Hub <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="border border-white/20 bg-white/5 p-8 backdrop-blur-sm">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-chart-2">Darwish Hub</p>
-            <div className="my-6 h-px w-full bg-white/15" />
-            <ul className="space-y-4 text-sm leading-relaxed text-white/75">
-              <li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-chart-2" />Secure client workspace</li>
-              <li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-chart-2" />Direct access to engagement resources</li>
-              <li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-chart-2" />Sign in with your approved client account</li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      {/* The client-login section used to sit here, after the consultation
+          section. It competed with it for the end of the page; client access is
+          now a link in the header, the mobile menu and the footer. */}
     </div>
   );
 }

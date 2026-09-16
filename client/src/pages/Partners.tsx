@@ -268,12 +268,14 @@ function PartnerCard({ partner }: { partner: Partner }) {
             </div>
           )}
           <div className="min-w-0 flex-1">
-            <div className="flex items-start justify-between gap-2">
+            {/* The badge sits below the name rather than beside it: alongside a
+                long name it left a column too narrow to read. */}
+            <div className="space-y-1.5">
               <h3 className="font-heading font-bold text-foreground text-lg leading-tight">
                 {partner.name}
               </h3>
               {isFirst && (
-                <span className="flex-shrink-0 text-xs font-bold bg-primary text-white px-2 py-0.5 uppercase tracking-wide">
+                <span className="inline-block text-xs font-bold bg-primary text-white px-2 py-0.5 uppercase tracking-wide">
                   Managing Partner
                 </span>
               )}

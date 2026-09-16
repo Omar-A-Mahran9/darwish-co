@@ -189,20 +189,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           gap keeps the logo clear of the first nav item.
         */}
         <div className="container flex h-20 items-center justify-between gap-10 lg:gap-16">
-          <Link href="/">
-            <div className="flex items-center space-x-2 cursor-pointer">
+          <Link href="/" className="shrink-0">
+            <div className="flex shrink-0 items-center space-x-2 cursor-pointer">
               <img
                 src="/images/logo-horizontal.webp"
                 alt="Darwish & Co."
                 width={887}
                 height={192}
-                className="h-10 w-auto object-contain"
+                className="h-10 w-auto max-w-none shrink-0 object-contain"
               />
             </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Desktop Nav. Seven items plus a button need room: below 1024px the
+              row cannot hold them without squeezing the logo, so the compact
+              menu takes over there rather than at the narrower md breakpoint. */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navItems.map((item) =>
               item.children ? (
                 <DropdownMenu key={item.path} item={item} location={location} />
@@ -210,7 +212,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Link key={item.path} href={item.path}>
                   <span
                     className={cn(
-                      "text-sm font-medium transition-colors hover:text-primary cursor-pointer",
+                      "whitespace-nowrap text-sm font-medium transition-colors hover:text-primary cursor-pointer",
                       location === item.path
                         ? "text-primary font-bold"
                         : "text-muted-foreground"
@@ -221,9 +223,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               )
             )}
-            <Link href="/client-login"><span className="cursor-pointer whitespace-nowrap text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Client Login</span></Link>
-            <Link href="/contact">
-              <Button variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 font-heading">
+            {/* Utility link, not a main destination: it gives up its place in
+                the row first when space runs short. Still in the footer and the
+                compact menu at every width. */}
+            <Link href="/client-login" className="hidden xl:block"><span className="cursor-pointer whitespace-nowrap text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Client Login</span></Link>
+            <Link href="/contact" className="shrink-0">
+              <Button variant="default" className="whitespace-nowrap">
                 Book a consultation
               </Button>
             </Link>
@@ -231,7 +236,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden p-2 text-primary"
+            className="lg:hidden p-2 text-primary"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -240,7 +247,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Mobile Nav */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-border bg-background p-4 space-y-1 animate-in slide-in-from-top-5">
+          <div className="lg:hidden border-t border-border bg-background p-4 space-y-1 animate-in slide-in-from-top-5">
             {navItems.map((item) => (
               <div key={item.path}>
                 {item.children ? (
@@ -300,7 +307,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             ))}
             <Link href="/client-login"><span className="block cursor-pointer py-2 text-base font-medium text-muted-foreground transition-colors hover:text-primary" onClick={() => setIsMenuOpen(false)}>Client Login</span></Link>
             <Link href="/contact">
-              <Button className="w-full bg-primary text-primary-foreground font-heading mt-2" onClick={() => setIsMenuOpen(false)}>
+              <Button className="w-full bg-primary text-primary-foreground mt-2" onClick={() => setIsMenuOpen(false)}>
                 Book a consultation
               </Button>
             </Link>

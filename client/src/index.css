@@ -67,8 +67,10 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-heading: "Playfair Display", serif;
-  --font-body: "Lato", sans-serif;
+  /* One pairing for the whole site: an editorial serif for headings, a clean
+     sans for everything else. Nothing should introduce a third family. */
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
 }
 
 :root {
@@ -94,7 +96,9 @@
   --chart-4: oklch(0.5 0.1 235);   /* Darker Blue */
   --chart-5: oklch(0.8 0.1 150);   /* Lighter Green */
   
-  --radius: 0.5rem;
+  /* Square corners throughout — the same shape language as the buttons.
+     Circles (avatars, the WhatsApp button) set their own radius. */
+  --radius: 0rem;
   
   --background: oklch(0.99 0 0); /* White/Near White */
   --foreground: oklch(0.2 0.02 260); /* Dark Gray/Black */
@@ -190,7 +194,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', 'Lato', sans-serif;
+    font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
