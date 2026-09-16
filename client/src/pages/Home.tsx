@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Brain, CheckCircle2, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Brain, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { Link } from "wouter";
 import { PILLARS, servicesInPillar, type ServicePillar } from "@shared/services";
 import { BLOG_ARTICLES } from "@shared/seo";
@@ -431,23 +431,17 @@ function HeroSection() {
 }
 
 /**
- * A worked engagement: situation, work delivered, outcome.
+ * A worked engagement, reduced to its outcome. The situation and the work that
+ * produced it belong to the full case study the button points at.
  *
  * PLACEHOLDER. Every figure, quotation and attribution below is invented to
- * hold the shape of the section. It must be replaced with a real engagement —
- * with the client's written permission to name them, or anonymised with their
- * agreement — before this page is published. The review notice is deliberately
- * visible so it cannot go live unnoticed.
+ * hold the shape of the section, as is the photograph. It must be replaced with
+ * a real engagement — with the client's written permission to name them, or
+ * anonymised with their agreement — before this page is published. The review
+ * notice is deliberately visible so it cannot go live unnoticed.
  */
 const CASE_EXAMPLE = {
   client: "A family-owned manufacturer, 140 staff, Greater Cairo",
-  situation:
-    "Every purchase order, contract and hire still needed the founder's signature. A bank reviewing a facility asked how decisions were authorised and recorded, and there was no document that answered.",
-  work: [
-    "Mapped how decisions were actually being taken, against how the shareholders believed they were.",
-    "Wrote a delegation of authority matrix: who decides what, to which financial limit, and on what record.",
-    "Set the board calendar, the standing agenda and the minute format the bank expected to see.",
-  ],
   outcome: [
     { figure: "3 of 4", label: "decision types moved off the founder's desk" },
     { figure: "11 weeks", label: "from first conversation to the board adopting the matrix" },
@@ -468,9 +462,11 @@ function CaseExampleSection() {
           </p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             This engagement is invented, including every figure and the quotation. The
-            photograph is generated, not a real client. Replace it all with a real engagement —
-            named with the client&rsquo;s written permission, or anonymised with their agreement —
-            before this page goes live. Internal review note.
+            photograph is generated, not a real client. &ldquo;Read the full case study&rdquo;
+            has nowhere to go yet — it points at the contact page until a case study page
+            exists. Replace it all with a real engagement, named with the client&rsquo;s written
+            permission or anonymised with their agreement, before this page goes live. Internal
+            review note.
           </p>
         </div>
 
@@ -499,44 +495,28 @@ function CaseExampleSection() {
             />
           </div>
 
-          <div className="space-y-8">
-            <div className="space-y-3">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                The situation
-              </p>
-              <p className="leading-relaxed text-muted-foreground">{CASE_EXAMPLE.situation}</p>
-            </div>
-
-            <div className="space-y-3">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                The work
-              </p>
-              <ul className="space-y-3">
-                {CASE_EXAMPLE.work.map((item) => (
-                  <li key={item} className="flex gap-3 leading-relaxed text-muted-foreground">
-                    <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-3 border-t border-border pt-6">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                The outcome
-              </p>
-              <dl className="grid gap-5 sm:grid-cols-3">
-                {CASE_EXAMPLE.outcome.map((result) => (
-                  <div key={result.label}>
-                    <dt className="font-heading text-2xl font-bold leading-tight text-primary">
-                      {result.figure}
-                    </dt>
-                    <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                      {result.label}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+          {/* The outcome alone, stacked. The situation and the work that
+              produced it are the subject of the full case study. */}
+          <div className="flex flex-col justify-center gap-8">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              The outcome
+            </p>
+            <dl className="divide-y divide-border border-y border-border">
+              {CASE_EXAMPLE.outcome.map((result) => (
+                <div key={result.label} className="py-5">
+                  <dt className="font-heading text-3xl font-bold leading-tight text-primary">
+                    {result.figure}
+                  </dt>
+                  <dd className="mt-1 leading-relaxed text-muted-foreground">{result.label}</dd>
+                </div>
+              ))}
+            </dl>
+            <div>
+              <Link href="/contact">
+                <Button size="lg">
+                  Read the full case study <ArrowRight className="ml-1 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
