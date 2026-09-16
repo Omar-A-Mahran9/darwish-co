@@ -49,6 +49,23 @@ const navItems: NavItem[] = [
  * - If we're already on the target page, scrolls directly to the anchor.
  * - If we're on a different page, navigates there and lets useHashScroll handle the scroll.
  */
+/**
+ * True once the page has scrolled past `threshold`. Used to let the header sit
+ * transparently over the homepage hero and pick up a background after a scroll.
+ */
+function useScrolled(threshold = 24) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > threshold);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
+
+  return scrolled;
+}
+
 function useHashNav() {
   const [location, navigate] = useLocation();
 
@@ -142,6 +159,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
   const go = useHashNav();
+  const scrolled = useScrolled();
+
+  // Only the homepage opens with a hero the header can sit on top of. Every
+  // other page starts with a solid coloured band, so the header keeps its
+  // background there from the first pixel.
+  const overHero = location === "/" && !scrolled && !isMenuOpen;
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -152,11 +175,32 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col font-body bg-background text-foreground">
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-28 items-center justify-between">
+      <header
+        className={cn(
+          "sticky top-0 z-50 w-full transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300",
+          overHero
+            ? "border-b border-transparent bg-transparent"
+            : "border-b border-border/40 bg-background/70 shadow-sm backdrop-blur-xl supports-[backdrop-filter]:bg-background/60",
+        )}
+      >
+        <div
+          className={cn(
+            "container flex items-center justify-between transition-[height] duration-300",
+            overHero ? "h-24" : "h-20",
+          )}
+        >
           <Link href="/">
             <div className="flex items-center space-x-2 cursor-pointer">
-              <img src="/images/logo-horizontal.webp" alt="Darwish & Co." className="h-24 w-auto object-contain" />
+              <img
+                src="/images/logo-horizontal.webp"
+                alt="Darwish & Co."
+                width={887}
+                height={192}
+                className={cn(
+                  "w-auto object-contain transition-[height] duration-300",
+                  overHero ? "h-12 sm:h-16" : "h-11 sm:h-14",
+                )}
+              />
             </div>
           </Link>
 
@@ -180,7 +224,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               )
             )}
-            <Link href="/client-login"><span className="cursor-pointer text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Client Login</span></Link>
+            <Link href="/client-login"><span className="cursor-pointer whitespace-nowrap text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Client Login</span></Link>
             <Link href="/contact">
               <Button variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 font-heading">
                 Book a consultation
@@ -268,7 +312,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">{children}</main>
+      {/*
+        On the homepage the hero slides up behind the transparent header so the
+        header sits over it. Every other page keeps its normal offset.
+      */}
+      <main className={cn("flex-1", location === "/" && "-mt-24")}>{children}</main>
 
       {/* Floating WhatsApp Button */}
       <a
