@@ -22,100 +22,6 @@ const PARTNER_LOGOS = [
   { href: "https://in-light.tech",        src: "/images/partners/inlight.webp",           alt: "In Light" },
 ];
 
-// ─── Liquid-glass navbar ────────────────────────────────────────────────────
-function GlassNavbar() {
-  return (
-    <div
-      className="sticky top-[30px] z-50 mx-auto w-fit"
-      style={{ fontFamily: "'Inter', sans-serif" }}
-    >
-      <nav
-        style={{
-          backdropFilter: "blur(50px)",
-          WebkitBackdropFilter: "blur(50px)",
-          background: "rgba(255,255,255,0.3)",
-          borderRadius: "16px",
-          border: "1px solid rgba(0,0,0,0.1)",
-          boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.25)",
-          padding: "10px 20px",
-          display: "flex",
-          alignItems: "center",
-          gap: "32px",
-        }}
-      >
-        {/* Logo */}
-        <Link href="/">
-          <span
-            className="flex items-center gap-2 cursor-pointer select-none"
-            style={{ fontFamily: "'Fustat', sans-serif", fontWeight: 700, fontSize: "18px", color: "#111" }}
-          >
-            <img src="/images/logo-horizontal.webp" alt="Darwish & Co." className="h-14 w-auto object-contain" />
-          </span>
-        </Link>
-
-        {/* Nav links — hidden on mobile */}
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-          {[
-            { label: "Strategy", href: "/services/strategy-execution" },
-            { label: "Services", href: "/services" },
-            { label: "Projects", href: "/projects" },
-            { label: "Partners", href: "/partners" },
-            { label: "Blog", href: "/blog" },
-          ].map((item) => (
-            <Link key={item.href} href={item.href}>
-              <span className="hover:text-gray-900 transition-colors duration-150 cursor-pointer">
-                {item.label}
-              </span>
-            </Link>
-          ))}
-          <Link href="/client-login" className="hover:text-gray-900 transition-colors duration-150">Client Login</Link>
-        </div>
-
-        {/* Sign-up / CTA button */}
-        <Link href="/contact">
-          <button
-            style={{
-              background: "rgba(0,132,255,0.85)",
-              backdropFilter: "blur(2px)",
-              WebkitBackdropFilter: "blur(2px)",
-              borderRadius: "12px",
-              border: "none",
-              boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.35)",
-              color: "#fff",
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 500,
-              fontSize: "14px",
-              padding: "8px 18px",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              cursor: "pointer",
-              transition: "transform 200ms ease, opacity 200ms ease",
-            }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.02)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
-          >
-            Book a consultation
-            <span
-              style={{
-                background: "rgba(255,255,255,0.25)",
-                borderRadius: "50%",
-                width: "22px",
-                height: "22px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ArrowRight size={12} strokeWidth={2.5} />
-            </span>
-          </button>
-        </Link>
-      </nav>
-    </div>
-  );
-}
-
 // ─── Floating animated logo composition — hub-and-spoke orbital (rAF) ───────
 // Each satellite orbits at a fixed radius. The wrapper rotates; the img counter-rotates
 // so it always faces upright. Positions calculated with trigonometry each frame.
@@ -292,11 +198,6 @@ function HeroSection() {
 
       {/* Content wrapper */}
       <div className="relative z-10 flex flex-col" style={{ minHeight: "100vh" }}>
-        {/* Navbar */}
-        <div className="pt-6 px-4">
-          <GlassNavbar />
-        </div>
-
         {/* Hero body */}
         <div className="flex-1 flex items-center">
           <div className="container mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-16 lg:py-24">
