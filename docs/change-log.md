@@ -5,6 +5,75 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 9 — A design review: one visual language, and a homepage that shows the work
+
+**Commits:** `1a34aab`, `7a4743b`, `2cabcde` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Checks:** TypeScript passes · 39 tests pass · built site checked at 375, 900, 1024, 1280 and 1440 pixels wide · all sixteen pages still written out in full
+
+This entry covers a round of design and layout fixes, most of them raised in a design review
+of the site. It changes how the site looks and how the homepage is ordered. It does not change
+what the site claims — the positioning wording is untouched and still awaiting sign-off.
+
+### The new logo and the header
+
+| Change | Detail |
+|---|---|
+| New logo | The supplied file was a large image on a solid white background wrapped in a vector file. It was rebuilt with a genuinely transparent background and reduced from 980 KB to 43 KB, so it can sit over a transparent header without a white box behind it |
+| The header now sits over the homepage picture | Transparent to begin with, picking up a blurred translucent background once the visitor scrolls. Every other page keeps a solid header from the first pixel, because those pages open on a coloured band |
+| One logo size, one bar height | Both were growing at wider windows and shrinking on scroll, so the logo appeared to jump. They are now fixed, with a clear gap between the logo and the first menu item |
+
+### The header no longer breaks at tablet width
+
+The review found the header failing at around 1000 pixels wide: the logo squeezed to nothing,
+"Client Login" wrapped onto two lines, and the "Book a consultation" button was cut off. The
+row was overflowing the screen by 89 pixels.
+
+The compact menu now takes over below 1024 pixels instead of 768, the logo can no longer be
+squeezed, and Client Login — a utility, not a destination — is the first thing to leave the
+row when space is short. It remains in the menu and the footer at every width.
+
+### One typography pairing and one button system
+
+The review counted four typefaces and two visual styles competing on the same page: a modern
+look in the top section, an editorial one below it.
+
+| Change | Detail |
+|---|---|
+| Two typefaces, not four | Playfair Display for headings, Inter for everything else. Fustat and Lato are gone |
+| One button | Square, one weight, no glow. The one-off glowing button in the top section has been replaced by the standard one |
+| Square corners throughout | Cards, form fields and menus now match the buttons |
+
+### The first screen on a phone
+
+On a phone the first screen was almost entirely the animated graphic; the headline began
+roughly 745 pixels below the top, out of sight. The headline, the explanation and the
+consultation button now come first, and the graphic is scaled down and follows them. On a
+desktop screen the arrangement is unchanged.
+
+### The homepage now shows what an engagement achieves
+
+Two things the review asked for, and one it asked to remove:
+
+| Change | Detail |
+|---|---|
+| A worked engagement, after the partner network | Situation, work delivered, outcome, and a quotation. **The example is invented** — see the note below |
+| Three named consultants, above the articles | The section previously called "the people behind the work" showed a photograph of a meeting and two links. It now names three consultants with their roles and expertise, taken from the consultants page |
+| The client-login section removed | The page had four competing endings. Client access is now a link in the menu and the footer; booking a consultation is the clear final action |
+
+### Two things on the page are marked as unfinished
+
+Both carry a visible amber notice on the page itself, so neither can be published unnoticed:
+
+- **The worked engagement is invented**, including every figure and the quotation. It holds the
+  shape of the section. It must be replaced with a real engagement — named with the client's
+  written permission, or anonymised with their agreement.
+- **The three consultants have no photographs.** Their names, roles and expertise are the real
+  ones. The portraits are initials, because no photographs have been supplied. Generated
+  portraits were not used: an invented face attached to a real person's name is a
+  misrepresentation, not a placeholder.
+
+---
+
 ## Entry 8 — Pages are now readable without JavaScript
 
 **Commit:** `cae3d30` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
