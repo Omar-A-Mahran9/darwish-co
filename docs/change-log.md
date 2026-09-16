@@ -41,7 +41,11 @@ it can actually *work*.
 `docs/entity-facts.md` is the new single record of what the site publishes, what it
 publishes only as visible text, and what is withheld and why. The fastest wins:
 
-1. **Who leads each service.** Still the largest gap — no page names anyone.
+1. **Who leads each service.** Every service page and every card on the services page now
+   carries a visible **"needs delivery lead"** notice, marked as an internal review note.
+   Send a name and role per service and the notice is replaced by a proper "Who leads this"
+   section. The notice is deliberately kept out of the machine-readable data — a service
+   record says nothing about people rather than asserting someone.
 2. **Does the LinkedIn company page belong to you?** One line restores it as a confirmed identity link.
 3. **Which address is registered and which is the office?** The agreement says Capital Mall; the site says RIO Mall.
 4. **Engagement terms** — length, pricing model, response time. Without them the "how an engagement works" page cannot be written.
