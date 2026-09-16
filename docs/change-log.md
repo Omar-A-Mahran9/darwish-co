@@ -7,7 +7,7 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ## Entry 10 — The case example and the consultants, finished
 
-**Commits:** `5d4b2a3`, `9d01bce`, `31f92ff`, `7248e4e` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Commits:** `5d4b2a3`, `9d01bce`, `31f92ff`, `7248e4e`, `5112186` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
 **Checks:** TypeScript passes · 39 tests pass · checked at 375, 1024, 1280, 1440 and 1600 pixels wide
 
 This entry finishes the two sections added in Entry 9, and records a decision about how
@@ -24,8 +24,10 @@ unfinished material is marked.
 
 ### The consultants
 
-Three supplied portraits replace the initials, each filling the top of its card. The names,
-roles and expertise remain the verified ones from the consultants page.
+Three supplied portraits replace the initials. They are shown as 96-pixel circles at the top
+of each card — full-width squares were tried first and filled most of the screen. The image
+files were regenerated from the originals at that size: 6–8 KB each, against 1.8 MB for each
+original. The names, roles and expertise remain the verified ones from the consultants page.
 
 ### What is generated, and what is real
 
@@ -490,11 +492,12 @@ Every image on the site was loaded from two external stores belonging to the cur
 | 16 Sep 2026 | The v3 positioning document was rebuilt after the original was lost | `docs/positioning.md`, commit `8330fa4` |
 | 16 Sep 2026 | The office address, phone, WhatsApp, hours and map link stay published exactly as they are | `docs/entity-facts.md` §2, commit `1e91e17` |
 
-### The four documents
+### The documents
 
 | Document | What it is for |
 |---|---|
 | `docs/change-log.md` | This file. Every change to the website, one entry per piece of work, newest first |
+| `docs/where-we-are.md` | The summary for the founder: everything changed and what it is worth, then what is left, what needs a decision, and the open questions |
 | `docs/positioning.md` | The agreed positioning, services and content plan. Reconstructed; ⚠️ marks wording rebuilt from memory |
 | `docs/entity-facts.md` | The single record of company facts: what publishes, what is visible text only, and what is withheld until confirmed |
 | `docs/services-copy-review.md` | The service-page wording that needs confirming, and the facts the pages deliberately do not state |
