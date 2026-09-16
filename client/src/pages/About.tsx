@@ -11,7 +11,7 @@ export default function About() {
             About Darwish &amp; Co.
           </h1>
           <p className="text-xl max-w-2xl mx-auto text-primary-foreground/80">
-            Strategic Management &amp; GRC Consulting for SMEs in the MENA Region
+            Governance and management consultancy for SMEs in the MENA region
           </p>
         </div>
       </section>
@@ -41,18 +41,17 @@ export default function About() {
                 Who We Are
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Darwish &amp; Co. is a specialised <strong>business consulting firm</strong> dedicated
-                to empowering Small and Medium-sized Enterprises (SMEs) with expert guidance in{" "}
-                <strong>Governance, Risk, and Compliance (GRC)</strong>,{" "}
-                <strong>Human Resources (HR)</strong>, and{" "}
-                <strong>strategic management</strong>. Based in Egypt and serving clients across the
-                MENA region, we combine deep regional knowledge with international best practice.
+                Darwish &amp; Co. is a <strong>governance and management consultancy</strong> based in{" "}
+                <strong>New Cairo, Egypt</strong>, for Small and Medium-sized Enterprises in the MENA
+                region. We help you build the governance, controls and growth strategy that
+                investors, major clients and regulators expect.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Our team of certified consultants brings hands-on experience in{" "}
-                <strong>compliance advisory</strong>, organisational design, talent acquisition,
-                digital marketing strategy, and market research — giving SMEs access to the same
-                calibre of expertise typically reserved for large corporations.
+                The work covers <strong>corporate and family governance</strong>,{" "}
+                <strong>risk, compliance and integrity</strong>,{" "}
+                <strong>strategy and execution</strong>, <strong>people and organisation</strong>,
+                and <strong>growth and market entry</strong>. Where a service is delivered with a
+                partner firm, the service page says so and names who is accountable for what.
               </p>
             </div>
             <div className="relative h-80 rounded-xl overflow-hidden shadow-xl">
@@ -72,16 +71,16 @@ export default function About() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                title: "Strategic Management",
-                body: "We design performance systems, balanced scorecards, and organisational strategies that align your people, processes, and goals — driving sustainable growth across the MENA market.",
+                title: "Governance",
+                body: "Decision rights, delegation of authority, board and committee structures and family governance — and the risk, compliance and integrity work that evidences them to a client, a lender or a regulator.",
               },
               {
-                title: "GRC Consulting",
-                body: "From governance frameworks and risk registers to regulatory compliance programmes, we help SMEs build resilient structures that satisfy regulators and protect long-term value.",
+                title: "Strategy & Organisation",
+                body: "A strategy the organisation runs monthly, with owners and measures against it, and a structure, job architecture and people system that hold as the company grows.",
               },
               {
-                title: "HR & People Advisory",
-                body: "Our HR consulting services cover talent acquisition, job architecture, HR policy design, and workforce planning — tailored to the cultural and regulatory landscape of Egypt and the Gulf.",
+                title: "Growth",
+                body: "Market readiness, demand validation and partner selection, with the governance and compliance prerequisites a new market expects handled before entry rather than after.",
               },
             ].map((item) => (
               <div
@@ -100,15 +99,15 @@ export default function About() {
               Our Mission: Strategic Clarity at the Right Moment
             </h3>
             <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              We understand that SMEs face critical decision points where the right advice defines their
-              future trajectory. Our mission is to be present at those pivotal moments — providing the
-              clarity, direction, and <strong>strategic management expertise</strong> you need to
-              navigate regulations, manage risks, and build a thriving workforce across the MENA region.
+              SMEs reach decision points where the right advice changes what happens next: an investor
+              asking how decisions are made, a major client sending a compliance questionnaire, a
+              founder who can no longer sign everything. Our work is to be useful at those moments —
+              with the governance, controls and growth strategy that make the answer defensible.
             </p>
             <div className="pt-4">
               <Link href="/contact">
                 <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  Work With Us
+                  Book a consultation
                 </Button>
               </Link>
             </div>

@@ -72,6 +72,11 @@ export type Service = {
   icon: string;
   /** Set when the service is delivered with a partner firm. */
   partner?: { name: string; url: string; note: string; accountability: string };
+  /**
+   * Points at the other half of a service that used to be one page, so a
+   * visitor arriving from the single old address can reach what they wanted.
+   */
+  relatedNote?: { text: string; linkText: string; href: string };
   /** Figures a partner publishes about its own capability. */
   stats?: { value: string; label: string }[];
   offerings: ServiceOffering[];
@@ -117,6 +122,11 @@ export const SERVICES: Service[] = [
     tagline: "Clear decision rights, so the company no longer waits on one person.",
     intro:
       "In most owner-led companies, authority was never written down — it accumulated. That works until the volume of decisions outgrows the person making them, or until someone outside asks how the company is actually governed. This work sets out who decides what, within which limits, and on what record.",
+    relatedNote: {
+      text: "Risk assessment, anti-bribery programmes and compliance evidence are covered separately.",
+      linkText: "Risk, Compliance & Integrity",
+      href: "/services/risk-compliance-integrity",
+    },
     metaTitle: "Corporate & Family Governance for Owner-Led SMEs | Darwish & Co",
     metaDescription:
       "Decision rights, delegation of authority, board and committee structures and family governance for owner-led SMEs in Egypt and the MENA region.",
@@ -195,6 +205,11 @@ export const SERVICES: Service[] = [
     tagline: "Evidence that your company can be trusted by clients, regulators and investors.",
     intro:
       "Compliance is judged on what you can demonstrate, not on what you intended. When a multinational client sends a questionnaire, or a partner asks about anti-bribery controls, the answer has to be a document, a procedure and a record. This work builds them, and the anti-bribery elements are delivered with our partner VisionEthics.",
+    relatedNote: {
+      text: "Decision rights, board structures and family governance are covered separately.",
+      linkText: "Corporate & Family Governance",
+      href: "/services/corporate-family-governance",
+    },
     metaTitle: "Risk, Compliance & Integrity — Anti-Bribery & ISO 37001 | Darwish & Co",
     metaDescription:
       "Risk management, anti-bribery programmes, third-party due diligence and compliance controls for SMEs, with ISO 37001 support delivered with VisionEthics.",
@@ -755,8 +770,9 @@ export function servicesInPillar(pillar: ServicePillar): Service[] {
  * replaced them. Keys are paths; the server answers these with a 301 and the
  * hub handles the old `#anchor` form for links already in circulation.
  *
- * Digital Marketing was removed from the site entirely (positioning v3 §4), so
- * it points at the services hub rather than at a replacement that does not exist.
+ * Only genuine replacements are listed. Redirecting removed content to a hub or
+ * to an unrelated page to avoid a 404 is a soft 404, which search engines treat
+ * as a quality problem — see WITHDRAWN_SERVICES.
  */
 export const SERVICE_REDIRECTS: Record<string, string> = {
   // Slugs from the first split, 16 Sep 2026
@@ -766,7 +782,16 @@ export const SERVICE_REDIRECTS: Record<string, string> = {
   "/services/business-development": "/services/growth-market-entry",
   "/services/market-research": "/services/growth-market-entry",
   "/services/integrity-anti-corruption": "/services/risk-compliance-integrity",
-  "/services/digital-marketing": "/services",
+};
+
+/**
+ * Removed from the consulting offer with no replacement to redirect to.
+ * These answer 410 Gone: the content is withdrawn deliberately, and saying so
+ * is more accurate than implying a successor page exists.
+ */
+export const WITHDRAWN_SERVICES: Record<string, string> = {
+  "/services/digital-marketing":
+    "Digital marketing is no longer part of the Darwish & Co. consulting offer.",
 };
 
 /** Old single-page anchors (/services#grc) mapped to the page that replaced them. */

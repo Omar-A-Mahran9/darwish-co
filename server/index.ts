@@ -3,7 +3,7 @@ import fs from "fs";
 import { createServer } from "http";
 import path from "path";
 import { isKnownRoute } from "../shared/seo.js";
-import { SERVICE_REDIRECTS } from "../shared/services.js";
+import { SERVICE_REDIRECTS, WITHDRAWN_SERVICES } from "../shared/services.js";
 import { injectSeo } from "./seoHtml.js";
 import { fileURLToPath } from "url";
 import { sendGmailWebsiteRequestNotification } from "./gmailNotification.js";
@@ -472,31 +472,46 @@ async function startServer() {
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
 
+  // The shell is read once and reused: the SPA fallback and the withdrawn-page
+  // response both serve it with the metadata of the address that was asked for.
+  const indexHtmlPath = path.join(staticPath, "index.html");
+  let indexHtml: string | null = null;
+  const readShell = () => (indexHtml ??= fs.readFileSync(indexHtmlPath, "utf-8"));
+
   // Addresses that changed in the v3 service restructure keep their value by
   // answering with a permanent redirect rather than a 404.
   app.get("/services/:slug", (req, res, next) => {
-    const destination = SERVICE_REDIRECTS[`/services/${req.params.slug}`];
+    const path = `/services/${req.params.slug}`;
+
+    const destination = SERVICE_REDIRECTS[path];
     if (destination) return res.redirect(301, destination);
+
+    // Withdrawn with no successor. 410 says the page is deliberately gone,
+    // rather than redirecting to a hub and creating a soft 404.
+    const withdrawn = WITHDRAWN_SERVICES[path];
+    if (withdrawn) {
+      try {
+        return res.status(410).type("html").send(injectSeo(readShell(), path));
+      } catch (error) {
+        console.error("[SEO] Could not serve the withdrawn-page shell:", error);
+        return res.status(410).type("text/plain").send(withdrawn);
+      }
+    }
+
     return next();
   });
 
   app.use(express.static(staticPath, { index: false }));
 
-  // Client-side routing fallback. The shell is read once, then each request is
-  // served with the search and social metadata of the page it asked for, so
-  // crawlers that do not run JavaScript see the correct head.
-  const indexHtmlPath = path.join(staticPath, "index.html");
-  let indexHtml: string | null = null;
-
+  // Client-side routing fallback: every address is served the shell, carrying
+  // the metadata of the page it asked for, so crawlers that do not run
+  // JavaScript see the correct head.
   app.get("*", (req, res) => {
     try {
-      if (indexHtml === null) {
-        indexHtml = fs.readFileSync(indexHtmlPath, "utf-8");
-      }
       res
         .status(isKnownRoute(req.path) ? 200 : 404)
         .type("html")
-        .send(injectSeo(indexHtml, req.path));
+        .send(injectSeo(readShell(), req.path));
     } catch (error) {
       console.error("[SEO] Falling back to the unmodified shell:", error);
       res.sendFile(indexHtmlPath);

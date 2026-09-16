@@ -8,7 +8,12 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getService, PUBLISHED_SERVICES, SERVICE_REDIRECTS } from "@shared/services";
+import {
+  getService,
+  PUBLISHED_SERVICES,
+  SERVICE_REDIRECTS,
+  WITHDRAWN_SERVICES,
+} from "@shared/services";
 import { ACCENT, ServiceIcon } from "@/components/serviceStyles";
 import { ArrowLeft, ArrowRight, Check, ChevronRight, ExternalLink } from "lucide-react";
 
@@ -26,12 +31,24 @@ export default function ServiceDetail() {
 
   if (!service) {
     if (redirect) return null;
+
+    // A service withdrawn with no successor says so plainly. The server answers
+    // this address with 410, so it also leaves the index rather than lingering.
+    const withdrawn = params.slug ? WITHDRAWN_SERVICES[`/services/${params.slug}`] : undefined;
+
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 font-body">
-        <h1 className="font-heading text-3xl font-bold text-foreground">Service not found</h1>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 text-center font-body">
+        <h1 className="font-heading text-3xl font-bold text-foreground">
+          {withdrawn ? "This service is no longer offered" : "Service not found"}
+        </h1>
+        {withdrawn && (
+          <p className="max-w-lg leading-relaxed text-muted-foreground">
+            {withdrawn} The firm now works in governance, strategy and growth for SMEs.
+          </p>
+        )}
         <Link href="/services">
           <Button variant="outline">
-            <ArrowLeft className="mr-2 h-4 w-4" /> All services
+            <ArrowLeft className="mr-2 h-4 w-4" /> See what we do offer
           </Button>
         </Link>
       </div>
@@ -92,6 +109,17 @@ export default function ServiceDetail() {
           {service.partner && (
             <p className={`border-l-4 ${accent.border} bg-muted/30 py-4 pl-5 text-sm leading-relaxed text-muted-foreground`}>
               {service.partner.note}
+            </p>
+          )}
+          {service.relatedNote && (
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {service.relatedNote.text}{" "}
+              <Link href={service.relatedNote.href}>
+                <span className={`cursor-pointer font-bold ${accent.text} hover:underline`}>
+                  {service.relatedNote.linkText}
+                </span>
+              </Link>
+              .
             </p>
           )}
         </div>

@@ -7,7 +7,7 @@
  * side is what crawlers and AI assistants that do not run JavaScript see.
  */
 
-import { getService, PUBLISHED_SERVICES } from "./services.js";
+import { getService, PUBLISHED_SERVICES, WITHDRAWN_SERVICES } from "./services.js";
 
 export const SITE_URL = "https://www.darwish-co.com";
 export const SITE_NAME = "Darwish & Co.";
@@ -85,11 +85,18 @@ export const BLOG_ARTICLES = [
   },
 ] as const;
 
-const ORGANISATION_REFERENCE = {
-  "@type": "Organization",
-  name: SITE_NAME,
-  url: SITE_URL,
-};
+/**
+ * Points at the Organization record in index.html rather than restating it, so
+ * the site has one identity rather than a copy per page.
+ */
+const ORGANISATION_REFERENCE = { "@id": `${SITE_URL}/#organization` };
+
+/**
+ * Where work is delivered today. Not the target audience: the approved wording
+ * names SMEs in the MENA region as who the firm is for, which is a different
+ * claim from where it can deliver. Widen this only when coverage is confirmed.
+ */
+const AREA_SERVED = { "@type": "Country", name: "Egypt" };
 
 const STATIC_PAGES: Record<string, PageSeo> = {
   "/": page("/", {
@@ -99,7 +106,7 @@ const STATIC_PAGES: Record<string, PageSeo> = {
   "/about": page("/about", {
     title: "About Darwish & Co — Governance & Management Consultants | Egypt",
     description:
-      "An Egypt-based consultancy serving SMEs across MENA in governance, risk and compliance, human resources and strategic management. Meet the firm and its work.",
+      "A governance and management consultancy based in New Cairo, Egypt, for SMEs in the MENA region. What the firm does, how it works, and who delivers it.",
   }),
   "/services": page("/services", {
     title: "Consulting Services — Governance, Strategy & Growth for SMEs | Darwish & Co",
@@ -114,12 +121,12 @@ const STATIC_PAGES: Record<string, PageSeo> = {
   "/partners": page("/partners", {
     title: "Partners & Consultants — Our Senior Advisory Network | Darwish & Co",
     description:
-      "The consultants behind Darwish & Co.: senior advisers in governance, risk, compliance, finance, human resources and marketing across MENA and beyond.",
+      "The consultants behind Darwish & Co.: advisers in governance, risk and compliance, finance, human resources and organisational development.",
   }),
   "/corporate-partners": page("/corporate-partners", {
     title: "Corporate Partners & Licences | Darwish & Co",
     description:
-      "The organisations, institutions and licensing bodies Darwish & Co. cooperates with to deliver consulting and digital solutions across MENA and beyond.",
+      "The organisations and institutions Darwish & Co. works with, and what each of them delivers on an engagement.",
   }),
   "/blog": page("/blog", {
     title: "Insights on Governance, AI & Management | Darwish & Co Blog",
@@ -152,14 +159,15 @@ STATIC_PAGES["/services"].jsonLd = {
   })),
 };
 
-// The homepage carries the company-wide structured data.
-STATIC_PAGES["/"].jsonLd = {
+// The Organization and WebSite records live in index.html and are site-wide, so
+// the homepage adds nothing here. The About page states that it is the page
+// about the organisation, which is what disambiguates a similarly named company.
+STATIC_PAGES["/about"].jsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: SITE_NAME,
-  url: SITE_URL,
-  description: COMPANY_DESCRIPTION,
-  publisher: ORGANISATION_REFERENCE,
+  "@type": "AboutPage",
+  url: absolute("/about"),
+  name: "About Darwish & Co.",
+  mainEntity: ORGANISATION_REFERENCE,
 };
 
 function serviceSeo(slug: string): PageSeo | null {
@@ -179,19 +187,24 @@ function serviceSeo(slug: string): PageSeo | null {
           name: service.name,
           description: service.metaDescription,
           serviceType: service.name,
-          areaServed: "MENA",
+          areaServed: AREA_SERVED,
           url: canonical,
           // Partner-delivered work names the partner rather than implying it is ours.
-          provider: service.partner
+          provider: ORGANISATION_REFERENCE,
+          // A partner's capability is the partner's. It is published as a second
+          // named provider, never folded into Darwish & Co.'s own credentials.
+          ...(service.partner
             ? {
-                ...ORGANISATION_REFERENCE,
-                subOrganization: {
-                  "@type": "Organization",
-                  name: service.partner.name,
-                  url: service.partner.url,
-                },
+                provider: [
+                  ORGANISATION_REFERENCE,
+                  {
+                    "@type": "Organization",
+                    name: service.partner.name,
+                    url: service.partner.url,
+                  },
+                ],
               }
-            : ORGANISATION_REFERENCE,
+            : {}),
           hasOfferCatalog: {
             "@type": "OfferCatalog",
             name: service.name,
@@ -283,6 +296,15 @@ export function resolveSeo(pathname: string): PageSeo {
   if (path.startsWith("/services/")) {
     const service = serviceSeo(path.slice("/services/".length));
     if (service) return service;
+
+    if (WITHDRAWN_SERVICES[path]) {
+      return page(path, {
+        title: "This service is no longer offered | Darwish & Co",
+        description:
+          "Digital marketing is no longer part of the Darwish & Co. consulting offer. See the governance, strategy and growth services the firm provides today.",
+        robots: "noindex, nofollow",
+      });
+    }
   }
 
   if (path.startsWith("/blog/")) {

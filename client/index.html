@@ -33,81 +33,43 @@
     <!-- Canonical -->
     <link rel="canonical" href="https://www.darwish-co.com/" />
 
-    <!-- JSON-LD: Organization structured data -->
+    <!--
+      Site-wide identity. Fields are limited to what is verified: legal name and
+      form, founder and founding date, full address, registration identifiers,
+      review aggregates, partner relationships and external profiles are held
+      back until confirmed (docs/entity-facts.md). areaServed states delivery
+      today (Egypt), not the target audience.
+    -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Darwish & Co.",
-      "url": "https://www.darwish-co.com",
-      "logo": "https://www.darwish-co.com/images/logo.png",
-      "description": "Egypt-based governance and management consultancy for SMEs in the MENA region, covering governance, risk and compliance, strategy, people and growth.",
-      "areaServed": "MENA",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "url": "https://www.darwish-co.com/contact"
-      },
-      "sameAs": [
-        "https://www.linkedin.com/company/darwish-co"
-      ]
-    }
-    </script>
-
-    <!-- JSON-LD: Service structured data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "Darwish & Co. Consulting Services",
-      "itemListElement": [
+      "@graph": [
         {
-          "@type": "ListItem",
-          "position": 1,
-          "item": {
-            "@type": "Service",
-            "name": "Strategic Management Consulting",
-            "description": "Strategic planning, performance systems, and organisational design for MENA SMEs.",
-            "provider": { "@type": "Organization", "name": "Darwish & Co." },
-            "areaServed": "MENA"
+          "@type": "Organization",
+          "@id": "https://www.darwish-co.com/#organization",
+          "name": "Darwish & Co.",
+          "url": "https://www.darwish-co.com/",
+          "logo": "https://www.darwish-co.com/images/logo.png",
+          "description": "Darwish & Co. is a governance and management consultancy based in New Cairo, Egypt, for SMEs in the MENA region.",
+          "areaServed": { "@type": "Country", "name": "Egypt" },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "email": "info@darwish-co.com",
+            "url": "https://www.darwish-co.com/contact"
           }
         },
         {
-          "@type": "ListItem",
-          "position": 2,
-          "item": {
-            "@type": "Service",
-            "name": "Governance, Risk & Compliance (GRC)",
-            "description": "GRC frameworks and compliance advisory for growth-stage businesses in Egypt and the Gulf.",
-            "provider": { "@type": "Organization", "name": "Darwish & Co." },
-            "areaServed": "MENA"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "item": {
-            "@type": "Service",
-            "name": "Human Resources Consulting",
-            "description": "Strategic HR planning, talent acquisition, and HR compliance for MENA businesses.",
-            "provider": { "@type": "Organization", "name": "Darwish & Co." },
-            "areaServed": "MENA"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "item": {
-            "@type": "Service",
-            "name": "Market Research & Consumer Insights",
-            "description": "Consumer research, brand health tracking, and market entry studies across the MENA region.",
-            "provider": { "@type": "Organization", "name": "Darwish & Co." },
-            "areaServed": "MENA"
-          }
+          "@type": "WebSite",
+          "@id": "https://www.darwish-co.com/#website",
+          "url": "https://www.darwish-co.com/",
+          "name": "Darwish & Co.",
+          "publisher": { "@id": "https://www.darwish-co.com/#organization" }
         }
       ]
     }
     </script>
+
   </head>
 
   <body>

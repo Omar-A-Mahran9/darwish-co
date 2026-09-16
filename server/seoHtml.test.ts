@@ -7,6 +7,7 @@ import {
   PUBLISHED_SERVICES,
   SERVICE_REDIRECTS,
   SERVICES,
+  WITHDRAWN_SERVICES,
 } from "../shared/services.js";
 
 const SHELL = `<!doctype html>
@@ -118,12 +119,16 @@ describe("per-page metadata", () => {
 
     for (const service of partnered) {
       const html = injectSeo(SHELL, `/services/${service.slug}`);
+      // A partner is a second named provider, never folded into Darwish & Co.
       expect(html).toContain(`"name":"${service.partner!.name}"`);
-      expect(html).toContain('"subOrganization"');
+      expect(html).toContain(`"url":"${service.partner!.url}"`);
+      expect(html).not.toContain('"subOrganization"');
+      expect(html).not.toContain('"parentOrganization"');
     }
 
     for (const service of PUBLISHED_SERVICES.filter((entry) => !entry.partner)) {
-      expect(injectSeo(SHELL, `/services/${service.slug}`)).not.toContain('"subOrganization"');
+      const html = injectSeo(SHELL, `/services/${service.slug}`);
+      expect(html).toContain('"provider":{"@id":"https://www.darwish-co.com/#organization"}');
     }
   });
 
@@ -139,16 +144,23 @@ describe("per-page metadata", () => {
       "strategy",
     ]);
 
-    // Slugs from the first split, 16 Sep 2026.
+    // Slugs from the first split, 16 Sep 2026, that have a real successor.
     expect(Object.keys(SERVICE_REDIRECTS).sort()).toEqual([
       "/services/business-development",
-      "/services/digital-marketing",
       "/services/governance-risk-compliance",
       "/services/human-resources",
       "/services/integrity-anti-corruption",
       "/services/market-research",
       "/services/strategy-performance",
     ]);
+
+    // Withdrawn with no successor: answered as gone, never redirected to a hub.
+    expect(Object.keys(WITHDRAWN_SERVICES)).toEqual(["/services/digital-marketing"]);
+    for (const path of Object.keys(WITHDRAWN_SERVICES)) {
+      expect(SERVICE_REDIRECTS[path]).toBeUndefined();
+      expect(isKnownRoute(path)).toBe(false);
+      expect(resolveSeo(path).robots).toBe("noindex, nofollow");
+    }
 
     for (const destination of [
       ...Object.values(LEGACY_ANCHOR_REDIRECTS),
@@ -184,6 +196,22 @@ describe("per-page metadata", () => {
     );
     for (const service of PUBLISHED_SERVICES) {
       expect(sitemap).toContain(`https://www.darwish-co.com/services/${service.slug}</loc>`);
+    }
+  });
+
+  it("claims delivery in Egypt only, whatever the target audience", () => {
+    for (const service of PUBLISHED_SERVICES) {
+      const html = injectSeo(SHELL, `/services/${service.slug}`);
+      expect(html).toContain('"areaServed":{"@type":"Country","name":"Egypt"}');
+      expect(html).not.toContain('"areaServed":"MENA"');
+    }
+  });
+
+  it("references one organization record rather than restating it per page", () => {
+    const orgId = '"@id":"https://www.darwish-co.com/#organization"';
+    expect(injectSeo(SHELL, "/about")).toContain(orgId);
+    for (const service of PUBLISHED_SERVICES) {
+      expect(injectSeo(SHELL, `/services/${service.slug}`)).toContain(orgId);
     }
   });
 
