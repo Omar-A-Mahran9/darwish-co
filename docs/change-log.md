@@ -5,6 +5,52 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 6 — The site now says only what can be evidenced
+
+**Commit:** `da4a257` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Checks:** TypeScript passes · production build passes · 13 automated tests on this area · identity output and every redirect checked against the built server
+
+### The problem
+
+The entity map set a rule: every public claim should be traceable to a named person, a real
+work product or a published source. Measured against it, the site was still asserting
+things nobody had confirmed — and, in one place, confusing who the firm is *for* with where
+it can actually *work*.
+
+### What we changed
+
+| Change | Result |
+|---|---|
+| Separated audience from delivery | The site still says it is for SMEs in the MENA region, because that is who you serve. But the machine-readable "area served" now says **Egypt**, which is where delivery is evidenced. Claiming a region as a service area because it is the target is exactly what makes an AI assistant repeat something untrue |
+| One company record instead of one per page | Every page now points at a single identity record rather than restating the company. Search engines and AI assistants see one company, not eleven descriptions of it |
+| Partners are named as partners | A partner is published as a *second provider* of that service — not as part of Darwish & Co. The previous markup made VisionEthics look like a division of the firm |
+| Removed unconfirmed facts from the code | Legal name and form, registration number, founding year, founder, full postal address, the LinkedIn link and "certified consultants" are all held back until confirmed. Each is a one-line change once you answer |
+| Deleted a stale list of services | The page code still advertised the old service list, including two services that no longer exist |
+| The withdrawn service says so | `/services/digital-marketing` now answers "gone" with a short page explaining the service is no longer offered. Redirecting it to the services page would have told search engines a replacement exists when none does |
+| The two halves of the old governance page link to each other | One old address can only lead to one page, so each half points to the other |
+| About page rewritten | Approved wording, the three pillars, and "Book a consultation" |
+
+### Why it matters
+
+- **This is what the audit was actually about.** AI assistants repeated things about the business that were not true, partly because the site asserted them. Removing an unconfirmed claim is worth more than adding a true one.
+- **Withholding is reversible; a wrong claim is not.** Everything held back is recorded in one file with the reason, so confirming a fact is a small edit rather than a rewrite.
+- **"For SMEs in MENA" and "delivers across MENA" are different sentences.** The first is your positioning. The second is a capability claim, and it now waits for evidence.
+
+### What needs your confirmation
+
+`docs/entity-facts.md` is the new single record of what the site publishes, what it
+publishes only as visible text, and what is withheld and why. The fastest wins:
+
+1. **Who leads each service.** Still the largest gap — no page names anyone.
+2. **Does the LinkedIn company page belong to you?** One line restores it as a confirmed identity link.
+3. **Which address is registered and which is the office?** The agreement says Capital Mall; the site says RIO Mall.
+4. **Engagement terms** — length, pricing model, response time. Without them the "how an engagement works" page cannot be written.
+
+Note: the "4.9/5" rating and "200+ clients" figures the entity map flags were already
+removed in Entry 1, before this work began.
+
+---
+
 ## Entry 5 — The services now follow the agreed positioning
 
 **Commit:** `144d65b` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
