@@ -290,7 +290,7 @@ function HeroSection() {
 
       {/* Content wrapper. The top padding clears the header, which now sits over
           this section rather than above it. */}
-      <div className="relative z-10 flex flex-col pt-24" style={{ minHeight: "100vh" }}>
+      <div className="relative z-10 flex flex-col pt-20" style={{ minHeight: "100vh" }}>
         {/* Hero body */}
         <div className="flex-1 flex items-center">
           <div className="container mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-16 lg:py-24">

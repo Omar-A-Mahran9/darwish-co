@@ -183,12 +183,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             : "border-b border-border/40 bg-background/70 shadow-sm backdrop-blur-xl supports-[backdrop-filter]:bg-background/60",
         )}
       >
-        <div
-          className={cn(
-            "container flex items-center justify-between transition-[height] duration-300",
-            overHero ? "h-24" : "h-20",
-          )}
-        >
+        {/*
+          The bar keeps one height and the logo one size at every width: only the
+          background changes on scroll, so nothing shifts under the reader. The
+          gap keeps the logo clear of the first nav item.
+        */}
+        <div className="container flex h-20 items-center justify-between gap-10 lg:gap-16">
           <Link href="/">
             <div className="flex items-center space-x-2 cursor-pointer">
               <img
@@ -196,10 +196,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 alt="Darwish & Co."
                 width={887}
                 height={192}
-                className={cn(
-                  "w-auto object-contain transition-[height] duration-300",
-                  overHero ? "h-12 sm:h-16" : "h-11 sm:h-14",
-                )}
+                className="h-10 w-auto object-contain"
               />
             </div>
           </Link>
@@ -316,7 +313,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         On the homepage the hero slides up behind the transparent header so the
         header sits over it. Every other page keeps its normal offset.
       */}
-      <main className={cn("flex-1", location === "/" && "-mt-24")}>{children}</main>
+      <main className={cn("flex-1", location === "/" && "-mt-20")}>{children}</main>
 
       {/* Floating WhatsApp Button */}
       <a
