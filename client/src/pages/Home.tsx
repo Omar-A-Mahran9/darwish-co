@@ -629,27 +629,26 @@ export default function Home() {
 
           <div className="grid gap-8 md:grid-cols-3">
             {FEATURED_CONSULTANTS.map((person) => (
-              <div key={person.name} className="flex flex-col border-t-4 border-primary bg-white">
+              <div
+                key={person.name}
+                className="flex flex-col gap-4 border-t-4 border-primary bg-white p-8"
+              >
                 <img
                   src={person.photo}
-                  width={720}
-                  height={720}
+                  width={256}
+                  height={256}
                   loading="lazy"
                   decoding="async"
                   alt={person.name}
-                  className="aspect-square w-full object-cover"
+                  className="h-24 w-24 rounded-full object-cover"
                 />
-                <div className="flex flex-col gap-4 p-8">
-                  <div className="space-y-1">
-                    <h3 className="font-heading text-lg font-bold leading-tight text-foreground">
-                      {person.name}
-                    </h3>
-                    <p className="text-sm font-semibold text-primary">{person.role}</p>
-                  </div>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {person.expertise}
-                  </p>
+                <div className="space-y-1">
+                  <h3 className="font-heading text-lg font-bold leading-tight text-foreground">
+                    {person.name}
+                  </h3>
+                  <p className="text-sm font-semibold text-primary">{person.role}</p>
                 </div>
+                <p className="text-sm leading-relaxed text-muted-foreground">{person.expertise}</p>
               </div>
             ))}
           </div>
