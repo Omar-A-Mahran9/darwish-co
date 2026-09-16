@@ -5,6 +5,52 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 8 — Pages are now readable without JavaScript
+
+**Commit:** `cae3d30` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
+**Checks:** TypeScript passes · 39 tests pass · every page measured against the built server · browser checked for correct behaviour after the change
+
+### The problem
+
+This was the largest remaining finding in the audit, and the reason it kept being described
+as an "AI readiness" problem rather than a content problem.
+
+The website was assembled in the visitor's browser. The words did not exist in the page the
+server sent — they were added a moment later by code running in the browser. A person never
+notices. But most AI assistants read the page without running that code, so what they
+received was a correctly labelled, completely empty page.
+
+We measured it before the change. A service page arrived with **zero words** of body text.
+
+### What we changed
+
+Every public page is now written out in full when the site is built — sixteen finished pages
+sitting ready. The server hands over the complete page; the browser then takes over as before,
+so nothing changes for a human visitor.
+
+| Change | Result |
+|---|---|
+| Sixteen pages written out in advance | An AI assistant reading the raw page now receives the whole page |
+| The consultants page specifically | From 0 to 12,433 characters of readable text |
+| The consultants and partners pages now start from the verified list held in the site's own files | Their content is in the page from the first moment, and the brief empty flash while loading is gone |
+| Safe fallback | If any page fails to write, the site simply behaves as it did before for that page. Nothing breaks |
+| Removed an unnecessary address redirect | `/about` no longer bounces through `/about/` before loading |
+
+### Why it matters
+
+- **Everything built in the previous seven entries only becomes legible to AI assistants now.** The titles, descriptions, service pages, questions and answers were all correct — and all invisible to a reader that does not run JavaScript.
+- **Pages also arrive faster,** since there is nothing to assemble before the text appears.
+- **It works on the current hosting.** No platform change was needed.
+
+### Checked
+
+Every page carries its text · redirects from old addresses still work · the withdrawn service
+still reports as gone · unknown addresses still report as not found · titles, descriptions and
+addresses unchanged · the page still behaves correctly in the browser, with working menus and
+questions.
+
+---
+
 ## Entry 7 — The homepage now leads with governance
 
 **Commits:** `a1a6d0a` (duplicate navigation bar) · `0a6e414` (restructure) · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)
