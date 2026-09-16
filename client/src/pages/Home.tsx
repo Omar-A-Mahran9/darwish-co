@@ -483,7 +483,11 @@ function CaseExampleSection() {
         <div className="grid items-stretch gap-10 lg:grid-cols-2 lg:gap-14">
           {/* The picture stands for the invented client, and is a placeholder
               itself — see the review notice above. */}
-          <div className="relative min-h-[300px] lg:min-h-full">
+          {/* The picture is taken out of the flow so it cannot set the height of
+              the row: it fills whatever height the text beside it needs, and no
+              more. On a narrow screen there is no text beside it, so it keeps a
+              4:3 box of its own. */}
+          <div className="relative aspect-[4/3] lg:aspect-auto">
             <img
               src="/images/case-example.webp"
               width={1086}
@@ -491,7 +495,7 @@ function CaseExampleSection() {
               loading="lazy"
               decoding="async"
               alt=""
-              className="h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
 
