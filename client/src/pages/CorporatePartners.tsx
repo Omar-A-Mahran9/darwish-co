@@ -304,8 +304,12 @@ function CorporateCard({ cp }: { cp: CorporatePartner }) {
 }
 
 export default function CorporatePartners() {
-  const [items, setItems] = useState<CorporatePartner[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Start from the verified list held in this file rather than an empty loading
+  // state: it is what these pages fall back to anyway, it removes the skeleton
+  // flash, and it means the prerendered page carries the real content instead of
+  // a placeholder. A successful database response still replaces it below.
+  const [items, setItems] = useState<CorporatePartner[]>(VERIFIED_PARTNERS);
+  const [loading, setLoading] = useState(false);
   const [activeFilter, setActiveFilter] = useState<"all" | CorporatePartner["type"]>("all");
 
   useEffect(() => {

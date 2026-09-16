@@ -363,8 +363,12 @@ function PartnerCard({ partner }: { partner: Partner }) {
 }
 
 export default function Partners() {
-  const [partners, setPartners] = useState<Partner[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Start from the verified list held in this file rather than an empty loading
+  // state: it is what these pages fall back to anyway, it removes the skeleton
+  // flash, and it means the prerendered page carries the real content instead of
+  // a placeholder. A successful database response still replaces it below.
+  const [partners, setPartners] = useState<Partner[]>(VERIFIED_PARTNERS);
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
 
   useEffect(() => {

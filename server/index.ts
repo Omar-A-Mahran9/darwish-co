@@ -501,13 +501,44 @@ async function startServer() {
     return next();
   });
 
-  app.use(express.static(staticPath, { index: false }));
+  app.use(express.static(staticPath, { index: false, redirect: false }));
 
-  // Client-side routing fallback: every address is served the shell, carrying
-  // the metadata of the page it asked for, so crawlers that do not run
-  // JavaScript see the correct head.
+  /**
+   * Pages written to disk at build time by scripts/prerender.mjs. Serving one
+   * of these hands the visitor — or a crawler that never runs JavaScript — the
+   * finished page rather than an empty shell.
+   */
+  const prerendered = new Map<string, string>();
+
+  const readPrerendered = (pathname: string): string | null => {
+    const key = pathname.replace(/\/+$/, "") || "/";
+    const cached = prerendered.get(key);
+    if (cached !== undefined) return cached;
+
+    const file =
+      key === "/"
+        ? path.join(staticPath, "index.html")
+        : path.join(staticPath, key.slice(1), "index.html");
+
+    // Keep the lookup inside the build output, whatever the request contained.
+    if (!path.resolve(file).startsWith(path.resolve(staticPath))) return null;
+
+    try {
+      const html = fs.readFileSync(file, "utf-8");
+      prerendered.set(key, html);
+      return html;
+    } catch {
+      return null;
+    }
+  };
+
+  // Client-side routing fallback. A prerendered page is served when one exists;
+  // everything else gets the shell with the metadata of the address asked for.
   app.get("*", (req, res) => {
     try {
+      const page = readPrerendered(req.path);
+      if (page) return res.status(200).type("html").send(page);
+
       res
         .status(isKnownRoute(req.path) ? 200 : 404)
         .type("html")
