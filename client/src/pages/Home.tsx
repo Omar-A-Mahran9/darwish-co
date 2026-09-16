@@ -467,10 +467,10 @@ function CaseExampleSection() {
             Placeholder content
           </p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            This engagement is invented, including every figure, the quotation and the
-            photograph, which is a stock business image and not this client. Replace it with a
-            real one — named with the client&rsquo;s written permission, or anonymised with their
-            agreement — before this page goes live. Internal review note.
+            This engagement is invented, including every figure and the quotation. The
+            photograph is generated, not a real client. Replace it all with a real engagement —
+            named with the client&rsquo;s written permission, or anonymised with their agreement —
+            before this page goes live. Internal review note.
           </p>
         </div>
 
@@ -489,9 +489,9 @@ function CaseExampleSection() {
               itself — see the review notice above. */}
           <div className="relative min-h-[300px] lg:min-h-full">
             <img
-              src="/images/meeting-insight.webp"
-              width={1600}
-              height={893}
+              src="/images/case-example.webp"
+              width={1086}
+              height={1448}
               loading="lazy"
               decoding="async"
               alt=""
