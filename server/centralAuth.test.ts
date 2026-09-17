@@ -9,9 +9,10 @@ import {
 } from "./centralAuth";
 
 describe("central authorization helpers", () => {
-  it("allows only the two registered client portal origins", () => {
+  it("allows only the registered client portal origins", () => {
     expect(getPortalKeyForUrl("https://darwishhub-rs8nk5xu.manus.space")).toBe("darwish_hub");
     expect(getPortalKeyForUrl("https://nabtaquest-fvgnftnq.manus.space/")).toBe("nabta_quest");
+    expect(getPortalKeyForUrl("https://trainingsrv-jpszljho.manus.space/")).toBe("training_server");
     expect(getPortalKeyForUrl("https://untrusted.example.com")).toBeNull();
   });
 
@@ -20,6 +21,7 @@ describe("central authorization helpers", () => {
     expect(code).toHaveLength(43);
     expect(hashAuthorizationCode(code)).toMatch(/^[a-f0-9]{64}$/);
     expect(getCentralCallbackUrl("nabta_quest", code)).toBe(`https://nabtaquest-fvgnftnq.manus.space/central-auth/callback?code=${code}`);
+    expect(getCentralCallbackUrl("training_server", code)).toBe(`https://trainingsrv-jpszljho.manus.space/central-auth/callback?code=${code}`);
   });
 
   it("recognizes the three supported access roles and a short-lived code window", () => {

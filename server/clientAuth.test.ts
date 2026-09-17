@@ -4,6 +4,7 @@ import {
   hashClientPassword,
   MAX_CLIENT_LOGIN_ATTEMPTS,
   normalizeUsername,
+  validateClientCredential,
   validateClientPassword,
   validateClientUsername,
   validatePortalUrl,
@@ -21,6 +22,16 @@ describe("client credential security", () => {
   it("requires an adequate issued password", () => {
     expect(validateClientPassword("strong-password-2026")).toBeNull();
     expect(validateClientPassword("too-short")).toContain("12–128");
+  });
+
+  it("allows a six-digit PIN only for Training Server accounts", async () => {
+    expect(validateClientCredential("012345", "training_server")).toBeNull();
+    expect(validateClientCredential("12345", "training_server")).toContain("exactly six");
+    expect(validateClientCredential("12345a", "training_server")).toContain("exactly six");
+    expect(validateClientCredential("012345", "darwish_hub")).toContain("12–128");
+
+    const hash = await hashClientPassword("012345", "training_server");
+    await expect(verifyClientPassword("012345", hash)).resolves.toBe(true);
   });
 
   it("uses a salted password hash that verifies only the issued password", async () => {

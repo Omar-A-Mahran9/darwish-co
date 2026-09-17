@@ -370,3 +370,12 @@
 
 - [x] Count only failed sign-ins toward gateway rate limits and clear attempts after a valid login
 - [x] Mirror the correction in the development login route and add automated coverage
+
+## Training Server Central Access
+
+- [x] Locate the Training Server project source and assess its existing authentication flow: source is available at fouadarwish/training-needs-survey
+- [x] Register Training Server as a central gateway portal, including the database migration, fixed callback URL, account console option, and isolated six-digit numeric PIN policy
+- [x] Add Training Server source-level central callback, local session creation, and Owner/Editor/Viewer enforcement in GitHub
+- [ ] Apply the Training Server portal-role database migration and publish the source integration; the live callback currently returns 404
+- [ ] Issue three Training Server accounts with six-digit numeric passwords
+- [ ] Verify one-login routing and role hand-off for Training Server

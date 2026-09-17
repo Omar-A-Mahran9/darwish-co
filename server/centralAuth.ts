@@ -1,6 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
 
-export const PORTAL_KEYS = ["darwish_hub", "nabta_quest"] as const;
+export const PORTAL_KEYS = ["darwish_hub", "nabta_quest", "training_server"] as const;
 export type PortalKey = (typeof PORTAL_KEYS)[number];
 
 export const PORTAL_ROLES = ["owner", "editor", "viewer"] as const;
@@ -16,6 +16,11 @@ export const PORTAL_CONFIG: Record<PortalKey, { url: string; callbackPath: strin
     url: "https://nabtaquest-fvgnftnq.manus.space",
     callbackPath: "/central-auth/callback",
     label: "Nabta Quest",
+  },
+  training_server: {
+    url: "https://trainingsrv-jpszljho.manus.space",
+    callbackPath: "/central-auth/callback",
+    label: "Training Server",
   },
 };
 
