@@ -21,14 +21,22 @@ type NavItem = {
  * first guide publishes, so the menu never advertises a gap.
  */
 function insightsChildren(): { name: string; path: string }[] {
-  const guides = guidesIndexIsWorthHaving()
-    ? [{ name: "Guides", path: "/guides" }]
-    : PUBLISHED_GUIDES.filter((guide) => guide.kind === "hub").map((guide) => ({
-        name: guide.navLabel,
-        path: `/guides/${guide.slug}`,
-      }));
+  if (guidesIndexIsWorthHaving()) {
+    return [
+      { name: "Guides", path: "/guides" },
+      { name: "Articles", path: "/blog" },
+    ];
+  }
 
-  return [...guides, { name: "Articles", path: "/blog" }];
+  // With one guide published, name it. If that guide is a spoke written before
+  // its hub, the menu names the spoke rather than pointing at a hub that does
+  // not exist yet.
+  const single = PUBLISHED_GUIDES[0];
+
+  return [
+    ...(single ? [{ name: single.navLabel, path: `/guides/${single.slug}` }] : []),
+    { name: "Articles", path: "/blog" },
+  ];
 }
 
 const navItems: NavItem[] = [

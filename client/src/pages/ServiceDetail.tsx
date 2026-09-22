@@ -15,6 +15,7 @@ import {
   WITHDRAWN_SERVICES,
 } from "@shared/services";
 import { ACCENT, ServiceIcon } from "@/components/serviceStyles";
+import { guidesForService } from "@shared/guides";
 import { ArrowLeft, ArrowRight, Check, ChevronRight, ExternalLink } from "lucide-react";
 
 export default function ServiceDetail() {
@@ -56,6 +57,7 @@ export default function ServiceDetail() {
   }
 
   const accent = ACCENT[service.accent];
+  const guides = guidesForService(service.slug);
   const others = PUBLISHED_SERVICES.filter((entry) => entry.slug !== service.slug).slice(0, 3);
   const groups = service.offerings
     .map((offering) => offering.group ?? "")
@@ -327,6 +329,38 @@ export default function ServiceDetail() {
           </Accordion>
         </div>
       </section>
+
+      {/* Guides written about this work, where any are published */}
+      {guides.length > 0 && (
+        <section className="border-t border-border bg-secondary/20 py-16">
+          <div className="container space-y-6">
+            <h2 className="font-heading text-xl font-bold text-foreground">
+              Read this before you call
+            </h2>
+            <ul className="grid gap-6 md:grid-cols-2">
+              {guides.map((guide) => (
+                <li key={guide.slug}>
+                  <Link href={`/guides/${guide.slug}`}>
+                    <span className="group block cursor-pointer space-y-2 border-t-4 border-primary bg-white p-6">
+                      <span className="block font-heading text-lg font-bold leading-snug text-foreground group-hover:underline">
+                        {guide.title}
+                      </span>
+                      <span className="block text-sm leading-relaxed text-muted-foreground">
+                        {guide.summary}
+                      </span>
+                      {guide.artefact && (
+                        <span className="block text-sm font-semibold text-primary">
+                          {guide.artefact}
+                        </span>
+                      )}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* Call to action */}
       <section className="bg-primary py-16 text-primary-foreground">

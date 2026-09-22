@@ -1,4 +1,5 @@
 import { Link, useParams } from "wouter";
+import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -6,10 +7,120 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { getGuide, hubGuide, spokesOf } from "@shared/guides";
+import { getGuide, hubGuide, spokesOf, type GuideSection } from "@shared/guides";
 import { getService } from "@shared/services";
 import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import NotFound from "./NotFound";
+
+/**
+ * Renders the `[text](url)` links the guide text is written with. Nothing else
+ * in the text is treated as markup: the paragraphs are plain prose.
+ */
+function withLinks(text: string) {
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
+
+  return parts.map((part, index) => {
+    const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (!link) return part;
+
+    return (
+      <a
+        key={index}
+        href={link[2]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold text-primary underline underline-offset-2 hover:no-underline"
+      >
+        {link[1]}
+      </a>
+    );
+  });
+}
+
+/** One block of the guide: prose, then any points or table, then the rest. */
+function Section({ section }: { section: GuideSection }) {
+  const PointList = section.ordered ? "ol" : "ul";
+
+  return (
+    <section className="space-y-4">
+      <h2 className="font-heading text-2xl font-bold text-foreground">{section.heading}</h2>
+
+      {section.note && (
+        <p className="border-l-4 border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+          {section.note}
+        </p>
+      )}
+
+      {section.body.map((paragraph) => (
+        <p key={paragraph} className="leading-relaxed text-muted-foreground">
+          {withLinks(paragraph)}
+        </p>
+      ))}
+
+      {section.points && (
+        <PointList
+          className={cn(
+            "space-y-3 pl-5 text-muted-foreground",
+            section.ordered ? "list-decimal" : "list-disc",
+          )}
+        >
+          {section.points.map((point) => (
+            <li key={point.text} className="leading-relaxed">
+              {point.label && (
+                <strong className="font-semibold text-foreground">{point.label}:</strong>
+              )}{" "}
+              {withLinks(point.text)}
+            </li>
+          ))}
+        </PointList>
+      )}
+
+      {section.table && (
+        // Tables here carry the argument, so they stay readable rather than
+        // collapsing: on a narrow screen the table scrolls sideways on its own.
+        <div className="overflow-x-auto border border-border lg:-mx-16 lg:w-[calc(100%+8rem)]">
+          <table className="w-full min-w-[640px] border-collapse text-sm">
+            <thead>
+              <tr className="bg-secondary/40 text-left">
+                {section.table.headers.map((header) => (
+                  <th
+                    key={header}
+                    className="border-b border-border p-3 font-heading font-bold text-foreground"
+                  >
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {section.table.rows.map((row) => (
+                <tr key={row.join("|")} className="align-top">
+                  {row.map((cell, index) => (
+                    <td
+                      key={cell + index}
+                      className={cn(
+                        "border-b border-border p-3 leading-relaxed text-muted-foreground",
+                        index === 0 && "font-semibold text-foreground",
+                      )}
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {section.after?.map((paragraph) => (
+        <p key={paragraph} className="leading-relaxed text-muted-foreground">
+          {withLinks(paragraph)}
+        </p>
+      ))}
+    </section>
+  );
+}
 
 /**
  * One guide — the hub, or one of its spokes. The text comes from
@@ -58,7 +169,7 @@ export default function GuideDetail() {
       <header className="bg-primary py-16 text-primary-foreground">
         <div className="container max-w-3xl space-y-5">
           <span className="text-xs font-bold uppercase tracking-widest text-primary-foreground/70">
-            {guide.kind === "hub" ? "Guide" : "Part of the Governance Guide"}
+            {guide.kind === "hub" ? "Guide" : hub ? `Part of ${hub.navLabel}` : "Guide"}
           </span>
           <h1 className="font-heading text-3xl font-bold leading-tight md:text-4xl">
             {guide.title}
@@ -75,24 +186,18 @@ export default function GuideDetail() {
       {/* The guide itself */}
       <article className="py-16">
         <div className="container max-w-3xl space-y-12">
-          {guide.sections?.map((section) => (
-            <section key={section.heading} className="space-y-4">
-              <h2 className="font-heading text-2xl font-bold text-foreground">{section.heading}</h2>
-              {section.body.map((paragraph) => (
-                <p key={paragraph} className="leading-relaxed text-muted-foreground">
-                  {paragraph}
+          {guide.intro && (
+            <div className="space-y-4">
+              {guide.intro.map((paragraph) => (
+                <p key={paragraph} className="text-lg leading-relaxed text-foreground">
+                  {withLinks(paragraph)}
                 </p>
               ))}
-              {section.points && (
-                <ul className="space-y-2 border-l-2 border-primary/30 pl-5">
-                  {section.points.map((point) => (
-                    <li key={point} className="leading-relaxed text-muted-foreground">
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
+            </div>
+          )}
+
+          {guide.sections?.map((section) => (
+            <Section key={section.heading} section={section} />
           ))}
 
           {guide.faqs && guide.faqs.length > 0 && (

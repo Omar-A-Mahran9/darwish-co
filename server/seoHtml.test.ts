@@ -276,10 +276,12 @@ describe("per-page metadata", () => {
       expect(html).toContain('"@type":"BreadcrumbList"');
       expect(html).toContain('"@type":"Article"');
 
-      // A spoke says which guide it belongs to; the hub lists its spokes.
-      if (guide.kind === "spoke") {
-        expect(html).toContain('"isPartOf"');
-      }
+      // A spoke says which guide it belongs to — but only once that hub is
+      // itself published. A spoke written first must not point at a page that
+      // does not exist.
+      const hubPublished =
+        guide.kind === "spoke" && PUBLISHED_GUIDES.some((entry) => entry.slug === guide.hub);
+      expect(html.includes('"isPartOf"')).toBe(hubPublished);
     }
   });
 
