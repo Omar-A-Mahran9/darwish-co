@@ -59,6 +59,14 @@ export type Guide = {
   hub?: string;
   /** The opening paragraphs, before the first heading. */
   intro?: string[];
+  /**
+   * Who wrote the guide, and who checked it on the subject matter. Both are
+   * left unset until a real person is confirmed for each: a byline is a claim
+   * about a named individual, and an unnamed reviewer is not a review. The page
+   * shows nothing where these are absent rather than implying either.
+   */
+  author?: { name: string; role: string };
+  reviewedBy?: { name: string; role: string; date: string };
   /** ISO date, set when the guide is published. */
   datePublished?: string;
   /** Social sharing image. */
@@ -355,8 +363,30 @@ export const GUIDES: Guide[] = [
         heading: "Turning the questionnaire into a practical next step",
         body: [
           "Start with the response map: what the client asks, what exists, what supports it and who approves the answer. Use the gaps it reveals to prioritise the next piece of work, whether that is clearer documentation, consistent implementation or specialist advice.",
-          "Darwish & Co. is an Egypt-based governance and management consultancy for SMEs in the MENA region. For a business facing this situation, the relevant service area is Risk, Compliance & Integrity. A consultation can establish the challenge and whether the firm's available expertise fits the support required.",
+          "Darwish & Co. is an Egypt-based governance and management consultancy for SMEs in the MENA region. A first conversation can establish the challenge and whether the firm's available expertise fits the support required.",
         ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Does receiving a questionnaire mean the client suspects us?",
+        answer:
+          "No. A questionnaire can form part of supplier onboarding, a tender or a periodic review, and may reflect the client's supplier policy, obligations applicable to its business, or its approach to managing bribery risks. Receiving one does not, by itself, mean the client suspects misconduct.",
+      },
+      {
+        question: "What if we cannot meet the deadline?",
+        answer:
+          "Raise it with the client early, through the contact its instructions name for questions. An extension applies only if the client agrees to it, so do not assume one has been granted or let an unconfirmed extension hold up the parts of the response you can already complete.",
+      },
+      {
+        question: "Do we need ISO 37001 certification to respond?",
+        answer:
+          "Not automatically. ISO 37001:2025 concerns anti-bribery management systems, and its scope is broader than answering one client questionnaire. Some clients do require certification, and some require it from an accredited certification body. Confirm the precise requirement rather than assuming it, and keep readiness assessment, implementation support and independent certification distinct.",
+      },
+      {
+        question: "What if the honest answer is no?",
+        answer:
+          "Record the current position. A proposed policy or a scheduled action does not change today's answer, and a planned improvement should not be presented as a control already in place. Where the form allows an explanation, distinguish the documented position from the planned next step; where its response options cannot represent the facts accurately, ask the client how to record the qualification.",
       },
     ],
   },
@@ -393,6 +423,31 @@ export const GUIDES: Guide[] = [
 ];
 
 export const PUBLISHED_GUIDES = GUIDES.filter((guide) => guide.published);
+
+/**
+ * Reading time in whole minutes, counted from the guide's own text at 220 words
+ * a minute — the usual rate for considered prose. Counted rather than typed in,
+ * so it cannot drift away from the article after an edit.
+ */
+export function readingMinutes(guide: Guide): number {
+  const text = [
+    guide.title,
+    guide.summary,
+    ...(guide.intro ?? []),
+    ...(guide.sections ?? []).flatMap((section) => [
+      section.heading,
+      section.note ?? "",
+      ...section.body,
+      ...(section.points ?? []).flatMap((point) => [point.label ?? "", point.text]),
+      ...(section.table ? [...section.table.headers, ...section.table.rows.flat()] : []),
+      ...(section.after ?? []),
+    ]),
+    ...(guide.faqs ?? []).flatMap((faq) => [faq.question, faq.answer]),
+  ].join(" ");
+
+  const words = text.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}
 
 export function getGuide(slug: string): Guide | undefined {
   return PUBLISHED_GUIDES.find((guide) => guide.slug === slug);

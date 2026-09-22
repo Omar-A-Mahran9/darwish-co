@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { getGuide, hubGuide, spokesOf, type GuideSection } from "@shared/guides";
+import { getGuide, hubGuide, readingMinutes, spokesOf, type GuideSection } from "@shared/guides";
 import { getService } from "@shared/services";
 import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import NotFound from "./NotFound";
@@ -175,6 +175,27 @@ export default function GuideDetail() {
             {guide.title}
           </h1>
           <p className="text-lg leading-relaxed text-primary-foreground/85">{guide.summary}</p>
+          {/* Counted from the text itself, and the byline appears only where a
+              real person has been confirmed for it. */}
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-primary-foreground/70">
+            <span>{readingMinutes(guide)} min read</span>
+            {guide.author && (
+              <>
+                <span aria-hidden="true">·</span>
+                <span>
+                  {guide.author.name}, {guide.author.role}
+                </span>
+              </>
+            )}
+            {guide.reviewedBy && (
+              <>
+                <span aria-hidden="true">·</span>
+                <span>
+                  Reviewed by {guide.reviewedBy.name}, {guide.reviewedBy.role}
+                </span>
+              </>
+            )}
+          </p>
           {guide.artefact && (
             <p className="border-l-4 border-primary-foreground/40 pl-4 text-sm text-primary-foreground/85">
               <strong className="font-semibold">What you leave with:</strong> {guide.artefact}
