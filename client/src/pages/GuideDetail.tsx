@@ -193,7 +193,15 @@ export default function GuideDetail() {
     guide.kind === "spoke" && guide.hub
       ? spokesOf(guide.hub).filter((entry) => entry.slug !== guide.slug)
       : [];
-  const service = guide.relatedService ? getService(guide.relatedService) : undefined;
+  /**
+   * The promotional block at the foot of a guide is withheld until the service
+   * it promotes carries a named delivery lead. Without one, the service page
+   * itself still shows a "needs delivery lead" notice, and a guide should not
+   * send a reader to buy something the site has not yet evidenced. This is a
+   * hold pending confirmation, not a statement that the service does not exist.
+   */
+  const relatedService = guide.relatedService ? getService(guide.relatedService) : undefined;
+  const service = relatedService?.deliveryLead ? relatedService : undefined;
 
   return (
     <div className="font-body">

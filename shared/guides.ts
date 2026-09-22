@@ -79,15 +79,162 @@ export const GUIDES: Guide[] = [
   {
     slug: "governance-for-growing-smes",
     kind: "hub",
-    published: false,
+    published: true,
+    datePublished: "2026-09-22",
     title:
       "Governance for Growing SMEs: A Practical Guide for Owners in Egypt and the MENA Region",
     navLabel: "Governance Guide",
     metaTitle: "Governance for Growing SMEs — A Practical Guide | Darwish & Co",
     metaDescription:
-      "What governance means for a company of 50–300 people in Egypt and the MENA region: who decides what, to which limit, and on what record.",
+      "A practical guide for owners of SMEs in Egypt and the MENA region: decision rights, accountability, controls and review routines, with a nine-question check.",
     summary:
-      "What governance actually means at SME scale, the moments that make a company need it, and where to start.",
+      "What governance means in practice for an SME, the situations that make it urgent, and nine questions to find where to start.",
+    artefact: "A nine-question self-assessment",
+    intro: [
+      "Governance is the set of rules and habits that let a business make decisions it can stand behind: who is allowed to decide what, who is accountable for it, what checks catch problems, and how the business verifies over time that decisions are actually being made well. Reducing what lands on the owner's desk is one visible effect of that — not the definition of it.",
+      "Here is a question worth answering honestly before you read further: if you were unreachable for two weeks, which decisions in your business would simply stop happening? That question surfaces one situation — the founder bottleneck — not the whole picture. A business where nothing stops without the owner can still have no clear accountability, no real controls, and no review routine. Whatever your answer, the rest of this guide is about testing the other areas too.",
+    ],
+    sections: [
+      {
+        heading: "What governance actually means, practically",
+        body: [
+          "\u201CGovernance\u201D gets used to mean everything from a board charter to a values poster, which is part of why it is hard to act on. This guide works through four areas a growing SME can act on directly:",
+        ],
+        points: [
+          {
+            label: "Decision rights",
+            text: "who is allowed to decide what, and under what conditions.",
+          },
+          {
+            label: "Accountability",
+            text: "who explains, reports on and corrects a decision once it is made, and to whom.",
+          },
+          {
+            label: "Controls",
+            text: "the checks that catch a decision going wrong before it does damage, or that create a record afterwards.",
+          },
+          {
+            label: "Review routines",
+            text: "how the business checks, on a schedule, whether decisions are actually being made the way it intended.",
+          },
+        ],
+        after: [
+          "These four are where this guide goes into detail. They are not the whole of governance: setting the organisation's direction, the oversight a governing body or owner exercises over management, and the responsibilities the business owes its owners and other relevant stakeholders all sit alongside them. [ISO 37000:2021, Governance of organizations — Guidance](https://www.iso.org/standard/65036.html) sets out principles covering that wider ground, as do the [G20/OECD Principles of Corporate Governance](https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en.html) in their own context. Both are cited here as published reference points for the ideas, not as standards this guide certifies against or claims to implement.",
+          "None of the four areas requires a board, a constitution or an org chart redesign to start. A five-person business can have working decision rights; a fifty-person business can have none. Governance is a set of habits a business builds, not a size threshold it crosses.",
+        ],
+      },
+      {
+        heading: "Five situations that make this urgent",
+        body: [
+          "Governance work usually starts when something makes the gap visible. Five situations bring owners to this question.",
+        ],
+        points: [
+          {
+            label: "A founder bottleneck",
+            text: "decisions that could be closed elsewhere — a purchase, a discount, a hire — arrive with the owner, because no one else has been given authority to close them. It shows up in the owner's own calendar.",
+          },
+          {
+            label: "A customer requirement",
+            text: "a larger customer, during onboarding or a tender, asks for evidence of internal controls: an approval process, a conflicts-of-interest policy, records of how decisions get made. The business finds that practices it follows informally have no documented form, or that a documented policy is not the one being followed.",
+          },
+          {
+            label: "Investment",
+            text: "an investor's due diligence looks for decision rights, financial controls and clean records — not because governance is the product, but because it is how an outside party gauges whether the business can run without them in the room.",
+          },
+          {
+            label: "Financing",
+            text: "a bank or lender assessing a facility wants to see who approves what, particularly around financial commitments. Similar territory to investment diligence, usually narrower and focused on financial controls.",
+          },
+          {
+            label: "Succession",
+            text: "a founder planning to step back, formally or gradually, finds how much of the business's decision-making lived in their head rather than in any transferable structure — knowledge and relationships that were never written down, as much as rules that were never set.",
+          },
+        ],
+        after: [
+          "These are not mutually exclusive, and each draws on the same four areas — but not with the same weight. A customer questionnaire tests controls and records most directly. Investment and financing diligence concentrate on decision rights and financial controls. Succession exposes accountability, and knowledge the four areas describe but do not by themselves capture. Which area to start with depends on why you are here.",
+        ],
+      },
+      {
+        heading: "The four areas, one at a time",
+        points: [
+          {
+            label: "Decision rights",
+            text: "who can approve what, up to what limit, under what condition — and where it goes if that condition is not met. This is the most concrete of the four, and where the founder bottleneck sits most directly.",
+          },
+          {
+            label: "Accountability",
+            text: "decision rights work when accountability is attached to them: the person with authority to approve a purchase is also the person who explains it, reports on it and corrects course if it goes wrong. Authority is often delegated in passing — \u201Cjust check with Ahmed\u201D — without anyone being told they now own the responsibility, not only the approval.",
+          },
+          {
+            label: "Controls",
+            text: "the checks that catch problems before or after a decision: separation of duties, required records, approval thresholds, escalation routes. A control without a decision right behind it stays theoretical — a policy saying purchases over a set limit require approval means little if no one has been told they are the approver.",
+          },
+          {
+            label: "Review routines",
+            text: "a schedule for checking whether decisions are happening the way the business intended. A missed review is not visible the way a missed payment is: the distance between the rules on paper and what people actually do shows up only when someone looks.",
+          },
+        ],
+      },
+      {
+        heading: "A short self-assessment",
+        body: [
+          "Nine questions to answer for your own business, one area at a time. Each states a safeguard: yes means it is in place. No, partly, or you are not sure means there is something to look into — not that the business has a problem, and not a score to add up.",
+        ],
+        table: {
+          headers: ["Area", "The safeguard, as a question"],
+          rows: [
+            [
+              "Decision rights",
+              "Is someone other than you authorised to approve a routine purchase?\nDoes that authority carry a stated limit or condition, written down?\nIs there a named place the decision goes when that limit or condition is not met?",
+            ],
+            [
+              "Accountability",
+              "When a delegated decision goes wrong, is one named person responsible for explaining it and correcting it?\nHas each person holding approval authority been told explicitly that they hold it?",
+            ],
+            [
+              "Controls",
+              "Is a record created before a commitment is made, rather than only afterwards?\nDoes requesting, approving and paying for the same item involve more than one person, or an independent check where the team is too small for that?",
+            ],
+            [
+              "Review routines",
+              "Has anyone checked in the last quarter whether actual decisions match the rules on paper?\nIs there a defined way you would learn that a rule is being bypassed?",
+            ],
+          ],
+        },
+        after: [
+          "A single no is worth acting on by itself, and several yes answers elsewhere do not offset it. What to do about it depends on which question it is and why the answer is what it is: one business may need to build decision rights from nothing, another may have them written down but no control or review habit behind them. Name the specific decision or area the answer points to before deciding how to close it.",
+        ],
+      },
+      {
+        heading: "Where to go next",
+        body: [
+          "This guide is a map, not a manual. Each area has more depth than fits here.",
+          "[Delegation of Authority: How to Delegate Decisions Without Losing Oversight](/guides/delegation-of-authority) takes the decision-rights area in full: who may approve what, to which limit, on what record, and where a decision goes when a condition fails.",
+          "[What to Do When a Major Client Sends an Anti-Bribery Questionnaire](/guides/anti-bribery-questionnaire) covers what happens when the controls area becomes externally visible, and how to organise a response using evidence you already have.",
+          "A further guide on turning decision rights into a working monthly review is planned. A guide on setting rules for employee AI use will follow only if the delivery and review requirements for that subject are met.",
+        ],
+      },
+      {
+        heading: "What this guide is not",
+        points: [
+          {
+            label: "Governance advice is not legal work",
+            text: "building decision rights, accountability and controls is an operational and organisational discipline. It is not legal authority to bind the company, drafting binding corporate documents, or interpreting a specific legal or regulatory obligation. Those need a qualified legal adviser, and nothing here should be read as legal advice.",
+          },
+          {
+            label: "Governance is not certification",
+            text: "a business can have working decision rights, accountability and review routines without holding, or needing, any certification. Where anti-bribery management specifically is the subject, ISO 37001:2025 is the current edition of that standard.",
+          },
+          {
+            label: "A governance gap is not a verdict on the business",
+            text: "growing past informal decision-making is an ordinary transition for an expanding company. The self-assessment above is a starting point for that transition, not a scorecard.",
+          },
+        ],
+        after: [
+          "On certification, keep three activities distinct. Readiness assessment reviews the current position against the requirements; implementation support helps establish or improve the management system and controls; certification is an independent assessment against the specified requirements. The same adviser may provide both readiness and implementation support. Certification requires an independent assessment, and cannot be provided by the adviser who did that work. ISO develops standards and does not certify organisations. Accreditation is a separate matter again — it concerns the certification body's own competence, and is not universally compulsory, though a buyer may require an accredited certification. See [ISO's own certification guidance](https://www.iso.org/certification.html).",
+        ],
+      },
+    ],
   },
   {
     slug: "delegation-of-authority",
