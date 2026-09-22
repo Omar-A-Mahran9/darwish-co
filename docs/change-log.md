@@ -498,6 +498,7 @@ Every image on the site was loaded from two external stores belonging to the cur
 |---|---|
 | `docs/change-log.md` | This file. Every change to the website, one entry per piece of work, newest first |
 | `docs/where-we-are.md` | The summary for the founder: everything changed and what it is worth, then what is left, what needs a decision, and the open questions |
+| `docs/content-plan.md` | The publishing plan for the hub, the four spokes and the engagement page: what each must carry, the order, and what blocks each one |
 | `docs/positioning.md` | The agreed positioning, services and content plan. Reconstructed; ⚠️ marks wording rebuilt from memory |
 | `docs/entity-facts.md` | The single record of company facts: what publishes, what is visible text only, and what is withheld until confirmed |
 | `docs/services-copy-review.md` | The service-page wording that needs confirming, and the facts the pages deliberately do not state |
