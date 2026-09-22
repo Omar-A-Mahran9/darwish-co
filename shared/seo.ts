@@ -10,6 +10,8 @@
 import { getService, PUBLISHED_SERVICES, WITHDRAWN_SERVICES } from "./services.js";
 import {
   getGuide,
+  groupOf,
+  guideName,
   guidesIndexIsWorthHaving,
   PUBLISHED_GUIDES,
   spokesOf,
@@ -280,7 +282,8 @@ function guideSeo(slug: string): PageSeo | null {
   if (!guide) return null;
 
   const path = `/guides/${guide.slug}`;
-  const hub = guide.kind === "spoke" && guide.hub ? getGuide(guide.hub) : undefined;
+  const group = groupOf(guide.slug);
+  const hub = group && group.hub.slug !== guide.slug ? group.hub : undefined;
   const spokes = guide.kind === "hub" ? spokesOf(guide.slug) : [];
 
   const graph: Record<string, unknown>[] = [
@@ -306,22 +309,26 @@ function guideSeo(slug: string): PageSeo | null {
     },
     {
       "@type": "BreadcrumbList",
+      // The same trail the page shows: Home › Guides › this guide › this page.
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: absolute("/") },
+        ...(guidesIndexIsWorthHaving()
+          ? [{ "@type": "ListItem", position: 2, name: "Guides", item: absolute("/guides") }]
+          : []),
         ...(hub
           ? [
               {
                 "@type": "ListItem",
-                position: 2,
-                name: hub.navLabel,
+                position: guidesIndexIsWorthHaving() ? 3 : 2,
+                name: guideName(hub),
                 item: absolute(`/guides/${hub.slug}`),
               },
             ]
           : []),
         {
           "@type": "ListItem",
-          position: hub ? 3 : 2,
-          name: guide.navLabel,
+          position: (guidesIndexIsWorthHaving() ? 2 : 1) + (hub ? 2 : 1),
+          name: hub ? guide.navLabel : guideName(guide),
           item: absolute(path),
         },
       ],

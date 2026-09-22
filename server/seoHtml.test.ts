@@ -278,6 +278,10 @@ describe("per-page metadata", () => {
       expect(html).toContain('"@type":"BreadcrumbList"');
       expect(html).toContain('"@type":"Article"');
 
+      // The trail the page shows is the trail the structured data states:
+      // Home, then the library, then the guide, then the page.
+      expect(html).toContain('"name":"Guides"');
+
       // A spoke says which guide it belongs to — but only once that hub is
       // itself published. A spoke written first must not point at a page that
       // does not exist.

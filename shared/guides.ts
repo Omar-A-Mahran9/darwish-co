@@ -43,8 +43,15 @@ export type Guide = {
   published: boolean;
   /** Full title, used as the page heading. */
   title: string;
-  /** Short label for menus, cards and breadcrumbs. */
+  /** Short label for menus, breadcrumbs and guide navigation. */
   navLabel: string;
+  /**
+   * The name a guide is known by on the library card — the full title without
+   * its audience clause. Hubs set this; a topic page falls back to navLabel.
+   */
+  shortTitle?: string;
+  /** Who the guide is for, shown under the name on the library card. */
+  audience?: string;
   /** Browser tab and search-result title. */
   metaTitle: string;
   /** Search and social description, 50–160 characters. */
@@ -83,7 +90,9 @@ export const GUIDES: Guide[] = [
     datePublished: "2026-09-22",
     title:
       "Governance for Growing SMEs: A Practical Guide for Owners in Egypt and the MENA Region",
-    navLabel: "Governance Guide",
+    navLabel: "Overview",
+    shortTitle: "Governance for Growing SMEs",
+    audience: "A practical guide for owners of SMEs in Egypt and the MENA region",
     metaTitle: "Governance for Growing SMEs — A Practical Guide | Darwish & Co",
     metaDescription:
       "A practical guide for owners of SMEs in Egypt and the MENA region: decision rights, accountability, controls and review routines, with a nine-question check.",
@@ -849,4 +858,51 @@ export function guidesForService(serviceSlug: string): Guide[] {
  */
 export function guidesIndexIsWorthHaving(): boolean {
   return PUBLISHED_GUIDES.length > 1;
+}
+
+/**
+ * A guide and the topic pages inside it — the shape the library cards, the
+ * contents list and the guide navigation are all built from, so adding a guide
+ * or a topic page is a data change rather than a layout change.
+ */
+export type GuideGroup = {
+  hub: Guide;
+  topics: Guide[];
+};
+
+/**
+ * Every published guide, each with its topic pages. A spoke whose hub is not
+ * published yet stands as its own group, so it is still reachable and still
+ * described honestly — as a guide of one page, not as part of something that
+ * does not exist.
+ */
+export function guideGroups(): GuideGroup[] {
+  const hubs = PUBLISHED_GUIDES.filter((guide) => guide.kind === "hub");
+  const grouped = hubs.map((hub) => ({ hub, topics: spokesOf(hub.slug) }));
+
+  const orphans = PUBLISHED_GUIDES.filter(
+    (guide) =>
+      guide.kind === "spoke" && !hubs.some((hub) => hub.slug === guide.hub),
+  ).map((guide) => ({ hub: guide, topics: [] as Guide[] }));
+
+  return [...grouped, ...orphans];
+}
+
+/** The group a guide belongs to, whether it is the hub or one of its topics. */
+export function groupOf(slug: string): GuideGroup | undefined {
+  return guideGroups().find(
+    (group) => group.hub.slug === slug || group.topics.some((topic) => topic.slug === slug),
+  );
+}
+
+/** How a guide's size is described on its card: "Overview + 2 topic pages". */
+export function guideSizeLabel(group: GuideGroup): string {
+  const count = group.topics.length;
+  if (count === 0) return "Overview only";
+  return `Overview + ${count} topic ${count === 1 ? "page" : "pages"}`;
+}
+
+/** The guide's own name, for cards, navigation and breadcrumbs. */
+export function guideName(guide: Guide): string {
+  return guide.shortTitle ?? guide.navLabel;
 }

@@ -9,12 +9,14 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   getGuide,
-  hubGuide,
-  PUBLISHED_GUIDES,
+  groupOf,
+  guideGroups,
+  guideName,
+  guideSizeLabel,
   readingMinutes,
-  spokesOf,
   type GuideSection,
 } from "@shared/guides";
+import GuideNav from "@/components/GuideNav";
 import { getService } from "@shared/services";
 import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import NotFound from "./NotFound";
@@ -94,14 +96,11 @@ function Section({ section }: { section: GuideSection }) {
             on a phone is either unreadable or a long sideways scroll, and this
             one carries the conditions the guide exists to explain.
           */}
-          <div
-            className={cn(
-              "hidden overflow-x-auto border border-border md:block",
-              wideTable
-                ? "lg:-mx-24 lg:w-[calc(100%+12rem)] xl:-mx-40 xl:w-[calc(100%+20rem)]"
-                : "lg:-mx-16 lg:w-[calc(100%+8rem)]",
-            )}
-          >
+          {/* The table stays inside its column: a guide page now has a
+              navigation column beside it, and a table reaching into the margins
+              would run underneath it. A table wider than the column scrolls
+              sideways on its own. */}
+          <div className="hidden overflow-x-auto border border-border md:block">
             <table
               className={cn(
                 "w-full border-collapse text-sm",
@@ -187,12 +186,12 @@ export default function GuideDetail() {
 
   if (!guide) return <NotFound />;
 
-  const hub = guide.kind === "spoke" && guide.hub ? getGuide(guide.hub) : undefined;
-  const spokes = guide.kind === "hub" ? spokesOf(guide.slug) : [];
-  const siblings =
-    guide.kind === "spoke" && guide.hub
-      ? spokesOf(guide.hub).filter((entry) => entry.slug !== guide.slug)
-      : [];
+  // Everything about a guide's place in the set comes from its group, so the
+  // breadcrumb, the navigation and the footer links cannot disagree.
+  const group = groupOf(guide.slug);
+  const hub = group && group.hub.slug !== guide.slug ? group.hub : undefined;
+  const siblings = group ? group.topics.filter((topic) => topic.slug !== guide.slug) : [];
+
   /**
    * The promotional block at the foot of a guide is withheld until the service
    * it promotes carries a named delivery lead. Without one, the service page
@@ -205,30 +204,42 @@ export default function GuideDetail() {
 
   return (
     <div className="font-body">
-      {/* Breadcrumb */}
+      {/* Breadcrumb: Home › Guides › this guide › this page */}
       <nav aria-label="Breadcrumb" className="border-b border-border bg-secondary/20 py-4">
-        <div className="container flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          <Link href="/">
-            <span className="cursor-pointer hover:text-primary">Home</span>
-          </Link>
-          <ChevronRight className="h-4 w-4" aria-hidden="true" />
-          {hub ? (
-            <>
+        <ol className="container flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <li className="flex items-center gap-2">
+            <Link href="/">
+              <span className="cursor-pointer hover:text-primary hover:underline">Home</span>
+            </Link>
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          </li>
+          <li className="flex items-center gap-2">
+            <Link href="/guides">
+              <span className="cursor-pointer hover:text-primary hover:underline">Guides</span>
+            </Link>
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          </li>
+          {hub && (
+            <li className="flex items-center gap-2">
               <Link href={`/guides/${hub.slug}`}>
-                <span className="cursor-pointer hover:text-primary">{hub.navLabel}</span>
+                <span className="cursor-pointer hover:text-primary hover:underline">
+                  {guideName(hub)}
+                </span>
               </Link>
               <ChevronRight className="h-4 w-4" aria-hidden="true" />
-            </>
-          ) : null}
-          <span className="text-foreground">{guide.navLabel}</span>
-        </div>
+            </li>
+          )}
+          <li aria-current="page" className="text-foreground">
+            {hub ? guide.navLabel : guideName(guide)}
+          </li>
+        </ol>
       </nav>
 
       {/* Title */}
       <header className="bg-primary py-16 text-primary-foreground">
         <div className="container max-w-3xl space-y-5">
           <span className="text-xs font-bold uppercase tracking-widest text-primary-foreground/70">
-            {guide.kind === "hub" ? "Guide" : hub ? `Part of ${hub.navLabel}` : "Guide"}
+            {guide.kind === "hub" ? "Guide" : hub ? `Part of ${guideName(hub)}` : "Guide"}
           </span>
           <h1 className="font-heading text-3xl font-bold leading-tight md:text-4xl">
             {guide.title}
@@ -263,9 +274,11 @@ export default function GuideDetail() {
         </div>
       </header>
 
-      {/* The guide itself */}
-      <article className="py-16">
-        <div className="container max-w-3xl space-y-12">
+      {/* The guide itself, with its contents beside it on a wide screen and
+          above it on a narrow one. */}
+      <div className="py-16">
+        <div className="container grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-14">
+          <article className="order-2 max-w-3xl space-y-12 lg:order-1">
           {guide.intro && (
             <div className="space-y-4">
               {guide.intro.map((paragraph) => (
@@ -297,20 +310,28 @@ export default function GuideDetail() {
               </Accordion>
             </section>
           )}
-        </div>
-      </article>
+          </article>
 
-      {/* Where to go next: the rest of the cluster, then the service it belongs to */}
-      {(spokes.length > 0 || siblings.length > 0) && (
+          {/* The sticky offset sits on the grid item itself: a stretched
+              wrapper gives a sticky child nothing to travel within. top-28
+              clears the site header, which is sticky and 80px tall. */}
+          {group && (
+            <div className="order-1 lg:sticky lg:top-28 lg:order-2 lg:self-start">
+              <GuideNav group={group} currentSlug={guide.slug} />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* A way on: the overview, then the other pages of the same guide. */}
+      {group && (hub || siblings.length > 0) && (
         <section className="border-t border-border bg-secondary/20 py-16">
           <div className="container max-w-3xl space-y-8">
             <h2 className="font-heading text-2xl font-bold text-foreground">
-              {/* Until the hub is published there is no "this guide" to be part
-                  of, so sibling spokes are offered as related reading instead. */}
-              {guide.kind === "hub" ? "In this guide" : hub ? "Also in this guide" : "Related guides"}
+              {guide.kind === "hub" ? "Start with" : "Continue in this guide"}
             </h2>
             <ul className="space-y-5">
-              {(spokes.length > 0 ? spokes : siblings).map((entry) => (
+              {(guide.kind === "hub" ? group.topics : siblings).map((entry) => (
                 <li key={entry.slug}>
                   <Link href={`/guides/${entry.slug}`}>
                     <span className="group block cursor-pointer space-y-1">
@@ -328,7 +349,7 @@ export default function GuideDetail() {
             {hub && (
               <Link href={`/guides/${hub.slug}`}>
                 <span className="inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline">
-                  <ArrowLeft className="h-4 w-4" /> Back to {hub.navLabel}
+                  <ArrowLeft className="h-4 w-4" /> Back to the guide overview
                 </span>
               </Link>
             )}
@@ -364,22 +385,18 @@ export default function GuideDetail() {
 }
 
 /**
- * `/guides` — an index of the published guides. It only earns its place once
- * there is more than one; until then the menu names the single guide and this
- * address is not offered.
+ * `/guides` — the library. One card per guide, each showing what it contains,
+ * so a reader can tell a guide from a page inside it before clicking. Built
+ * from `guideGroups()`, so a new guide or a new topic page needs no layout
+ * work here.
  */
 export function GuideIndex() {
-  // The index lists whatever is published, in reading order: the hub first if
-  // it exists, then the spokes. It does not require a hub — spokes can be
-  // written before it, and the menu links here as soon as there is more than
-  // one guide to list.
-  const hub = hubGuide();
-  const spokes = hub ? spokesOf(hub.slug) : [];
-  const listed = hub
-    ? [hub, ...spokes]
-    : PUBLISHED_GUIDES.slice().sort((a, b) => a.title.localeCompare(b.title));
+  const groups = guideGroups();
+  if (groups.length === 0) return <NotFound />;
 
-  if (listed.length === 0) return <NotFound />;
+  // At most three topics are listed on a card; a longer guide offers its
+  // overview instead of a list that would fill the card.
+  const SHOWN = 3;
 
   return (
     <div className="font-body">
@@ -394,20 +411,75 @@ export function GuideIndex() {
       </header>
 
       <section className="py-16">
-        <div className="container max-w-3xl space-y-10">
-          {listed.map((guide) => (
-            <Link key={guide.slug} href={`/guides/${guide.slug}`}>
-              <article className="group cursor-pointer space-y-2 border-t-4 border-primary bg-secondary/20 p-8">
-                <span className="text-xs font-bold uppercase tracking-widest text-primary">
-                  {guide.kind === "hub" ? "The guide" : "Part of the guide"}
-                </span>
-                <h2 className="font-heading text-xl font-bold text-foreground group-hover:underline">
-                  {guide.title}
-                </h2>
-                <p className="leading-relaxed text-muted-foreground">{guide.summary}</p>
+        {/* One guide gets the full width; the grid arrives with the second. */}
+        <div
+          className={cn(
+            "container grid gap-10",
+            groups.length > 1 ? "lg:grid-cols-2" : "mx-auto max-w-3xl",
+          )}
+        >
+          {groups.map((group) => {
+            const shown = group.topics.slice(0, SHOWN);
+            const hidden = group.topics.length - shown.length;
+
+            return (
+              <article
+                key={group.hub.slug}
+                className="flex flex-col border-t-4 border-primary bg-secondary/20"
+              >
+                <div className="space-y-4 p-8 pb-6">
+                  <p className="text-xs font-bold uppercase tracking-widest text-primary">
+                    {guideSizeLabel(group)}
+                  </p>
+                  <h2 className="font-heading text-2xl font-bold leading-tight text-foreground md:text-3xl">
+                    <Link href={`/guides/${group.hub.slug}`}>
+                      <span className="cursor-pointer hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                        {guideName(group.hub)}
+                      </span>
+                    </Link>
+                  </h2>
+                  {group.hub.audience && (
+                    <p className="text-sm font-semibold text-muted-foreground">
+                      {group.hub.audience}
+                    </p>
+                  )}
+                  <p className="leading-relaxed text-muted-foreground">{group.hub.summary}</p>
+                  <Link href={`/guides/${group.hub.slug}`}>
+                    <span className="inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                      Explore guide <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </Link>
+                </div>
+
+                {group.topics.length > 0 && (
+                  <div className="border-t border-border bg-white/60 p-8 pt-6">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      Included in this guide
+                    </h3>
+                    <ul className="mt-4 divide-y divide-border">
+                      {shown.map((topic) => (
+                        <li key={topic.slug}>
+                          <Link href={`/guides/${topic.slug}`}>
+                            <span className="block cursor-pointer py-3 text-sm font-semibold leading-snug text-foreground hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                              {topic.title}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                    {hidden > 0 && (
+                      <Link href={`/guides/${group.hub.slug}`}>
+                        <span className="mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline">
+                          View all {group.topics.length} pages{" "}
+                          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                        </span>
+                      </Link>
+                    )}
+                  </div>
+                )}
               </article>
-            </Link>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>
