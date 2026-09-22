@@ -29,7 +29,9 @@ import { readdirSync, statSync } from "node:fs";
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const builtSite = join(projectRoot, "dist", "public");
 const previewDir = join(projectRoot, "dist", "preview");
-const projectName = "darwish-preview";
+// The Cloudflare Pages project the founder's review link points at. Override
+// with PREVIEW_PROJECT=… to publish somewhere else.
+const projectName = process.env.PREVIEW_PROJECT || "darwish-and-co";
 const localOnly = process.argv.includes("--local");
 
 const run = (command, args) =>
@@ -86,5 +88,8 @@ run("npx", [
   "deploy",
   previewDir,
   `--project-name=${projectName}`,
+  // Without this, Cloudflare names the deployment after the git branch and
+  // parks it on a branch address, leaving the link the founder has unchanged.
+  "--branch=main",
   "--commit-dirty=true",
 ]);
