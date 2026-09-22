@@ -1,5 +1,45 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { BadgeCheck, Handshake, Lock, ScrollText, Target } from "lucide-react";
+
+/**
+ * The firm's values, supplied by the founder in Arabic on 22 Sep 2026. The site
+ * is English-only, so these are translations; the original wording is kept
+ * beside each one so it can be checked, and so it is ready if the site is ever
+ * published in Arabic.
+ */
+const VALUES = [
+  {
+    title: "Professionalism",
+    // الاحترافية: نلتزم بتقديم خدمات عالية الجودة وفق معايير مهنية واضحة.
+    body: "We are committed to delivering high-quality services against clear professional standards.",
+    icon: BadgeCheck,
+  },
+  {
+    title: "Confidentiality",
+    // السرية: نتعامل مع بيانات العملاء والموظفين بأعلى درجات الأمان والخصوصية.
+    body: "We handle client and employee information with the highest standards of security and privacy.",
+    icon: Lock,
+  },
+  {
+    title: "Precision",
+    // الدقة: نهتم بالتفاصيل لضمان نتائج صحيحة وإجراءات منظمة.
+    body: "We attend to the detail, so that results are correct and procedures are orderly.",
+    icon: Target,
+  },
+  {
+    title: "Compliance",
+    // الامتثال: نساعد الشركات على الالتزام باللوائح والقوانين والإجراءات ذات الصلة.
+    body: "We help companies meet the regulations, laws and procedures that apply to them.",
+    icon: ScrollText,
+  },
+  {
+    title: "Partnership",
+    // الشراكة: نؤمن أن دورنا لا يقتصر على تقديم الخدمة، بل يمتد إلى دعم العميل كشريك طويل المدى.
+    body: "Our role does not end with delivering a service. We support the client as a long-term partner.",
+    icon: Handshake,
+  },
+];
 
 export default function About() {
   return (
@@ -54,7 +94,7 @@ export default function About() {
                 partner firm, the service page says so and names who is accountable for what.
               </p>
             </div>
-            <div className="relative h-80 rounded-xl overflow-hidden shadow-xl">
+            <div className="relative h-80 overflow-hidden shadow-xl">
               <img
                 src="/images/meeting-insight.webp"
                 width={1600}
@@ -85,7 +125,7 @@ export default function About() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="border border-border rounded-xl p-6 space-y-3 hover:shadow-md transition-shadow"
+                className="border border-border p-6 space-y-3 hover:shadow-md transition-shadow"
               >
                 <h4 className="font-heading font-bold text-lg text-primary">{item.title}</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">{item.body}</p>
@@ -93,8 +133,36 @@ export default function About() {
             ))}
           </div>
 
+          {/* Values */}
+          <div className="space-y-8">
+            <div className="space-y-3 text-center">
+              <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                What we hold to
+              </span>
+              <h3 className="font-heading text-2xl font-bold text-primary">Our values</h3>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {VALUES.map((value) => {
+                const Icon = value.icon;
+                return (
+                  <div
+                    key={value.title}
+                    className="space-y-3 border-t-4 border-primary bg-muted/20 p-6"
+                  >
+                    <Icon className="h-6 w-6 text-primary" aria-hidden="true" />
+                    <h4 className="font-heading text-lg font-bold text-foreground">
+                      {value.title}
+                    </h4>
+                    <p className="text-sm leading-relaxed text-muted-foreground">{value.body}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Mission */}
-          <div className="bg-muted/30 p-8 md:p-12 rounded-2xl space-y-6 text-center">
+          <div className="bg-muted/30 p-8 md:p-12 space-y-6 text-center">
             <h3 className="font-heading text-2xl font-bold text-primary">
               Our Mission: Strategic Clarity at the Right Moment
             </h3>
