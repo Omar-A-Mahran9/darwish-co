@@ -40,6 +40,9 @@ function withLinks(text: string) {
 /** One block of the guide: prose, then any points or table, then the rest. */
 function Section({ section }: { section: GuideSection }) {
   const PointList = section.ordered ? "ol" : "ul";
+  // A table of five or six columns needs more than the reading column can give
+  // it, so it reaches further into the margins on a wide screen.
+  const wideTable = (section.table?.headers.length ?? 0) >= 5;
 
   return (
     <section className="space-y-4">
@@ -51,7 +54,7 @@ function Section({ section }: { section: GuideSection }) {
         </p>
       )}
 
-      {section.body.map((paragraph) => (
+      {section.body?.map((paragraph) => (
         <p key={paragraph} className="leading-relaxed text-muted-foreground">
           {withLinks(paragraph)}
         </p>
@@ -76,41 +79,82 @@ function Section({ section }: { section: GuideSection }) {
       )}
 
       {section.table && (
-        // Tables here carry the argument, so they stay readable rather than
-        // collapsing: on a narrow screen the table scrolls sideways on its own.
-        <div className="overflow-x-auto border border-border lg:-mx-16 lg:w-[calc(100%+8rem)]">
-          <table className="w-full min-w-[640px] border-collapse text-sm">
-            <thead>
-              <tr className="bg-secondary/40 text-left">
-                {section.table.headers.map((header) => (
-                  <th
-                    key={header}
-                    className="border-b border-border p-3 font-heading font-bold text-foreground"
-                  >
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {section.table.rows.map((row) => (
-                <tr key={row.join("|")} className="align-top">
-                  {row.map((cell, index) => (
-                    <td
-                      key={cell + index}
-                      className={cn(
-                        "border-b border-border p-3 leading-relaxed text-muted-foreground",
-                        index === 0 && "font-semibold text-foreground",
-                      )}
+        <>
+          {/*
+            The same rows twice. On a wide screen a table, which is what the
+            content is: rows compared column by column. Below md the columns
+            become labelled lines inside one block per row — a six-column table
+            on a phone is either unreadable or a long sideways scroll, and this
+            one carries the conditions the guide exists to explain.
+          */}
+          <div
+            className={cn(
+              "hidden overflow-x-auto border border-border md:block",
+              wideTable
+                ? "lg:-mx-24 lg:w-[calc(100%+12rem)] xl:-mx-40 xl:w-[calc(100%+20rem)]"
+                : "lg:-mx-16 lg:w-[calc(100%+8rem)]",
+            )}
+          >
+            <table
+              className={cn(
+                "w-full border-collapse text-sm",
+                wideTable ? "min-w-[860px]" : "min-w-[640px]",
+              )}
+            >
+              <caption className="sr-only">{section.heading}</caption>
+              <thead>
+                <tr className="bg-secondary/40 text-left">
+                  {section.table.headers.map((header) => (
+                    <th
+                      key={header}
+                      scope="col"
+                      className="border-b border-border p-3 font-heading font-bold text-foreground"
                     >
-                      {cell}
-                    </td>
+                      {header}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {section.table.rows.map((row) => (
+                  <tr key={row.join("|")} className="align-top">
+                    {row.map((cell, index) => (
+                      <td
+                        key={cell + index}
+                        className={cn(
+                          "whitespace-pre-line border-b border-border p-3 leading-relaxed text-muted-foreground",
+                          index === 0 && "font-semibold text-foreground",
+                        )}
+                      >
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <ul className="space-y-4 md:hidden">
+            {section.table.rows.map((row) => (
+              <li key={row.join("|")} className="border-t-4 border-primary bg-secondary/20 p-5">
+                <p className="font-heading text-base font-bold text-foreground">{row[0]}</p>
+                <dl className="mt-3 space-y-3">
+                  {row.slice(1).map((cell, index) => (
+                    <div key={cell + index}>
+                      <dt className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                        {section.table?.headers[index + 1]}
+                      </dt>
+                      <dd className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground">
+                        {cell}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
       {section.after?.map((paragraph) => (
@@ -246,7 +290,9 @@ export default function GuideDetail() {
         <section className="border-t border-border bg-secondary/20 py-16">
           <div className="container max-w-3xl space-y-8">
             <h2 className="font-heading text-2xl font-bold text-foreground">
-              {guide.kind === "hub" ? "In this guide" : "Also in this guide"}
+              {/* Until the hub is published there is no "this guide" to be part
+                  of, so sibling spokes are offered as related reading instead. */}
+              {guide.kind === "hub" ? "In this guide" : hub ? "Also in this guide" : "Related guides"}
             </h2>
             <ul className="space-y-5">
               {(spokes.length > 0 ? spokes : siblings).map((entry) => (
