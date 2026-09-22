@@ -11,7 +11,6 @@ import { getService, PUBLISHED_SERVICES, WITHDRAWN_SERVICES } from "./services.j
 import {
   getGuide,
   guidesIndexIsWorthHaving,
-  hubGuide,
   PUBLISHED_GUIDES,
   spokesOf,
 } from "./guides.js";
@@ -351,8 +350,7 @@ function guideSeo(slug: string): PageSeo | null {
 
 /** `/guides` only exists once more than one guide is published. */
 function guideIndexSeo(): PageSeo | null {
-  const hub = hubGuide();
-  if (!hub || !guidesIndexIsWorthHaving()) return null;
+  if (!guidesIndexIsWorthHaving()) return null;
 
   return page("/guides", {
     title: "Guides for SME Owners — Governance, Risk and Growth | Darwish & Co",

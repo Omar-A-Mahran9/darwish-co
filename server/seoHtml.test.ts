@@ -251,9 +251,11 @@ describe("per-page metadata", () => {
       expect(sitemap).not.toContain(path);
     }
 
-    // `/guides` is an index, so it waits until there is more than one to list.
-    if (PUBLISHED_GUIDES.length < 2) {
-      expect(isKnownRoute("/guides")).toBe(false);
+    // `/guides` is an index, so it waits until there is more than one to list —
+    // and once it exists it must be a real page, not a not-found shell.
+    expect(isKnownRoute("/guides")).toBe(PUBLISHED_GUIDES.length > 1);
+    if (PUBLISHED_GUIDES.length > 1) {
+      expect(resolveSeo("/guides").robots).toBe("index, follow");
     }
   });
 

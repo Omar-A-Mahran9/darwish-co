@@ -7,7 +7,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { getGuide, hubGuide, readingMinutes, spokesOf, type GuideSection } from "@shared/guides";
+import {
+  getGuide,
+  hubGuide,
+  PUBLISHED_GUIDES,
+  readingMinutes,
+  spokesOf,
+  type GuideSection,
+} from "@shared/guides";
 import { getService } from "@shared/services";
 import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import NotFound from "./NotFound";
@@ -354,10 +361,17 @@ export default function GuideDetail() {
  * address is not offered.
  */
 export function GuideIndex() {
+  // The index lists whatever is published, in reading order: the hub first if
+  // it exists, then the spokes. It does not require a hub — spokes can be
+  // written before it, and the menu links here as soon as there is more than
+  // one guide to list.
   const hub = hubGuide();
-  if (!hub) return <NotFound />;
+  const spokes = hub ? spokesOf(hub.slug) : [];
+  const listed = hub
+    ? [hub, ...spokes]
+    : PUBLISHED_GUIDES.slice().sort((a, b) => a.title.localeCompare(b.title));
 
-  const spokes = spokesOf(hub.slug);
+  if (listed.length === 0) return <NotFound />;
 
   return (
     <div className="font-body">
@@ -373,7 +387,7 @@ export function GuideIndex() {
 
       <section className="py-16">
         <div className="container max-w-3xl space-y-10">
-          {[hub, ...spokes].map((guide) => (
+          {listed.map((guide) => (
             <Link key={guide.slug} href={`/guides/${guide.slug}`}>
               <article className="group cursor-pointer space-y-2 border-t-4 border-primary bg-secondary/20 p-8">
                 <span className="text-xs font-bold uppercase tracking-widest text-primary">
