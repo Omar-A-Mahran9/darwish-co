@@ -8,6 +8,13 @@
  */
 
 import { getService, PUBLISHED_SERVICES, WITHDRAWN_SERVICES } from "./services.js";
+import {
+  getGuide,
+  guidesIndexIsWorthHaving,
+  hubGuide,
+  PUBLISHED_GUIDES,
+  spokesOf,
+} from "./guides.js";
 
 export const SITE_URL = "https://www.darwish-co.com";
 export const SITE_NAME = "Darwish & Co.";
@@ -263,6 +270,107 @@ function blogArticleSeo(slug: string): PageSeo | null {
   });
 }
 
+/**
+ * A guide page. The hub publishes as an Article with a list of its spokes; a
+ * spoke publishes as an Article that points back at the hub. Both carry a
+ * breadcrumb trail, and any questions publish as a FAQ so they can be quoted
+ * directly.
+ */
+function guideSeo(slug: string): PageSeo | null {
+  const guide = getGuide(slug);
+  if (!guide) return null;
+
+  const path = `/guides/${guide.slug}`;
+  const hub = guide.kind === "spoke" && guide.hub ? getGuide(guide.hub) : undefined;
+  const spokes = guide.kind === "hub" ? spokesOf(guide.slug) : [];
+
+  const graph: Record<string, unknown>[] = [
+    {
+      "@type": "Article",
+      headline: guide.title,
+      description: guide.metaDescription,
+      ...(guide.datePublished ? { datePublished: guide.datePublished } : {}),
+      ...(guide.image ? { image: absolute(guide.image) } : {}),
+      author: ORGANISATION_REFERENCE,
+      publisher: ORGANISATION_REFERENCE,
+      mainEntityOfPage: absolute(path),
+      ...(hub ? { isPartOf: { "@type": "Article", "@id": absolute(`/guides/${hub.slug}`) } } : {}),
+      ...(spokes.length > 0
+        ? {
+            hasPart: spokes.map((spoke) => ({
+              "@type": "Article",
+              "@id": absolute(`/guides/${spoke.slug}`),
+              headline: spoke.title,
+            })),
+          }
+        : {}),
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: absolute("/") },
+        ...(hub
+          ? [
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: hub.navLabel,
+                item: absolute(`/guides/${hub.slug}`),
+              },
+            ]
+          : []),
+        {
+          "@type": "ListItem",
+          position: hub ? 3 : 2,
+          name: guide.navLabel,
+          item: absolute(path),
+        },
+      ],
+    },
+  ];
+
+  if (guide.faqs && guide.faqs.length > 0) {
+    graph.push({
+      "@type": "FAQPage",
+      mainEntity: guide.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    });
+  }
+
+  return page(path, {
+    title: guide.metaTitle,
+    description: guide.metaDescription,
+    ogType: "article",
+    ...(guide.image ? { ogImage: guide.image } : {}),
+    jsonLd: { "@context": "https://schema.org", "@graph": graph },
+  });
+}
+
+/** `/guides` only exists once more than one guide is published. */
+function guideIndexSeo(): PageSeo | null {
+  const hub = hubGuide();
+  if (!hub || !guidesIndexIsWorthHaving()) return null;
+
+  return page("/guides", {
+    title: "Guides for SME Owners — Governance, Risk and Growth | Darwish & Co",
+    description:
+      "Practical guides for owners and managing directors of SMEs in Egypt and the MENA region, written around the decisions that bring companies to us.",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      itemListElement: PUBLISHED_GUIDES.map((guide, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: guide.title,
+        url: absolute(`/guides/${guide.slug}`),
+      })),
+    },
+  });
+}
+
 const NOT_FOUND_SEO = page("/", {
   title: "Page Not Found | Darwish & Co",
   description:
@@ -283,6 +391,8 @@ export function isKnownRoute(pathname: string): boolean {
   if (STATIC_PAGES[path] || path.startsWith("/admin/")) return true;
   if (path.startsWith("/services/")) return getService(path.slice("/services/".length)) !== undefined;
   if (path.startsWith("/blog/")) return blogArticleSeo(path.slice("/blog/".length)) !== null;
+  if (path === "/guides") return guideIndexSeo() !== null;
+  if (path.startsWith("/guides/")) return guideSeo(path.slice("/guides/".length)) !== null;
   return false;
 }
 
@@ -310,6 +420,16 @@ export function resolveSeo(pathname: string): PageSeo {
   if (path.startsWith("/blog/")) {
     const article = blogArticleSeo(path.slice("/blog/".length));
     if (article) return article;
+  }
+
+  if (path === "/guides") {
+    const index = guideIndexSeo();
+    if (index) return index;
+  }
+
+  if (path.startsWith("/guides/")) {
+    const guide = guideSeo(path.slice("/guides/".length));
+    if (guide) return guide;
   }
 
   if (path.startsWith("/admin/")) {

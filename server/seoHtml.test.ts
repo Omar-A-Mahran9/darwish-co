@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { describe, expect, it } from "vitest";
 import { injectSeo } from "./seoHtml.js";
 import { BLOG_ARTICLES, isKnownRoute, resolveSeo } from "../shared/seo.js";
+import { GUIDES, PUBLISHED_GUIDES } from "../shared/guides.js";
 import {
   LEGACY_ANCHOR_REDIRECTS,
   PUBLISHED_SERVICES,
@@ -238,6 +239,48 @@ describe("per-page metadata", () => {
     expect(isKnownRoute(`/blog/${BLOG_ARTICLES[0].slug}`)).toBe(true);
     expect(isKnownRoute("/blog/not-an-article")).toBe(false);
     expect(isKnownRoute("/does-not-exist")).toBe(false);
+  });
+
+  it("gives an unpublished guide no address at all", () => {
+    const sitemap = readFileSync(new URL("../client/public/sitemap.xml", import.meta.url), "utf-8");
+
+    for (const guide of GUIDES.filter((entry) => !entry.published)) {
+      const path = `/guides/${guide.slug}`;
+      expect(isKnownRoute(path)).toBe(false);
+      expect(resolveSeo(path).robots).toBe("noindex, nofollow");
+      expect(sitemap).not.toContain(path);
+    }
+
+    // `/guides` is an index, so it waits until there is more than one to list.
+    if (PUBLISHED_GUIDES.length < 2) {
+      expect(isKnownRoute("/guides")).toBe(false);
+    }
+  });
+
+  it("publishes a guide with its own metadata, breadcrumb and cluster links", () => {
+    const sitemap = readFileSync(new URL("../client/public/sitemap.xml", import.meta.url), "utf-8");
+
+    for (const guide of PUBLISHED_GUIDES) {
+      const path = `/guides/${guide.slug}`;
+      const seo = resolveSeo(path);
+
+      expect(isKnownRoute(path)).toBe(true);
+      expect(seo.robots).toBe("index, follow");
+      expect(seo.ogType).toBe("article");
+      expect(seo.canonical).toBe(`https://www.darwish-co.com${path}`);
+      expect(seo.description.length).toBeGreaterThanOrEqual(50);
+      expect(seo.description.length).toBeLessThanOrEqual(160);
+      expect(sitemap).toContain(`https://www.darwish-co.com${path}</loc>`);
+
+      const html = injectSeo(SHELL, path);
+      expect(html).toContain('"@type":"BreadcrumbList"');
+      expect(html).toContain('"@type":"Article"');
+
+      // A spoke says which guide it belongs to; the hub lists its spokes.
+      if (guide.kind === "spoke") {
+        expect(html).toContain('"isPartOf"');
+      }
+    }
   });
 
   it("treats trailing slashes and query strings as the same page", () => {

@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { PUBLISHED_SERVICES } from "@shared/services";
+import { guidesIndexIsWorthHaving, PUBLISHED_GUIDES } from "@shared/guides";
 import { useState, useRef, useEffect, useCallback } from "react";
 
 type NavItem = {
@@ -10,6 +11,25 @@ type NavItem = {
   path: string;
   children?: { name: string; path: string }[];
 };
+
+/**
+ * The guides, for the Insights menu.
+ *
+ * While one guide is published the menu names it, because a category holding a
+ * single item reads as an empty shelf. Once there are two, `/guides` earns an
+ * index page and the entry becomes "Guides". Nothing appears at all until the
+ * first guide publishes, so the menu never advertises a gap.
+ */
+function insightsChildren(): { name: string; path: string }[] {
+  const guides = guidesIndexIsWorthHaving()
+    ? [{ name: "Guides", path: "/guides" }]
+    : PUBLISHED_GUIDES.filter((guide) => guide.kind === "hub").map((guide) => ({
+        name: guide.navLabel,
+        path: `/guides/${guide.slug}`,
+      }));
+
+  return [...guides, { name: "Articles", path: "/blog" }];
+}
 
 const navItems: NavItem[] = [
   { name: "Home", path: "/" },
@@ -25,22 +45,21 @@ const navItems: NavItem[] = [
       })),
     ],
   },
+  // What we wrote to help you decide. A plain link to the articles until a
+  // guide exists to sit above them.
+  PUBLISHED_GUIDES.length > 0
+    ? { name: "Insights", path: "/blog", children: insightsChildren() }
+    : { name: "Insights", path: "/blog" },
+  // Who does the work, and what we have built.
   {
-    name: "Projects",
+    name: "Our work",
     path: "/projects",
     children: [
-      { name: "AI POC Platform", path: "/projects#ai-poc" },
+      { name: "Projects", path: "/projects" },
+      { name: "Consultants & advisers", path: "/partners" },
+      { name: "Partner firms", path: "/corporate-partners" },
     ],
   },
-  {
-    name: "Partners",
-    path: "/partners",
-    children: [
-      { name: "Consultants & Advisors", path: "/partners" },
-      { name: "Corporate Partners & Licences", path: "/corporate-partners" },
-    ],
-  },
-  { name: "Blog", path: "/blog" },
   { name: "Contact", path: "/contact" },
 ];
 
@@ -131,13 +150,15 @@ function DropdownMenu({ item, location }: { item: NavItem; location: string }) {
           className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-md shadow-lg z-50 py-1"
           onMouseLeave={() => setOpen(false)}
         >
-          {/* Parent page link — goes to top of page */}
-          <button
-            className="block w-full text-left px-4 py-2 text-sm font-semibold text-primary hover:bg-secondary/50 cursor-pointer border-b border-border"
-            onClick={() => go(item.path, () => setOpen(false))}
-          >
-            All {item.name}
-          </button>
+          {/* The parent page, unless a child already links to it. */}
+          {!item.children?.some((child) => child.path === item.path) && (
+            <button
+              className="block w-full text-left px-4 py-2 text-sm font-semibold text-primary hover:bg-secondary/50 cursor-pointer border-b border-border"
+              onClick={() => go(item.path, () => setOpen(false))}
+            >
+              All {item.name}
+            </button>
+          )}
 
           {item.children?.map((child) => (
             <button
@@ -272,12 +293,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </button>
                     {openMobileSection === item.path && (
                       <div className="pl-4 space-y-1 pb-2 border-l-2 border-primary/30 ml-2">
-                        <button
-                          className="block w-full text-left py-1.5 text-sm font-semibold text-primary cursor-pointer"
-                          onClick={() => go(item.path, () => { setIsMenuOpen(false); setOpenMobileSection(null); })}
-                        >
-                          All {item.name}
-                        </button>
+                        {!item.children.some((child) => child.path === item.path) && (
+                          <button
+                            className="block w-full text-left py-1.5 text-sm font-semibold text-primary cursor-pointer"
+                            onClick={() => go(item.path, () => { setIsMenuOpen(false); setOpenMobileSection(null); })}
+                          >
+                            All {item.name}
+                          </button>
+                        )}
                         {item.children.map((child) => (
                           <button
                             key={child.path}
@@ -398,6 +421,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link href="/about"><span className="cursor-pointer hover:underline">About Us</span></Link></li>
               <li><Link href="/projects"><span className="cursor-pointer hover:underline">Projects</span></Link></li>
+              {insightsChildren().map((entry) => (
+                <li key={entry.path}>
+                  <Link href={entry.path}>
+                    <span className="cursor-pointer hover:text-primary hover:underline transition-colors">
+                      {entry.name}
+                    </span>
+                  </Link>
+                </li>
+              ))}
               <li><Link href="/partners"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Partners & Consultants</span></Link></li>
               <li><Link href="/corporate-partners"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Corporate Partners</span></Link></li>
               <li><Link href="/contact"><span className="cursor-pointer hover:underline">Contact</span></Link></li>

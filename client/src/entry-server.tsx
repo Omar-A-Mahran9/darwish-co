@@ -2,6 +2,7 @@ import { renderToString } from "react-dom/server";
 import App from "./App";
 import { BLOG_ARTICLES, resolveSeo } from "@shared/seo";
 import { PUBLISHED_SERVICES } from "@shared/services";
+import { guidesIndexIsWorthHaving, PUBLISHED_GUIDES } from "@shared/guides";
 import { injectSeo } from "../../server/seoHtml";
 
 /**
@@ -31,6 +32,10 @@ export function prerenderRoutes(): string[] {
     "/corporate-partners",
     "/blog",
     ...BLOG_ARTICLES.map((article) => `/blog/${article.slug}`),
+    // Guides appear here as they are published; an unpublished one has no page
+    // and no address. `/guides` is written only once it lists more than one.
+    ...(guidesIndexIsWorthHaving() ? ["/guides"] : []),
+    ...PUBLISHED_GUIDES.map((guide) => `/guides/${guide.slug}`),
     "/contact",
   ];
 }

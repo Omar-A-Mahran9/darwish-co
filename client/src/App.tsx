@@ -16,6 +16,7 @@ import Partners from './pages/Partners';
 import CorporatePartners from './pages/CorporatePartners';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import GuideDetail, { GuideIndex } from './pages/GuideDetail';
 import ClientLogin from './pages/ClientLogin';
 import AdminClientAccess from './pages/AdminClientAccess';
 import { useHashScroll } from "./hooks/useHashScroll";
@@ -38,6 +39,8 @@ function Router() {
         <Route path="/corporate-partners" component={CorporatePartners} />
         <Route path="/blog" component={Blog} />
         <Route path="/blog/:slug" component={BlogPost} />
+        <Route path="/guides" component={GuideIndex} />
+        <Route path="/guides/:slug" component={GuideDetail} />
         <Route path="/client-login" component={ClientLogin} />
         <Route path="/admin/client-access" component={AdminClientAccess} />
         <Route component={NotFound} />
