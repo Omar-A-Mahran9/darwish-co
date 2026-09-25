@@ -14,6 +14,8 @@ import {
   guideName,
   guideSizeLabel,
   readingMinutes,
+  type GuideBlock,
+  type GuidePoint,
   type GuideSection,
 } from "@shared/guides";
 import GuideNav from "@/components/GuideNav";
@@ -46,13 +48,158 @@ function withLinks(text: string) {
   });
 }
 
-/** One block of the guide: prose, then any points or table, then the rest. */
-function Section({ section }: { section: GuideSection }) {
-  const PointList = section.ordered ? "ol" : "ul";
-  // A table of five or six columns needs more than the reading column can give
-  // it, so it reaches further into the margins on a wide screen.
-  const wideTable = (section.table?.headers.length ?? 0) >= 5;
+/** A list of points, bulleted or numbered, each optionally with sub-points. */
+function PointList({ items, ordered }: { items: GuidePoint[]; ordered?: boolean }) {
+  const List = ordered ? "ol" : "ul";
 
+  return (
+    <List
+      className={cn(
+        "space-y-3 pl-5 text-muted-foreground",
+        ordered ? "list-decimal" : "list-disc",
+      )}
+    >
+      {items.map((item) => (
+        <li key={item.text} className="leading-relaxed">
+          {item.label && <strong className="font-semibold text-foreground">{item.label}:</strong>}{" "}
+          {withLinks(item.text)}
+          {item.sub && (
+            <ul className="mt-2 space-y-1.5 pl-5 list-[circle]">
+              {item.sub.map((line) => (
+                <li key={line} className="leading-relaxed">
+                  {withLinks(line)}
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </List>
+  );
+}
+
+/** One ordered block of a section. */
+function Block({ block, heading }: { block: GuideBlock; heading: string }) {
+  if (block.kind === "paragraph") {
+    return <p className="leading-relaxed text-muted-foreground">{withLinks(block.text)}</p>;
+  }
+
+  if (block.kind === "note") {
+    return (
+      <p className="border-l-4 border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+        {withLinks(block.text)}
+      </p>
+    );
+  }
+
+  if (block.kind === "points") {
+    return <PointList items={block.items} ordered={block.ordered} />;
+  }
+
+  if (block.kind === "table") {
+    return <DataTable table={block} heading={heading} />;
+  }
+
+  return (
+    <aside className="space-y-4 border border-border bg-secondary/20 p-6">
+      {block.title && (
+        <h3 className="font-heading text-lg font-bold text-foreground">{block.title}</h3>
+      )}
+      {block.note && (
+        <p className="border-l-4 border-primary/40 bg-white/60 px-4 py-3 text-sm text-muted-foreground">
+          {withLinks(block.note)}
+        </p>
+      )}
+      {block.intro?.map((paragraph) => (
+        <p key={paragraph} className="leading-relaxed text-muted-foreground">
+          {withLinks(paragraph)}
+        </p>
+      ))}
+      {block.items && <PointList items={block.items} ordered={block.ordered} />}
+    </aside>
+  );
+}
+
+/**
+ * A table of rows compared column by column, rendered twice: as a table from md
+ * up, and as one labelled block per row below that — a wide table on a phone is
+ * either unreadable or a long sideways scroll. It stays inside its column,
+ * because a guide page has a navigation column beside it.
+ */
+function DataTable({
+  table,
+  heading,
+}: {
+  table: { headers: string[]; rows: string[][] };
+  heading: string;
+}) {
+  const wide = table.headers.length >= 5;
+
+  return (
+    <>
+      <div className="hidden overflow-x-auto border border-border md:block">
+        <table
+          className={cn("w-full border-collapse text-sm", wide ? "min-w-[860px]" : "min-w-[640px]")}
+        >
+          <caption className="sr-only">{heading}</caption>
+          <thead>
+            <tr className="bg-secondary/40 text-left">
+              {table.headers.map((header) => (
+                <th
+                  key={header}
+                  scope="col"
+                  className="border-b border-border p-3 font-heading font-bold text-foreground"
+                >
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {table.rows.map((row) => (
+              <tr key={row.join("|")} className="align-top">
+                {row.map((cell, index) => (
+                  <td
+                    key={cell + index}
+                    className={cn(
+                      "whitespace-pre-line border-b border-border p-3 leading-relaxed text-muted-foreground",
+                      index === 0 && "font-semibold text-foreground",
+                    )}
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <ul className="space-y-4 md:hidden">
+        {table.rows.map((row) => (
+          <li key={row.join("|")} className="border-t-4 border-primary bg-secondary/20 p-5">
+            <p className="font-heading text-base font-bold text-foreground">{row[0]}</p>
+            <dl className="mt-3 space-y-3">
+              {row.slice(1).map((cell, index) => (
+                <div key={cell + index}>
+                  <dt className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    {table.headers[index + 1]}
+                  </dt>
+                  <dd className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground">
+                    {cell}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+/** One section of the guide: its heading, then its content in order. */
+function Section({ section }: { section: GuideSection }) {
   return (
     <section className="space-y-4">
       <h2 className="font-heading text-2xl font-bold text-foreground">{section.heading}</h2>
@@ -69,117 +216,24 @@ function Section({ section }: { section: GuideSection }) {
         </p>
       ))}
 
-      {section.points && (
-        <PointList
-          className={cn(
-            "space-y-3 pl-5 text-muted-foreground",
-            section.ordered ? "list-decimal" : "list-disc",
-          )}
-        >
-          {section.points.map((point) => (
-            <li key={point.text} className="leading-relaxed">
-              {point.label && (
-                <strong className="font-semibold text-foreground">{point.label}:</strong>
-              )}{" "}
-              {withLinks(point.text)}
-            </li>
-          ))}
-        </PointList>
-      )}
+      {section.points && <PointList items={section.points} ordered={section.ordered} />}
 
-      {section.table && (
-        <>
-          {/*
-            The same rows twice. On a wide screen a table, which is what the
-            content is: rows compared column by column. Below md the columns
-            become labelled lines inside one block per row — a six-column table
-            on a phone is either unreadable or a long sideways scroll, and this
-            one carries the conditions the guide exists to explain.
-          */}
-          {/* The table stays inside its column: a guide page now has a
-              navigation column beside it, and a table reaching into the margins
-              would run underneath it. A table wider than the column scrolls
-              sideways on its own. */}
-          <div className="hidden overflow-x-auto border border-border md:block">
-            <table
-              className={cn(
-                "w-full border-collapse text-sm",
-                wideTable ? "min-w-[860px]" : "min-w-[640px]",
-              )}
-            >
-              <caption className="sr-only">{section.heading}</caption>
-              <thead>
-                <tr className="bg-secondary/40 text-left">
-                  {section.table.headers.map((header) => (
-                    <th
-                      key={header}
-                      scope="col"
-                      className="border-b border-border p-3 font-heading font-bold text-foreground"
-                    >
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {section.table.rows.map((row) => (
-                  <tr key={row.join("|")} className="align-top">
-                    {row.map((cell, index) => (
-                      <td
-                        key={cell + index}
-                        className={cn(
-                          "whitespace-pre-line border-b border-border p-3 leading-relaxed text-muted-foreground",
-                          index === 0 && "font-semibold text-foreground",
-                        )}
-                      >
-                        {cell}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <ul className="space-y-4 md:hidden">
-            {section.table.rows.map((row) => (
-              <li key={row.join("|")} className="border-t-4 border-primary bg-secondary/20 p-5">
-                <p className="font-heading text-base font-bold text-foreground">{row[0]}</p>
-                <dl className="mt-3 space-y-3">
-                  {row.slice(1).map((cell, index) => (
-                    <div key={cell + index}>
-                      <dt className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                        {section.table?.headers[index + 1]}
-                      </dt>
-                      <dd className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground">
-                        {cell}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      {section.table && <DataTable table={section.table} heading={section.heading} />}
 
       {section.after?.map((paragraph) => (
         <p key={paragraph} className="leading-relaxed text-muted-foreground">
           {withLinks(paragraph)}
         </p>
       ))}
+
+      {section.blocks?.map((block, index) => (
+        <Block key={index} block={block} heading={section.heading} />
+      ))}
     </section>
   );
 }
 
-/**
- * One guide — the hub, or one of its spokes. The text comes from
- * `shared/guides.ts`, so a guide is published by writing its sections there
- * rather than by adding a page.
- *
- * An unpublished or unknown slug falls through to the not-found page, which is
- * what the server answers for that address too.
- */
+
 export default function GuideDetail() {
   const params = useParams<{ slug: string }>();
   const guide = params.slug ? getGuide(params.slug) : undefined;
@@ -279,9 +333,15 @@ export default function GuideDetail() {
       <div className="py-16">
         <div className="container grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-14">
           <article className="order-2 max-w-3xl space-y-12 lg:order-1">
-          {guide.intro && (
+          {(guide.intro || guide.introPoints) && (
             <div className="space-y-4">
-              {guide.intro.map((paragraph) => (
+              {guide.intro?.map((paragraph) => (
+                <p key={paragraph} className="text-lg leading-relaxed text-foreground">
+                  {withLinks(paragraph)}
+                </p>
+              ))}
+              {guide.introPoints && <PointList items={guide.introPoints} />}
+              {guide.introAfter?.map((paragraph) => (
                 <p key={paragraph} className="text-lg leading-relaxed text-foreground">
                   {withLinks(paragraph)}
                 </p>

@@ -17,8 +17,32 @@
 
 export type GuideKind = "hub" | "spoke";
 
-/** A point in a list, optionally led by a bold label. */
-export type GuidePoint = { label?: string; text: string };
+/** A point in a list, optionally led by a bold label and carrying sub-points. */
+export type GuidePoint = { label?: string; text: string; sub?: string[] };
+
+/**
+ * A block of content inside a section, rendered in the order given.
+ *
+ * The earlier guides describe a section as prose, then one list or table, then
+ * more prose, which `body` / `points` / `table` / `after` express. A section
+ * that interleaves them — a list, a paragraph, a second list — needs the order
+ * stated, which is what `blocks` is for. A section uses one form or the other.
+ */
+export type GuideBlock =
+  | { kind: "paragraph"; text: string }
+  | { kind: "points"; items: GuidePoint[]; ordered?: boolean }
+  | { kind: "table"; headers: string[]; rows: string[][] }
+  /** An aside set apart from the text, such as a scope disclaimer. */
+  | { kind: "note"; text: string }
+  /** A self-contained specimen — a model policy, a worked form — set in a panel. */
+  | {
+      kind: "panel";
+      title?: string;
+      note?: string;
+      intro?: string[];
+      items?: GuidePoint[];
+      ordered?: boolean;
+    };
 
 /** A block of guide text. The page renders these in order. */
 export type GuideSection = {
@@ -35,6 +59,8 @@ export type GuideSection = {
   note?: string;
   /** Paragraphs shown after the points or table. */
   after?: string[];
+  /** Ordered content, for a section that interleaves prose, lists and tables. */
+  blocks?: GuideBlock[];
 };
 
 export type Guide = {
@@ -66,6 +92,10 @@ export type Guide = {
   hub?: string;
   /** The opening paragraphs, before the first heading. */
   intro?: string[];
+  /** A list inside the opening, where the guide opens with one. */
+  introPoints?: GuidePoint[];
+  /** Opening paragraphs that follow that list. */
+  introAfter?: string[];
   /**
    * Who wrote the guide, and who checked it on the subject matter. Both are
    * left unset until a real person is confirmed for each: a byline is a claim
@@ -220,7 +250,8 @@ export const GUIDES: Guide[] = [
           "This guide is a map, not a manual. Each area has more depth than fits here.",
           "[Delegation of Authority: How to Delegate Decisions Without Losing Oversight](/guides/delegation-of-authority) takes the decision-rights area in full: who may approve what, to which limit, on what record, and where a decision goes when a condition fails.",
           "[What to Do When a Major Client Sends an Anti-Bribery Questionnaire](/guides/anti-bribery-questionnaire) covers what happens when the controls area becomes externally visible, and how to organise a response using evidence you already have.",
-          "A further guide on turning decision rights into a working monthly review is planned. A guide on setting rules for employee AI use will follow only if the delivery and review requirements for that subject are met.",
+          "[Setting the Rules for Employee AI Use: A Governance Starting Point](/guides/employee-ai-use) covers the tools your staff are already using: which uses are approved, what information may go into them, what a tool may do by itself, and who checks the result.",
+          "A further guide, on turning decision rights into a working monthly review, is planned.",
         ],
       },
       {
@@ -792,17 +823,646 @@ export const GUIDES: Guide[] = [
   {
     slug: "employee-ai-use",
     kind: "spoke",
-    published: false,
+    // In preview for review. Positioning §6 holds this topic back from
+    // production until AI Governance has a named delivery lead, and the draft
+    // itself is marked "not subject-reviewed": both are recorded in
+    // docs/content-plan.md and reported with the guide.
+    published: true,
+    datePublished: "2026-09-25",
     hub: "governance-for-growing-smes",
     relatedService: "ai-governance",
     title: "Setting the Rules for Employee AI Use: A Governance Starting Point",
     navLabel: "Employee AI use",
-    metaTitle: "Rules for Employee AI Use: A Governance Starting Point | Darwish & Co",
+    metaTitle: "Employee AI Use Rules: A Governance Starting Point | Darwish & Co",
     metaDescription:
-      "Staff are already using AI on company information. The three or four rules worth writing down first, and who approves the exceptions.",
+      "How owners of growing SMEs can set practical rules for employee AI use: an inventory, approved uses, information categories, action limits and human review.",
     summary:
       "The few rules worth writing down first, while staff are already using these tools.",
-    artefact: "A one-page acceptable use statement",
+    artefact: "An illustrative acceptable-use statement",
+    intro: [
+      "If people in your company use AI tools to draft emails, summarise documents or work through spreadsheets, you need answers to a few practical questions:",
+    ],
+    introPoints: [
+      { text: "Which uses are acceptable, and which should not happen at all?" },
+      { text: "Which tools and accounts may be used?" },
+      { text: "What information may go into them?" },
+      { text: "What may the tools do by themselves?" },
+      { text: "Who checks the result before the company relies on it?" },
+    ],
+    introAfter: [
+      "This article sets out a starting point for answering those questions without a large programme. It is a governance starting point, not a complete AI management system, a legal opinion or a technical security review.",
+    ],
+    sections: [
+      {
+        heading: "What this starting point covers",
+        blocks: [
+          {
+            kind: "paragraph",
+            text: "The rules cover people using AI tools in company work. That includes standalone assistants, AI features inside software you already use, transcription tools and browser extensions.",
+          },
+          {
+            kind: "paragraph",
+            text: "Decide whether the rules also apply to contractors, freelancers or advisers who do work for you. An internal policy does not automatically bind a supplier. If you want it to apply to them, their contract or engagement terms need to say so.",
+          },
+          { kind: "paragraph", text: "The rules do not cover:" },
+          {
+            kind: "points",
+            items: [
+              { text: "Building AI into your products." },
+              { text: "Automated decisions about customers." },
+              { text: "Using AI to evaluate people." },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "Each of those needs a broader assessment with technical and legal input.",
+          },
+          {
+            kind: "paragraph",
+            text: "Employee AI use carries several distinct risks. NIST's generative-AI risk profile, a voluntary US framework, treats them separately ([NIST AI 600-1](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf)). Among them are:",
+          },
+          {
+            kind: "points",
+            items: [
+              { text: "Confidently stated false content." },
+              { text: "Data privacy." },
+              { text: "Over-reliance on automated output." },
+              { text: "Information security." },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "A rule that looks only at what goes into a tool addresses one of these. The rules below therefore check the activity, the tool, the information, what the tool may do by itself, and how the output is reviewed.",
+          },
+        ],
+      },
+      {
+        heading: "Step 1: Find out how AI is already used",
+        blocks: [
+          {
+            kind: "paragraph",
+            text: "Explain to each team that the inventory exists to set workable rules, then ask what they use and how. For each use, record:",
+          },
+          {
+            kind: "points",
+            items: [
+              {
+                label: "Tool and account",
+                text: "for example, a general AI assistant on a personal free account.",
+              },
+              {
+                label: "Connected to",
+                text: "email, files, calendars or other systems the tool can reach.",
+              },
+              { label: "Who uses it, and what for", text: "the team and the task." },
+              { label: "Information that goes in", text: "the categories in Step 4." },
+              { label: "Where the output goes", text: "internal use, or out of the company." },
+              {
+                label: "Whether the tool takes actions itself",
+                text: "for example, sending messages or updating records.",
+              },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "Include personal accounts used for work and AI features switched on inside other software. An inventory records what people report. It does not prove it is complete, so repeat it at each review and whenever a new tool is proposed.",
+          },
+        ],
+      },
+      {
+        heading: "Step 2: Assign responsibilities",
+        blocks: [
+          {
+            kind: "note",
+            text: "The role assignments below are an illustrative model. Adapt them to your existing governance and delegation-of-authority matrix.",
+          },
+          {
+            kind: "table",
+            headers: ["Role", "In this model"],
+            rows: [
+              [
+                "Owner or general manager",
+                "Approves the rules. Approves uses involving Restricted information.",
+              ],
+              [
+                "Policy owner (a named manager)",
+                "Keeps the inventory and the approved-use register. Takes requests through review. Approves uses up to the Internal category. Receives reports of mistakes. Runs the periodic review.",
+              ],
+              [
+                "Technical reviewer (someone with IT responsibility, or an external adviser)",
+                "Reviews tools, accounts, settings, connections and any tool actions before approval.",
+              ],
+              [
+                "Qualified adviser",
+                "Reviews contractual and privacy questions for uses involving personal or confidential information.",
+              ],
+              [
+                "Person responsible for each client relationship",
+                "Confirms what that client's contract and instructions say.",
+              ],
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "Another appropriately authorised role can take the approval decisions instead. Some safeguards should hold within this proposed policy whoever holds the roles:",
+          },
+          {
+            kind: "points",
+            items: [
+              { text: "Uses are approved before they start." },
+              { text: "Each new use gets technical review." },
+              { text: "Personal or confidential information gets contractual and privacy review." },
+              { text: "No approval permits what a law, contract or client instruction prohibits." },
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Step 3: Approve uses, not just tools",
+        blocks: [
+          {
+            kind: "paragraph",
+            text: "Approving a tool in general says little about what people will do with it. Instead, record each approved use in a register. Each entry states:",
+          },
+          {
+            kind: "points",
+            items: [
+              { label: "The activity", text: 'for example, "drafting marketing content".' },
+              { label: "The tool and specific account", text: "named, not a category." },
+              { label: "Who may use it", text: "the named team or role." },
+              {
+                label: "The highest information category allowed",
+                text: "from Step 4. For Restricted information, the entry also names the specific types allowed.",
+              },
+              {
+                label: "Any actions the tool may take by itself",
+                text: "the default is none.",
+              },
+              {
+                label: "Conditions and an expiry date",
+                text: "conditions might include settings that must stay in place.",
+              },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "Once a use is approved, people can work within it without asking permission for each task. Anything outside an entry — a different activity, account, information type or action — needs approval first, even if the information is public.",
+          },
+          { kind: "paragraph", text: "Approval. Requests go to the policy owner." },
+          {
+            kind: "points",
+            items: [
+              {
+                label: "Technical review (every request)",
+                text: "the technical reviewer checks:",
+                sub: [
+                  "whether the account is company-managed",
+                  "the vendor's terms and settings on training use, retention and access (these differ between plans and can change)",
+                  "what the tool can reach",
+                  "whether those permissions are needed for the activity",
+                ],
+              },
+              {
+                label: "Contractual and privacy review (personal or confidential information)",
+                text: "a qualified adviser reviews the position, and the person responsible for any affected client relationship confirms what the contract and instructions say.",
+              },
+              {
+                label: "Decision",
+                text: "the decision is made by the role with authority for that category.",
+              },
+            ],
+          },
+          { kind: "paragraph", text: "Approvals and refusals are both recorded." },
+          {
+            kind: "paragraph",
+            text: "UK guidance illustrates why the tool checks matter. The National Cyber Security Centre notes that information given to consumer AI services may be stored, retained or used to improve the service unless specific privacy controls are in place. It also notes that a compromised AI agent can expose whatever the agent has access to ([NCSC](https://www.ncsc.gov.uk/blogs/the-hidden-risks-of-shadow-ai)).",
+          },
+          {
+            kind: "paragraph",
+            text: "Tools that act. In this starting point, a tool may draft, summarise or suggest. Any action the tool takes by itself — sending messages or invitations, changing records inside or outside the company, or reaching further systems — is excluded unless the register entry explicitly approves that action after technical review. Reviewing a tool's output is not the same as authorising it to act.",
+          },
+          {
+            kind: "paragraph",
+            text: "When approval lapses. Permission for a use ends when either of these happens:",
+          },
+          {
+            kind: "points",
+            items: [
+              { text: "Its expiry date passes." },
+              {
+                text: "One of its conditions stops being met, for example:",
+                sub: [
+                  "a setting is changed",
+                  "a new connection is added",
+                  "the vendor changes relevant terms",
+                ],
+              },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "People must then stop that use. Anyone who becomes aware of a change tells the policy owner. The policy owner arranges renewal, or removal of access.",
+          },
+          {
+            kind: "paragraph",
+            text: "Unless you have set up a technical control, nothing stops the tool working at expiry. The rule relies on people stopping, and on the policy owner acting on renewal dates.",
+          },
+        ],
+      },
+      {
+        heading: "Step 4: Classify the information",
+        blocks: [
+          {
+            kind: "note",
+            text: "The definitions below are illustrative, so adapt them to your business.",
+          },
+          {
+            kind: "points",
+            items: [
+              {
+                label: "Public",
+                text: "information that has been published, by your company or others, and is neither personal information nor held in confidence. Examples: your published product details, or an official summary of a standard. Drafts approved for publication stay Internal until they are published.",
+              },
+              {
+                label: "Internal",
+                text: "your company's non-public information that is not personal, not held in confidence and not Prohibited.",
+              },
+              {
+                label: "Restricted",
+                text: "information needing specific approval, including:",
+                sub: [
+                  "personal information about anyone, including personal information that is publicly available elsewhere",
+                  "information received in confidence from clients or partners",
+                  "bank or payment details",
+                  "unannounced bids and pricing",
+                  "legal matters",
+                ],
+              },
+              {
+                label: "Prohibited",
+                text: "live passwords, authentication codes and tokens, private keys and similar credentials. These are never entered into an AI tool, and no approval can permit it.",
+              },
+            ],
+          },
+          { kind: "paragraph", text: "Four rules apply:" },
+          {
+            kind: "points",
+            items: [
+              {
+                text: "Information may be used only up to the category, and for Restricted information only the types, named in the register entry.",
+              },
+              { text: "Where content mixes categories, the most restrictive applies." },
+              {
+                text: "Public availability does not remove Restricted status from personal information or from information held in confidence.",
+              },
+              {
+                text: "If you remove passages to lower the category, reclassify what remains. Remaining details can still reveal a client's plans or identify a person.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Step 5: Check the output, and keep a boundary on decisions about people",
+        blocks: [
+          {
+            kind: "paragraph",
+            text: "AI output can be fluent and still wrong, and people can rely on it more than it deserves. The level of checking depends on where the output goes:",
+          },
+          {
+            kind: "points",
+            items: [
+              {
+                label: "Internal working use",
+                text: "the person using the tool checks the output before relying on it.",
+              },
+              {
+                label: "Output that leaves the company or supports a financial or contractual decision",
+                text: "the person accountable for that work reviews it first, checking facts, figures, names, references and calculations against the sources. They are responsible for the content as if they had written it.",
+              },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "A sign-off record shows that a review took place, not that it was thorough. The periodic review looks at a sample.",
+          },
+          { kind: "paragraph", text: "Decisions about people." },
+          {
+            kind: "points",
+            items: [
+              {
+                label: "Administrative uses can be approved",
+                text: "for example:",
+                sub: [
+                  "drafting a job advertisement from approved content",
+                  "drafting interview invitations that a person checks and sends",
+                ],
+              },
+              {
+                label: "Evaluative uses are outside this starting point",
+                text: "for example:",
+                sub: [
+                  "ranking, scoring, screening or shortlisting candidates",
+                  "assessing performance",
+                  "recommending decisions on pay, discipline or dismissal",
+                ],
+              },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "This applies even if a person makes the final decision. Some jurisdictions have specific rules on automated decisions about people, so treat any such use as a separate project with legal and technical input.",
+          },
+        ],
+      },
+      {
+        heading: "When something goes wrong",
+        blocks: [
+          {
+            kind: "paragraph",
+            text: "Mistakes follow a separate route. Examples include entering Prohibited or Restricted information, using an unapproved tool, or letting a tool take an unapproved action.",
+          },
+          { kind: "paragraph", text: "The employee:" },
+          {
+            kind: "points",
+            ordered: true,
+            items: [
+              { text: "Stops further sharing." },
+              { text: "Tells the policy owner promptly." },
+              {
+                text: "Does not delete history, change settings or close the account unless asked. Those steps can remove information needed to understand what happened.",
+              },
+            ],
+          },
+          { kind: "paragraph", text: "The policy owner:" },
+          {
+            kind: "points",
+            ordered: true,
+            items: [
+              {
+                label: "Contains the incident",
+                text: "for example, suspends the tool's access to company systems.",
+              },
+              {
+                label: "Records securely",
+                text: "what was entered, when, through which account and who is affected.",
+              },
+              {
+                label: "Takes technical and, where relevant, privacy advice",
+                text: "before anything is deleted. Deleting visible history does not show that the provider has erased every copy.",
+              },
+              {
+                label: "Decides on that advice",
+                text: "whether anyone must be informed.",
+              },
+              {
+                label: "Considers",
+                text: "whether the rules, approved uses or training need to change.",
+              },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "If credentials were entered, the technical reviewer also advises on changing them.",
+          },
+          {
+            kind: "paragraph",
+            text: "Say in the rules that prompt reporting is expected, and explain how reports will be handled.",
+          },
+        ],
+      },
+      {
+        heading: "An illustrative acceptable-use statement",
+        blocks: [
+          {
+            kind: "panel",
+            title: "[Company] — Use of AI tools in company work",
+            note: "Illustrative, standalone example. It restates the rules above in policy form so it can be read on its own. It is not a recommended policy for your company. Adapt roles, categories and intervals to your business, and obtain technical, privacy and qualified review before adopting it.",
+            ordered: true,
+            items: [
+              {
+                label: "Scope",
+                text: "This statement applies to [employees, and to contractors whose engagement terms apply it] using AI tools for company work. This includes AI features within other software, browser extensions and personal accounts.",
+              },
+              {
+                label: "Approved uses only",
+                text: "Use AI for company work only within an entry in the approved-use register kept by [policy owner]. Each entry states the activity, tool and account, users, highest information category, any permitted tool actions, conditions and expiry date. You may work within an entry without further approval. Anything outside it needs approval first.",
+              },
+              {
+                label: "Information",
+                text: "Information is Public, Internal, Restricted or Prohibited.",
+                sub: [
+                  "Public means published and neither personal nor held in confidence.",
+                  "Restricted includes personal information (even if publicly available), information received in confidence, payment details, unannounced bids and pricing, and legal matters.",
+                  "Prohibited means passwords, authentication codes, tokens and keys.",
+                  "Never enter Prohibited information.",
+                  "Use other information only up to the category, and for Restricted information only the types, named in the entry.",
+                  "Mixed content takes the most restrictive category.",
+                  "Reclassify anything left after removing passages.",
+                ],
+              },
+              {
+                label: "Tool actions",
+                text: "AI tools may draft, summarise or suggest. They may not send, schedule, change records or access other systems unless the entry explicitly approves that action.",
+              },
+              {
+                label: "Approval",
+                text: "Requests go to [policy owner].",
+                sub: [
+                  "Every request receives technical review.",
+                  "Requests involving personal or confidential information also receive contractual and privacy review.",
+                  "[Policy owner] approves uses up to Internal. [Owner/general manager] decides uses involving Restricted information.",
+                  "No approval may permit what a law, contract or client instruction prohibits.",
+                ],
+              },
+              {
+                label: "Lapse",
+                text: "Permission ends at the expiry date, or when a condition is no longer met.",
+                sub: [
+                  "Stop the use and tell [policy owner] about any change you become aware of.",
+                  "[Policy owner] manages renewal or removal of access.",
+                ],
+              },
+              {
+                label: "Checking output",
+                text: "Check output before relying on it. Output that leaves the company, or supports a financial or contractual decision, must be reviewed first by the person accountable for that work, who is responsible for its content.",
+              },
+              {
+                label: "People decisions",
+                text: "AI tools must not be used to rank, score, screen, shortlist or otherwise evaluate candidates or employees, or to recommend decisions about them. This applies even if a person makes the final decision.",
+              },
+              {
+                label: "Client requirements",
+                text: "Client contract terms or instructions on AI use also apply. Where they are stricter, they take precedence.",
+              },
+              {
+                label: "Mistakes",
+                text: "Stop further sharing and tell [policy owner] promptly.",
+                sub: ["Do not delete history, change settings or close accounts unless asked."],
+              },
+              {
+                label: "Review",
+                text: "[Policy owner] reviews this statement, the inventory and the register every [interval], and after any significant incident or new tool. Changes are approved by [owner/general manager].",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Three worked examples",
+        note: "These concern a fictional company. They illustrate the rules and do not describe a Darwish & Co. client or engagement.",
+        blocks: [
+          { kind: "paragraph", text: "A social media post. The register has one entry:" },
+          {
+            kind: "points",
+            items: [
+              { label: "Activity", text: "drafting marketing content." },
+              { label: "Tool and account", text: "a company-managed AI assistant account." },
+              { label: "Who", text: "the marketing team." },
+              { label: "Information", text: "up to Internal." },
+              { label: "Tool actions", text: "none." },
+              { label: "Validity", text: "expiry date not yet reached, conditions met." },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "A marketing coordinator drafts a post from product details already on the company website. The checks run in order:",
+          },
+          {
+            kind: "points",
+            ordered: true,
+            items: [
+              { label: "Activity", text: "drafting marketing content, which the entry covers." },
+              { label: "Tool and account", text: "the listed company account." },
+              { label: "Information", text: "Public, which is within Internal." },
+              { label: "Approval", text: "still valid." },
+              {
+                label: "Actions",
+                text: "the assistant offers to publish directly through a connected social account. The entry approves no actions, so she declines.",
+              },
+              {
+                label: "Output review",
+                text: "the post leaves the company, so the marketing lead reviews it before she publishes it herself.",
+              },
+            ],
+          },
+          { kind: "paragraph", text: "Result: permitted, as described." },
+          {
+            kind: "paragraph",
+            text: "Meeting notes with a client's confidential plans. An account manager wants to use the same account to summarise notes that mix internal follow-up actions with a client's unannounced expansion plans, shared under a confidentiality agreement.",
+          },
+          {
+            kind: "points",
+            ordered: true,
+            items: [
+              {
+                label: "Activity",
+                text: "summarising client meeting notes. The only entry covers drafting marketing content, so this is not approved, and the check stops here.",
+              },
+              {
+                label: "For completeness, the information also fails",
+                text: "the notes are Restricted, beyond the entry's Internal limit.",
+              },
+            ],
+          },
+          { kind: "paragraph", text: "Removing the confidential passages would fix neither problem:" },
+          {
+            kind: "points",
+            items: [
+              { text: "The activity would still be unapproved." },
+              {
+                text: 'One remaining action — "prepare a quotation for the client\'s new site" — still reveals the plans.',
+              },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "Result: the account manager writes the summary without AI. If such summaries are needed regularly, the policy owner can start a request for a specific use. That request needs technical review, the client relationship owner's check of the agreement, contractual and privacy review, and a decision by the role authorised for Restricted information.",
+          },
+          {
+            kind: "paragraph",
+            text: "CVs in a personal account. An HR assistant has pasted candidate CVs into a personal AI account to produce a shortlist.",
+          },
+          {
+            kind: "points",
+            ordered: true,
+            items: [
+              { label: "Activity", text: "shortlisting is evaluative, so it is outside the rules." },
+              { label: "Tool and account", text: "a personal account is not in the register." },
+              {
+                label: "Information",
+                text: "CVs contain personal information, which is Restricted.",
+              },
+            ],
+          },
+          { kind: "paragraph", text: "This is a mistake, so the incident route applies:" },
+          {
+            kind: "points",
+            ordered: true,
+            items: [
+              {
+                text: "The assistant stops, tells the policy owner as soon as she realises, and leaves the account as it is.",
+              },
+              { text: "The policy owner records what happened." },
+              {
+                text: "The policy owner takes technical and privacy advice before anything is deleted, and decides on that advice whether anyone must be informed.",
+              },
+              { text: "The HR manager shortlists without using the AI output." },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "Follow-up: the review then considers whether an administrative use, such as drafting interview invitations, should be approved. Screening remains outside scope.",
+          },
+        ],
+      },
+      {
+        heading: "Keep it under review",
+        blocks: [
+          { kind: "paragraph", text: "At each review, the policy owner:" },
+          {
+            kind: "points",
+            items: [
+              { text: "Updates the inventory." },
+              { text: "Checks each entry's settings, connections and expiry date." },
+              { text: "Renews or removes entries." },
+              { text: "Samples reviewed outputs." },
+              { text: "Reports incidents and proposed changes for approval." },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "A signed acknowledgement shows that people received the rules, not that they follow them. The review is where you find out what actually happens.",
+          },
+        ],
+      },
+      {
+        heading: "Where this fits",
+        blocks: [
+          { kind: "paragraph", text: "These rules give you a defined starting point:" },
+          {
+            kind: "points",
+            items: [
+              { text: "You know how AI is used." },
+              { text: "You know who is responsible." },
+              {
+                text: "You know which uses are approved, with what information and what actions.",
+              },
+              { text: "You know who checks the results." },
+              { text: "You know what is out of scope." },
+            ],
+          },
+          {
+            kind: "paragraph",
+            text: "They are not an AI management system. ISO/IEC 42001:2023 specifies requirements for establishing, implementing, maintaining and continually improving an AI management system. It is intended for organisations that develop, provide or use AI-based products or services ([ISO](https://www.iso.org/standard/42001)). The rules above can feed into such a system. Adopting them does not amount to conformity with the standard or to certification.",
+          },
+          {
+            kind: "paragraph",
+            text: "Plan a broader assessment, with technical and legal input, if you want AI to evaluate people, shape decisions about customers, act across your systems beyond narrowly approved actions, or form part of what you sell.",
+          },
+        ],
+      },
+    ],
   },
 ];
 
@@ -818,6 +1478,8 @@ export function readingMinutes(guide: Guide): number {
     guide.title,
     guide.summary,
     ...(guide.intro ?? []),
+    ...(guide.introPoints ?? []).flatMap((point) => [point.label ?? "", point.text]),
+    ...(guide.introAfter ?? []),
     ...(guide.sections ?? []).flatMap((section) => [
       section.heading,
       section.note ?? "",
@@ -825,6 +1487,18 @@ export function readingMinutes(guide: Guide): number {
       ...(section.points ?? []).flatMap((point) => [point.label ?? "", point.text]),
       ...(section.table ? [...section.table.headers, ...section.table.rows.flat()] : []),
       ...(section.after ?? []),
+      ...(section.blocks ?? []).flatMap((block) => {
+        if (block.kind === "paragraph" || block.kind === "note") return [block.text];
+        if (block.kind === "points")
+          return block.items.flatMap((item) => [item.label ?? "", item.text, ...(item.sub ?? [])]);
+        if (block.kind === "table") return [...block.headers, ...block.rows.flat()];
+        return [
+          block.title ?? "",
+          block.note ?? "",
+          ...(block.intro ?? []),
+          ...(block.items ?? []).flatMap((item) => [item.label ?? "", item.text, ...(item.sub ?? [])]),
+        ];
+      }),
     ]),
     ...(guide.faqs ?? []).flatMap((faq) => [faq.question, faq.answer]),
   ].join(" ");
