@@ -135,8 +135,20 @@ function DropdownMenu({
   onOpenChange: (open: boolean) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const go = useHashNav();
   const setOpen = onOpenChange;
+  const panelId = `nav-menu-${item.name.toLowerCase().replace(/\s+/g, "-")}`;
+
+  const cancelClose = () => clearTimeout(closeTimer.current);
+  // A short delay so a small wobble of the mouse does not shut the menu.
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => onOpenChange(false), 150);
+  };
+
+  useEffect(() => cancelClose, []);
 
   useEffect(() => {
     // Only the open menu listens, so a click on another menu's button is not
@@ -147,21 +159,46 @@ function DropdownMenu({
         onOpenChange(false);
       }
     }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        onOpenChange(false);
+        buttonRef.current?.focus();
+      }
+    }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [open, onOpenChange]);
 
   const isActive = location === item.path || location.startsWith(item.path + "/");
 
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => {
+        cancelClose();
+        setOpen(true);
+      }}
+      onMouseLeave={scheduleClose}
+      onBlur={(e) => {
+        // Keyboard focus moving out of the menu closes it.
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false);
+      }}
+    >
       <button
+        ref={buttonRef}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-controls={open ? panelId : undefined}
         className={cn(
           "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary cursor-pointer",
           isActive ? "text-primary font-bold" : "text-muted-foreground"
         )}
         onClick={() => setOpen(!open)}
-        onMouseEnter={() => setOpen(true)}
       >
         {item.name}
         <ChevronDown
@@ -171,10 +208,10 @@ function DropdownMenu({
       </button>
 
       {open && (
-        <div
-          className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-md shadow-lg z-50 py-1"
-          onMouseLeave={() => setOpen(false)}
-        >
+        // The padding, not a margin, spans the gap under the button, so the
+        // pointer never crosses a dead zone between the button and the panel.
+        <div id={panelId} className="absolute top-full left-0 z-50 w-56 pt-2">
+         <div className="rounded-md border border-border bg-background py-1 shadow-lg">
           {/* The parent page, unless a child already links to it. */}
           {!item.children?.some((child) => child.path === item.path) && (
             <button
@@ -194,6 +231,7 @@ function DropdownMenu({
               {child.name}
             </button>
           ))}
+         </div>
         </div>
       )}
     </div>
@@ -259,7 +297,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   item={item}
                   location={location}
                   open={openDropdown === item.path}
-                  onOpenChange={(next) => setOpenDropdown(next ? item.path : null)}
+                  onOpenChange={(next) =>
+                    // A late close from one menu must not shut another that has opened since.
+                    setOpenDropdown((current) =>
+                      next ? item.path : current === item.path ? null : current,
+                    )
+                  }
                 />
               ) : (
                 <Link key={item.path} href={item.path}>
