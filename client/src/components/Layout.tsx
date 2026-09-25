@@ -119,20 +119,37 @@ function useHashNav() {
   );
 }
 
-function DropdownMenu({ item, location }: { item: NavItem; location: string }) {
-  const [open, setOpen] = useState(false);
+/**
+ * Which dropdown is open is decided by the header, not by each menu, so opening
+ * one closes the others. `open` and `onOpenChange` come from there.
+ */
+function DropdownMenu({
+  item,
+  location,
+  open,
+  onOpenChange,
+}: {
+  item: NavItem;
+  location: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const go = useHashNav();
+  const setOpen = onOpenChange;
 
   useEffect(() => {
+    // Only the open menu listens, so a click on another menu's button is not
+    // first read as "outside" and then toggled back open.
+    if (!open) return;
     function handleClickOutside(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
+        onOpenChange(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [open, onOpenChange]);
 
   const isActive = location === item.path || location.startsWith(item.path + "/");
 
@@ -143,7 +160,7 @@ function DropdownMenu({ item, location }: { item: NavItem; location: string }) {
           "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary cursor-pointer",
           isActive ? "text-primary font-bold" : "text-muted-foreground"
         )}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen(!open)}
         onMouseEnter={() => setOpen(true)}
       >
         {item.name}
@@ -187,6 +204,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const go = useHashNav();
   const scrolled = useScrolled();
 
@@ -236,7 +254,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navItems.map((item) =>
               item.children ? (
-                <DropdownMenu key={item.path} item={item} location={location} />
+                <DropdownMenu
+                  key={item.path}
+                  item={item}
+                  location={location}
+                  open={openDropdown === item.path}
+                  onOpenChange={(next) => setOpenDropdown(next ? item.path : null)}
+                />
               ) : (
                 <Link key={item.path} href={item.path}>
                   <span
