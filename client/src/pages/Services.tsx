@@ -69,7 +69,7 @@ function Pillar({ pillar, muted }: { pillar: ServicePillar; muted?: boolean }) {
 
   return (
     <section className={muted ? "border-t border-border bg-muted/20 py-16" : "py-16"}>
-      <div className="container space-y-10">
+      <div className="site-container space-y-10">
         <div className="max-w-3xl space-y-3">
           <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
             {PILLARS[pillar].name}
@@ -93,9 +93,9 @@ export default function Services() {
     <div className="min-h-screen bg-background font-body">
       {/* Header */}
       <section className="bg-primary py-20 text-primary-foreground">
-        <div className="container space-y-6 text-center">
+        <div className="site-container space-y-6 text-center">
           <h1 className="font-heading text-4xl font-bold md:text-5xl">Our Services</h1>
-          <p className="mx-auto max-w-2xl text-xl text-primary-foreground/80">
+          <p className="content-narrow text-xl text-primary-foreground/80">
             Governance first, then the strategy, structure and growth work that depends on it — for
             SMEs in Egypt and the MENA region.
           </p>
@@ -108,7 +108,7 @@ export default function Services() {
 
       {/* Partner note */}
       <section className="border-t border-border bg-muted/20 py-12">
-        <div className="container max-w-3xl space-y-3 text-center">
+        <div className="site-container content-narrow space-y-3 text-center">
           <h2 className="font-heading text-lg font-bold text-foreground">
             Where a partner delivers part of the work
           </h2>
@@ -128,11 +128,11 @@ export default function Services() {
 
       {/* Call to action */}
       <section className="py-16">
-        <div className="container flex flex-col items-center gap-6 text-center">
+        <div className="site-container flex flex-col items-center gap-6 text-center">
           <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
             Not sure which of these you need?
           </h2>
-          <p className="max-w-2xl leading-relaxed text-muted-foreground">
+          <p className="content-narrow leading-relaxed text-muted-foreground">
             Most engagements start with a problem rather than a service — an investor asking
             questions, a client sending a compliance questionnaire, a structure that has stopped
             working. Describe it and we will tell you which of these applies, or whether none does.

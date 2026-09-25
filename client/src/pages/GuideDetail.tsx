@@ -86,7 +86,7 @@ function Block({ block, heading }: { block: GuideBlock; heading: string }) {
 
   if (block.kind === "note") {
     return (
-      <p className="border-l-4 border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+      <p className="bg-muted/60 px-4 py-3 text-sm text-muted-foreground">
         {withLinks(block.text)}
       </p>
     );
@@ -106,7 +106,7 @@ function Block({ block, heading }: { block: GuideBlock; heading: string }) {
         <h3 className="font-heading text-lg font-bold text-foreground">{block.title}</h3>
       )}
       {block.note && (
-        <p className="border-l-4 border-primary/40 bg-white/60 px-4 py-3 text-sm text-muted-foreground">
+        <p className="bg-white/60 px-4 py-3 text-sm text-muted-foreground">
           {withLinks(block.note)}
         </p>
       )}
@@ -205,7 +205,7 @@ function Section({ section }: { section: GuideSection }) {
       <h2 className="font-heading text-2xl font-bold text-foreground">{section.heading}</h2>
 
       {section.note && (
-        <p className="border-l-4 border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+        <p className="bg-muted/60 px-4 py-3 text-sm text-muted-foreground">
           {section.note}
         </p>
       )}
@@ -260,7 +260,7 @@ export default function GuideDetail() {
     <div className="font-body">
       {/* Breadcrumb: Home › Guides › this guide › this page */}
       <nav aria-label="Breadcrumb" className="border-b border-border bg-secondary/20 py-4">
-        <ol className="container flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+        <ol className="site-container flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <li className="flex items-center gap-2">
             <Link href="/">
               <span className="cursor-pointer hover:text-primary hover:underline">Home</span>
@@ -291,7 +291,7 @@ export default function GuideDetail() {
 
       {/* Title */}
       <header className="bg-primary py-16 text-primary-foreground">
-        <div className="container max-w-3xl space-y-5">
+        <div className="site-container prose-container space-y-5">
           <span className="text-xs font-bold uppercase tracking-widest text-primary-foreground/70">
             {guide.kind === "hub" ? "Guide" : hub ? `Part of ${guideName(hub)}` : "Guide"}
           </span>
@@ -321,7 +321,7 @@ export default function GuideDetail() {
             )}
           </p>
           {guide.artefact && (
-            <p className="border-l-4 border-primary-foreground/40 pl-4 text-sm text-primary-foreground/85">
+            <p className="bg-primary-foreground/10 px-4 py-3 text-sm text-primary-foreground/85">
               <strong className="font-semibold">What you leave with:</strong> {guide.artefact}
             </p>
           )}
@@ -331,8 +331,11 @@ export default function GuideDetail() {
       {/* The guide itself, with its contents beside it on a wide screen and
           above it on a narrow one. */}
       <div className="py-16">
-        <div className="container grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-14">
-          <article className="order-2 max-w-3xl space-y-12 lg:order-1">
+        <div className="site-container grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-14">
+          {/* min-w-0: as a grid item this would otherwise size to its own
+              max-content and overflow the track on a tablet, where the column
+              is narrower than the article's own cap. */}
+          <article className="order-2 min-w-0 prose-container space-y-12 lg:order-1">
           {(guide.intro || guide.introPoints) && (
             <div className="space-y-4">
               {guide.intro?.map((paragraph) => (
@@ -386,7 +389,7 @@ export default function GuideDetail() {
       {/* A way on: the overview, then the other pages of the same guide. */}
       {group && (hub || siblings.length > 0) && (
         <section className="border-t border-border bg-secondary/20 py-16">
-          <div className="container max-w-3xl space-y-8">
+          <div className="site-container prose-container space-y-8">
             <h2 className="font-heading text-2xl font-bold text-foreground">
               {guide.kind === "hub" ? "Start with" : "Continue in this guide"}
             </h2>
@@ -419,7 +422,7 @@ export default function GuideDetail() {
 
       {service && (
         <section className="bg-foreground py-16 text-white">
-          <div className="container max-w-3xl space-y-5">
+          <div className="site-container prose-container space-y-5">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               The work behind this
             </span>
@@ -461,7 +464,7 @@ export function GuideIndex() {
   return (
     <div className="font-body">
       <header className="bg-primary py-16 text-primary-foreground">
-        <div className="container max-w-3xl space-y-4">
+        <div className="site-container prose-container space-y-4">
           <h1 className="font-heading text-3xl font-bold leading-tight md:text-4xl">Guides</h1>
           <p className="text-lg leading-relaxed text-primary-foreground/85">
             Practical guides for owners and managing directors, written around the decisions
@@ -474,7 +477,7 @@ export function GuideIndex() {
         {/* One guide gets the full width; the grid arrives with the second. */}
         <div
           className={cn(
-            "container grid gap-10",
+            "site-container grid gap-10",
             groups.length > 1 ? "lg:grid-cols-2" : "mx-auto max-w-3xl",
           )}
         >

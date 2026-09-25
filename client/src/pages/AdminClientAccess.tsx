@@ -174,7 +174,7 @@ export default function AdminClientAccess() {
   return (
     <div className="min-h-screen bg-secondary/10 pb-16 font-body">
       <header className="sticky top-0 z-10 border-b border-border bg-white/95 backdrop-blur">
-        <div className="container flex items-center justify-between py-4">
+        <div className="site-container flex items-center justify-between py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center bg-primary/10 text-primary"><KeyRound className="h-5 w-5" /></div>
             <div><h1 className="font-heading text-lg font-bold text-foreground">Client Access Management</h1><p className="text-xs text-muted-foreground">Issue credentials and assign secure portal routes</p></div>
@@ -187,7 +187,7 @@ export default function AdminClientAccess() {
         </div>
       </header>
 
-      <main className="container grid max-w-7xl gap-8 py-8 lg:grid-cols-[0.85fr_1.15fr]">
+      <main className="site-container grid max-w-7xl gap-8 py-8 lg:grid-cols-[0.85fr_1.15fr]">
         <div className="space-y-6">
           <Card className="border-0 shadow-md">
             <CardHeader><CardTitle className="font-heading text-xl">{editing ? "Update client access" : "Issue client credentials"}</CardTitle><p className="text-sm text-muted-foreground">Passwords are hashed before they are saved. The selected role is carried securely into the assigned portal.</p></CardHeader>

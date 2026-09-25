@@ -199,6 +199,8 @@ function CorporateCard({ cp }: { cp: CorporatePartner }) {
               src={cp.logoUrl}
               alt={cp.name}
               className="h-12 w-auto max-w-[120px] object-contain"
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <div
@@ -344,7 +346,7 @@ export default function CorporatePartners() {
       <section className="relative py-24 bg-foreground text-white overflow-hidden">
         <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-primary/10 to-transparent z-0" />
         <div className="absolute bottom-0 right-0 w-1/4 h-1/2 bg-gradient-to-tl from-chart-3/10 to-transparent z-0" />
-        <div className="container relative z-10">
+        <div className="site-container relative z-10">
           <div className="max-w-2xl space-y-5">
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-primary/20 rounded-lg">
@@ -390,7 +392,7 @@ export default function CorporatePartners() {
 
       {/* Filter + Grid */}
       <section className="py-16 bg-muted/20">
-        <div className="container">
+        <div className="site-container">
           {/* Filter tabs */}
           <div className="flex flex-wrap gap-2 mb-10">
             {FILTER_OPTIONS.filter(

@@ -108,7 +108,7 @@ export default function Contact() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <section className="bg-primary text-primary-foreground py-20">
-        <div className="container text-center space-y-6">
+        <div className="site-container text-center space-y-6">
           <h1 className="font-heading text-4xl md:text-5xl font-bold">Contact Us</h1>
           <p className="text-xl max-w-2xl mx-auto text-primary-foreground/80">
             Let's start a conversation about your business needs.
@@ -117,7 +117,7 @@ export default function Contact() {
       </section>
 
       <section className="py-20">
-        <div className="container max-w-6xl mx-auto">
+        <div className="site-container">
           <div className="grid md:grid-cols-2 gap-12">
 
             {/* Contact Info */}
@@ -331,7 +331,7 @@ export default function Contact() {
 
       {/* Map CTA strip */}
       <section className="py-8 bg-primary/5 border-t border-primary/10">
-        <div className="container max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="site-container flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <MapPin className="w-5 h-5 text-primary shrink-0" />
             <span className="text-sm text-muted-foreground">

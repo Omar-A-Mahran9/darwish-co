@@ -181,7 +181,7 @@ export default function AdminInbox() {
     <div className="min-h-screen bg-secondary/10 font-body">
       {/* Header */}
       <div className="bg-white border-b border-border sticky top-0 z-10">
-        <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="site-container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
               <Inbox className="w-5 h-5 text-primary" />
@@ -226,7 +226,7 @@ export default function AdminInbox() {
         </div>
       </div>
 
-      <div className="container max-w-6xl mx-auto px-4 py-6">
+      <div className="site-container max-w-6xl mx-auto px-4 py-6">
         {messages.length === 0 ? (
           <div className="text-center py-24">
             <Inbox className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />

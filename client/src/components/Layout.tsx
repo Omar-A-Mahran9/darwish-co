@@ -217,7 +217,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           background changes on scroll, so nothing shifts under the reader. The
           gap keeps the logo clear of the first nav item.
         */}
-        <div className="container flex h-20 items-center justify-between gap-10 lg:gap-16">
+        <div className="site-container flex h-20 items-center justify-between gap-10 lg:gap-16">
           <Link href="/" className="shrink-0">
             <div className="flex shrink-0 items-center space-x-2 cursor-pointer">
               <img
@@ -401,7 +401,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Footer */}
       <footer className="border-t border-border bg-muted/30 py-12">
-        <div className="container grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="site-container grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <h3 className="font-heading text-xl font-bold text-primary">Darwish & Co.</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -454,7 +454,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </ul>
           </div>
         </div>
-        <div className="container mt-12 pt-8 border-t border-border text-center text-sm text-muted-foreground">
+        <div className="site-container mt-12 pt-8 border-t border-border text-center text-sm text-muted-foreground">
           © {new Date().getFullYear()} Darwish & Co. All rights reserved.
         </div>
       </footer>

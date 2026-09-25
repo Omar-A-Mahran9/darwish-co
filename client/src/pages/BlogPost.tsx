@@ -606,7 +606,7 @@ export default function BlogPost() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-          <div className="container max-w-4xl mx-auto">
+          <div className="site-container prose-container">
             <span className={`inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 ${article.categoryColor}`}>
               {article.category}
             </span>
@@ -619,7 +619,7 @@ export default function BlogPost() {
 
       {/* Meta bar */}
       <div className="border-b bg-white sticky top-0 z-10 shadow-sm">
-        <div className="container max-w-4xl mx-auto py-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+        <div className="site-container prose-container py-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <Link href="/blog">
             <span className="flex items-center gap-1 text-primary font-medium hover:underline cursor-pointer">
               <ArrowLeft className="w-4 h-4" /> All Articles
@@ -643,9 +643,9 @@ export default function BlogPost() {
 
       {/* Article body */}
       <article className="py-16">
-        <div className="container max-w-3xl mx-auto">
+        <div className="site-container prose-container">
           {/* Lead */}
-          <p className="text-xl text-muted-foreground leading-relaxed mb-12 font-light border-l-4 border-primary pl-6">
+          <p className="text-xl text-muted-foreground leading-relaxed mb-12 font-light bg-secondary/40 px-6 py-5">
             {article.excerpt}
           </p>
 

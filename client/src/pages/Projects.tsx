@@ -202,7 +202,7 @@ export default function Projects() {
       <section className="bg-primary text-primary-foreground py-20 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-white/5 translate-y-1/2 -translate-x-1/4" />
-        <div className="container relative z-10 text-center space-y-6">
+        <div className="site-container relative z-10 text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-sm font-medium mb-2">
             <Zap className="w-4 h-4" />
             Our Work
@@ -219,7 +219,7 @@ export default function Projects() {
 
       {/* Projects Count Bar */}
       <section className="bg-muted/40 border-b border-border py-8">
-        <div className="container flex flex-wrap justify-center gap-12 text-center">
+        <div className="site-container flex flex-wrap justify-center gap-12 text-center">
           <div>
             <p className="font-heading text-3xl font-bold text-primary">1</p>
             <p className="text-sm text-muted-foreground mt-1">Active Initiative</p>
@@ -235,7 +235,7 @@ export default function Projects() {
 
       {/* ── PROJECT 1: AI POC Platform ── */}
       <section id="ai-poc" className="py-20 border-b border-border" style={{ scrollMarginTop: '5rem' }}>
-        <div className="container max-w-6xl mx-auto">
+        <div className="site-container">
           {/* Section Label */}
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -491,7 +491,7 @@ export default function Projects() {
 
       {/* ── PROJECT 2: Hebei-Egypt International Trade Portal ── HIDDEN ── */}
       {false && (<section id="trade-portal" className="py-20 border-b border-border bg-muted/20" style={{ scrollMarginTop: '5rem' }}>
-        <div className="container max-w-6xl mx-auto">
+        <div className="site-container">
           {/* Section Label */}
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-chart-3/10 flex items-center justify-center">
@@ -724,7 +724,7 @@ export default function Projects() {
 
       {/* ── PROJECT 3: Education Organization Development ── HIDDEN ── */}
       {false && (<section id="education" className="py-20 border-b border-border" style={{ scrollMarginTop: '5rem' }}>
-        <div className="container max-w-6xl mx-auto">
+        <div className="site-container">
           {/* Section Label */}
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-chart-2/10 flex items-center justify-center">
@@ -922,7 +922,7 @@ export default function Projects() {
 
       {/* More Projects Coming */}
       <section className="py-16 bg-muted/30 border-t border-border">
-        <div className="container max-w-3xl mx-auto text-center space-y-6">
+        <div className="site-container content-narrow text-center space-y-6">
           <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
             <Users className="w-6 h-6 text-primary" />
           </div>

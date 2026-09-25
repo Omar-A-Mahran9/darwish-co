@@ -67,7 +67,7 @@ export default function ServiceDetail() {
     <div className="min-h-screen bg-background font-body">
       {/* Header */}
       <section className="bg-primary py-16 text-primary-foreground md:py-20">
-        <div className="container space-y-6">
+        <div className="site-container space-y-6">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-primary-foreground/70">
             <Link href="/">
               <span className="cursor-pointer hover:text-primary-foreground hover:underline">Home</span>
@@ -106,10 +106,10 @@ export default function ServiceDetail() {
 
       {/* Introduction */}
       <section className="py-14">
-        <div className="container max-w-3xl space-y-6">
+        <div className="site-container prose-container space-y-6">
           <p className="text-lg leading-relaxed text-foreground">{service.intro}</p>
           {service.partner && (
-            <p className={`border-l-4 ${accent.border} bg-muted/30 py-4 pl-5 text-sm leading-relaxed text-muted-foreground`}>
+            <p className={`bg-muted/40 px-5 py-4 text-sm leading-relaxed text-muted-foreground`}>
               {service.partner.note}
             </p>
           )}
@@ -130,7 +130,7 @@ export default function ServiceDetail() {
       {/* Partner statistics */}
       {service.stats && (
         <section className="pb-14">
-          <div className="container grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="site-container grid grid-cols-2 gap-4 md:grid-cols-4">
             {service.stats.map((stat) => (
               <div key={stat.label} className={`border ${accent.border} ${accent.soft} p-4 text-center`}>
                 <div className={`font-heading text-xl font-bold ${accent.text}`}>{stat.value}</div>
@@ -143,7 +143,7 @@ export default function ServiceDetail() {
 
       {/* What we do */}
       <section className="border-t border-border bg-muted/20 py-16">
-        <div className="container space-y-12">
+        <div className="site-container space-y-12">
           <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">What we do</h2>
 
           {groups.map((group) => {
@@ -166,7 +166,7 @@ export default function ServiceDetail() {
                           {offering.title}
                         </CardTitle>
                         {offering.byPartner && service.partner && (
-                          <span className={`mt-2 inline-flex w-fit items-center rounded-full ${accent.soft} px-2.5 py-0.5 text-[11px] font-bold ${accent.text}`}>
+                          <span className={`mt-2 inline-flex w-fit items-center rounded-full ${accent.soft} px-2.5 py-0.5 text-xs font-bold ${accent.text}`}>
                             Delivered by {service.partner.name}
                           </span>
                         )}
@@ -187,7 +187,7 @@ export default function ServiceDetail() {
 
       {/* Who it's for / What you get */}
       <section className="py-16">
-        <div className="container grid gap-12 md:grid-cols-2">
+        <div className="site-container grid gap-12 md:grid-cols-2">
           <div className="space-y-6">
             <h2 className="font-heading text-2xl font-bold text-primary">Is this you?</h2>
             <ul className="space-y-4">
@@ -217,7 +217,7 @@ export default function ServiceDetail() {
       {/* Who is accountable, where a partner delivers part of the work */}
       {service.partner && (
         <section className="pb-16">
-          <div className="container">
+          <div className="site-container">
             <div className={`border ${accent.border} ${accent.soft} p-6 md:p-8`}>
               <h2 className="font-heading text-lg font-bold text-foreground">
                 Who delivers, and who is accountable
@@ -240,7 +240,7 @@ export default function ServiceDetail() {
 
       {/* Who leads this — v3 requires a named, accountable delivery lead */}
       <section className="pb-16">
-        <div className="container">
+        <div className="site-container">
           {service.deliveryLead ? (
             <div className="border border-border bg-muted/20 p-6 md:p-8">
               <h2 className="font-heading text-lg font-bold text-foreground">Who leads this</h2>
@@ -271,7 +271,7 @@ export default function ServiceDetail() {
       {/* Standards genuinely applied in the work */}
       {service.standards && (
         <section className="border-t border-border py-16">
-          <div className="container space-y-8">
+          <div className="site-container space-y-8">
             <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
               Standards we work with
             </h2>
@@ -291,7 +291,7 @@ export default function ServiceDetail() {
 
       {/* How an engagement runs */}
       <section className="border-y border-border bg-muted/20 py-16">
-        <div className="container space-y-10">
+        <div className="site-container space-y-10">
           <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
             How an engagement runs
           </h2>
@@ -311,7 +311,7 @@ export default function ServiceDetail() {
 
       {/* Questions */}
       <section className="py-16">
-        <div className="container max-w-3xl space-y-8">
+        <div className="site-container prose-container space-y-8">
           <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
             Common questions
           </h2>
@@ -333,7 +333,7 @@ export default function ServiceDetail() {
       {/* Guides written about this work, where any are published */}
       {guides.length > 0 && (
         <section className="border-t border-border bg-secondary/20 py-16">
-          <div className="container space-y-6">
+          <div className="site-container space-y-6">
             <h2 className="font-heading text-xl font-bold text-foreground">
               Read this before you call
             </h2>
@@ -364,7 +364,7 @@ export default function ServiceDetail() {
 
       {/* Call to action */}
       <section className="bg-primary py-16 text-primary-foreground">
-        <div className="container flex flex-col items-center gap-6 text-center">
+        <div className="site-container flex flex-col items-center gap-6 text-center">
           <h2 className="font-heading text-2xl font-bold md:text-3xl">
             Talk to us about {service.navLabel.toLowerCase()}
           </h2>
@@ -395,7 +395,7 @@ export default function ServiceDetail() {
 
       {/* Other services */}
       <section className="py-16">
-        <div className="container space-y-8">
+        <div className="site-container space-y-8">
           <h2 className="font-heading text-xl font-bold text-foreground">Other services</h2>
           <div className="grid gap-6 md:grid-cols-3">
             {others.map((entry) => (

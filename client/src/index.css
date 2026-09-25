@@ -84,13 +84,13 @@
      Text: Dark Gray / Black
   */
 
-  --primary: oklch(0.62 0.16 235); /* Cyan Blue */
+  --primary: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
   --primary-foreground: oklch(1 0 0); /* White */
   
-  --sidebar-primary: oklch(0.62 0.16 235);
+  --sidebar-primary: oklch(0.50 0.14 235);
   --sidebar-primary-foreground: oklch(1 0 0);
   
-  --chart-1: oklch(0.62 0.16 235); /* Cyan Blue */
+  --chart-1: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
   --chart-2: oklch(0.72 0.21 150); /* Emerald Green */
   --chart-3: oklch(0.75 0.20 65);  /* Golden Orange */
   --chart-4: oklch(0.5 0.1 235);   /* Darker Blue */
@@ -110,27 +110,27 @@
   --popover-foreground: oklch(0.2 0.02 260);
   
   --secondary: oklch(0.96 0.01 235); /* Very Light Blue */
-  --secondary-foreground: oklch(0.62 0.16 235); /* Cyan Blue */
+  --secondary-foreground: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
   
   --muted: oklch(0.96 0.01 235);
   --muted-foreground: oklch(0.5 0.05 235);
   
   --accent: oklch(0.96 0.01 235); /* Very Light Blue */
-  --accent-foreground: oklch(0.62 0.16 235);
+  --accent-foreground: oklch(0.50 0.14 235);
   
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
   
   --border: oklch(0.9 0.02 235);
   --input: oklch(0.9 0.02 235);
-  --ring: oklch(0.62 0.16 235); /* Cyan Blue */
+  --ring: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
   
   --sidebar: oklch(0.99 0 0);
   --sidebar-foreground: oklch(0.2 0.02 260);
   --sidebar-accent: oklch(0.96 0.01 235);
-  --sidebar-accent-foreground: oklch(0.62 0.16 235);
+  --sidebar-accent-foreground: oklch(0.50 0.14 235);
   --sidebar-border: oklch(0.9 0.02 235);
-  --sidebar-ring: oklch(0.62 0.16 235);
+  --sidebar-ring: oklch(0.50 0.14 235);
 }
 
 .dark {
@@ -140,7 +140,7 @@
      Text: White/Light Gray
      Primary: Cyan Blue (kept vibrant)
   */
-  --primary: oklch(0.62 0.16 235); /* Cyan Blue */
+  --primary: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
   --primary-foreground: oklch(1 0 0);
   
   --sidebar-primary: oklch(0.62 0.16 235);
@@ -169,7 +169,7 @@
   
   --border: oklch(0.3 0.04 260);
   --input: oklch(0.3 0.04 260);
-  --ring: oklch(0.62 0.16 235); /* Cyan Blue */
+  --ring: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
   
   --chart-1: oklch(0.62 0.16 235);
   --chart-2: oklch(0.72 0.21 150);
@@ -256,44 +256,88 @@
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
-  .container {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
-    padding-right: 1rem;
-  }
-
   .flex {
     min-height: 0;
     min-width: 0;
   }
 
+  /**
+   * ── Layout primitives ──
+   *
+   * `.site-container` is the only rule that sets page width. A narrow cap
+   * belongs on a block of text, never on a wrapper that holds grids or cards.
+   *
+   * Named `site-container` rather than overriding `.container`: Tailwind v4
+   * ships its own `.container` in the utilities layer, which outranks this
+   * components layer. That is why the site's previous `.container` rule —
+   * which declared max-width 1280px right here — never applied, leaving every
+   * page on Tailwind's 1536px instead. Do not reintroduce a `.container` rule.
+   */
+  .site-container {
+    --gutter: 1.5rem; /* 24px */
+    width: 100%;
+    margin-inline: auto;
+    max-width: 1280px;
+    padding-inline: var(--gutter);
+  }
+
   @media (min-width: 640px) {
-    .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
-      padding-right: 1.5rem;
+    .site-container {
+      --gutter: 2rem; /* 32px */
     }
   }
 
   @media (min-width: 1024px) {
-    .container {
-      padding-left: 2rem; /* 32px - desktop padding */
-      padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+    .site-container {
+      --gutter: 3rem; /* 48px */
     }
+  }
+
+  /**
+   * Both narrow primitives may be combined with `.site-container` to keep the
+   * page gutters while narrowing the measure.
+   *
+   * Two things make that work. The doubled selector outranks `.site-container`
+   * on specificity rather than on source order, so reordering this file cannot
+   * break it. And the combined max-width adds the gutters back, so a measure
+   * means the same width of text whether the class sits on the container or on
+   * a block nested inside one — otherwise the same primitive would render 720px
+   * of text in one place and 624px in another.
+   */
+
+  /** Long-form reading passages: ~68 characters at the 18px body size. */
+  .prose-container {
+    max-width: 720px;
+  }
+  .site-container.prose-container {
+    max-width: calc(720px + 2 * var(--gutter));
+  }
+
+  /** Centred call-to-action and emphasis blocks. */
+  .content-narrow {
+    max-width: 640px;
+    margin-inline: auto;
+  }
+  .site-container.content-narrow {
+    max-width: calc(640px + 2 * var(--gutter));
+  }
+}
+
+/* Reduced motion: keep state changes, remove movement. Ambient loops stop,
+   smooth scrolling and entrance transforms become instant. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .spin-slow,
+  .marquee-track,
+  [class*="animate-"] {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

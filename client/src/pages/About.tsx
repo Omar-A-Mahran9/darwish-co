@@ -46,11 +46,11 @@ export default function About() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <section className="bg-primary text-primary-foreground py-20">
-        <div className="container text-center space-y-6">
+        <div className="site-container text-center space-y-6">
           <h1 className="font-heading text-4xl md:text-5xl font-bold">
             About Darwish &amp; Co.
           </h1>
-          <p className="text-xl max-w-2xl mx-auto text-primary-foreground/80">
+          <p className="text-xl content-narrow text-primary-foreground/80">
             Governance and management consultancy for SMEs in the MENA region
           </p>
         </div>
@@ -58,10 +58,13 @@ export default function About() {
 
       {/* Main Content */}
       <section className="py-20">
-        <div className="container max-w-4xl mx-auto space-y-16">
+        {/* The page body sits on the same grid as Home and Services. The
+            reading width is held by the paragraphs themselves, not by this
+            wrapper, which also holds the grids below. */}
+        <div className="site-container space-y-16">
 
           {/* Tagline Section */}
-          <div className="text-center space-y-6">
+          <div className="text-center space-y-6 prose-container mx-auto">
             <h2 className="font-heading text-3xl font-bold text-chart-2">
               A Wise Word in the Right Moment
             </h2>
@@ -166,7 +169,7 @@ export default function About() {
             <h3 className="font-heading text-2xl font-bold text-primary">
               Our Mission: Strategic Clarity at the Right Moment
             </h3>
-            <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            <p className="text-muted-foreground leading-relaxed prose-container mx-auto">
               SMEs reach decision points where the right advice changes what happens next: an investor
               asking how decisions are made, a major client sending a compliance questionnaire, a
               founder who can no longer sign everything. Our work is to be useful at those moments —

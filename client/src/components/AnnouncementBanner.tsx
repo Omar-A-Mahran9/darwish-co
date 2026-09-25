@@ -48,7 +48,7 @@ export default function AnnouncementBanner({
       role="banner"
       aria-label="Announcement"
     >
-      <div className="container flex items-center justify-center gap-3">
+      <div className="site-container flex items-center justify-center gap-3">
         <Megaphone className="w-4 h-4 shrink-0 opacity-80" />
         <span className="leading-relaxed">
           {message}{" "}

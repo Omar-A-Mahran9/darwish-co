@@ -68,7 +68,7 @@ export default function Blog() {
     <div className="flex flex-col min-h-screen font-body">
       {/* Header */}
       <section className="py-24 bg-white border-b">
-        <div className="container max-w-4xl mx-auto text-center space-y-6">
+        <div className="site-container text-center space-y-6">
           <span className="text-xs font-bold uppercase tracking-widest text-primary">
             Insights &amp; Perspectives
           </span>
@@ -85,7 +85,7 @@ export default function Blog() {
       {/* Featured Article */}
       {featured && (
         <section className="py-16 bg-secondary/20">
-          <div className="container max-w-5xl mx-auto">
+          <div className="site-container">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               {/* Cover image */}
               {featured.coverImage && (
@@ -151,7 +151,7 @@ export default function Blog() {
 
       {/* Article Grid */}
       <section className="py-20 bg-white">
-        <div className="container max-w-5xl mx-auto">
+        <div className="site-container">
           <h2 className="font-heading text-2xl font-bold text-foreground mb-10">
             All Articles
           </h2>
@@ -247,7 +247,7 @@ export default function Blog() {
 
       {/* CTA */}
       <section className="py-20 bg-primary text-white">
-        <div className="container text-center max-w-2xl mx-auto space-y-6">
+        <div className="site-container text-center content-narrow space-y-6">
           <h2 className="font-heading text-3xl md:text-4xl font-bold">
             Ready to put these insights into action?
           </h2>

@@ -59,7 +59,7 @@ function page(path: string, input: PageSeoInput): PageSeo {
 }
 
 const COMPANY_DESCRIPTION =
-  "Darwish & Co. is an Egypt-based governance and management consultancy for SMEs in the MENA region — governance, risk and compliance, strategy, people and growth.";
+  "Governance and management consultancy in Egypt for SMEs across the MENA region — the governance, controls and strategy to delegate decisions without losing oversight.";
 
 /** Articles published under /blog. Titles and summaries match client/src/pages/BlogPost.tsx. */
 export const BLOG_ARTICLES = [
@@ -108,7 +108,7 @@ const AREA_SERVED = { "@type": "Country", name: "Egypt" };
 
 const STATIC_PAGES: Record<string, PageSeo> = {
   "/": page("/", {
-    title: "Darwish & Co — Governance & Management Consultancy for SMEs | Egypt & MENA",
+    title: "Delegate Decisions Without Losing Oversight | Darwish & Co",
     description: COMPANY_DESCRIPTION,
   }),
   "/about": page("/about", {

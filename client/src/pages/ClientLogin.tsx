@@ -40,7 +40,7 @@ export default function ClientLogin() {
 
   return (
     <div className="min-h-[calc(100vh-7rem)] bg-secondary/20 py-16 sm:py-24">
-      <div className="container grid max-w-5xl items-stretch overflow-hidden border border-border bg-white shadow-xl lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="site-container grid max-w-5xl items-stretch overflow-hidden border border-border bg-white shadow-xl lg:grid-cols-[1.05fr_0.95fr]">
         <section className="bg-foreground px-8 py-12 text-white sm:px-12">
           <div className="flex h-full flex-col justify-between gap-14">
             <div>

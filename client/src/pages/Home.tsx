@@ -162,23 +162,77 @@ const ORBIT_DEFS = [
   { src: LOGOIN_URL,  size: 36,  radius: 225, speed: -0.25, startDeg: 315, opacity: 0.45 },
 ];
 
+/**
+ * Conduction pulse.
+ *
+ * Both rings hold their satellites 90° apart, so a ring never aligns with
+ * itself — the only event is inner ring against outer. The rings close on each
+ * other at 39°/s (24 forward, 15 back), and because both are four-fold
+ * symmetric every inner satellite meets an outer one every 2.3s. That is far
+ * too often to read as a moment, so the pulse is gated on one *labelled* pair,
+ * satellite 0 against satellite 4, which comes round once per full relative
+ * revolution — roughly every 9.2s.
+ *
+ * At that instant all four pairs are aligned, so all four fire, staggered into
+ * a sweep that converges on the hub: the satellites keep their own orbits, and
+ * once a revolution the line of sight back to the centre lights up.
+ */
+const CONDUCTION_PAIRS: ReadonlyArray<readonly [number, number]> = [
+  [0, 4], [1, 5], [2, 6], [3, 7],
+];
+/** Fires ~200ms before exact alignment, which the fade-in covers. */
+const ALIGN_TOLERANCE_DEG = 8;
+const PULSE_MS = 900;
+const PAIR_STAGGER_MS = 90;
+const TRAVEL_START_MS = 100;
+const TRAVEL_MS = 450;
+const ARRIVAL_MS = TRAVEL_START_MS + TRAVEL_MS;
+const BLOOM_MS = 350;
+
+const clamp01 = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
+const easeInOut = (p: number) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
+
+/** Signed separation of two angles, wrapped to [-180, 180). */
+function angleDelta(a: number, b: number) {
+  let d = (a - b) % 360;
+  if (d > 180) d -= 360;
+  if (d < -180) d += 360;
+  return d;
+}
+
 function FloatingLogos() {
   const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
   const angleRefs = useRef<number[]>(ORBIT_DEFS.map(d => d.startDeg));
   const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
   const wrapRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const conduitRefs = useRef<(SVGPolylineElement | null)[]>([]);
+  const sparkRefs = useRef<(SVGCircleElement | null)[]>([]);
+  const bloomRef = useRef<SVGCircleElement>(null);
+  /** Start of the current pulse, or null when idle. Doubles as the re-fire latch. */
+  const pulseStartRef = useRef<number | null>(null);
 
   useEffect(() => {
+    const reduceMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     let last = performance.now();
+    // Satellite centres for this frame, reused by the conduction pass below.
+    const pos = ORBIT_DEFS.map(() => ({ x: 0, y: 0 }));
+
     function tick(now: number) {
-      const dt = (now - last) / 1000; // seconds
+      // Clamped: a backgrounded tab throttles rAF, and an unclamped dt would
+      // teleport the satellites — past an alignment, in this case.
+      const dt = Math.min((now - last) / 1000, 0.05); // seconds
       last = now;
       ORBIT_DEFS.forEach((def, i) => {
         angleRefs.current[i] += def.speed * dt * 60; // deg per frame at 60fps
         const rad = (angleRefs.current[i] * Math.PI) / 180;
         const cx = def.radius * Math.cos(rad);
         const cy = def.radius * Math.sin(rad);
+        pos[i].x = cx;
+        pos[i].y = cy;
         const wrap = wrapRefs.current[i];
         const img  = imgRefs.current[i];
         if (wrap) {
@@ -189,8 +243,86 @@ function FloatingLogos() {
           img.style.transform = `rotate(${-angleRefs.current[i]}deg)`;
         }
       });
+
+      if (!reduceMotion) updateConduction(now, pos);
+
       rafRef.current = requestAnimationFrame(tick);
     }
+
+    function updateConduction(now: number, pos: { x: number; y: number }[]) {
+      // Arm on the labelled pair approaching alignment. The latch below is held
+      // longer than the tolerance window is wide, so one crossing fires once.
+      if (
+        pulseStartRef.current === null &&
+        Math.abs(angleDelta(angleRefs.current[0], angleRefs.current[4])) < ALIGN_TOLERANCE_DEG
+      ) {
+        pulseStartRef.current = now;
+      }
+      const started = pulseStartRef.current;
+
+      CONDUCTION_PAIRS.forEach(([inner, outer], k) => {
+        const conduit = conduitRefs.current[k];
+        const spark = sparkRefs.current[k];
+        if (!conduit || !spark) return;
+
+        const t = started === null ? -1 : now - started - k * PAIR_STAGGER_MS;
+        if (t < 0 || t > PULSE_MS) {
+          conduit.style.opacity = "0";
+          spark.style.opacity = "0";
+          return;
+        }
+
+        // Endpoints stay attached to the satellites rather than frozen at the
+        // alignment angle, so the path bends gently as the rings drift apart.
+        const { x: ox, y: oy } = pos[outer];
+        const { x: ix, y: iy } = pos[inner];
+        conduit.setAttribute("points", `${ox},${oy} ${ix},${iy} 0,0`);
+
+        const envelope = Math.min(clamp01(t / 150), 1 - clamp01((t - ARRIVAL_MS) / BLOOM_MS));
+        conduit.style.opacity = `${0.3 * envelope}`;
+
+        // Light travels outer satellite → inner satellite → hub.
+        const p = easeInOut(clamp01((t - TRAVEL_START_MS) / TRAVEL_MS));
+        const legOut = Math.hypot(ix - ox, iy - oy);
+        const legIn = Math.hypot(ix, iy);
+        const travelled = p * (legOut + legIn);
+        let sx: number, sy: number;
+        if (travelled <= legOut) {
+          const u = legOut ? travelled / legOut : 0;
+          sx = ox + (ix - ox) * u;
+          sy = oy + (iy - oy) * u;
+        } else {
+          const u = legIn ? (travelled - legOut) / legIn : 0;
+          sx = ix - ix * u;
+          sy = iy - iy * u;
+        }
+        spark.setAttribute("cx", `${sx}`);
+        spark.setAttribute("cy", `${sy}`);
+        spark.style.opacity = `${p >= 1 ? 0 : 0.85 * clamp01(t / 120)}`;
+      });
+
+      // One bloom at the hub, timed to the first arrival.
+      const bloom = bloomRef.current;
+      if (bloom) {
+        const tb = started === null ? -1 : now - started - ARRIVAL_MS;
+        if (tb < 0 || tb > BLOOM_MS) {
+          bloom.style.opacity = "0";
+        } else {
+          const q = tb / BLOOM_MS;
+          bloom.setAttribute("r", `${28 + 46 * q}`);
+          bloom.style.opacity = `${0.42 * (1 - q)}`;
+        }
+      }
+
+      // Release once the last staggered beam has finished.
+      if (
+        started !== null &&
+        now - started > PULSE_MS + (CONDUCTION_PAIRS.length - 1) * PAIR_STAGGER_MS
+      ) {
+        pulseStartRef.current = null;
+      }
+    }
+
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
@@ -226,6 +358,58 @@ function FloatingLogos() {
         borderRadius: "50%", border: "1px dashed rgba(49,154,255,0.10)",
         top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none",
       }} />
+
+      {/* Conduction overlay. Sits above the rings and below the emblem, and is
+          driven entirely by the rAF loop above — no React state, no re-render.
+          The viewBox is centred so satellite coordinates map straight through. */}
+      <svg
+        viewBox="-260 -260 520 520"
+        aria-hidden="true"
+        focusable="false"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 5,
+          pointerEvents: "none",
+          overflow: "visible",
+        }}
+      >
+        <circle
+          ref={bloomRef}
+          cx="0"
+          cy="0"
+          r="28"
+          fill="rgba(0,132,255,0.55)"
+          style={{ opacity: 0, filter: "blur(14px)" }}
+        />
+        {CONDUCTION_PAIRS.map((_, k) => (
+          <polyline
+            key={`conduit-${k}`}
+            ref={el => { conduitRefs.current[k] = el; }}
+            points="0,0"
+            fill="none"
+            stroke="#0084FF"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+            style={{ opacity: 0 }}
+          />
+        ))}
+        {CONDUCTION_PAIRS.map((_, k) => (
+          <circle
+            key={`spark-${k}`}
+            ref={el => { sparkRefs.current[k] = el; }}
+            cx="0"
+            cy="0"
+            r="3.2"
+            fill="#ffffff"
+            style={{ opacity: 0, filter: "drop-shadow(0 0 6px rgba(0,132,255,0.95))" }}
+          />
+        ))}
+      </svg>
 
       {/* Orbiting satellites — positioned via rAF */}
       {ORBIT_DEFS.map((def, i) => (
@@ -325,7 +509,7 @@ function HeroSection() {
       <div className="relative z-10 flex flex-col pt-20" style={{ minHeight: "100vh" }}>
         {/* Hero body */}
         <div className="flex-1 flex items-center">
-          <div className="container mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-16 lg:py-24">
+          <div className="site-container grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-16 lg:py-24">
 
             {/* ── Left: copy. First in the source order, so on a narrow screen
                  the headline and the CTA are what the visitor sees first. ── */}
@@ -335,15 +519,21 @@ function HeroSection() {
                 className="font-heading"
                 style={{
                   fontWeight: 700,
-                  fontSize: "clamp(40px, 5vw, 72px)",
+                  // Capped at 64px, not 72: the hero text column is 552px on the
+                  // 1280px grid, and "Delegate decisions" needs 591px at 72px —
+                  // so it wrapped to a fourth line above ~1340px viewports.
+                  fontSize: "clamp(36px, 5vw, 64px)",
                   lineHeight: 1.08,
                   letterSpacing: "-0.02em",
                   color: "#0a0a0a",
                 }}
               >
-                A Wise Word<br />
-                <span style={{ color: "#0084FF" }}>In The Right</span><br />
-                Moment.
+                {/* The breaks are the desktop composition, where the column is
+                    wide enough to hold them. Below lg the headline wraps on its
+                    own: kept, these force a fourth line on a phone. */}
+                Delegate decisions<br className="hidden lg:inline" />{" "}
+                without losing<br className="hidden lg:inline" />{" "}
+                <span style={{ color: "#0084FF" }}>oversight.</span>
               </h1>
 
               {/* Sub-headline */}
@@ -388,9 +578,9 @@ function HeroSection() {
         </div>
 
         {/* ── Trusted-by footer strip ── */}
-        <div
-          className="px-6 lg:px-12 pb-12"
-        >
+        {/* Was bare padding with no container, which left the logo row sitting
+            32px outboard of every other row on the page. */}
+        <div className="site-container pb-12">
           <p
             className="text-center text-xs font-medium uppercase tracking-widest mb-8"
             style={{ color: "#999" }}
@@ -458,7 +648,7 @@ const CASE_EXAMPLE = {
 function CaseExampleSection() {
   return (
     <section className="border-t border-border bg-white py-24">
-      <div className="container space-y-10">
+      <div className="site-container space-y-10">
         <div className="max-w-3xl space-y-4">
           <span className="text-xs font-bold uppercase tracking-widest text-primary">
             What an engagement looks like
@@ -514,7 +704,7 @@ function CaseExampleSection() {
           </div>
         </div>
 
-        <figure className="border-l-4 border-primary bg-secondary/20 p-8">
+        <figure className="border-t-2 border-primary bg-secondary/20 p-8">
           <blockquote className="font-heading text-xl font-bold leading-snug text-foreground">
             &ldquo;{CASE_EXAMPLE.quote}&rdquo;
           </blockquote>
@@ -539,7 +729,7 @@ export default function Home() {
 
       {/* ── When companies call us ── */}
       <section className="bg-white py-24">
-        <div className="container space-y-12">
+        <div className="site-container space-y-12">
           <div className="max-w-3xl space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               When companies call us
@@ -551,7 +741,7 @@ export default function Home() {
 
           <div className="grid gap-8 md:grid-cols-2">
             {PRIORITY_SITUATIONS.map((situation) => (
-              <div key={situation.href} className="flex flex-col justify-between gap-6 border-l-4 border-primary bg-secondary/20 p-8">
+              <div key={situation.href} className="flex flex-col justify-between gap-6 border-t-2 border-primary bg-secondary/20 p-8">
                 <div className="space-y-4">
                   <p className="font-heading text-xl font-bold leading-snug text-foreground">
                     &ldquo;{situation.quote}&rdquo;
@@ -582,7 +772,7 @@ export default function Home() {
 
       {/* ── What we do ── */}
       <section className="bg-secondary/20 py-24">
-        <div className="container space-y-12">
+        <div className="site-container space-y-12">
           <div className="max-w-3xl space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               What we do
@@ -612,7 +802,7 @@ export default function Home() {
 
       {/* ── The people behind the work ── */}
       <section className="bg-secondary/10 py-24">
-        <div className="container space-y-10">
+        <div className="site-container space-y-10">
           <div className="max-w-3xl space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               Who does the work
@@ -666,7 +856,7 @@ export default function Home() {
 
       {/* ── Insights ── */}
       <section className="bg-white py-24">
-        <div className="container space-y-10">
+        <div className="site-container space-y-10">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl space-y-3">
               <span className="text-xs font-bold uppercase tracking-widest text-primary">
@@ -711,7 +901,7 @@ export default function Home() {
 
       {/* ── How we work ── */}
       <section className="bg-white py-24">
-        <div className="container space-y-12">
+        <div className="site-container space-y-12">
           <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
             How we work
           </h2>
@@ -731,7 +921,7 @@ export default function Home() {
 
       {/* ── Projects ── */}
       <section className="bg-foreground py-20 text-white">
-        <div className="container grid items-center gap-10 md:grid-cols-[1.2fr_0.8fr]">
+        <div className="site-container grid items-center gap-10 md:grid-cols-[1.2fr_0.8fr]">
           <div className="space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">Our work</span>
             <h2 className="font-heading text-2xl font-bold leading-tight text-white md:text-3xl">
@@ -767,7 +957,7 @@ export default function Home() {
 
       {/* ── Contact ── */}
       <section className="bg-primary py-20 text-white">
-        <div className="container grid gap-12 md:grid-cols-[1fr_1fr]">
+        <div className="site-container grid gap-12 md:grid-cols-[1fr_1fr]">
           <div className="space-y-6">
             <h2 className="font-heading text-3xl font-bold leading-tight md:text-4xl">
               Book a consultation
