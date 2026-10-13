@@ -595,7 +595,9 @@ export default function Home() {
         </div>
       </section>
 
-      <ContactSection idPrefix="ab" />
+      <div className="sx sx-gov sx-about">
+        <ContactSection idPrefix="ab" />
+      </div>
     </>
   );
 }

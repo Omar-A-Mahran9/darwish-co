@@ -8,6 +8,7 @@ import SiteLayout from "./site/SiteLayout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
+import Industries from "./pages/Industries";
 import ServiceDetail from "./pages/ServiceDetail";
 import Contact from './pages/Contact';
 import AdminInbox from './pages/AdminInbox';
@@ -32,6 +33,7 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
         <Route path="/services" component={Services} />
+        <Route path="/industries" component={Industries} />
         <Route path="/services/:slug" component={ServiceDetail} />
         <Route path="/contact" component={Contact} />
         <Route path="/projects" component={Projects} />

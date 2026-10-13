@@ -1,191 +1,242 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
-import { BadgeCheck, Handshake, Lock, ScrollText, Target } from "lucide-react";
+/** About us: one page for the firm, its experts, partners and way of working (ported from render_about). */
+import ContactSection from "@/site/ContactSection";
+import { ABOUT } from "@/site/content/about";
+import { AssetSlot, Crumbs, DarkHero, Icon, SiteLink, n2 } from "@/site/sx";
 
-/**
- * The firm's values, supplied by the founder in Arabic on 22 Sep 2026. The site
- * is English-only, so these are translations; the original wording is kept
- * beside each one so it can be checked, and so it is ready if the site is ever
- * published in Arabic.
- */
-const VALUES = [
-  {
-    title: "Professionalism",
-    // الاحترافية: نلتزم بتقديم خدمات عالية الجودة وفق معايير مهنية واضحة.
-    body: "We are committed to delivering high-quality services against clear professional standards.",
-    icon: BadgeCheck,
-  },
-  {
-    title: "Confidentiality",
-    // السرية: نتعامل مع بيانات العملاء والموظفين بأعلى درجات الأمان والخصوصية.
-    body: "We handle client and employee information with the highest standards of security and privacy.",
-    icon: Lock,
-  },
-  {
-    title: "Precision",
-    // الدقة: نهتم بالتفاصيل لضمان نتائج صحيحة وإجراءات منظمة.
-    body: "We attend to the detail, so that results are correct and procedures are orderly.",
-    icon: Target,
-  },
-  {
-    title: "Compliance",
-    // الامتثال: نساعد الشركات على الالتزام باللوائح والقوانين والإجراءات ذات الصلة.
-    body: "We help companies meet the regulations, laws and procedures that apply to them.",
-    icon: ScrollText,
-  },
-  {
-    title: "Partnership",
-    // الشراكة: نؤمن أن دورنا لا يقتصر على تقديم الخدمة، بل يمتد إلى دعم العميل كشريك طويل المدى.
-    body: "Our role does not end with delivering a service. We support the client as a long-term partner.",
-    icon: Handshake,
-  },
-];
+const LEAD = "Share a brief overview of your challenge. Our team will review it and contact you to agree on the next step.";
 
 export default function About() {
+  const a = ABOUT;
+  const w = a.who, f = a.founder, g = a.guides, m = a.method, x = a.experts, pr = a.principles, pa = a.partners, sc = a.sectors;
+  const [lt, lh] = w.link;
+  const [fsrc, fw, fh] = f.photo;
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <section className="bg-primary text-primary-foreground py-20">
-        <div className="site-container text-center space-y-6">
-          <h1 className="font-heading text-h1 font-bold">
-            About Darwish &amp; Co.
-          </h1>
-          <p className="text-xl content-narrow text-primary-foreground/80">
-            Governance and management consultancy for SMEs in the MENA region
+    <div className="sx sx-gov sx-about">
+      <DarkHero
+        h={a.hero}
+        extraClass=" ab-hero"
+        crumbs={
+          <Crumbs
+            items={[
+              ["Home", "/"],
+              ["About us", null],
+            ]}
+          />
+        }
+      />
+
+      <section className="ab-props" aria-labelledby="ab-props-h">
+        <div className="sx-wrap">
+          <h2 id="ab-props-h" className="sr-only">
+            Our strengths
+          </h2>
+          <ul className="ab-props-list">
+            {(a.props as [string, string, string][]).map(([i, t, xx]) => (
+              <li key={t}>
+                <Icon name={i} cls="sx-ico ab-pico" />
+                <h3>{t}</h3>
+                <p>{xx}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="sx-sec sx-white ab-who" aria-labelledby="ab-who-h">
+        <div className="sx-wrap">
+          <div className="ab-who-grid">
+            <div className="gv-head">
+              <h2 id="ab-who-h" className="sx-h2">
+                {w.title}
+              </h2>
+              {(w.paras as string[]).map((p) => (
+                <p className="gv-body" key={p}>
+                  {p}
+                </p>
+              ))}
+            </div>
+            {w.image ? <img className="ab-who-img" src={w.image[0]} alt={w.image[3]} width={w.image[1]} height={w.image[2]} loading="lazy" /> : <AssetSlot slot={w.slot} cls="ab-who-slot" />}
+          </div>
+          <h3 className="ab-sub">{w.advise_title}</h3>
+          <dl className="cl-coord ab-advise">
+            {(w.advise as [string, string][]).map(([k, v]) => (
+              <div key={k}>
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="ab-links">
+            <SiteLink className="sx-link" href={lh}>
+              {lt}
+            </SiteLink>
           </p>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-20">
-        {/* The page body sits on the same grid as Home and Services. The
-            reading width is held by the paragraphs themselves, not by this
-            wrapper, which also holds the grids below. */}
-        <div className="site-container space-y-16">
-
-          {/* Tagline Section */}
-          <div className="text-center space-y-6 prose-container mx-auto">
-            <h2 className="font-heading text-h2 font-bold text-chart-2">
-              A Wise Word in the Right Moment
+      <section className="sx-sec sx-navy ab-founder" aria-labelledby="ab-fd-h">
+        <div className="sx-wrap ab-founder-grid">
+          <img className="ab-founder-img" src={fsrc} alt={f.alt} width={fw} height={fh} loading="lazy" decoding="async" />
+          <figure className="ab-quote">
+            <h2 id="ab-fd-h" className="ab-eyebrow">
+              {f.eyebrow}
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              In the complex and fast-paced business environment of the Middle East and North Africa,
-              timing and insight are everything. At Darwish &amp; Co., we believe that{" "}
-              <strong>a wise word in the right moment</strong> can be the difference between a missed
-              opportunity and a strategic breakthrough. This philosophy is the cornerstone of our
-              strategic management consulting practice.
-            </p>
-          </div>
+            <blockquote>
+              <p>“{f.quote}”</p>
+            </blockquote>
+            <p className="ab-qtext">{f.text}</p>
+            <figcaption>
+              <strong>{f.name}</strong>
+              <span>{f.role}</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
 
-          {/* Who We Are */}
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h3 className="font-heading text-h3 font-bold text-primary">
-                Who We Are
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Darwish &amp; Co. is a <strong>governance and management consultancy</strong> based in{" "}
-                <strong>New Cairo, Egypt</strong>, for Small and Medium-sized Enterprises in the MENA
-                region. We help you build the governance, controls and growth strategy that
-                investors, major clients and regulators expect.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                The work covers <strong>corporate and family governance</strong>,{" "}
-                <strong>risk, compliance and integrity</strong>,{" "}
-                <strong>strategy and execution</strong>, <strong>people and organisation</strong>,
-                and <strong>growth and market entry</strong>. Where a service is delivered with a
-                partner firm, the service page says so and names who is accountable for what.
-              </p>
+      <section className="sx-sec sx-warm" aria-labelledby="ab-gd-h">
+        <div className="sx-wrap">
+          <h2 id="ab-gd-h" className="sx-h2">
+            {g.title}
+          </h2>
+          <div className="ab-guides">
+            <div className="ab-purpose">
+              <h3>Purpose</h3>
+              <p>{g.purpose}</p>
             </div>
-            <div className="relative h-80 overflow-hidden shadow-xl">
-              <img
-                src="/images/meeting-insight.webp"
-                width={1600}
-                height={893}
-                loading="lazy"
-                decoding="async"
-                alt="Darwish & Co. consulting team in a strategic planning session"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
+            <div className="ab-mv">
+              <div>
+                <h3>Mission</h3>
+                <p>{g.mission}</p>
+              </div>
+              <div>
+                <h3>Vision</h3>
+                <p>{g.vision}</p>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* What We Do */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Governance",
-                body: "Decision rights, delegation of authority, board and committee structures and family governance — and the risk, compliance and integrity work that evidences them to a client, a lender or a regulator.",
-              },
-              {
-                title: "Strategy & Organisation",
-                body: "A strategy the organisation runs monthly, with owners and measures against it, and a structure, job architecture and people system that hold as the company grows.",
-              },
-              {
-                title: "Growth",
-                body: "Market readiness, demand validation and partner selection, with the governance and compliance prerequisites a new market expects handled before entry rather than after.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="border border-border p-6 space-y-3 hover:shadow-md transition-shadow"
-              >
-                <h4 className="font-heading font-bold text-lg text-primary">{item.title}</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.body}</p>
+      <section className="sx-sec sx-white" id="how-we-work" aria-labelledby="ab-md-h">
+        <div className="sx-wrap">
+          <div className="gv-head">
+            <h2 id="ab-md-h" className="sx-h2">
+              {m.title}
+            </h2>
+            <p className="gv-body">{m.intro}</p>
+          </div>
+          <ol className="ab-method">
+            {(m.steps as [string, string][]).map(([t, xx], i) => (
+              <li key={t}>
+                <p className="ab-step">
+                  <span>{n2(i + 1)}</span>
+                  {t}
+                </p>
+                <p className="ab-step-d">{xx}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="sx-sec sx-warm" id="experts" aria-labelledby="ab-ex-h">
+        <div className="sx-wrap">
+          <div className="gv-head">
+            <h2 id="ab-ex-h" className="sx-h2">
+              {x.title}
+            </h2>
+            <p className="gv-body">{x.intro}</p>
+          </div>
+          <ul className="ab-people">
+            {(x.people as [string, string, string][]).map(([slug, n, r]) => (
+              <li key={slug}>
+                <div className="ab-person">
+                  <img src={`/media/people/${slug}.jpg`} alt="" width={400} height={400} loading="lazy" decoding="async" />
+                  <strong>{n}</strong>
+                  <span>{r}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="sx-sec sx-pale" aria-labelledby="ab-pr-h">
+        <div className="sx-wrap">
+          <h2 id="ab-pr-h" className="sx-h2">
+            {pr.title}
+          </h2>
+          <ul className="ab-princ">
+            {(pr.items as [string, string, string][]).map(([ic, t, d], i) => (
+              <li className={i === 0 ? "is-featured" : undefined} key={t}>
+                <Icon name={ic} />
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="sx-sec sx-white" id="partners" aria-labelledby="ab-pa-h">
+        <div className="sx-wrap">
+          <div className="gv-head">
+            <h2 id="ab-pa-h" className="sx-h2">
+              {pa.title}
+            </h2>
+            <p className="gv-body">{pa.intro}</p>
+          </div>
+          <div className="ab-partners">
+            {(pa.groups as [string, [string, string, string][]][]).map(([gname, items]) => (
+              <div className="ab-pgroup" key={gname}>
+                <h3>{gname}</h3>
+                <ul>
+                  {items.map(([n, src, t]) => (
+                    <li key={n}>
+                      <span className="ab-logo">
+                        <img src={src} alt="" loading="lazy" decoding="async" />
+                      </span>
+                      <div>
+                        <h4>{n}</h4>
+                        <p>{t}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
-
-          {/* Values */}
-          <div className="space-y-8">
-            <div className="space-y-3 text-center">
-              <span className="text-xs font-bold uppercase tracking-widest text-primary">
-                What we hold to
-              </span>
-              <h3 className="font-heading text-h3 font-bold text-primary">Our values</h3>
-            </div>
-
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {VALUES.map((value) => {
-                const Icon = value.icon;
-                return (
-                  <div
-                    key={value.title}
-                    className="space-y-3 border-t-4 border-primary bg-muted/20 p-6"
-                  >
-                    <Icon className="h-6 w-6 text-primary" aria-hidden="true" />
-                    <h4 className="font-heading text-lg font-bold text-foreground">
-                      {value.title}
-                    </h4>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{value.body}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Mission */}
-          <div className="bg-muted/30 p-8 md:p-12 space-y-6 text-center">
-            <h3 className="font-heading text-h3 font-bold text-primary">
-              Our Mission: Strategic Clarity at the Right Moment
-            </h3>
-            <p className="text-muted-foreground leading-relaxed prose-container mx-auto">
-              SMEs reach decision points where the right advice changes what happens next: an investor
-              asking how decisions are made, a major client sending a compliance questionnaire, a
-              founder who can no longer sign everything. Our work is to be useful at those moments —
-              with the governance, controls and growth strategy that make the answer defensible.
-            </p>
-            <div className="pt-4">
-              <Link href="/contact">
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  Book a consultation
-                </Button>
-              </Link>
-            </div>
-          </div>
-
+          <p className="ab-closing">{pa.closing}</p>
         </div>
       </section>
+
+      <section className="sx-sec sx-warm" aria-labelledby="ab-sc-h">
+        <div className="sx-wrap gv-split">
+          <div className="gv-head">
+            <h2 id="ab-sc-h" className="sx-h2">
+              {sc.title}
+            </h2>
+            <p className="gv-body">{sc.text}</p>
+          </div>
+          <div>
+            <ul className="ab-sectors">
+              {(sc.items as string[]).map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+            <p className="ab-note">{sc.note}</p>
+            <p className="ab-links">
+              {(sc.links as [string, string][]).map(([t, h]) => (
+                <SiteLink className="sx-link" href={h} key={h}>
+                  {t}
+                </SiteLink>
+              ))}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <ContactSection title={a.contact.title} text={a.contact.text} lead={LEAD} idPrefix="ab" />
     </div>
   );
 }

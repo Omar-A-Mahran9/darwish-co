@@ -1,7 +1,7 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
 import { BLOG_ARTICLES, resolveSeo } from "@shared/seo";
-import { PUBLISHED_SERVICES } from "@shared/services";
+import { SITE_SERVICES } from "./site/nav";
 import { guidesIndexIsWorthHaving, PUBLISHED_GUIDES } from "@shared/guides";
 import { injectSeo } from "../../server/seoHtml";
 
@@ -26,7 +26,8 @@ export function prerenderRoutes(): string[] {
     "/",
     "/about",
     "/services",
-    ...PUBLISHED_SERVICES.map((service) => `/services/${service.slug}`),
+    ...SITE_SERVICES.map((service) => `/services/${service.slug}`),
+    "/industries",
     "/projects",
     "/partners",
     "/corporate-partners",
