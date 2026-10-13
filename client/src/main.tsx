@@ -1,6 +1,7 @@
 import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import "./styles/site.css";
 
 const container = document.getElementById("root")!;
 

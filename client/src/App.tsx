@@ -4,7 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Router as WouterRouter, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Layout from "./components/Layout";
+import SiteLayout from "./site/SiteLayout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -27,7 +27,7 @@ function Router() {
   useHashScroll();
   useSeo();
   return (
-    <Layout>
+    <SiteLayout>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
@@ -46,7 +46,7 @@ function Router() {
         <Route path="/admin/client-access" component={AdminClientAccess} />
         <Route component={NotFound} />
       </Switch>
-    </Layout>
+    </SiteLayout>
   );
 }
 
