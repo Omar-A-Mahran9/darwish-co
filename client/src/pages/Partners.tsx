@@ -311,7 +311,7 @@ function PartnerCard({ partner }: { partner: Partner }) {
           <div className="border-t border-border pt-3 space-y-2">
             <button
               onClick={() => setShowCerts(!showCerts)}
-              className="text-xs font-semibold text-primary hover:underline transition-colors"
+              className="link text-xs font-semibold"
             >
               {showCerts
                 ? "Hide certifications ▲"
@@ -332,7 +332,7 @@ function PartnerCard({ partner }: { partner: Partner }) {
           {partner.email && (
             <a
               href={`mailto:${partner.email}`}
-              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+              className="link flex items-center gap-1.5 text-xs text-muted-foreground"
             >
               <Mail className="w-3.5 h-3.5" />
               <span>Email</span>
@@ -343,7 +343,7 @@ function PartnerCard({ partner }: { partner: Partner }) {
               href={partner.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+              className="link flex items-center gap-1.5 text-xs text-muted-foreground"
             >
               <Linkedin className="w-3.5 h-3.5" />
               <span>LinkedIn</span>
@@ -354,7 +354,7 @@ function PartnerCard({ partner }: { partner: Partner }) {
               href={partner.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+              className="link flex items-center gap-1.5 text-xs text-muted-foreground"
             >
               <Globe className="w-3.5 h-3.5" />
               <span>Website</span>
@@ -411,7 +411,7 @@ export default function Partners() {
                 Our People
               </span>
             </div>
-            <h1 className="font-heading text-4xl md:text-6xl font-bold text-foreground leading-tight">
+            <h1 className="font-heading text-h1 font-bold text-foreground">
               Partners &<br />
               <span className="text-primary">Consultants</span>
             </h1>
@@ -435,7 +435,7 @@ export default function Partners() {
                 placeholder="Search by name, title, or specialisation…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 rounded-none border-border focus-visible:ring-primary"
+                className="pl-9 border-border focus-visible:ring-primary"
               />
             </div>
           </div>

@@ -71,7 +71,7 @@ function Pillar({ pillar, muted }: { pillar: ServicePillar; muted?: boolean }) {
     <section className={muted ? "border-t border-border bg-muted/20 py-16" : "py-16"}>
       <div className="site-container space-y-10">
         <div className="max-w-3xl space-y-3">
-          <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
+          <h2 className="font-heading text-h2 font-bold text-primary">
             {PILLARS[pillar].name}
           </h2>
           <p className="leading-relaxed text-muted-foreground">{PILLARS[pillar].description}</p>
@@ -94,7 +94,7 @@ export default function Services() {
       {/* Header */}
       <section className="bg-primary py-20 text-primary-foreground">
         <div className="site-container space-y-6 text-center">
-          <h1 className="font-heading text-4xl font-bold md:text-5xl">Our Services</h1>
+          <h1 className="font-heading text-h1 font-bold">Our Services</h1>
           <p className="content-narrow text-xl text-primary-foreground/80">
             Governance first, then the strategy, structure and growth work that depends on it — for
             SMEs in Egypt and the MENA region.
@@ -117,7 +117,7 @@ export default function Services() {
             with In Light Consumer Insights. Each service page states exactly which components are
             theirs and who is accountable for what. More about both on the{" "}
             <Link href="/corporate-partners">
-              <span className="cursor-pointer font-bold text-primary hover:underline">
+              <span className="link cursor-pointer font-bold">
                 corporate partners page
               </span>
             </Link>
@@ -129,7 +129,7 @@ export default function Services() {
       {/* Call to action */}
       <section className="py-16">
         <div className="site-container flex flex-col items-center gap-6 text-center">
-          <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
+          <h2 className="font-heading text-h2 font-bold text-primary">
             Not sure which of these you need?
           </h2>
           <p className="content-narrow leading-relaxed text-muted-foreground">

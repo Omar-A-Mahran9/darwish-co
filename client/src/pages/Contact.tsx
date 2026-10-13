@@ -1,10 +1,7 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Mail, Phone, CheckCircle2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
+import "./Contact.css";
 
 interface FormData {
   name: string;
@@ -19,6 +16,17 @@ interface FormErrors {
   message?: string;
 }
 
+/**
+ * What the site says once an enquiry has arrived. It makes no promise about
+ * how quickly a reply comes: that is an operational commitment, and none has
+ * been confirmed.
+ */
+const SENT_MESSAGE = "Thank you. Your enquiry has reached us, and we will reply to the email address you gave.";
+
+const MAP_EMBED =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.8!2d31.4677375!3d30.0560468!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583d2b0e3b3b3b%3A0x1465949206209374709!2sDarwish%26co!5e0!3m2!1sen!2seg!4v1715000000000!5m2!1sen!2seg";
+const DIRECTIONS = "https://share.google/6tKphgm623sxgJe9m";
+
 export default function Contact() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -27,10 +35,19 @@ export default function Contact() {
     message: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const sentHeadingRef = useRef<HTMLHeadingElement>(null);
 
-  const validate = (): boolean => {
+  // The form is replaced by the confirmation, so focus moves to it: otherwise
+  // a keyboard or screen-reader user is left on a button that no longer exists.
+  useEffect(() => {
+    if (submitted) sentHeadingRef.current?.focus();
+  }, [submitted]);
+
+  const validate = (): FormErrors => {
     const newErrors: FormErrors = {};
     if (!formData.name.trim()) newErrors.name = "Name is required.";
     if (!formData.email.trim()) {
@@ -38,9 +55,9 @@ export default function Contact() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address.";
     }
-    if (!formData.message.trim()) newErrors.message = "Message is required.";
+    if (!formData.message.trim()) newErrors.message = "Please tell us what you would like help with.";
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return newErrors;
   };
 
   const handleChange = (
@@ -56,7 +73,13 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) {
+    setSubmitError(null);
+    const found = validate();
+    const firstInvalid = (["name", "email", "message"] as const).find((field) => found[field]);
+    if (firstInvalid) {
+      // Take the reader to the first field that needs fixing; its error is
+      // tied to it with aria-describedby, so it is read out on arrival.
+      formRef.current?.querySelector<HTMLElement>(`#${firstInvalid}`)?.focus();
       toast.error("Please fix the errors before submitting.", {
         icon: <AlertCircle className="w-4 h-4" />,
       });
@@ -66,7 +89,7 @@ export default function Contact() {
     setIsSubmitting(true);
 
     // Show loading toast
-    const loadingToastId = toast.loading("Sending your message…");
+    const loadingToastId = toast.loading("Sending your enquiry…");
 
     try {
       const res = await fetch("/api/contact", {
@@ -80,22 +103,26 @@ export default function Contact() {
       toast.dismiss(loadingToastId);
 
       if (res.ok && data.success) {
-        toast.success("Message sent successfully!", {
-          description: "We'll get back to you within 24 hours.",
+        toast.success("Enquiry sent", {
+          description: SENT_MESSAGE,
           icon: <CheckCircle2 className="w-4 h-4" />,
           duration: 6000,
         });
         setSubmitted(true);
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
-        toast.error(data.error || "Something went wrong. Please try again.", {
+        const message = data.error || "Something went wrong. Please try again.";
+        setSubmitError(message);
+        toast.error(message, {
           icon: <AlertCircle className="w-4 h-4" />,
           duration: 5000,
         });
       }
     } catch {
       toast.dismiss(loadingToastId);
-      toast.error("Network error. Please check your connection and try again.", {
+      const message = "Network error. Please check your connection and try again.";
+      setSubmitError(message);
+      toast.error(message, {
         icon: <AlertCircle className="w-4 h-4" />,
         duration: 5000,
       });
@@ -104,250 +131,224 @@ export default function Contact() {
     }
   };
 
+  /** Props shared by each required field: its error, and how it is announced. */
+  const fieldState = (field: keyof FormErrors) => ({
+    required: true,
+    "aria-invalid": errors[field] ? true : undefined,
+    "aria-describedby": errors[field] ? `${field}-error` : undefined,
+  });
+
+  const fieldError = (field: keyof FormErrors) =>
+    errors[field] && (
+      <p id={`${field}-error`} className="contact-field-error">
+        <AlertCircle className="w-3 h-3" aria-hidden="true" /> {errors[field]}
+      </p>
+    );
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <section className="bg-primary text-primary-foreground py-20">
-        <div className="site-container text-center space-y-6">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold">Contact Us</h1>
-          <p className="text-xl max-w-2xl mx-auto text-primary-foreground/80">
-            Let's start a conversation about your business needs.
+    <div className="contact-page">
+      <div className="site-container contact-intro-grid">
+        <div className="contact-intro">
+          <p className="contact-eyebrow">Contact Darwish &amp; Co.</p>
+          <h1 className="contact-title">
+            What decision is
+            <br className="hidden lg:inline" /> your business
+            <br className="hidden lg:inline" /> <em>facing?</em>
+          </h1>
+          <p className="contact-lead">
+            Whether you need to delegate without losing oversight, respond to a client’s
+            compliance requirements, or plan your next stage of growth, tell us what has
+            prompted the conversation.
           </p>
+          <p className="contact-promise">
+            We’ll start by understanding your situation and what a good outcome looks like.
+          </p>
+          <ul className="contact-assurance">
+            <li>First conversation</li>
+            <li>No cost</li>
+            <li>No obligation</li>
+          </ul>
         </div>
-      </section>
 
-      <section className="py-20">
-        <div className="site-container">
-          <div className="grid md:grid-cols-2 gap-12">
-
-            {/* Contact Info */}
-            <div className="space-y-8">
-              <div>
-                <h2 className="font-heading text-3xl font-bold text-primary mb-4">Get in Touch</h2>
-                <p className="text-muted-foreground text-lg leading-relaxed">
-                  Whether you have a specific project in mind or just want to explore how we can help, we're here to listen.
-                </p>
-              </div>
-
-              <div className="grid gap-6">
-                <Card className="border-none shadow-md">
-                  <CardContent className="flex items-center gap-4 p-6">
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <Mail className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-primary">Email Us</h3>
-                      <p className="text-muted-foreground">info@darwish-co.com</p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-none shadow-md">
-                  <CardContent className="flex items-center gap-4 p-6">
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <Phone className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-primary">Call Us</h3>
-                      <p className="text-muted-foreground">+20 110 110 1090</p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-none shadow-md">
-                  <CardContent className="flex items-start gap-4 p-6">
-                    <div className="p-3 bg-primary/10 rounded-full shrink-0">
-                      <MapPin className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-primary">Visit Us</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
-                        Office T-10, 3rd Floor, RIO Mall,<br />
-                        Dr. Ahmed Okasha St., off Sadat Axis,<br />
-                        New Cairo 1, Cairo Governorate 11865, Egypt
-                      </p>
-                      <a
-                        href="https://share.google/6tKphgm623sxgJe9m"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-primary hover:underline mt-1 inline-block"
-                      >
-                        Open in Google Maps →
-                      </a>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-none shadow-md">
-                  <CardContent className="flex items-center gap-4 p-6">
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <Clock className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-primary">Working Hours</h3>
-                      <p className="text-muted-foreground">Mon – Fri: 9:00 AM – 6:00 PM</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+        <section className="contact-form-panel" id="enquiry" aria-labelledby="form-heading">
+          {submitted ? (
+            <div className="contact-sent" role="status">
+              <h2
+                id="form-heading"
+                tabIndex={-1}
+                ref={sentHeadingRef}
+              >
+                Enquiry sent
+              </h2>
+              <p>{SENT_MESSAGE}</p>
+              <button
+                type="button"
+                className="contact-sent-again"
+                onClick={() => setSubmitted(false)}
+              >
+                Send another enquiry
+              </button>
             </div>
-
-            {/* Contact Form */}
-            <div className="bg-muted/30 p-8 rounded-2xl">
-              {submitted ? (
-                <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-12">
-                  <div className="w-20 h-20 rounded-full bg-chart-2/10 flex items-center justify-center">
-                    <CheckCircle2 className="w-10 h-10 text-chart-2" />
-                  </div>
-                  <div className="space-y-2">
-                    <h2 className="font-heading text-2xl font-bold text-primary">Message Sent!</h2>
-                    <p className="text-muted-foreground">
-                      Thank you for reaching out. We'll get back to you within 24 hours.
-                    </p>
-                  </div>
-                  <Button
-                    variant="outline"
-                    className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                    onClick={() => setSubmitted(false)}
-                  >
-                    Send Another Message
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  <h2 className="font-heading text-2xl font-bold text-primary mb-6">Send us a Message</h2>
-                  <form className="space-y-6" onSubmit={handleSubmit} noValidate>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label htmlFor="name" className="text-sm font-medium text-primary">
-                          Name <span className="text-destructive">*</span>
-                        </label>
-                        <Input
-                          id="name"
-                          placeholder="Your Name"
-                          className={`bg-background ${errors.name ? "border-destructive focus-visible:ring-destructive" : ""}`}
-                          value={formData.name}
-                          onChange={handleChange}
-                          disabled={isSubmitting}
-                        />
-                        {errors.name && (
-                          <p className="text-xs text-destructive flex items-center gap-1">
-                            <AlertCircle className="w-3 h-3" /> {errors.name}
-                          </p>
-                        )}
-                      </div>
-                      <div className="space-y-2">
-                        <label htmlFor="email" className="text-sm font-medium text-primary">
-                          Email <span className="text-destructive">*</span>
-                        </label>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="your@email.com"
-                          className={`bg-background ${errors.email ? "border-destructive focus-visible:ring-destructive" : ""}`}
-                          value={formData.email}
-                          onChange={handleChange}
-                          disabled={isSubmitting}
-                        />
-                        {errors.email && (
-                          <p className="text-xs text-destructive flex items-center gap-1">
-                            <AlertCircle className="w-3 h-3" /> {errors.email}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label htmlFor="subject" className="text-sm font-medium text-primary">Subject</label>
-                      <Input
-                        id="subject"
-                        placeholder="How can we help?"
-                        className="bg-background"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        disabled={isSubmitting}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label htmlFor="message" className="text-sm font-medium text-primary">
-                        Message <span className="text-destructive">*</span>
-                      </label>
-                      <Textarea
-                        id="message"
-                        placeholder="Tell us about your project…"
-                        className={`min-h-[150px] bg-background ${errors.message ? "border-destructive focus-visible:ring-destructive" : ""}`}
-                        value={formData.message}
-                        onChange={handleChange}
-                        disabled={isSubmitting}
-                      />
-                      {errors.message && (
-                        <p className="text-xs text-destructive flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" /> {errors.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <Button
-                      type="submit"
-                      className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
+          ) : (
+            <>
+              <h2 id="form-heading">
+                Tell us what you’re
+                <br className="hidden lg:inline" /> working through.
+              </h2>
+              <p className="contact-form-intro">
+                A few details are enough to start the conversation.
+              </p>
+              <form ref={formRef} onSubmit={handleSubmit} noValidate>
+                <div className="contact-fields-row">
+                  <div className="contact-field">
+                    <label htmlFor="name">
+                      Name <span>(required)</span>
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      autoComplete="name"
+                      placeholder="Your name"
+                      value={formData.name}
+                      onChange={handleChange}
                       disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <span className="flex items-center gap-2">
-                          <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Sending…
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-2">
-                          <Send className="w-4 h-4" />
-                          Send Message
-                        </span>
-                      )}
-                    </Button>
-                  </form>
-                </>
-              )}
-            </div>
+                      {...fieldState("name")}
+                    />
+                    {fieldError("name")}
+                  </div>
+                  <div className="contact-field">
+                    <label htmlFor="email">
+                      Email <span>(required)</span>
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="you@company.com"
+                      value={formData.email}
+                      onChange={handleChange}
+                      disabled={isSubmitting}
+                      {...fieldState("email")}
+                    />
+                    {fieldError("email")}
+                  </div>
+                </div>
 
+                <div className="contact-field">
+                  <label htmlFor="subject">
+                    Subject <span>(optional)</span>
+                  </label>
+                  <input
+                    id="subject"
+                    name="subject"
+                    autoComplete="off"
+                    placeholder="What would you like to discuss?"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="contact-field">
+                  <label htmlFor="message">
+                    What would you like help with? <span>(required)</span>
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Briefly describe the situation, the decision you face, and any timing we should know about."
+                    value={formData.message}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    {...fieldState("message")}
+                  />
+                  {fieldError("message")}
+                </div>
+
+                <p className="contact-privacy">
+                  We’ll only use these details to respond to your enquiry.
+                </p>
+
+                {submitError && (
+                  <p className="contact-form-alert" role="alert">
+                    <AlertCircle aria-hidden="true" /> {submitError}
+                  </p>
+                )}
+
+                <button type="submit" className="contact-submit" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <>
+                      Sending… <span className="contact-spinner" aria-hidden="true" />
+                    </>
+                  ) : (
+                    <>
+                      Send enquiry <span className="contact-submit-arrow" aria-hidden="true">→</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            </>
+          )}
+        </section>
+
+        <section className="contact-direct" aria-labelledby="direct-heading">
+          <h2 id="direct-heading">Prefer to contact us directly?</h2>
+          <a className="contact-link" href="mailto:info@darwish-co.com">
+            <Mail strokeWidth={1.5} aria-hidden="true" />
+            info@darwish-co.com
+          </a>
+          <a className="contact-link" href="tel:+201101101090">
+            <Phone strokeWidth={1.5} aria-hidden="true" />
+            +20 110 110 1090
+          </a>
+        </section>
+      </div>
+
+      <section className="site-container contact-office" aria-labelledby="office-heading">
+        <div className="contact-office-copy">
+          <div>
+            <p className="contact-eyebrow">Find us</p>
+            <h2 id="office-heading">Our office in New Cairo</h2>
+            <address>
+              Office T-10, 3rd Floor, RIO Mall
+              <br />
+              Dr. Ahmed Okasha St., off Sadat Axis
+              <br />
+              New Cairo 1, Cairo Governorate 11865, Egypt
+            </address>
+            <a
+              className="contact-directions"
+              href={DIRECTIONS}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get directions <span aria-hidden="true">↗</span>
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </div>
+          <div className="contact-hours">
+            <h3>Working hours</h3>
+            <p>
+              Mon – Fri
+              <br />
+              9:00 AM – 6:00 PM
+            </p>
+            <p className="contact-region">
+              Based in Egypt.
+              <br />
+              Working with SMEs across the MENA region.
+            </p>
           </div>
         </div>
-      </section>
-      {/* Google Maps Section */}
-      <section className="py-0">
-        <div className="w-full" style={{ height: "480px" }}>
+        <div className="contact-map">
           <iframe
-            title="Darwish & Co. Office Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.8!2d31.4677375!3d30.0560468!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583d2b0e3b3b3b%3A0x1465949206209374709!2sDarwish%26co!5e0!3m2!1sen!2seg!4v1715000000000!5m2!1sen!2seg"
-            width="100%"
-            height="100%"
-            style={{ border: 0, display: "block" }}
-            allowFullScreen
+            title="Darwish & Co. office location in New Cairo"
+            src={MAP_EMBED}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
           />
-        </div>
-      </section>
-
-      {/* Map CTA strip */}
-      <section className="py-8 bg-primary/5 border-t border-primary/10">
-        <div className="site-container flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <MapPin className="w-5 h-5 text-primary shrink-0" />
-            <span className="text-sm text-muted-foreground">
-              Office T-10, 3rd Floor, RIO Mall, Dr. Ahmed Okasha St., New Cairo 1, Egypt
-            </span>
-          </div>
-          <a
-            href="https://share.google/6tKphgm623sxgJe9m"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0"
-          >
-            <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white font-semibold">
-              Get Directions
-            </Button>
-          </a>
         </div>
       </section>
     </div>

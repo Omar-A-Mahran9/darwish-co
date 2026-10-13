@@ -10,9 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
   getGuide,
   groupOf,
-  guideGroups,
   guideName,
-  guideSizeLabel,
   readingMinutes,
   type GuideBlock,
   type GuidePoint,
@@ -202,7 +200,7 @@ function DataTable({
 function Section({ section }: { section: GuideSection }) {
   return (
     <section className="space-y-4">
-      <h2 className="font-heading text-2xl font-bold text-foreground">{section.heading}</h2>
+      <h2 className="font-heading text-h3 font-bold text-foreground">{section.heading}</h2>
 
       {section.note && (
         <p className="bg-muted/60 px-4 py-3 text-sm text-muted-foreground">
@@ -263,20 +261,20 @@ export default function GuideDetail() {
         <ol className="site-container flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <li className="flex items-center gap-2">
             <Link href="/">
-              <span className="cursor-pointer hover:text-primary hover:underline">Home</span>
+              <span className="link cursor-pointer">Home</span>
             </Link>
             <ChevronRight className="h-4 w-4" aria-hidden="true" />
           </li>
           <li className="flex items-center gap-2">
             <Link href="/guides">
-              <span className="cursor-pointer hover:text-primary hover:underline">Guides</span>
+              <span className="link cursor-pointer">Guides</span>
             </Link>
             <ChevronRight className="h-4 w-4" aria-hidden="true" />
           </li>
           {hub && (
             <li className="flex items-center gap-2">
               <Link href={`/guides/${hub.slug}`}>
-                <span className="cursor-pointer hover:text-primary hover:underline">
+                <span className="link cursor-pointer">
                   {guideName(hub)}
                 </span>
               </Link>
@@ -295,7 +293,7 @@ export default function GuideDetail() {
           <span className="text-xs font-bold uppercase tracking-widest text-primary-foreground/70">
             {guide.kind === "hub" ? "Guide" : hub ? `Part of ${guideName(hub)}` : "Guide"}
           </span>
-          <h1 className="font-heading text-3xl font-bold leading-tight md:text-4xl">
+          <h1 className="font-heading text-h1 font-bold">
             {guide.title}
           </h1>
           <p className="text-lg leading-relaxed text-primary-foreground/85">{guide.summary}</p>
@@ -358,7 +356,7 @@ export default function GuideDetail() {
 
           {guide.faqs && guide.faqs.length > 0 && (
             <section className="space-y-6 border-t border-border pt-10">
-              <h2 className="font-heading text-2xl font-bold text-foreground">Common questions</h2>
+              <h2 className="font-heading text-h3 font-bold text-foreground">Common questions</h2>
               <Accordion type="single" collapsible className="w-full">
                 {guide.faqs.map((faq, index) => (
                   <AccordionItem key={faq.question} value={`faq-${index}`}>
@@ -390,7 +388,7 @@ export default function GuideDetail() {
       {group && (hub || siblings.length > 0) && (
         <section className="border-t border-border bg-secondary/20 py-16">
           <div className="site-container prose-container space-y-8">
-            <h2 className="font-heading text-2xl font-bold text-foreground">
+            <h2 className="font-heading text-h3 font-bold text-foreground">
               {guide.kind === "hub" ? "Start with" : "Continue in this guide"}
             </h2>
             <ul className="space-y-5">
@@ -411,7 +409,7 @@ export default function GuideDetail() {
             </ul>
             {hub && (
               <Link href={`/guides/${hub.slug}`}>
-                <span className="inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline">
+                <span className="link inline-flex cursor-pointer items-center gap-2 text-sm font-bold">
                   <ArrowLeft className="h-4 w-4" /> Back to the guide overview
                 </span>
               </Link>
@@ -423,10 +421,12 @@ export default function GuideDetail() {
       {service && (
         <section className="bg-foreground py-16 text-white">
           <div className="site-container prose-container space-y-5">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">
+            {/* --primary reads as near-invisible on this section's dark
+                background; --dark-accent is the light-blue built for that. */}
+            <span className="text-xs font-bold uppercase tracking-widest text-dark-accent">
               The work behind this
             </span>
-            <h2 className="font-heading text-2xl font-bold">{service.name}</h2>
+            <h2 className="font-heading text-h3 font-bold">{service.name}</h2>
             <p className="leading-relaxed text-white/70">{service.tagline}</p>
             <div className="flex flex-wrap gap-4 pt-2">
               <Link href={`/services/${service.slug}`}>
@@ -443,108 +443,6 @@ export default function GuideDetail() {
           </div>
         </section>
       )}
-    </div>
-  );
-}
-
-/**
- * `/guides` — the library. One card per guide, each showing what it contains,
- * so a reader can tell a guide from a page inside it before clicking. Built
- * from `guideGroups()`, so a new guide or a new topic page needs no layout
- * work here.
- */
-export function GuideIndex() {
-  const groups = guideGroups();
-  if (groups.length === 0) return <NotFound />;
-
-  // At most three topics are listed on a card; a longer guide offers its
-  // overview instead of a list that would fill the card.
-  const SHOWN = 3;
-
-  return (
-    <div className="font-body">
-      <header className="bg-primary py-16 text-primary-foreground">
-        <div className="site-container prose-container space-y-4">
-          <h1 className="font-heading text-3xl font-bold leading-tight md:text-4xl">Guides</h1>
-          <p className="text-lg leading-relaxed text-primary-foreground/85">
-            Practical guides for owners and managing directors, written around the decisions
-            that bring companies to us.
-          </p>
-        </div>
-      </header>
-
-      <section className="py-16">
-        {/* One guide gets the full width; the grid arrives with the second. */}
-        <div
-          className={cn(
-            "site-container grid gap-10",
-            groups.length > 1 ? "lg:grid-cols-2" : "mx-auto max-w-3xl",
-          )}
-        >
-          {groups.map((group) => {
-            const shown = group.topics.slice(0, SHOWN);
-            const hidden = group.topics.length - shown.length;
-
-            return (
-              <article
-                key={group.hub.slug}
-                className="flex flex-col border-t-4 border-primary bg-secondary/20"
-              >
-                <div className="space-y-4 p-8 pb-6">
-                  <p className="text-xs font-bold uppercase tracking-widest text-primary">
-                    {guideSizeLabel(group)}
-                  </p>
-                  <h2 className="font-heading text-2xl font-bold leading-tight text-foreground md:text-3xl">
-                    <Link href={`/guides/${group.hub.slug}`}>
-                      <span className="cursor-pointer hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-                        {guideName(group.hub)}
-                      </span>
-                    </Link>
-                  </h2>
-                  {group.hub.audience && (
-                    <p className="text-sm font-semibold text-muted-foreground">
-                      {group.hub.audience}
-                    </p>
-                  )}
-                  <p className="leading-relaxed text-muted-foreground">{group.hub.summary}</p>
-                  <Link href={`/guides/${group.hub.slug}`}>
-                    <span className="inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-                      Explore guide <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                    </span>
-                  </Link>
-                </div>
-
-                {group.topics.length > 0 && (
-                  <div className="border-t border-border bg-white/60 p-8 pt-6">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                      Included in this guide
-                    </h3>
-                    <ul className="mt-4 divide-y divide-border">
-                      {shown.map((topic) => (
-                        <li key={topic.slug}>
-                          <Link href={`/guides/${topic.slug}`}>
-                            <span className="block cursor-pointer py-3 text-sm font-semibold leading-snug text-foreground hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-                              {topic.title}
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                    {hidden > 0 && (
-                      <Link href={`/guides/${group.hub.slug}`}>
-                        <span className="mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline">
-                          View all {group.topics.length} pages{" "}
-                          <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                        </span>
-                      </Link>
-                    )}
-                  </div>
-                )}
-              </article>
-            );
-          })}
-        </div>
-      </section>
     </div>
   );
 }

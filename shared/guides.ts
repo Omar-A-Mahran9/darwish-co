@@ -78,6 +78,12 @@ export type Guide = {
   shortTitle?: string;
   /** Who the guide is for, shown under the name on the library card. */
   audience?: string;
+  /**
+   * One short line printed on the topic page's book in the `/guides` library,
+   * where the full summary does not fit on a narrow spine. Falls back to the
+   * summary when unset.
+   */
+  shelfDescription?: string;
   /** Browser tab and search-result title. */
   metaTitle: string;
   /** Search and social description, 50–160 characters. */
@@ -285,6 +291,7 @@ export const GUIDES: Guide[] = [
     relatedService: "corporate-family-governance",
     title: "Delegation of Authority: How to Delegate Decisions Without Losing Oversight",
     navLabel: "Delegation of authority",
+    shelfDescription: "Delegate decisions without losing oversight.",
     metaTitle: "Delegation of Authority: Delegating Without Losing Oversight | Darwish & Co",
     metaDescription:
       "A delegation of authority matrix keeps each decision with the person authorised to take it while its conditions hold, and routes exceptions to a named role.",
@@ -527,6 +534,7 @@ export const GUIDES: Guide[] = [
     relatedService: "risk-compliance-integrity",
     title: "What to Do When a Major Client Sends an Anti-Bribery Questionnaire",
     navLabel: "Anti-bribery questionnaires",
+    shelfDescription: "When a major client asks about your controls.",
     metaTitle: "Answering a Client's Anti-Bribery Questionnaire | Darwish & Co",
     metaDescription:
       "Most questions on a client compliance questionnaire ask for four things: a policy, a procedure, a record and a named responsible person. How to answer honestly.",
@@ -833,6 +841,7 @@ export const GUIDES: Guide[] = [
     relatedService: "ai-governance",
     title: "Setting the Rules for Employee AI Use: A Governance Starting Point",
     navLabel: "Employee AI use",
+    shelfDescription: "A governance starting point for setting the rules.",
     metaTitle: "Employee AI Use Rules: A Governance Starting Point | Darwish & Co",
     metaDescription:
       "How owners of growing SMEs can set practical rules for employee AI use: an inventory, approved uses, information categories, action limits and human review.",
@@ -1567,13 +1576,6 @@ export function groupOf(slug: string): GuideGroup | undefined {
   return guideGroups().find(
     (group) => group.hub.slug === slug || group.topics.some((topic) => topic.slug === slug),
   );
-}
-
-/** How a guide's size is described on its card: "Overview + 2 topic pages". */
-export function guideSizeLabel(group: GuideGroup): string {
-  const count = group.topics.length;
-  if (count === 0) return "Overview only";
-  return `Overview + ${count} topic ${count === 1 ? "page" : "pages"}`;
 }
 
 /** The guide's own name, for cards, navigation and breadcrumbs. */

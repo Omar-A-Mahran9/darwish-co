@@ -161,7 +161,7 @@ export default function AdminInbox() {
               />
               <Button
                 type="submit"
-                className="w-full h-12 bg-primary text-white hover:bg-primary/90 font-bold rounded-none"
+                className="w-full h-12 bg-primary text-white hover:bg-primary/90 font-bold "
                 disabled={loading}
               >
                 {loading ? "Verifying..." : "Access Inbox"}
@@ -199,7 +199,6 @@ export default function AdminInbox() {
               variant="outline"
               size="sm"
               onClick={() => window.location.assign("/admin/client-access")}
-              className="rounded-none"
             >
               Client Access
             </Button>
@@ -298,7 +297,7 @@ export default function AdminInbox() {
                             <AtSign className="w-4 h-4" />
                             <a
                               href={`mailto:${selectedMessage.email}`}
-                              className="text-primary hover:underline"
+                              className="link"
                             >
                               {selectedMessage.email}
                             </a>
@@ -330,7 +329,7 @@ export default function AdminInbox() {
                     </div>
                     <div className="mt-6 flex gap-3">
                       <a href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject || ""}`}>
-                        <Button className="bg-primary text-white hover:bg-primary/90 rounded-none gap-2">
+                        <Button className="bg-primary text-white hover:bg-primary/90 gap-2">
                           <Mail className="w-4 h-4" />
                           Reply via Email
                         </Button>

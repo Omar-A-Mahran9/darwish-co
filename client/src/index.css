@@ -43,6 +43,8 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-link: var(--link);
+  --color-dark-accent: var(--dark-accent);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -57,6 +59,7 @@
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
+  --color-chart-3-foreground: var(--chart-3-foreground);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-sidebar: var(--sidebar);
@@ -74,115 +77,152 @@
 }
 
 :root {
-  /* 
-     Brand Colors:
-     Cyan Blue: #0099CC -> OKLCH: 0.62 0.16 235
-     Emerald Green: #00CC66 -> OKLCH: 0.72 0.21 150
-     Golden Orange: #FF9900 -> OKLCH: 0.75 0.20 65
-     
-     Background: White / Light Gray
-     Text: Dark Gray / Black
+  /*
+     Brand Colors — from the founder's brand-identity document (v2.0, Sep 2026).
+     Navy is the primary UI/headline color; blue is reserved for links, focus
+     rings and small accents only — the two used to be the same token, which is
+     why `--link` exists as its own variable now. Contrast checked against the
+     warm-white background below with a WCAG contrast script (4.5:1 = AA normal
+     text, 3:1 = AA large text/UI):
+
+     Navy       #172B43 -> oklch(0.285 0.052 254)  13.6:1 on warm white
+     Charcoal   #252525 -> oklch(0.264 0     0)     14.6:1 on warm white
+     Link blue  darkened from the document's raw #00A3F0 (oklch 0.683 0.158 240,
+                which only reaches 2.7:1 and fails AA) to oklch(0.551 0.145 247)
+                ≈ #0076c1, which reaches 4.6:1 — same fix already applied once
+                to `--primary` before this token split existed.
+     Gold       #FFD717 -> oklch(0.887 0.179 95).  10.2:1 on navy (buttons only);
+                1.3:1 on white — the document says never use it as small text on
+                a light background, and that failure confirms why.
+     Green      #15AE3C -> oklch(0.655 0.194 146). 2.8:1 on white — also fails as
+                text; restricted to icons, large decorative use or on navy.
+     Warm white #FAF9F6 -> oklch(0.982 0.004 91)
+     Neutral gy #EDF0F2 -> oklch(0.953 0.004 236)
   */
 
-  --primary: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
+  --primary: oklch(0.285 0.052 254); /* Navy #172B43 — buttons, headings, UI-primary */
   --primary-foreground: oklch(1 0 0); /* White */
-  
-  --sidebar-primary: oklch(0.50 0.14 235);
+
+  --link: oklch(0.551 0.145 247); /* Blue, darkened for AA — text links, focus */
+
+  /* For an accent on a dark surface INSIDE the light theme (e.g. a section
+     with its own `bg-foreground`/charcoal background) — `--primary` and
+     `--link` are both tuned against the light background and read as
+     near-invisible on a dark one. 6.2:1 on charcoal #252525. Not a themed
+     token: it doesn't change between :root and .dark. */
+  --dark-accent: oklch(0.72 0.13 247);
+
+  --sidebar-primary: oklch(0.285 0.052 254);
   --sidebar-primary-foreground: oklch(1 0 0);
-  
-  --chart-1: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
-  --chart-2: oklch(0.72 0.21 150); /* Emerald Green */
-  --chart-3: oklch(0.75 0.20 65);  /* Golden Orange */
-  --chart-4: oklch(0.5 0.1 235);   /* Darker Blue */
-  --chart-5: oklch(0.8 0.1 150);   /* Lighter Green */
-  
-  /* Square corners throughout — the same shape language as the buttons.
-     Circles (avatars, the WhatsApp button) set their own radius. */
-  --radius: 0rem;
-  
-  --background: oklch(0.99 0 0); /* White/Near White */
-  --foreground: oklch(0.2 0.02 260); /* Dark Gray/Black */
-  
-  --card: oklch(1 0 0); /* White */
-  --card-foreground: oklch(0.2 0.02 260);
-  
+
+  --chart-1: oklch(0.285 0.052 254); /* Navy — primary data series */
+  --chart-2: oklch(0.551 0.145 247); /* Link blue — secondary series */
+  --chart-3: oklch(0.887 0.179 95);  /* Gold — meaningful distinction only */
+  --chart-4: oklch(0.655 0.194 146); /* Green — restricted positive accent */
+  --chart-5: oklch(0.45 0.05 254);   /* Lighter navy */
+
+  /* The document's gold fails contrast as text on any light surface —
+     1.3:1 white-on-gold, 1.3:1 gold-on-white, confirmed with the same
+     contrast script as the rest of this file. It says as much itself:
+     "never use bright gold as small text on white." This is the readable
+     text/icon color for anywhere the gold accent needs to carry a label —
+     same hue, darkened until it passes (7.2:1 on warm white). The bright
+     `--chart-3` stays for backgrounds, borders and the rare full-gold
+     moment (the FloatingLogos pulse in Home.tsx). */
+  --chart-3-foreground: oklch(0.454 0.110 57);
+
+  /* Cards were already 12px and inputs 6px before this — only the button
+     radius (`rounded-none`, see button.tsx) contradicted them. 8px is the
+     shared base the document asks for; circles (avatars, the WhatsApp
+     button) still set their own radius. */
+  --radius: 0.5rem;
+
+  --background: oklch(0.982 0.004 91); /* Warm white #FAF9F6 */
+  --foreground: oklch(0.264 0 0); /* Charcoal #252525 */
+
+  --card: oklch(1 0 0); /* White — cards sit lighter than the page background */
+  --card-foreground: oklch(0.264 0 0);
+
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.02 260);
-  
-  --secondary: oklch(0.96 0.01 235); /* Very Light Blue */
-  --secondary-foreground: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
-  
-  --muted: oklch(0.96 0.01 235);
-  --muted-foreground: oklch(0.5 0.05 235);
-  
-  --accent: oklch(0.96 0.01 235); /* Very Light Blue */
-  --accent-foreground: oklch(0.50 0.14 235);
-  
+  --popover-foreground: oklch(0.264 0 0);
+
+  --secondary: oklch(0.95 0.006 254); /* Faint neutral, navy-tinted */
+  --secondary-foreground: oklch(0.285 0.052 254);
+
+  --muted: oklch(0.953 0.004 236); /* Neutral gray #EDF0F2 */
+  --muted-foreground: oklch(0.48 0.02 254); /* 6.2:1 on warm white */
+
+  --accent: oklch(0.95 0.006 254); /* Faint neutral, navy-tinted */
+  --accent-foreground: oklch(0.285 0.052 254);
+
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  
-  --border: oklch(0.9 0.02 235);
-  --input: oklch(0.9 0.02 235);
-  --ring: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
-  
-  --sidebar: oklch(0.99 0 0);
-  --sidebar-foreground: oklch(0.2 0.02 260);
-  --sidebar-accent: oklch(0.96 0.01 235);
-  --sidebar-accent-foreground: oklch(0.50 0.14 235);
-  --sidebar-border: oklch(0.9 0.02 235);
-  --sidebar-ring: oklch(0.50 0.14 235);
+
+  --border: oklch(0.953 0.004 236); /* Neutral gray #EDF0F2 */
+  --input: oklch(0.953 0.004 236);
+  --ring: oklch(0.551 0.145 247); /* Link blue — focus is an accent, not primary */
+
+  --sidebar: oklch(0.982 0.004 91);
+  --sidebar-foreground: oklch(0.264 0 0);
+  --sidebar-accent: oklch(0.95 0.006 254);
+  --sidebar-accent-foreground: oklch(0.285 0.052 254);
+  --sidebar-border: oklch(0.953 0.004 236);
+  --sidebar-ring: oklch(0.551 0.145 247);
 }
 
 .dark {
-  /* 
-     Dark Mode Adaptation:
-     Background: Dark Navy/Gray
-     Text: White/Light Gray
-     Primary: Cyan Blue (kept vibrant)
+  /*
+     Dark mode is not covered by the brand document (it's written for the
+     light/primary theme) — same navy/blue/gold/green hue family as :root,
+     lightened where dark-mode contrast needs it, kept working rather than
+     redesigned.
   */
-  --primary: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
+  --primary: oklch(0.62 0.09 254); /* Lightened navy, visible on dark */
   --primary-foreground: oklch(1 0 0);
-  
-  --sidebar-primary: oklch(0.62 0.16 235);
+
+  --link: oklch(0.72 0.13 247); /* Lightened link blue */
+
+  --sidebar-primary: oklch(0.62 0.09 254);
   --sidebar-primary-foreground: oklch(1 0 0);
-  
+
   --background: oklch(0.15 0.04 260); /* Dark Navy */
   --foreground: oklch(0.98 0 0); /* White */
-  
+
   --card: oklch(0.2 0.04 260); /* Slightly Lighter Navy */
   --card-foreground: oklch(0.98 0 0);
-  
+
   --popover: oklch(0.2 0.04 260);
   --popover-foreground: oklch(0.98 0 0);
-  
+
   --secondary: oklch(0.25 0.04 260);
   --secondary-foreground: oklch(0.98 0 0);
-  
+
   --muted: oklch(0.25 0.04 260);
   --muted-foreground: oklch(0.7 0.02 260);
-  
+
   --accent: oklch(0.25 0.04 260);
   --accent-foreground: oklch(0.98 0 0);
-  
+
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
-  
+
   --border: oklch(0.3 0.04 260);
   --input: oklch(0.3 0.04 260);
-  --ring: oklch(0.50 0.14 235); /* Deep Cyan Blue, AA on white */
-  
-  --chart-1: oklch(0.62 0.16 235);
-  --chart-2: oklch(0.72 0.21 150);
-  --chart-3: oklch(0.75 0.20 65);
-  --chart-4: oklch(0.5 0.1 235);
-  --chart-5: oklch(0.8 0.1 150);
-  
+  --ring: oklch(0.72 0.13 247);
+
+  --chart-1: oklch(0.62 0.09 254);
+  --chart-2: oklch(0.72 0.13 247);
+  --chart-3: oklch(0.887 0.179 95);
+  --chart-4: oklch(0.655 0.194 146);
+  --chart-5: oklch(0.5 0.06 254);
+  --chart-3-foreground: oklch(0.8 0.15 75); /* Lightened gold, readable on a dark background */
+
   --sidebar: oklch(0.2 0.04 260);
   --sidebar-foreground: oklch(0.98 0 0);
   --sidebar-accent: oklch(0.25 0.04 260);
   --sidebar-accent-foreground: oklch(0.98 0 0);
   --sidebar-border: oklch(0.3 0.04 260);
-  --sidebar-ring: oklch(0.62 0.16 235);
+  --sidebar-ring: oklch(0.72 0.13 247);
 }
 
 @layer base {
@@ -197,6 +237,57 @@
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /*
+   * ── Type scale ──
+   * From the brand document, mobile-first. `.text-h1`/`.text-h2`/`.text-h3`
+   * exist alongside bare h1/h2/h3 so a heading-level element and a
+   * visually-only heading (e.g. a styled span) can both reach the same size.
+   * Small and label sizes don't change at the breakpoint; only the headings do.
+   */
+  h1, .text-h1 {
+    font-size: 34px;
+    line-height: 1.2;
+  }
+  h2, .text-h2 {
+    font-size: 26px;
+    line-height: 1.25;
+  }
+  h3, .text-h3 {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+  @media (min-width: 768px) {
+    h1, .text-h1 {
+      font-size: 48px;
+      line-height: 1.15;
+    }
+    h2, .text-h2 {
+      font-size: 32px;
+      line-height: 1.2;
+    }
+    h3, .text-h3 {
+      font-size: 24px;
+      line-height: 1.3;
+    }
+  }
+  .text-body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .text-small {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .text-label {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  @media (min-width: 768px) {
+    .text-label {
+      font-size: 16px;
+    }
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -233,8 +324,12 @@
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
+/* Brand doc: "an occasional framing device, not a repeating decorative
+   stamp" — three turns (54s) and then it settles, rather than spinning for
+   as long as the page stays open. */
 .spin-slow {
-  animation: spin-slow 18s linear infinite;
+  animation: spin-slow 18s linear 3;
+  animation-fill-mode: forwards;
 }
 @keyframes spin-reverse {
   from { transform: rotate(0deg); }
@@ -262,6 +357,52 @@
   }
 
   /**
+   * ── Text links ──
+   * Brand doc: "Text links: blue + underline on hover/focus; descriptive
+   * destination." One class for every plain inline content link — breadcrumbs,
+   * "explore →" links, footer links, contact details — instead of each page
+   * hand-combining `hover:underline`/`hover:text-primary` differently.
+   *
+   * Deliberately NOT applied to: nav items and dropdown menus in Layout.tsx
+   * (they carry their own active/inactive state, a control, not a content
+   * link), or a card title's `group-hover:underline` (an affordance for the
+   * whole card, and the title should stay in the card's own text color, not
+   * turn blue).
+   */
+  .link {
+    color: var(--link);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 2px;
+    transition: text-decoration-color 150ms ease, color 150ms ease;
+  }
+  .link:hover,
+  .link:focus-visible {
+    text-decoration-color: currentColor;
+  }
+
+  /**
+   * ── Touch targets ──
+   * Brand doc: "Practical minimum touch target: 44 × 44 px." `button.tsx`'s
+   * `sm` (36px) and `icon-sm` (32px) variants are visually compact by design
+   * — this expands the tappable area to 44×44 around the element's own
+   * center without growing it on screen, rather than enlarging the button
+   * itself. Requires the element to be positioned (button.tsx's base class
+   * includes `relative`).
+   */
+  .touch-target {
+    position: relative;
+  }
+  .touch-target::before {
+    content: "";
+    position: absolute;
+    inset: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
+  /**
    * ── Layout primitives ──
    *
    * `.site-container` is the only rule that sets page width. A narrow cap
@@ -272,12 +413,17 @@
    * components layer. That is why the site's previous `.container` rule —
    * which declared max-width 1280px right here — never applied, leaving every
    * page on Tailwind's 1536px instead. Do not reintroduce a `.container` rule.
+   *
+   * Spacing scale (brand doc): 8px base — 8 / 16 / 24 / 32 / 48 / 64. Tailwind
+   * v4's own spacing unit is already 4px, so this scale is Tailwind's `p-2 /
+   * p-4 / p-6 / p-8 / p-12 / p-16` and multiples of it — an existing-value
+   * convention to follow when writing spacing, not a new token set.
    */
   .site-container {
     --gutter: 1.5rem; /* 24px */
     width: 100%;
     margin-inline: auto;
-    max-width: 1280px;
+    max-width: 1200px; /* Brand doc: 1200px max, generous outer margins */
     padding-inline: var(--gutter);
   }
 

@@ -36,7 +36,9 @@ export default function AnnouncementBanner({
   const variantClasses = {
     primary: "bg-primary text-primary-foreground",
     success: "bg-chart-2 text-white",
-    warning: "bg-chart-3 text-white",
+    // Gold is a light color — white text on it fails contrast (1.4:1). Charcoal
+    // foreground passes at 10.9:1.
+    warning: "bg-chart-3 text-foreground",
   };
 
   return (

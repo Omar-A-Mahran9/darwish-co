@@ -27,7 +27,11 @@ import {
 export const ACCENT: Record<ServiceAccent, { text: string; border: string; soft: string }> = {
   primary: { text: "text-primary", border: "border-primary/30", soft: "bg-primary/10" },
   teal: { text: "text-chart-2", border: "border-chart-2/30", soft: "bg-chart-2/10" },
-  amber: { text: "text-chart-3", border: "border-chart-3/30", soft: "bg-chart-3/10" },
+  // text-chart-3 (the raw gold) fails contrast as text — 1.3:1 on white, the
+  // brand doc's own reason not to use it that way. text-chart-3-foreground is
+  // the darkened, readable version of the same hue; the bright gold stays on
+  // the border and the tinted background, where it's decorative, not text.
+  amber: { text: "text-chart-3-foreground", border: "border-chart-3/30", soft: "bg-chart-3/10" },
   blue: { text: "text-blue-600", border: "border-blue-200/60", soft: "bg-blue-600/10" },
   emerald: { text: "text-emerald-600", border: "border-emerald-200/60", soft: "bg-emerald-600/10" },
 };

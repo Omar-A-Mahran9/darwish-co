@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Brain, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { Link } from "wouter";
-import { PILLARS, servicesInPillar, type ServicePillar } from "@shared/services";
 import { BLOG_ARTICLES } from "@shared/seo";
-import { ACCENT, ServiceIcon } from "@/components/serviceStyles";
+import { ServicesShowcase } from "@/components/ServicesShowcase";
 
 /**
  * The two situations clients most often arrive with (positioning v3 §3), and
@@ -95,42 +94,6 @@ const FEATURED_CONSULTANTS = [
   },
 ];
 
-function PillarBlock({ pillar }: { pillar: ServicePillar }) {
-  const services = servicesInPillar(pillar);
-  if (services.length === 0) return null;
-
-  return (
-    <div className="space-y-5">
-      <div className="space-y-2">
-        <h3 className="font-heading text-xl font-bold text-foreground">{PILLARS[pillar].name}</h3>
-        <p className="text-sm leading-relaxed text-muted-foreground">{PILLARS[pillar].description}</p>
-      </div>
-      <ul className="space-y-3 border-t border-border pt-5">
-        {services.map((service) => (
-          <li key={service.slug}>
-            <Link href={`/services/${service.slug}`}>
-              <span className="group flex cursor-pointer items-start gap-3">
-                <ServiceIcon
-                  name={service.icon}
-                  className={`mt-0.5 h-5 w-5 shrink-0 ${ACCENT[service.accent].text}`}
-                />
-                <span>
-                  <span className="block font-bold text-foreground group-hover:underline">
-                    {service.name}
-                  </span>
-                  <span className="block text-sm leading-relaxed text-muted-foreground">
-                    {service.tagline}
-                  </span>
-                </span>
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 // ─── CDN assets ────────────────────────────────────────────────────────────
 const EMBLEM_URL =
   "/images/emblem-small.webp";
@@ -144,6 +107,7 @@ const PARTNER_LOGOS = [
   { href: "https://techno-management.com",src: "/images/partners/techno-management.webp", alt: "Techno-Management" },
   { href: "https://www.keheilan.com",     src: "/images/partners/keheilan.webp",  alt: "Keheilan" },
   { href: "https://in-light.tech",        src: "/images/partners/inlight.webp",           alt: "In Light" },
+  { href: "https://growthino.com",        src: "/images/partners/growthino.webp",         alt: "Growthino" },
 ];
 
 // ─── Floating animated logo composition — hub-and-spoke orbital (rAF) ───────
@@ -216,6 +180,39 @@ function FloatingLogos() {
     const reduceMotion =
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Reduced motion: set the satellites to their resting angle once and stop
+    // — no orbit, no pulse. (Previously only the pulse honoured this setting;
+    // the orbit itself ran regardless.)
+    if (reduceMotion) {
+      ORBIT_DEFS.forEach((def, i) => {
+        const rad = (def.startDeg * Math.PI) / 180;
+        const cx = def.radius * Math.cos(rad);
+        const cy = def.radius * Math.sin(rad);
+        const wrap = wrapRefs.current[i];
+        if (wrap) wrap.style.transform = `translate(${cx - def.size / 2}px, ${cy - def.size / 2}px)`;
+      });
+      return;
+    }
+
+    // "An occasional framing device, not a repeating decorative stamp" — the
+    // orbit plays once, for one full conduction cycle, the first time it
+    // scrolls into view, then settles rather than spinning indefinitely.
+    let hasPlayed = false;
+    const PLAY_DURATION_MS = 13_000; // covers one full satellite-0/4 realignment (~9.2s) plus its pulse
+    let stopTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (hasPlayed || !entries[0]?.isIntersecting) return;
+        hasPlayed = true;
+        observer.disconnect();
+        rafRef.current = requestAnimationFrame(tick);
+        stopTimer = setTimeout(() => cancelAnimationFrame(rafRef.current), PLAY_DURATION_MS);
+      },
+      { threshold: 0.3 },
+    );
+    if (containerRef.current) observer.observe(containerRef.current);
 
     let last = performance.now();
     // Satellite centres for this frame, reused by the conduction pass below.
@@ -323,8 +320,11 @@ function FloatingLogos() {
       }
     }
 
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
+    return () => {
+      observer.disconnect();
+      clearTimeout(stopTimer);
+      cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (
@@ -333,13 +333,13 @@ function FloatingLogos() {
       className="relative flex items-center justify-center"
       style={{ width: "520px", height: "520px" }}
     >
-      {/* Radial glow backdrop */}
+      {/* Radial glow backdrop — navy, not the old all-blue glow */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(96,177,255,0.22) 0%, rgba(49,154,255,0.08) 55%, transparent 80%)",
+          background: "radial-gradient(circle, rgba(23,43,67,0.16) 0%, rgba(23,43,67,0.06) 55%, transparent 80%)",
           filter: "blur(36px)",
           pointerEvents: "none",
         }}
@@ -348,14 +348,14 @@ function FloatingLogos() {
       {/* Orbit ring 1 — inner */}
       <div style={{
         position: "absolute", width: "300px", height: "300px",
-        borderRadius: "50%", border: "1px dashed rgba(49,154,255,0.2)",
+        borderRadius: "50%", border: "1px dashed rgba(23,43,67,0.18)",
         top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none",
       }} />
 
       {/* Orbit ring 2 — outer */}
       <div style={{
         position: "absolute", width: "450px", height: "450px",
-        borderRadius: "50%", border: "1px dashed rgba(49,154,255,0.10)",
+        borderRadius: "50%", border: "1px dashed rgba(23,43,67,0.09)",
         top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none",
       }} />
 
@@ -376,12 +376,16 @@ function FloatingLogos() {
           overflow: "visible",
         }}
       >
+        {/* Gold is the document's "rare emphasis, decorative" color — this
+            once-per-orbit pulse, not running text, is exactly that use. The
+            connecting lines stay navy/link-blue; only the moment of arrival
+            (the spark and its bloom) takes the gold. */}
         <circle
           ref={bloomRef}
           cx="0"
           cy="0"
           r="28"
-          fill="rgba(0,132,255,0.55)"
+          fill="rgba(255,215,23,0.55)"
           style={{ opacity: 0, filter: "blur(14px)" }}
         />
         {CONDUCTION_PAIRS.map((_, k) => (
@@ -390,7 +394,7 @@ function FloatingLogos() {
             ref={el => { conduitRefs.current[k] = el; }}
             points="0,0"
             fill="none"
-            stroke="#0084FF"
+            stroke="#0076c1"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -405,8 +409,8 @@ function FloatingLogos() {
             cx="0"
             cy="0"
             r="3.2"
-            fill="#ffffff"
-            style={{ opacity: 0, filter: "drop-shadow(0 0 6px rgba(0,132,255,0.95))" }}
+            fill="#FFD717"
+            style={{ opacity: 0, filter: "drop-shadow(0 0 6px rgba(255,215,23,0.95))" }}
           />
         ))}
       </svg>
@@ -435,7 +439,7 @@ function FloatingLogos() {
               height: "100%",
               objectFit: "contain",
               opacity: def.opacity,
-              filter: "drop-shadow(0 2px 8px rgba(49,154,255,0.28))",
+              filter: "drop-shadow(0 2px 8px rgba(23,43,67,0.25))",
               willChange: "transform",
             }}
           />
@@ -454,7 +458,7 @@ function FloatingLogos() {
           width: "150px",
           height: "150px",
           objectFit: "contain",
-          filter: "drop-shadow(0 6px 24px rgba(49,154,255,0.4))",
+          filter: "drop-shadow(0 6px 24px rgba(23,43,67,0.35))",
         }}
       />
     </div>
@@ -525,15 +529,18 @@ function HeroSection() {
                   fontSize: "clamp(36px, 5vw, 64px)",
                   lineHeight: 1.08,
                   letterSpacing: "-0.02em",
-                  color: "#0a0a0a",
+                  color: "var(--foreground)",
                 }}
               >
                 {/* The breaks are the desktop composition, where the column is
                     wide enough to hold them. Below lg the headline wraps on its
-                    own: kept, these force a fourth line on a phone. */}
+                    own: kept, these force a fourth line on a phone. Wording and
+                    size are unchanged — only the two hardcoded hex colors above
+                    and below were swapped for the brand-doc tokens they should
+                    always have referenced. */}
                 Delegate decisions<br className="hidden lg:inline" />{" "}
                 without losing<br className="hidden lg:inline" />{" "}
-                <span style={{ color: "#0084FF" }}>oversight.</span>
+                <span style={{ color: "var(--link)" }}>oversight.</span>
               </h1>
 
               {/* Sub-headline */}
@@ -653,7 +660,7 @@ function CaseExampleSection() {
           <span className="text-xs font-bold uppercase tracking-widest text-primary">
             What an engagement looks like
           </span>
-          <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+          <h2 className="font-heading text-h2 font-bold text-foreground">
             One piece of work, start to finish
           </h2>
           <p className="leading-relaxed text-muted-foreground">{CASE_EXAMPLE.client}</p>
@@ -734,7 +741,7 @@ export default function Home() {
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               When companies call us
             </span>
-            <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+            <h2 className="font-heading text-h2 font-bold text-foreground">
               Two situations bring most clients here
             </h2>
           </div>
@@ -749,7 +756,7 @@ export default function Home() {
                   <p className="leading-relaxed text-muted-foreground">{situation.body}</p>
                 </div>
                 <Link href={situation.href}>
-                  <span className="inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline">
+                  <span className="link inline-flex cursor-pointer items-center gap-2 text-sm font-bold">
                     {situation.cta} <ArrowRight className="h-4 w-4" />
                   </span>
                 </Link>
@@ -771,34 +778,7 @@ export default function Home() {
       </section>
 
       {/* ── What we do ── */}
-      <section className="bg-secondary/20 py-24">
-        <div className="site-container space-y-12">
-          <div className="max-w-3xl space-y-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">
-              What we do
-            </span>
-            <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
-              Governance first, then what depends on it
-            </h2>
-            <p className="leading-relaxed text-muted-foreground">
-              Five services in three groups. Each page sets out what the work covers, who it suits,
-              what you receive and how an engagement runs.
-            </p>
-          </div>
-
-          <div className="grid gap-12 md:grid-cols-3">
-            <PillarBlock pillar="governance" />
-            <PillarBlock pillar="strategy-organisation" />
-            <PillarBlock pillar="growth" />
-          </div>
-
-          <Link href="/services">
-            <Button size="lg" className="rounded-none font-bold">
-              All services <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      </section>
+      <ServicesShowcase />
 
       {/* ── The people behind the work ── */}
       <section className="bg-secondary/10 py-24">
@@ -807,7 +787,7 @@ export default function Home() {
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               Who does the work
             </span>
-            <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+            <h2 className="font-heading text-h2 font-bold text-foreground">
               The people behind the work
             </h2>
             <p className="leading-relaxed text-muted-foreground">
@@ -862,12 +842,12 @@ export default function Home() {
               <span className="text-xs font-bold uppercase tracking-widest text-primary">
                 Insights
               </span>
-              <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+              <h2 className="font-heading text-h2 font-bold text-foreground">
                 What we have been writing about
               </h2>
             </div>
             <Link href="/blog">
-              <span className="cursor-pointer whitespace-nowrap text-sm font-bold text-primary hover:underline">
+              <span className="link cursor-pointer whitespace-nowrap text-sm font-bold">
                 All articles →
               </span>
             </Link>
@@ -902,7 +882,7 @@ export default function Home() {
       {/* ── How we work ── */}
       <section className="bg-white py-24">
         <div className="site-container space-y-12">
-          <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
+          <h2 className="font-heading text-h2 font-bold text-foreground">
             How we work
           </h2>
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
@@ -919,47 +899,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Projects ── */}
-      <section className="bg-foreground py-20 text-white">
-        <div className="site-container grid items-center gap-10 md:grid-cols-[1.2fr_0.8fr]">
-          <div className="space-y-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">Our work</span>
-            <h2 className="font-heading text-2xl font-bold leading-tight text-white md:text-3xl">
-              Platforms we have built
-            </h2>
-            <p className="max-w-xl leading-relaxed text-white/60">
-              Where an engagement calls for software rather than a document, we build it.
-            </p>
-          </div>
-          <div className="border border-white/10 bg-white/5 p-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
-                <Brain className="h-5 w-5 text-primary" />
-              </div>
-              <span className="text-xs font-bold uppercase tracking-widest text-primary">
-                AI initiative
-              </span>
-            </div>
-            <h3 className="mt-4 font-heading text-xl font-bold text-white">
-              AI POC Collaboration Platform
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-white/60">
-              A platform for managing AI proof-of-concept projects across collaborating teams.
-            </p>
-            <Link href="/projects#ai-poc">
-              <span className="mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-bold text-primary hover:underline">
-                Explore platform <ArrowRight className="h-4 w-4" />
-              </span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ── Contact ── */}
       <section className="bg-primary py-20 text-white">
         <div className="site-container grid gap-12 md:grid-cols-[1fr_1fr]">
           <div className="space-y-6">
-            <h2 className="font-heading text-3xl font-bold leading-tight md:text-4xl">
+            <h2 className="font-heading text-h2 font-bold">
               Book a consultation
             </h2>
             <p className="max-w-xl leading-relaxed text-white/85">
@@ -968,7 +912,7 @@ export default function Home() {
               our services applies, or whether none does.
             </p>
             <Link href="/contact">
-              <Button size="lg" variant="secondary" className="rounded-none font-bold">
+              <Button size="lg" variant="secondary" className="font-bold">
                 Book a consultation <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

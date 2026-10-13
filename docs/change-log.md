@@ -5,6 +5,117 @@ One entry per commit, newest first. Nothing in this log has been published to th
 
 ---
 
+## Entry 16 — Partner logo row: even spacing, Growthino added
+
+**Date:** 28 Sep 2026 · **Branch:** `fix-website` (local only, not committed)
+**Checks:** TypeScript passes · production build passes · checked at 1440 pixels wide and against
+the live preview
+
+| Change | Detail |
+|---|---|
+| Uneven spacing fixed | The row's gap between logos was already equal in the code. Three of the logo files had inconsistent padding baked into the image itself, which is what actually looked uneven |
+| WideBot | Its file was a wordmark in white text on a transparent background — invisible against the site's white background, leaving a wide empty gap where the text should have been. Cropped to just the visible orange icon |
+| In Light | Generous blank padding around the mark. Cropped tighter |
+| Keheilan | Its file had a solid dark background filling its entire square canvas, unlike the other four logos, which are all cropped tight with transparent backgrounds. Cropped down to a compact badge around the mark — the background fill could not be removed this way; **a transparent version of this logo would fix it properly** |
+| Growthino added | A sixth partner logo, linking to growthino.com |
+
+---
+
+## Entry 15 — Home page: the five-service section, replacing the old three-group list
+
+**Date:** 28 Sep 2026 · **Branch:** `fix-website` (local only, not committed)
+**Checks:** TypeScript passes · production build passes · checked at 390, 800 and 1440 pixels wide
+· hover, keyboard focus and reduced motion checked directly
+
+| Change | Detail |
+|---|---|
+| The old "What we do" section removed | Six services shown in three pillar groups |
+| Five services, one row | Strategy & Performance, Governance & Organizational Excellence, Growth & Market Expansion, Digital & AI Transformation Advisory, Research & Feasibility — built to match a working prototype the founder supplied, checked against it directly for colour, spacing and timing |
+| Real imagery | The founder's own generated renders, wired in as the five images |
+| Hover | An off-white panel appears, text changes colour, and the image inside each frame pans slightly to reveal what the resting crop cuts off. The frame itself never moves or resizes — only the picture inside it |
+| Full-width background | The section's dark background now spans the full browser width, matching the site's other dark sections, instead of stopping at a fixed width |
+| Typefaces corrected | The prototype used a plain system font; changed to the site's own pairing (Playfair Display for the heading, Inter for the rest) |
+| The old "Platforms we have built" section removed | Sat near the bottom of the home page. Removed at the founder's request |
+
+This section's colours (navy `#071e2a`, gold `#ba9256`) are a standalone palette specific to it, matching the supplied prototype exactly rather than the rest of the site's brand tokens below — a deliberate exception, not an inconsistency to fix.
+
+---
+
+## Entry 14 — The founder's brand-identity document applied: colour, type, spacing, components
+
+**Date:** 28 Sep 2026 · **Branch:** `fix-website` (local only, not committed)
+**Checks:** TypeScript passes · production build passes · checked at 390, 800 and 1440 pixels wide
+
+This entry applies the founder's supplied brand-identity document across the site's visual
+system. It does not touch the site's approved positioning or the homepage headline — kept
+exactly as they are, per an earlier decision, since the document's own audience language
+conflicts with the SME/Egypt/MENA positioning already approved.
+
+| Change | Detail |
+|---|---|
+| Colour system rebuilt | Navy replaces the old cyan as the primary colour (buttons, headings). A separate blue, darkened to pass contrast, now carries links and focus states — the document's own raw value fails as text |
+| Typography | One defined scale (exact sizes per breakpoint, from the document) applied across every page, replacing ad hoc sizes set per page |
+| Button corners | Changed from square to 6px, matching cards (already 12px) and inputs (already 6px). The code claimed these were unified before; they weren't — see Entry 11 |
+| Content width | 1280px reduced to 1200px |
+| Favicon | Generated from the existing emblem graphic. The site had none before |
+| Link styling | Every link on the site — breadcrumbs, footer, "explore" links, contact details — now uses one consistent style instead of each page implementing its own |
+| Touch targets | Small buttons now meet the 44×44px minimum without visually growing |
+| Contact form | Added a short privacy line |
+| A contrast bug this surfaced | Several places (a banner, some buttons, badges) used the old orange as solid text or as white text on a filled button. Under the document's actual gold, those became unreadable. Found and fixed everywhere it appeared |
+| The home page's orbiting emblem | Recoloured from an all-blue effect to navy, with gold reserved for the one moment two elements connect. Changed from spinning continuously to playing once when scrolled into view |
+| A reduced-motion gap this surfaced | The orbit animation was only partly disabled for visitors who ask for reduced motion — the connecting-pulse effect was, the orbit itself wasn't. Both now stop |
+
+---
+
+## Entry 13 — The contact page, redesigned around the enquiry
+
+**Date:** 28 Sep 2026 · **Branch:** `fix-website` (local only, not committed)
+**Checks:** TypeScript passes · contact form tests pass · production build and prerender (21 of
+21 pages) pass · checked at 320, 390, 720, 768, 1024 and 1440 pixels wide, with test
+submissions faked in the browser (nothing was sent)
+
+| Change | Detail |
+|---|---|
+| One opening section | The navy "Contact Us" banner is gone. A short introduction ("What decision is your business facing?") sits beside the form |
+| The form comes first | A white panel taking just over half the width. The button now reads "Send enquiry"; the message box asks "What would you like help with?" |
+| Direct contact | The four raised cards are replaced by two plain links: email and telephone |
+| The office | The full-width map and the separate address strip become one section: a square map beside the address, one "Get directions" link and the working hours |
+| On a phone | Introduction, form, direct contact, office, map — in that order, for keyboard users too |
+| No reply-time promise | The confirmation used to promise a reply "within 24 hours". **No such commitment has been confirmed**, so it now says the enquiry has arrived and a reply will come by email |
+| Unchanged | What the form sends and how, the contact details, the address and the map location |
+
+---
+
+## Entry 12 — The guides library as a bookshelf
+
+**Date:** 28 Sep 2026 · **Branch:** `fix-website` (local only, not committed)
+**Checks:** TypeScript passes · production build and prerender (21 of 21 pages) pass · checked
+at 320, 390, 720, 1024 and 1440 pixels wide
+
+| Change | Detail |
+|---|---|
+| Each guide on its own shelf | The overview stands as a thick navy book, with every published topic page beside it on one shelf line. A second guide gets a new shelf below |
+| Every topic page shown | The library used to list at most three topic pages per guide. It now shows them all |
+| On a phone | The overview sits on top. The topic pages scroll sideways in their own strip, so the page itself never scrolls sideways |
+| Short book descriptions | Each topic page's book carries one short line, stored with the guide as `shelfDescription`. **These three lines are new copy and need approval** |
+| Unchanged | Page heading and intro, guide pages, addresses, search metadata, and which guides are published |
+
+---
+
+## Entry 11 — Correction: square corners were never unified
+
+Entry 9 (below) says "Square corners throughout — Cards, form fields and menus now match
+the buttons." That was true of the button component only. `card.tsx` (`rounded-xl`,
+12px) and `input.tsx`/`textarea.tsx` (`rounded-md`, 6px) never adopted the square shape —
+they were left on Tailwind's own rounded defaults the whole time. This is not being
+corrected by squaring cards and inputs to match the old button; it is the brand-identity
+document's own 8-12px card / 6-8px input-and-button targets being applied instead, which
+happen to already match what cards and inputs were doing. Only the button's `rounded-none`
+was changed, to `rounded-md`, so it now agrees with the other two instead of the other way
+around.
+
+---
+
 ## Entry 10 — The case example and the consultants, finished
 
 **Commits:** `5d4b2a3`, `9d01bce`, `31f92ff`, `7248e4e`, `5112186` · **Date:** 16 Sep 2026 · **Branch:** `fix-website` (local only)

@@ -1,0 +1,310 @@
+/*
+ * Darwish & Co. — home page services showcase.
+ *
+ * A pixel match of a supplied prototype (darwish-services.html) for layout,
+ * palette (#071e2a / #f4f1e9 / #ba9256 / #c2cbd0) and interaction — but
+ * typography now uses the site's own Playfair Display + Inter pairing
+ * (`--font-heading` / `--font-body`) rather than the prototype's Arial, and
+ * the navy background is full-bleed like the page's other dark sections
+ * ("Platforms we have built", "Book a consultation" — an outer full-width
+ * `<section>` with the color, an inner `.services-showcase-inner` holding
+ * the 1360px-max content), not boxed to 1360px itself.
+ *
+ * Every selector is prefixed `.services-showcase-*` because the prototype's
+ * own class names (`.grid`, `.card`, `.description`, `.meta`...) are common
+ * enough to collide with Tailwind utilities or other components if used
+ * unscoped in this project's single global stylesheet.
+ */
+
+.services-showcase-section {
+  --ss-navy: #071e2a;
+  --ss-paper: #f4f1e9;
+  --ss-gold: #ba9256;
+  --ss-muted: #c2cbd0;
+  background: var(--ss-navy);
+  color: var(--ss-paper);
+  font-family: var(--font-body);
+  /* The two transitions either side of this section (into it from "Two
+     situations bring most clients here", out of it into "The people behind
+     the work") are the ones getting the extra room — this is the one
+     section on the page deliberately marked as a different kind of moment,
+     per the centered-intro discussion. Not applied to every section. */
+  padding-block: 128px 144px;
+}
+
+.services-showcase-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding-inline: 5%;
+}
+
+.services-showcase-intro {
+  text-align: center;
+  max-width: 850px;
+  margin: 0 auto 48px;
+}
+
+.services-showcase-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.19em;
+  font-weight: 700;
+  margin: 0 0 28px;
+  color: #d2b17e;
+  text-transform: uppercase;
+}
+
+.services-showcase-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(36px, 4.2vw, 60px);
+  line-height: 1.1;
+  font-weight: 700;
+  margin: 0 0 24px;
+  color: var(--ss-paper);
+}
+
+.services-showcase-lede {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ss-muted);
+  max-width: 610px;
+  margin: 0 auto;
+}
+
+.services-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.services-showcase-card {
+  grid-column: auto;
+  min-width: 0;
+  position: relative;
+  isolation: isolate;
+  appearance: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.services-showcase-card::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  background: var(--ss-paper);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.6s;
+}
+
+.services-showcase-card:hover::before,
+.services-showcase-card:focus-visible::before {
+  opacity: 1;
+}
+
+.services-showcase-card:hover,
+.services-showcase-card:focus-visible {
+  color: var(--ss-navy);
+}
+
+.services-showcase-card:focus-visible {
+  outline: 2px solid var(--ss-gold);
+  outline-offset: 20px;
+}
+
+.services-showcase-art {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 75% 15%, #48606b, transparent 60%),
+    linear-gradient(140deg, #102f40, #06141e);
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.services-showcase-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(130deg, #ffffff10, transparent 50%);
+  pointer-events: none;
+}
+
+/*
+ * The founder's generated renders are square (1:1), the art tile is 16:9 —
+ * showing the full square would letterbox it, so it's cropped top/bottom
+ * instead, matching how the prototype's own CSS shapes filled the same tile
+ * edge to edge.
+ *
+ * `object-fit: cover` would do that, but a `cover`-fit image's own box is
+ * sized to exactly match the frame, with the crop happening only in how it
+ * *renders* — so animating a `transform` on it has no image left to reveal;
+ * it just slides the already-cropped picture out from behind the frame's
+ * edge. Sized this way instead (width 100%, height auto on a square image
+ * gives an element as tall as the frame is wide — the same math `cover`
+ * does, done as real layout instead of a paint-time effect), the image
+ * genuinely extends above and below the frame, and `overflow: hidden` on
+ * `.services-showcase-art` is what does the cropping. A hover transform can
+ * then slide that real excess into view.
+ */
+.services-showcase-art img {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: auto;
+  transform: translateY(-50%);
+  transition: transform 0.6s ease;
+  z-index: 1;
+}
+
+/*
+ * Hover/focus: pan up toward the top of the source render, which is where
+ * every one of the five crops something at rest (the objects sit slightly
+ * above center in their square canvas). `--ss-pan` is set per card in
+ * ServicesShowcase.tsx — how much varies by how close each object already
+ * sits to the top edge of its source image, measured against each render.
+ */
+.services-showcase-card:hover .services-showcase-art img,
+.services-showcase-card:focus-visible .services-showcase-art img {
+  transform: translateY(calc(-50% + var(--ss-pan, 8%)));
+}
+
+.services-showcase-meta {
+  font-size: 10px;
+  color: var(--ss-gold);
+  letter-spacing: 0.16em;
+  margin: 18px 0 10px;
+  text-transform: uppercase;
+}
+
+.services-showcase-card-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  line-height: 1.23;
+  margin: 0 0 15px;
+  font-weight: 700;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.services-showcase-arrow {
+  font-weight: 400;
+  font-size: 29px;
+  line-height: 0.9;
+  transition: transform 0.3s, color 0.3s;
+  flex-shrink: 0;
+}
+
+.services-showcase-card:hover .services-showcase-arrow,
+.services-showcase-card:focus-visible .services-showcase-arrow {
+  transform: translateX(4px);
+  color: #987037;
+}
+
+.services-showcase-description {
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 0;
+  color: var(--ss-muted);
+}
+
+.services-showcase-card:hover .services-showcase-description,
+.services-showcase-card:focus-visible .services-showcase-description {
+  color: #334550;
+}
+
+.services-showcase-reveal {
+  animation: services-showcase-enter 0.8s both;
+  animation-delay: var(--ss-delay, 0s);
+}
+
+@keyframes services-showcase-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .services-showcase-section {
+    /* This was `padding: 55px 6% 65px` before the full-bleed change below —
+       a 3-value shorthand also sets padding-inline, which would have quietly
+       reintroduced horizontal padding on the now-full-bleed outer section,
+       stacking with `.services-showcase-inner`'s own 5%. Caught while
+       increasing these values; padding-block only, scaled with the same
+       proportion as the desktop increase above. */
+    padding-block: 88px 104px;
+  }
+  .services-showcase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px 30px;
+  }
+  .services-showcase-card:last-child {
+    grid-column: 1 / -1;
+    width: calc(50% - 15px);
+    justify-self: center;
+  }
+  .services-showcase-card-title {
+    font-size: 22px;
+  }
+  .services-showcase-description {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 560px) {
+  .services-showcase-intro {
+    margin-bottom: 42px;
+  }
+  .services-showcase-heading {
+    font-size: 39px;
+  }
+  .services-showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+  .services-showcase-card:last-child {
+    grid-column: auto;
+    width: auto;
+  }
+  .services-showcase-card-title {
+    font-size: 24px;
+  }
+  .services-showcase-lede {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-showcase-reveal {
+    animation: none !important;
+  }
+  .services-showcase-card::before,
+  .services-showcase-arrow,
+  .services-showcase-art img {
+    transition: none !important;
+  }
+  .services-showcase-card:hover .services-showcase-arrow,
+  .services-showcase-card:focus-visible .services-showcase-arrow {
+    transform: none;
+  }
+  .services-showcase-card:hover .services-showcase-art img,
+  .services-showcase-card:focus-visible .services-showcase-art img {
+    transform: translateY(-50%);
+  }
+}

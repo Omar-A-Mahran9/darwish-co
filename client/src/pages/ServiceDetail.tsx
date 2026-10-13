@@ -39,7 +39,7 @@ export default function ServiceDetail() {
 
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 text-center font-body">
-        <h1 className="font-heading text-3xl font-bold text-foreground">
+        <h1 className="font-heading text-h1 font-bold text-foreground">
           {withdrawn ? "This service is no longer offered" : "Service not found"}
         </h1>
         {withdrawn && (
@@ -85,7 +85,7 @@ export default function ServiceDetail() {
               <ServiceIcon name={service.icon} className="h-8 w-8 text-white" />
             </div>
             <div className="max-w-3xl space-y-3">
-              <h1 className="font-heading text-3xl font-bold leading-tight md:text-5xl">
+              <h1 className="font-heading text-h1 font-bold">
                 {service.name}
               </h1>
               <p className="text-lg text-primary-foreground/80">{service.tagline}</p>
@@ -144,7 +144,7 @@ export default function ServiceDetail() {
       {/* What we do */}
       <section className="border-t border-border bg-muted/20 py-16">
         <div className="site-container space-y-12">
-          <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">What we do</h2>
+          <h2 className="font-heading text-h2 font-bold text-primary">What we do</h2>
 
           {groups.map((group) => {
             const offerings = service.offerings.filter(
@@ -189,7 +189,7 @@ export default function ServiceDetail() {
       <section className="py-16">
         <div className="site-container grid gap-12 md:grid-cols-2">
           <div className="space-y-6">
-            <h2 className="font-heading text-2xl font-bold text-primary">Is this you?</h2>
+            <h2 className="font-heading text-h3 font-bold text-primary">Is this you?</h2>
             <ul className="space-y-4">
               {service.isThisYou.map((item) => (
                 <li key={item} className="flex gap-3 text-muted-foreground">
@@ -201,7 +201,7 @@ export default function ServiceDetail() {
           </div>
 
           <div className="space-y-6">
-            <h2 className="font-heading text-2xl font-bold text-primary">What you get</h2>
+            <h2 className="font-heading text-h3 font-bold text-primary">What you get</h2>
             <ul className="space-y-4">
               {service.whatYouGet.map((item) => (
                 <li key={item} className="flex gap-3 text-muted-foreground">
@@ -272,7 +272,7 @@ export default function ServiceDetail() {
       {service.standards && (
         <section className="border-t border-border py-16">
           <div className="site-container space-y-8">
-            <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
+            <h2 className="font-heading text-h2 font-bold text-primary">
               Standards we work with
             </h2>
             <dl className="grid gap-8 md:grid-cols-3">
@@ -292,7 +292,7 @@ export default function ServiceDetail() {
       {/* How an engagement runs */}
       <section className="border-y border-border bg-muted/20 py-16">
         <div className="site-container space-y-10">
-          <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
+          <h2 className="font-heading text-h2 font-bold text-primary">
             How an engagement runs
           </h2>
           <ol className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -312,7 +312,7 @@ export default function ServiceDetail() {
       {/* Questions */}
       <section className="py-16">
         <div className="site-container prose-container space-y-8">
-          <h2 className="font-heading text-2xl font-bold text-primary md:text-3xl">
+          <h2 className="font-heading text-h2 font-bold text-primary">
             Common questions
           </h2>
           <Accordion type="single" collapsible className="w-full">
@@ -365,7 +365,7 @@ export default function ServiceDetail() {
       {/* Call to action */}
       <section className="bg-primary py-16 text-primary-foreground">
         <div className="site-container flex flex-col items-center gap-6 text-center">
-          <h2 className="font-heading text-2xl font-bold md:text-3xl">
+          <h2 className="font-heading text-h2 font-bold">
             Talk to us about {service.navLabel.toLowerCase()}
           </h2>
           <p className="max-w-2xl text-primary-foreground/80">

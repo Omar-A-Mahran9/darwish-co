@@ -72,7 +72,7 @@ export default function Blog() {
           <span className="text-xs font-bold uppercase tracking-widest text-primary">
             Insights &amp; Perspectives
           </span>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground leading-tight">
+          <h1 className="font-heading text-h1 font-bold text-foreground">
             The Darwish &amp; Co. Blog
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -109,7 +109,7 @@ export default function Blog() {
                     {featured.category}
                   </span>
                 )}
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground leading-tight">
+                <h2 className="font-heading text-h2 font-bold text-foreground">
                   {featured.title}
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -132,13 +132,13 @@ export default function Blog() {
                 </div>
                 {featured.hasFullPost ? (
                   <Link href={`/blog/${featured.slug}`}>
-                    <Button className="bg-primary text-white hover:bg-primary/90 rounded-none font-bold">
+                    <Button className="bg-primary text-white hover:bg-primary/90 font-bold">
                       Read Full Article <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
                 ) : (
                   <Link href="/contact">
-                    <Button className="bg-primary text-white hover:bg-primary/90 rounded-none font-bold">
+                    <Button className="bg-primary text-white hover:bg-primary/90 font-bold">
                       Request a Consultation <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
@@ -152,7 +152,7 @@ export default function Blog() {
       {/* Article Grid */}
       <section className="py-20 bg-white">
         <div className="site-container">
-          <h2 className="font-heading text-2xl font-bold text-foreground mb-10">
+          <h2 className="font-heading text-h3 font-bold text-foreground mb-10">
             All Articles
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -207,13 +207,13 @@ export default function Blog() {
                   <div className="pt-2">
                     {article.hasFullPost ? (
                       <Link href={`/blog/${article.slug}`}>
-                        <Button size="sm" className="bg-primary text-white hover:bg-primary/90 rounded-none font-bold w-full">
+                        <Button size="sm" className="bg-primary text-white hover:bg-primary/90 font-bold w-full">
                           Read Article <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                         </Button>
                       </Link>
                     ) : (
                       <Link href="/contact">
-                        <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white rounded-none font-bold w-full">
+                        <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white font-bold w-full">
                           Get in Touch <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                         </Button>
                       </Link>
@@ -236,7 +236,7 @@ export default function Blog() {
                 AI governance, and market research for MENA businesses.
               </p>
               <Link href="/contact">
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white rounded-none font-bold">
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white font-bold">
                   Suggest a Topic <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -248,7 +248,7 @@ export default function Blog() {
       {/* CTA */}
       <section className="py-20 bg-primary text-white">
         <div className="site-container text-center content-narrow space-y-6">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold">
+          <h2 className="font-heading text-h2 font-bold">
             Ready to put these insights into action?
           </h2>
           <p className="text-white/90 text-lg font-light">
@@ -256,7 +256,7 @@ export default function Blog() {
             directly to your business.
           </p>
           <Link href="/contact">
-            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 font-bold rounded-none px-10 mt-4">
+            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 font-bold px-10 mt-4">
               Book a Free Discovery Call
             </Button>
           </Link>

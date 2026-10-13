@@ -482,7 +482,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {PUBLISHED_SERVICES.map((service) => (
                 <li key={service.slug}>
                   <Link href={`/services/${service.slug}`}>
-                    <span className="cursor-pointer hover:text-primary hover:underline transition-colors">
+                    <span className="link cursor-pointer">
                       {service.navLabel}
                     </span>
                   </Link>
@@ -494,21 +494,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div>
             <h4 className="font-bold mb-4 text-primary">Company</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/about"><span className="cursor-pointer hover:underline">About Us</span></Link></li>
-              <li><Link href="/projects"><span className="cursor-pointer hover:underline">Projects</span></Link></li>
+              <li><Link href="/about"><span className="link cursor-pointer">About Us</span></Link></li>
+              <li><Link href="/projects"><span className="link cursor-pointer">Projects</span></Link></li>
               {insightsChildren().map((entry) => (
                 <li key={entry.path}>
                   <Link href={entry.path}>
-                    <span className="cursor-pointer hover:text-primary hover:underline transition-colors">
+                    <span className="link cursor-pointer">
                       {entry.name}
                     </span>
                   </Link>
                 </li>
               ))}
-              <li><Link href="/partners"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Partners & Consultants</span></Link></li>
-              <li><Link href="/corporate-partners"><span className="cursor-pointer hover:text-primary hover:underline transition-colors">Corporate Partners</span></Link></li>
-              <li><Link href="/contact"><span className="cursor-pointer hover:underline">Contact</span></Link></li>
-              <li><Link href="/client-login"><span className="cursor-pointer hover:underline">Client Login</span></Link></li>
+              <li><Link href="/partners"><span className="link cursor-pointer">Partners & Consultants</span></Link></li>
+              <li><Link href="/corporate-partners"><span className="link cursor-pointer">Corporate Partners</span></Link></li>
+              <li><Link href="/contact"><span className="link cursor-pointer">Contact</span></Link></li>
+              <li><Link href="/client-login"><span className="link cursor-pointer">Client Login</span></Link></li>
             </ul>
           </div>
 

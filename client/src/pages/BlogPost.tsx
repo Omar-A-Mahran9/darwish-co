@@ -581,7 +581,7 @@ export default function BlogPost() {
   if (!article) {
     return (
       <div className="flex flex-col min-h-screen items-center justify-center gap-6 font-body">
-        <h1 className="font-heading text-3xl font-bold text-foreground">Article not found</h1>
+        <h1 className="font-heading text-h1 font-bold text-foreground">Article not found</h1>
         <Link href="/blog">
           <Button variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Blog
@@ -610,7 +610,7 @@ export default function BlogPost() {
             <span className={`inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 ${article.categoryColor}`}>
               {article.category}
             </span>
-            <h1 className="font-heading text-2xl md:text-4xl font-bold text-white leading-tight max-w-3xl">
+            <h1 className="font-heading text-h1 font-bold text-white max-w-3xl">
               {article.title}
             </h1>
           </div>
@@ -621,7 +621,7 @@ export default function BlogPost() {
       <div className="border-b bg-white sticky top-0 z-10 shadow-sm">
         <div className="site-container prose-container py-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <Link href="/blog">
-            <span className="flex items-center gap-1 text-primary font-medium hover:underline cursor-pointer">
+            <span className="link flex items-center gap-1 font-medium cursor-pointer">
               <ArrowLeft className="w-4 h-4" /> All Articles
             </span>
           </Link>
@@ -653,7 +653,7 @@ export default function BlogPost() {
           {article.sections.map((section, i) => (
             <div key={i} className="mb-10">
               {section.heading && (
-                <h2 className="font-heading text-2xl font-bold text-foreground mb-4 mt-10">
+                <h2 className="font-heading text-h3 font-bold text-foreground mb-4 mt-10">
                   {section.heading}
                 </h2>
               )}
@@ -713,7 +713,7 @@ export default function BlogPost() {
           <div className="bg-primary/5 border border-primary/20 p-8 space-y-4">
             <p className="text-base text-foreground/80 leading-relaxed">{article.ctaText}</p>
             <Link href="/contact">
-              <Button className="bg-primary text-white hover:bg-primary/90 rounded-none font-bold">
+              <Button className="bg-primary text-white hover:bg-primary/90 font-bold">
                 {article.ctaButton} <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
@@ -722,7 +722,7 @@ export default function BlogPost() {
           {/* Back */}
           <div className="mt-12">
             <Link href="/blog">
-              <Button variant="outline" className="rounded-none border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold">
+              <Button variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold">
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back to All Articles
               </Button>
             </Link>

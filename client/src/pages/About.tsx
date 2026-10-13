@@ -47,7 +47,7 @@ export default function About() {
       {/* Header */}
       <section className="bg-primary text-primary-foreground py-20">
         <div className="site-container text-center space-y-6">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold">
+          <h1 className="font-heading text-h1 font-bold">
             About Darwish &amp; Co.
           </h1>
           <p className="text-xl content-narrow text-primary-foreground/80">
@@ -65,7 +65,7 @@ export default function About() {
 
           {/* Tagline Section */}
           <div className="text-center space-y-6 prose-container mx-auto">
-            <h2 className="font-heading text-3xl font-bold text-chart-2">
+            <h2 className="font-heading text-h2 font-bold text-chart-2">
               A Wise Word in the Right Moment
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
@@ -80,7 +80,7 @@ export default function About() {
           {/* Who We Are */}
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h3 className="font-heading text-2xl font-bold text-primary">
+              <h3 className="font-heading text-h3 font-bold text-primary">
                 Who We Are
               </h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -142,7 +142,7 @@ export default function About() {
               <span className="text-xs font-bold uppercase tracking-widest text-primary">
                 What we hold to
               </span>
-              <h3 className="font-heading text-2xl font-bold text-primary">Our values</h3>
+              <h3 className="font-heading text-h3 font-bold text-primary">Our values</h3>
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -166,7 +166,7 @@ export default function About() {
 
           {/* Mission */}
           <div className="bg-muted/30 p-8 md:p-12 space-y-6 text-center">
-            <h3 className="font-heading text-2xl font-bold text-primary">
+            <h3 className="font-heading text-h3 font-bold text-primary">
               Our Mission: Strategic Clarity at the Right Moment
             </h3>
             <p className="text-muted-foreground leading-relaxed prose-container mx-auto">

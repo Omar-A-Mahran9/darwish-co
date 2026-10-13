@@ -138,7 +138,7 @@ const educationPillars = [
     title: "HR & Talent Development for Education",
     description:
       "Strategic HR planning, staffing strategies, and training programs that ensure sustainable workforce growth. Capability building for new campus locations, people analytics, and performance management tailored to educational institutions.",
-    color: "text-chart-3 bg-chart-3/10",
+    color: "text-chart-3-foreground bg-chart-3/10",
   },
   {
     icon: Cpu,
@@ -159,7 +159,7 @@ const educationPillars = [
     title: "Communications & Stakeholder Engagement",
     description:
       "Strategic communications frameworks for parents, staff, regulators, and the wider community. Digital marketing, brand positioning, and stakeholder engagement strategies that build institutional reputation across the MENA region.",
-    color: "text-chart-3 bg-chart-3/10",
+    color: "text-chart-3-foreground bg-chart-3/10",
   },
 ];
 
@@ -177,7 +177,7 @@ const educationSegments = [
   {
     label: "Accreditation-Seeking Institutions",
     description: "IB, IGCSE & regional quality frameworks",
-    color: "text-chart-3 bg-chart-3/10",
+    color: "text-chart-3-foreground bg-chart-3/10",
   },
   {
     label: "Digital Transformation-Focused",
@@ -207,7 +207,7 @@ export default function Projects() {
             <Zap className="w-4 h-4" />
             Our Work
           </div>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold">
+          <h1 className="font-heading text-h1 font-bold">
             Projects & Innovations
           </h1>
           <p className="text-xl max-w-2xl mx-auto text-primary-foreground/80">
@@ -257,11 +257,11 @@ export default function Projects() {
                   <Badge className="bg-chart-2/10 text-chart-2 border-chart-2/20 hover:bg-chart-2/20">
                     POC Platform
                   </Badge>
-                  <Badge className="bg-chart-3/10 text-chart-3 border-chart-3/20 hover:bg-chart-3/20">
+                  <Badge className="bg-chart-3/10 text-chart-3-foreground border-chart-3/20 hover:bg-chart-3/20">
                     Live
                   </Badge>
                 </div>
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground leading-tight">
+                <h2 className="font-heading text-h2 font-bold text-foreground">
                   POC Collaboration Platform
                 </h2>
                 <p className="text-lg text-primary font-semibold">
@@ -294,7 +294,7 @@ export default function Projects() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-none px-8 gap-2">
+                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-8 gap-2">
                     View Live Platform
                     <ExternalLink className="w-4 h-4" />
                   </Button>
@@ -302,7 +302,7 @@ export default function Projects() {
                 <Link href="/contact">
                   <Button
                     variant="outline"
-                    className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold rounded-none px-8 gap-2"
+                    className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold px-8 gap-2"
                   >
                     Partner With Us
                     <ArrowRight className="w-4 h-4" />
@@ -313,7 +313,7 @@ export default function Projects() {
 
             {/* Partner Cards */}
             <div className="space-y-6">
-              <div className="bg-muted/30 border border-border rounded-2xl p-8 space-y-6">
+              <div className="bg-muted/30 border border-border rounded-xl p-8 space-y-6">
                 <h3 className="font-heading text-lg font-bold text-foreground text-center">
                   Strategic Partnership
                 </h3>
@@ -413,10 +413,10 @@ export default function Projects() {
                 const colors = [
                   "text-primary bg-primary/10",
                   "text-chart-2 bg-chart-2/10",
-                  "text-chart-3 bg-chart-3/10",
+                  "text-chart-3-foreground bg-chart-3/10",
                   "text-primary bg-primary/10",
                   "text-chart-2 bg-chart-2/10",
-                  "text-chart-3 bg-chart-3/10",
+                  "text-chart-3-foreground bg-chart-3/10",
                 ];
                 return (
                   <Card
@@ -445,7 +445,7 @@ export default function Projects() {
           </div>
 
           {/* Results Banner */}
-          <div className="mt-16 bg-primary text-primary-foreground rounded-2xl p-8 md:p-12 relative overflow-hidden">
+          <div className="mt-16 bg-primary text-primary-foreground rounded-xl p-8 md:p-12 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/4" />
             <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
               <div className="space-y-4">
@@ -495,9 +495,9 @@ export default function Projects() {
           {/* Section Label */}
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-chart-3/10 flex items-center justify-center">
-              <Globe className="w-5 h-5 text-chart-3" />
+              <Globe className="w-5 h-5 text-chart-3-foreground" />
             </div>
-            <span className="text-sm font-bold text-chart-3 uppercase tracking-widest">
+            <span className="text-sm font-bold text-chart-3-foreground uppercase tracking-widest">
               International Trade
             </span>
           </div>
@@ -507,7 +507,7 @@ export default function Projects() {
             <div className="space-y-6">
               <div className="space-y-3">
                 <div className="flex flex-wrap gap-2">
-                  <Badge className="bg-chart-3/10 text-chart-3 border-chart-3/20 hover:bg-chart-3/20">
+                  <Badge className="bg-chart-3/10 text-chart-3-foreground border-chart-3/20 hover:bg-chart-3/20">
                     International Trade
                   </Badge>
                   <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
@@ -517,10 +517,10 @@ export default function Projects() {
                     Live
                   </Badge>
                 </div>
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground leading-tight">
+                <h2 className="font-heading text-h2 font-bold text-foreground">
                   Hebei-Egypt Industrial Partnership Portal
                 </h2>
-                <p className="text-lg text-chart-3 font-semibold">
+                <p className="text-lg text-chart-3-foreground font-semibold">
                   Unlocking Growth — Future Opportunities for Local Partnerships in Egypt
                 </p>
               </div>
@@ -551,7 +551,9 @@ export default function Projects() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Button className="bg-chart-3 text-white hover:bg-chart-3/90 font-bold rounded-none px-8 gap-2">
+                  {/* Gold is a light color — white text on it fails contrast (1.4:1);
+                      charcoal foreground passes at 10.9:1. */}
+                  <Button className="bg-chart-3 text-foreground hover:bg-chart-3/90 font-bold px-8 gap-2">
                     View Live Portal
                     <ExternalLink className="w-4 h-4" />
                   </Button>
@@ -559,7 +561,7 @@ export default function Projects() {
                 <Link href="/contact">
                   <Button
                     variant="outline"
-                    className="border-2 border-chart-3 text-chart-3 hover:bg-chart-3 hover:text-white font-bold rounded-none px-8 gap-2"
+                    className="border-2 border-chart-3 text-primary hover:bg-chart-3 hover:text-foreground font-bold px-8 gap-2"
                   >
                     Explore Partnership
                     <ArrowRight className="w-4 h-4" />
@@ -571,7 +573,7 @@ export default function Projects() {
             {/* Sectors & Tech Stack */}
             <div className="space-y-6">
               {/* Key Sectors */}
-              <div className="bg-background border border-border rounded-2xl p-8 space-y-6">
+              <div className="bg-background border border-border rounded-xl p-8 space-y-6">
                 <h3 className="font-heading text-lg font-bold text-foreground text-center">
                   Key Sectors Covered
                 </h3>
@@ -579,10 +581,10 @@ export default function Projects() {
                   {[
                     { label: "Renewable Energy", color: "text-chart-2 bg-chart-2/10" },
                     { label: "Manufacturing", color: "text-primary bg-primary/10" },
-                    { label: "Infrastructure", color: "text-chart-3 bg-chart-3/10" },
+                    { label: "Infrastructure", color: "text-chart-3-foreground bg-chart-3/10" },
                     { label: "Healthcare", color: "text-chart-2 bg-chart-2/10" },
                     { label: "Suez Canal Zone", color: "text-primary bg-primary/10" },
-                    { label: "Agriculture & Food", color: "text-chart-3 bg-chart-3/10" },
+                    { label: "Agriculture & Food", color: "text-chart-3-foreground bg-chart-3/10" },
                     { label: "Water Management", color: "text-primary bg-primary/10" },
                     { label: "Military & Defense", color: "text-chart-2 bg-chart-2/10" },
                   ].map((sector) => (
@@ -641,10 +643,10 @@ export default function Projects() {
               {tradeFeatures.map((feature, index) => {
                 const Icon = feature.icon;
                 const colors = [
-                  "text-chart-3 bg-chart-3/10",
+                  "text-chart-3-foreground bg-chart-3/10",
                   "text-primary bg-primary/10",
                   "text-chart-2 bg-chart-2/10",
-                  "text-chart-3 bg-chart-3/10",
+                  "text-chart-3-foreground bg-chart-3/10",
                   "text-primary bg-primary/10",
                   "text-chart-2 bg-chart-2/10",
                 ];
@@ -675,7 +677,7 @@ export default function Projects() {
           </div>
 
           {/* Results Banner */}
-          <div className="mt-16 bg-foreground text-background rounded-2xl p-8 md:p-12 relative overflow-hidden">
+          <div className="mt-16 bg-foreground text-background rounded-xl p-8 md:p-12 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/4" />
             <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
               <div className="space-y-4">
@@ -746,11 +748,11 @@ export default function Projects() {
                   <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
                     GRC + HR + Strategy
                   </Badge>
-                  <Badge className="bg-chart-3/10 text-chart-3 border-chart-3/20 hover:bg-chart-3/20">
+                  <Badge className="bg-chart-3/10 text-chart-3-foreground border-chart-3/20 hover:bg-chart-3/20">
                     MENA Region
                   </Badge>
                 </div>
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground leading-tight">
+                <h2 className="font-heading text-h2 font-bold text-foreground">
                   Education Organization Development
                 </h2>
                 <p className="text-lg text-chart-2 font-semibold">
@@ -772,7 +774,7 @@ export default function Projects() {
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <Link href="/contact">
-                  <Button className="bg-chart-2 text-white hover:bg-chart-2/90 font-bold rounded-none px-8 gap-2">
+                  <Button className="bg-chart-2 text-white hover:bg-chart-2/90 font-bold px-8 gap-2">
                     Request a Consultation
                     <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -780,7 +782,7 @@ export default function Projects() {
                 <Link href="/services">
                   <Button
                     variant="outline"
-                    className="border-2 border-chart-2 text-chart-2 hover:bg-chart-2 hover:text-white font-bold rounded-none px-8 gap-2"
+                    className="border-2 border-chart-2 text-chart-2 hover:bg-chart-2 hover:text-white font-bold px-8 gap-2"
                   >
                     Explore Our Services
                     <ExternalLink className="w-4 h-4" />
@@ -792,7 +794,7 @@ export default function Projects() {
             {/* Stats & Segments */}
             <div className="space-y-6">
               {/* Key Stats */}
-              <div className="bg-muted/30 border border-border rounded-2xl p-8 space-y-6">
+              <div className="bg-muted/30 border border-border rounded-xl p-8 space-y-6">
                 <h3 className="font-heading text-lg font-bold text-foreground text-center">
                   Programme Highlights
                 </h3>
@@ -806,7 +808,7 @@ export default function Projects() {
                     <p className="text-xs text-muted-foreground">Client Segments</p>
                   </div>
                   <div className="bg-background border border-border rounded-xl p-5 text-center space-y-1">
-                    <p className="font-heading text-3xl font-bold text-chart-3">19+</p>
+                    <p className="font-heading text-3xl font-bold text-chart-3-foreground">19+</p>
                     <p className="text-xs text-muted-foreground">Years Sector Experience</p>
                   </div>
                   <div className="bg-background border border-border rounded-xl p-5 text-center space-y-1">
@@ -879,7 +881,7 @@ export default function Projects() {
           </div>
 
           {/* Results Banner */}
-          <div className="mt-16 bg-chart-2 text-white rounded-2xl p-8 md:p-12 relative overflow-hidden">
+          <div className="mt-16 bg-chart-2 text-white rounded-xl p-8 md:p-12 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/4" />
             <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
               <div className="space-y-4">
@@ -890,7 +892,7 @@ export default function Projects() {
                   Our integrated approach distinguishes Darwish & Co. from competitors who typically specialize in a single dimension of education consulting. We deliver holistic solutions that address the full complexity of institutional development across the MENA region.
                 </p>
                 <Link href="/contact">
-                  <Button className="bg-white text-chart-2 hover:bg-white/90 font-bold rounded-none px-8 gap-2 mt-2">
+                  <Button className="bg-white text-chart-2 hover:bg-white/90 font-bold px-8 gap-2 mt-2">
                     Start the Conversation
                     <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -926,7 +928,7 @@ export default function Projects() {
           <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
             <Users className="w-6 h-6 text-primary" />
           </div>
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
+          <h2 className="font-heading text-h2 font-bold text-foreground">
             Have a Project in Mind?
           </h2>
           <p className="text-muted-foreground text-lg leading-relaxed">
@@ -937,7 +939,7 @@ export default function Projects() {
           <Link href="/contact">
             <Button
               size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-none px-10 h-14 gap-2"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-10 h-14 gap-2"
             >
               Start a Conversation
               <ArrowRight className="w-5 h-5" />
