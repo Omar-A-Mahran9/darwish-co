@@ -2,6 +2,8 @@ import { renderToString } from "react-dom/server";
 import App from "./App";
 import { BLOG_ARTICLES, resolveSeo } from "@shared/seo";
 import { SITE_SERVICES } from "./site/nav";
+import { PUBLIC_CASES } from "./site/content/work";
+import { SHOWN_ARTICLES } from "./pages/Insights";
 import { guidesIndexIsWorthHaving, PUBLISHED_GUIDES } from "@shared/guides";
 import { injectSeo } from "../../server/seoHtml";
 
@@ -29,6 +31,9 @@ export function prerenderRoutes(): string[] {
     ...SITE_SERVICES.map((service) => `/services/${service.slug}`),
     "/industries",
     "/projects",
+    ...PUBLIC_CASES.map((c) => `/projects/${c.slug}`),
+    "/insights",
+    ...SHOWN_ARTICLES.map((a) => `/insights/${a.slug}`),
     "/partners",
     "/corporate-partners",
     "/blog",
@@ -38,6 +43,9 @@ export function prerenderRoutes(): string[] {
     ...(guidesIndexIsWorthHaving() ? ["/guides"] : []),
     ...PUBLISHED_GUIDES.map((guide) => `/guides/${guide.slug}`),
     "/contact",
+    "/privacy",
+    "/about/integrity",
+    "/growth-360",
   ];
 }
 

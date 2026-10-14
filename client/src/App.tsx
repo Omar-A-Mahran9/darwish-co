@@ -10,9 +10,11 @@ import About from "./pages/About";
 import Services from "./pages/Services";
 import Industries from "./pages/Industries";
 import ServiceDetail from "./pages/ServiceDetail";
-import Contact from './pages/Contact';
+import ContactPage from './pages/ContactPage';
+import Work, { CaseStudyPage } from './pages/Work';
+import Insights, { ArticlePage } from './pages/Insights';
+import { Growth360, Integrity, Privacy } from './pages/PolicyPages';
 import AdminInbox from './pages/AdminInbox';
-import Projects from './pages/Projects';
 import Partners from './pages/Partners';
 import CorporatePartners from './pages/CorporatePartners';
 import Blog from './pages/Blog';
@@ -35,8 +37,14 @@ function Router() {
         <Route path="/services" component={Services} />
         <Route path="/industries" component={Industries} />
         <Route path="/services/:slug" component={ServiceDetail} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/projects" component={Projects} />
+        <Route path="/about/integrity" component={Integrity} />
+        <Route path="/contact" component={ContactPage} />
+        <Route path="/projects" component={Work} />
+        <Route path="/projects/:slug" component={CaseStudyPage} />
+        <Route path="/insights" component={Insights} />
+        <Route path="/insights/:slug" component={ArticlePage} />
+        <Route path="/privacy" component={Privacy} />
+        <Route path="/growth-360" component={Growth360} />
         <Route path="/admin/inbox" component={AdminInbox} />
         <Route path="/partners" component={Partners} />
         <Route path="/corporate-partners" component={CorporatePartners} />
