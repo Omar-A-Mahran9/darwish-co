@@ -1,9 +1,9 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
-import { BLOG_ARTICLES, resolveSeo } from "@shared/seo";
+import { resolveSeo } from "@shared/seo";
 import { SITE_SERVICES } from "./site/nav";
-import { PUBLIC_CASES } from "./site/content/work";
-import { SHOWN_ARTICLES } from "./pages/Insights";
+import { PUBLIC_CASES } from "@shared/work";
+import { SHOWN_ARTICLES } from "@shared/insights";
 import { guidesIndexIsWorthHaving, PUBLISHED_GUIDES } from "@shared/guides";
 import { injectSeo } from "../../server/seoHtml";
 
@@ -34,10 +34,6 @@ export function prerenderRoutes(): string[] {
     ...PUBLIC_CASES.map((c) => `/projects/${c.slug}`),
     "/insights",
     ...SHOWN_ARTICLES.map((a) => `/insights/${a.slug}`),
-    "/partners",
-    "/corporate-partners",
-    "/blog",
-    ...BLOG_ARTICLES.map((article) => `/blog/${article.slug}`),
     // Guides appear here as they are published; an unpublished one has no page
     // and no address. `/guides` is written only once it lists more than one.
     ...(guidesIndexIsWorthHaving() ? ["/guides"] : []),

@@ -1,7 +1,7 @@
 /** Our work: selected engagements, the client logo grid and the two case-study pages (ported from build_site.py). */
 import { Link, useParams } from "wouter";
 import { CtaBand, PageHero, SampleTag } from "@/site/blocks";
-import { CLIENTS, PUBLIC_CASES } from "@/site/content/work";
+import { CLIENTS, PUBLIC_CASES } from "@shared/work";
 import { ROUTES } from "@/site/nav";
 import NotFound from "./NotFound";
 

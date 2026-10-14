@@ -1,10 +1,19 @@
-import { Link } from "wouter";
+import { useEffect } from "react";
+import { Link, useLocation } from "wouter";
+import { LEGACY_ANCHOR_REDIRECTS } from "@shared/site";
 import { CtaBand, PageHero } from "@/site/blocks";
 import { CHALLENGES, SERVICES } from "@/site/content/site";
 import { serviceHref } from "@/site/nav";
 
 /** Services overview: the eight practices grouped by the four decisions leaders face. */
 export default function Services() {
+  const [, navigate] = useLocation();
+  // Links to the original one-page services list (/services#grc) go to the page that replaced the section.
+  useEffect(() => {
+    const moved = LEGACY_ANCHOR_REDIRECTS[window.location.hash.slice(1)];
+    if (moved) navigate(moved, { replace: true });
+  }, [navigate]);
+
   return (
     <>
       <PageHero

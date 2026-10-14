@@ -7,7 +7,11 @@
  * side is what crawlers and AI assistants that do not run JavaScript see.
  */
 
-import { getService, PUBLISHED_SERVICES, WITHDRAWN_SERVICES } from "./services.js";
+import { SITE_SERVICES, WITHDRAWN_SERVICES } from "./site.js";
+import { PUBLIC_CASES } from "./work.js";
+import { SHOWN_ARTICLES, TOPICS } from "./insights.js";
+import { SERVICE_DETAIL } from "../client/src/site/content/services.js";
+import { ABOUT } from "../client/src/site/content/about.js";
 import {
   getGuide,
   groupOf,
@@ -61,38 +65,6 @@ function page(path: string, input: PageSeoInput): PageSeo {
 const COMPANY_DESCRIPTION =
   "Governance and management consultancy in Egypt for SMEs across the MENA region — the governance, controls and strategy to delegate decisions without losing oversight.";
 
-/** Articles published under /blog. Titles and summaries match client/src/pages/BlogPost.tsx. */
-export const BLOG_ARTICLES = [
-  {
-    slug: "ai-human-oversight-governance",
-    title: "Why AI Decisions Still Require Human Oversight",
-    headline:
-      "When AI Accelerates the Wrong Decision: Why Human Oversight Is a Governance Requirement",
-    description:
-      "AI can accelerate decisions, but without governance it scales outdated data and hidden bias. Who stays responsible when an AI-supported decision causes harm?",
-    image: "/images/article-ai-human-oversight-figure.webp",
-    datePublished: "2026-07-01",
-  },
-  {
-    slug: "ai-bias-mena-education",
-    title: "AI Bias and Governance in MENA Education",
-    headline: "AI in MENA Education: When Automation Reinforces Existing Inequality",
-    description:
-      "AI can improve education across MENA, but biased data and weak oversight may reinforce inequality in admissions, grading, scholarships and student monitoring.",
-    image: "/images/article-ai-bias-education-figure.webp",
-    datePublished: "2026-07-01",
-  },
-  {
-    slug: "ai-institutional-bias-governance",
-    title: "How AI Can Scale Institutional Bias and Weak Governance",
-    headline: "AI Does Not Eliminate Institutional Bias — It Can Scale It",
-    description:
-      "AI learns from institutional data. Where that data reflects unfair practice or weak governance, the system automates those problems instead of fixing them.",
-    image: "/images/article-ai-institutional-bias-figure.webp",
-    datePublished: "2026-07-01",
-  },
-] as const;
-
 /**
  * Points at the Organization record in index.html rather than restating it, so
  * the site has one identity rather than a copy per page.
@@ -106,45 +78,54 @@ const ORGANISATION_REFERENCE = { "@id": `${SITE_URL}/#organization` };
  */
 const AREA_SERVED = { "@type": "Country", name: "Egypt" };
 
+/** Titles follow the approved prototype: "<page> | Darwish & Co.". */
+const titled = (name: string) => `${name} | Darwish & Co.`;
+
 const STATIC_PAGES: Record<string, PageSeo> = {
   "/": page("/", {
     title: "Delegate Decisions Without Losing Oversight | Darwish & Co",
     description: COMPANY_DESCRIPTION,
   }),
-  "/about": page("/about", {
-    title: "About Darwish & Co — Governance & Management Consultants | Egypt",
-    description:
-      "A governance and management consultancy based in New Cairo, Egypt, for SMEs in the MENA region. What the firm does, how it works, and who delivers it.",
-  }),
+  "/about": page("/about", { title: ABOUT.title, description: ABOUT.meta }),
   "/services": page("/services", {
-    title: "Consulting Services — Governance, Strategy & Growth for SMEs | Darwish & Co",
+    title: titled("Services"),
+    description: "Eight consulting services organized around the four decisions leaders face.",
+  }),
+  "/industries": page("/industries", {
+    title: titled("Industries"),
+    // The prototype's "Sectors Darwish & Co. serves across Egypt." is under 50 characters; the page's own introduction is used instead.
     description:
-      "Corporate and family governance, risk and compliance, strategy execution, people and organisation, and market entry for SMEs in Egypt and the MENA region.",
+      "Localized strategic impact across Egypt, with selective regional relevance supported by specialized cross-market partnerships.",
   }),
   "/projects": page("/projects", {
-    title: "Projects & Innovations — AI Platforms for MENA | Darwish & Co",
+    title: "Our Work | Darwish & Co.",
     description:
-      "How Darwish & Co. turns strategy into working digital solutions, including the POC Collaboration Platform built for teams in the MENA region.",
+      "Explore selected Darwish & Co. engagements in business diagnosis, organizational development, and growth advisory.",
   }),
-  "/partners": page("/partners", {
-    title: "Partners & Consultants — Our Senior Advisory Network | Darwish & Co",
+  "/insights": page("/insights", {
+    title: titled("Insights"),
     description:
-      "The consultants behind Darwish & Co.: advisers in governance, risk and compliance, finance, human resources and organisational development.",
-  }),
-  "/corporate-partners": page("/corporate-partners", {
-    title: "Corporate Partners & Licences | Darwish & Co",
-    description:
-      "The organisations and institutions Darwish & Co. works with, and what each of them delivers on an engagement.",
-  }),
-  "/blog": page("/blog", {
-    title: "Insights on Governance, AI & Management | Darwish & Co Blog",
-    description:
-      "Practical guidance on strategic management, governance and compliance, HR and AI governance for growth-stage businesses in the MENA region.",
+      "Explore Darwish & Co. perspectives on strategy, governance, organizational performance, operations, and business growth.",
   }),
   "/contact": page("/contact", {
-    title: "Contact Darwish & Co — Book a Consultation | Egypt & MENA",
-    description:
-      "Talk to Darwish & Co. about governance, compliance, HR or growth for your business. Send a message and the team replies within one working day.",
+    title: titled("Contact"),
+    description: "Discuss your business challenge with Darwish & Co. Share a brief overview and our team will contact you to agree on the next step.",
+  }),
+  // Placeholder pages until the approved text arrives: reachable, but kept out of search results.
+  "/privacy": page("/privacy", {
+    title: titled("Privacy policy"),
+    description: "How Darwish & Co. handles personal information. The approved privacy policy will replace this page.",
+    robots: "noindex, nofollow",
+  }),
+  "/about/integrity": page("/about/integrity", {
+    title: titled("Integrity commitments"),
+    description: "Darwish & Co. commitments on independence, confidentiality and conflicts of interest.",
+    robots: "noindex, nofollow",
+  }),
+  "/growth-360": page("/growth-360", {
+    title: titled("Growth 360"),
+    description: "Growth 360: from business diagnosis to integrated growth execution.",
+    robots: "noindex, nofollow",
   }),
   "/client-login": page("/client-login", {
     title: "Client Login | Darwish & Co",
@@ -159,10 +140,10 @@ STATIC_PAGES["/services"].jsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Darwish & Co. consulting services",
-  itemListElement: PUBLISHED_SERVICES.map((service, index) => ({
+  itemListElement: SITE_SERVICES.map((service, index) => ({
     "@type": "ListItem",
     position: index + 1,
-    name: service.name,
+    name: service.title,
     url: absolute(`/services/${service.slug}`),
   })),
 };
@@ -178,96 +159,92 @@ STATIC_PAGES["/about"].jsonLd = {
   mainEntity: ORGANISATION_REFERENCE,
 };
 
+const breadcrumb = (trail: [string, string][]) => ({
+  "@type": "BreadcrumbList",
+  itemListElement: trail.map(([name, path], index) => ({ "@type": "ListItem", position: index + 1, name, item: absolute(path) })),
+});
+
+/** A service page: Service, FAQ and breadcrumb records, from the same content the page shows. */
 function serviceSeo(slug: string): PageSeo | null {
-  const service = getService(slug);
-  if (!service) return null;
+  const service = SITE_SERVICES.find((entry) => entry.slug === slug);
+  const detail = SERVICE_DETAIL[slug];
+  if (!service || !detail) return null;
 
-  const canonical = absolute(`/services/${service.slug}`);
+  const path = `/services/${service.slug}`;
+  const description: string = detail.meta || detail.hero.intro;
+  const faqs = (detail.faqs ?? []) as [string, string][];
 
-  return page(`/services/${service.slug}`, {
-    title: service.metaTitle,
-    description: service.metaDescription,
+  return page(path, {
+    title: titled(service.title),
+    description,
     jsonLd: {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "Service",
-          name: service.name,
-          description: service.metaDescription,
-          serviceType: service.name,
+          name: service.title,
+          description,
+          serviceType: service.title,
           areaServed: AREA_SERVED,
-          url: canonical,
-          // Partner-delivered work names the partner rather than implying it is ours.
+          url: absolute(path),
           provider: ORGANISATION_REFERENCE,
-          // A partner's capability is the partner's. It is published as a second
-          // named provider, never folded into Darwish & Co.'s own credentials.
-          ...(service.partner
-            ? {
-                provider: [
-                  ORGANISATION_REFERENCE,
-                  {
-                    "@type": "Organization",
-                    name: service.partner.name,
-                    url: service.partner.url,
-                  },
-                ],
-              }
-            : {}),
-          hasOfferCatalog: {
-            "@type": "OfferCatalog",
-            name: service.name,
-            itemListElement: service.offerings.map((offering, index) => ({
-              "@type": "ListItem",
-              position: index + 1,
-              item: {
-                "@type": "Service",
-                name: offering.title,
-                description: offering.description,
+        },
+        ...(faqs.length
+          ? [
+              {
+                "@type": "FAQPage",
+                mainEntity: faqs.map(([question, answer]) => ({
+                  "@type": "Question",
+                  name: question,
+                  acceptedAnswer: { "@type": "Answer", text: answer },
+                })),
               },
-            })),
-          },
-        },
-        {
-          "@type": "FAQPage",
-          mainEntity: service.faqs.map((faq) => ({
-            "@type": "Question",
-            name: faq.question,
-            acceptedAnswer: { "@type": "Answer", text: faq.answer },
-          })),
-        },
-        {
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-            { "@type": "ListItem", position: 2, name: "Services", item: absolute("/services") },
-            { "@type": "ListItem", position: 3, name: service.name, item: canonical },
-          ],
-        },
+            ]
+          : []),
+        breadcrumb([
+          ["Home", "/"],
+          ["Services", "/services"],
+          [service.title, path],
+        ]),
       ],
     },
   });
 }
 
-function blogArticleSeo(slug: string): PageSeo | null {
-  const article = BLOG_ARTICLES.find((entry) => entry.slug === slug);
-  if (!article) return null;
+function caseSeo(slug: string): PageSeo | null {
+  const study = PUBLIC_CASES.find((entry) => entry.slug === slug);
+  if (!study) return null;
+  return page(`/projects/${study.slug}`, { title: titled(study.title), description: study.text });
+}
 
-  return page(`/blog/${article.slug}`, {
-    title: `${article.title} | Darwish & Co`,
-    description: article.description,
-    ogImage: article.image,
+/**
+ * An Insights article. Until an article is published its page is a placeholder
+ * ("[Approved text pending]"), so it stays out of search results.
+ */
+function articleSeo(slug: string): PageSeo | null {
+  const article = SHOWN_ARTICLES.find((entry) => entry.slug === slug);
+  if (!article) return null;
+  const path = `/insights/${article.slug}`;
+  const published = article.status === "published";
+  const topic = TOPICS.find(([key]) => key === article.topic)?.[1];
+  return page(path, {
+    title: titled(article.title),
+    description: article.sample ? article.listing : article.summary,
     ogType: "article",
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      headline: article.headline,
-      description: article.description,
-      image: absolute(article.image),
-      datePublished: article.datePublished,
-      author: ORGANISATION_REFERENCE,
-      publisher: ORGANISATION_REFERENCE,
-      mainEntityOfPage: absolute(`/blog/${article.slug}`),
-    },
+    robots: published ? "index, follow" : "noindex, nofollow",
+    jsonLd: published
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: article.title,
+          description: article.summary,
+          ...(article.date ? { datePublished: article.date } : {}),
+          ...(topic ? { articleSection: topic } : {}),
+          author: ORGANISATION_REFERENCE,
+          publisher: ORGANISATION_REFERENCE,
+          mainEntityOfPage: absolute(path),
+        }
+      : undefined,
   });
 }
 
@@ -377,9 +354,9 @@ function guideIndexSeo(): PageSeo | null {
 }
 
 const NOT_FOUND_SEO = page("/", {
-  title: "Page Not Found | Darwish & Co",
+  title: "Page not found | Darwish & Co.",
   description:
-    "This page does not exist. Browse the consulting services, projects and insights of Darwish & Co., a governance and management consultancy in Egypt.",
+    "The page you were looking for does not exist. Browse the consulting services, work and insights of Darwish & Co., a consulting firm in Egypt.",
   robots: "noindex, nofollow",
 });
 
@@ -394,8 +371,9 @@ export function normalizePath(pathname: string): string {
 export function isKnownRoute(pathname: string): boolean {
   const path = normalizePath(pathname);
   if (STATIC_PAGES[path] || path.startsWith("/admin/")) return true;
-  if (path.startsWith("/services/")) return getService(path.slice("/services/".length)) !== undefined;
-  if (path.startsWith("/blog/")) return blogArticleSeo(path.slice("/blog/".length)) !== null;
+  if (path.startsWith("/services/")) return serviceSeo(path.slice("/services/".length)) !== null;
+  if (path.startsWith("/projects/")) return caseSeo(path.slice("/projects/".length)) !== null;
+  if (path.startsWith("/insights/")) return articleSeo(path.slice("/insights/".length)) !== null;
   if (path === "/guides") return guideIndexSeo() !== null;
   if (path.startsWith("/guides/")) return guideSeo(path.slice("/guides/".length)) !== null;
   return false;
@@ -408,33 +386,21 @@ export function resolveSeo(pathname: string): PageSeo {
   const staticPage = STATIC_PAGES[path];
   if (staticPage) return staticPage;
 
-  if (path.startsWith("/services/")) {
-    const service = serviceSeo(path.slice("/services/".length));
-    if (service) return service;
+  const found =
+    (path.startsWith("/services/") && serviceSeo(path.slice("/services/".length))) ||
+    (path.startsWith("/projects/") && caseSeo(path.slice("/projects/".length))) ||
+    (path.startsWith("/insights/") && articleSeo(path.slice("/insights/".length))) ||
+    (path === "/guides" && guideIndexSeo()) ||
+    (path.startsWith("/guides/") && guideSeo(path.slice("/guides/".length)));
+  if (found) return found;
 
-    if (WITHDRAWN_SERVICES[path]) {
-      return page(path, {
-        title: "This service is no longer offered | Darwish & Co",
-        description:
-          "Digital marketing is no longer part of the Darwish & Co. consulting offer. See the governance, strategy and growth services the firm provides today.",
-        robots: "noindex, nofollow",
-      });
-    }
-  }
-
-  if (path.startsWith("/blog/")) {
-    const article = blogArticleSeo(path.slice("/blog/".length));
-    if (article) return article;
-  }
-
-  if (path === "/guides") {
-    const index = guideIndexSeo();
-    if (index) return index;
-  }
-
-  if (path.startsWith("/guides/")) {
-    const guide = guideSeo(path.slice("/guides/".length));
-    if (guide) return guide;
+  if (WITHDRAWN_SERVICES[path]) {
+    return page(path, {
+      title: "This service is no longer offered | Darwish & Co",
+      description:
+        "Digital marketing is no longer part of the Darwish & Co. consulting offer. See the consulting services the firm provides today.",
+      robots: "noindex, nofollow",
+    });
   }
 
   if (path.startsWith("/admin/")) {

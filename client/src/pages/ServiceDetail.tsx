@@ -2,7 +2,8 @@
  * Service pages. Each service picks one of eight layouts (content in site/content/services.ts); the markup
  * follows prototype/tools/service_detail.py so the pages match the approved prototype.
  */
-import { useParams } from "wouter";
+import { Redirect, useParams } from "wouter";
+import { SERVICE_REDIRECTS } from "@shared/site";
 import ContactSection from "@/site/ContactSection";
 import { SITE_SERVICES } from "@/site/nav";
 import { SERVICE_DETAIL } from "@/site/content/services";
@@ -1304,6 +1305,9 @@ export default function ServiceDetail() {
   const { slug } = useParams<{ slug: string }>();
   const s = SITE_SERVICES.find((x) => x.slug === slug);
   const d = slug ? SERVICE_DETAIL[slug] : undefined;
+  // Old service addresses, still linked from the guides; the server answers the same addresses with a 301.
+  const moved = SERVICE_REDIRECTS[`/services/${slug}`];
+  if (moved) return <Redirect to={moved} replace />;
   if (!s || !d) return <NotFound />;
   const crumbs = (
     <Crumbs

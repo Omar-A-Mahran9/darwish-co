@@ -1,15 +1,19 @@
 import { readFileSync } from "fs";
 import { describe, expect, it } from "vitest";
 import { injectSeo } from "./seoHtml.js";
-import { BLOG_ARTICLES, isKnownRoute, resolveSeo } from "../shared/seo.js";
+import { isKnownRoute, resolveSeo } from "../shared/seo.js";
 import { GUIDES, PUBLISHED_GUIDES } from "../shared/guides.js";
+import { SERVICES } from "../shared/services.js";
 import {
   LEGACY_ANCHOR_REDIRECTS,
-  PUBLISHED_SERVICES,
+  PAGE_REDIRECTS,
   SERVICE_REDIRECTS,
-  SERVICES,
+  SITE_SERVICES,
   WITHDRAWN_SERVICES,
-} from "../shared/services.js";
+} from "../shared/site.js";
+import { ARTICLES, SHOWN_ARTICLES } from "../shared/insights.js";
+import { PUBLIC_CASES } from "../shared/work.js";
+import { SERVICE_DETAIL } from "../client/src/site/content/services.js";
 
 const SHELL = `<!doctype html>
 <html lang="en">
@@ -32,7 +36,7 @@ const descriptionsOf = (html: string) => html.match(/<meta name="description"[^>
 
 describe("per-page metadata", () => {
   it("gives every main route its own title, description and canonical address", () => {
-    const paths = ["/", "/about", "/services", "/projects", "/partners", "/corporate-partners", "/blog", "/contact"];
+    const paths = ["/", "/about", "/services", "/industries", "/projects", "/insights", "/contact"];
     const titles = new Set<string>();
     const descriptions = new Set<string>();
 
@@ -42,9 +46,9 @@ describe("per-page metadata", () => {
       descriptions.add(seo.description);
       expect(seo.canonical).toBe(`https://www.darwish-co.com${path === "/" ? "/" : path}`);
       expect(seo.description.length).toBeGreaterThanOrEqual(50);
-      // 160 is the usual display limit; the homepage keeps the approved
-      // company description, which is one character over it.
-      expect(seo.description.length).toBeLessThanOrEqual(path === "/" ? 161 : 160);
+      // 160 is the usual display limit; the homepage and About keep their
+      // approved descriptions, which are one character over it.
+      expect(seo.description.length).toBeLessThanOrEqual(path === "/" || path === "/about" ? 161 : 160);
       expect(seo.title.length).toBeLessThanOrEqual(80);
     }
 
@@ -55,7 +59,7 @@ describe("per-page metadata", () => {
   it("replaces the shell's head rather than adding a second copy of each tag", () => {
     const html = injectSeo(SHELL, "/services");
 
-    expect(titleOf(html)).toContain("Consulting Services");
+    expect(titleOf(html)).toContain("Services | Darwish");
     expect(canonicalsOf(html)).toHaveLength(1);
     expect(descriptionsOf(html)).toHaveLength(1);
     expect(html).toContain('href="https://www.darwish-co.com/services"');
@@ -70,26 +74,51 @@ describe("per-page metadata", () => {
     expect(titleOf(html)).not.toMatch(/ & /);
   });
 
-  it("describes each article with its own metadata and article structured data", () => {
-    for (const article of BLOG_ARTICLES) {
-      const html = injectSeo(SHELL, `/blog/${article.slug}`);
-      expect(titleOf(html)).toContain(article.title.split(" ")[0]);
-      expect(html).toContain(`href="https://www.darwish-co.com/blog/${article.slug}"`);
-      expect(html).toContain('<meta property="og:type" content="article" />');
-      expect(html).toContain('data-seo="page"');
-      expect(html).toContain('"@type":"Article"');
-      expect(html).toContain(`https://www.darwish-co.com${article.image}`);
+  it("keeps placeholder articles reachable but out of search results", () => {
+    expect(SHOWN_ARTICLES.length).toBeGreaterThan(0);
+    for (const article of SHOWN_ARTICLES) {
+      const path = `/insights/${article.slug}`;
+      const seo = resolveSeo(path);
+      expect(isKnownRoute(path)).toBe(true);
+      expect(seo.canonical).toBe(`https://www.darwish-co.com${path}`);
+      expect(seo.ogType).toBe("article");
+      // Only a published article, with its approved text, is indexed.
+      expect(seo.robots).toBe(article.status === "published" ? "index, follow" : "noindex, nofollow");
+      expect(injectSeo(SHELL, path).includes('"@type":"Article"')).toBe(article.status === "published");
+    }
+    expect(ARTICLES.filter((article) => article.status === "published")).toHaveLength(0);
+    expect(isKnownRoute("/insights/not-an-article")).toBe(false);
+  });
+
+  it("gives each case study its own metadata", () => {
+    for (const study of PUBLIC_CASES) {
+      const path = `/projects/${study.slug}`;
+      const seo = resolveSeo(path);
+      expect(isKnownRoute(path)).toBe(true);
+      expect(seo.robots).toBe("index, follow");
+      expect(seo.description.length).toBeGreaterThanOrEqual(50);
+      // The approved card text is used as written; the furniture case is one character over 160.
+      expect(seo.description.length).toBeLessThanOrEqual(161);
+    }
+    expect(isKnownRoute("/projects/illustrative-expansion")).toBe(false);
+  });
+
+  it("keeps pages still waiting for approved text out of search results", () => {
+    for (const path of ["/privacy", "/about/integrity", "/growth-360"]) {
+      expect(isKnownRoute(path)).toBe(true);
+      expect(resolveSeo(path).robots).toBe("noindex, nofollow");
     }
   });
 
   it("gives each service page its own metadata and service structured data", () => {
     const titles = new Set<string>();
 
-    for (const service of PUBLISHED_SERVICES) {
+    for (const service of SITE_SERVICES) {
       const path = `/services/${service.slug}`;
       const seo = resolveSeo(path);
       titles.add(seo.title);
 
+      expect(seo.title).toBe(`${service.title} | Darwish & Co.`);
       expect(seo.canonical).toBe(`https://www.darwish-co.com${path}`);
       expect(seo.description.length).toBeGreaterThanOrEqual(50);
       expect(seo.description.length).toBeLessThanOrEqual(160);
@@ -101,59 +130,30 @@ describe("per-page metadata", () => {
       expect(html).toContain('"@type":"FAQPage"');
       expect(html).toContain('"@type":"BreadcrumbList"');
       // Every question on the page is exposed as structured data.
-      expect(service.faqs.length).toBeGreaterThanOrEqual(3);
-      for (const faq of service.faqs) {
-        expect(html).toContain(JSON.stringify(faq.question).slice(1, -1));
+      const faqs = SERVICE_DETAIL[service.slug].faqs as [string, string][];
+      expect(faqs.length).toBeGreaterThanOrEqual(3);
+      for (const [question] of faqs) {
+        expect(html).toContain(JSON.stringify(question).slice(1, -1));
       }
+      // Partner expertise is the partner's; the record names Darwish & Co. only.
+      expect(html).toContain('"provider":{"@id":"https://www.darwish-co.com/#organization"}');
     }
 
-    expect(titles.size).toBe(PUBLISHED_SERVICES.length);
+    expect(titles.size).toBe(SITE_SERVICES.length);
     expect(isKnownRoute("/services/not-a-service")).toBe(false);
   });
 
-  it("names the partner as the provider for partner-delivered services", () => {
-    const partnered = PUBLISHED_SERVICES.filter((service) => service.partner);
-    expect(partnered.map((service) => service.slug)).toEqual([
-      "risk-compliance-integrity",
-      "growth-market-entry",
-    ]);
-
-    for (const service of partnered) {
-      const html = injectSeo(SHELL, `/services/${service.slug}`);
-      // A partner is a second named provider, never folded into Darwish & Co.
-      expect(html).toContain(`"name":"${service.partner!.name}"`);
-      expect(html).toContain(`"url":"${service.partner!.url}"`);
-      expect(html).not.toContain('"subOrganization"');
-      expect(html).not.toContain('"parentOrganization"');
-    }
-
-    for (const service of PUBLISHED_SERVICES.filter((entry) => !entry.partner)) {
-      const html = injectSeo(SHELL, `/services/${service.slug}`);
-      expect(html).toContain('"provider":{"@id":"https://www.darwish-co.com/#organization"}');
-    }
-  });
-
-  it("sends every address that existed before the restructure somewhere real", () => {
-    // Anchors from the original single services page.
-    expect(Object.keys(LEGACY_ANCHOR_REDIRECTS).sort()).toEqual([
-      "bizdev",
-      "digital-marketing",
-      "grc",
-      "hr",
-      "integrity",
-      "market-research",
-      "strategy",
-    ]);
-
-    // Slugs from the first split, 16 Sep 2026, that have a real successor.
+  it("sends every address that existed before the redesign somewhere real", () => {
+    expect(Object.keys(LEGACY_ANCHOR_REDIRECTS).sort()).toEqual(["bizdev", "grc", "hr", "integrity", "market-research", "strategy"]);
     expect(Object.keys(SERVICE_REDIRECTS).sort()).toEqual([
-      "/services/business-development",
-      "/services/governance-risk-compliance",
-      "/services/human-resources",
+      "/services/corporate-family-governance",
+      "/services/growth-market-entry",
       "/services/integrity-anti-corruption",
-      "/services/market-research",
-      "/services/strategy-performance",
+      "/services/people-organisation",
+      "/services/risk-compliance-integrity",
+      "/services/strategy-execution",
     ]);
+    expect(PAGE_REDIRECTS).toEqual({ "/partners": "/about#partners", "/corporate-partners": "/about#partners", "/blog": "/insights" });
 
     // Withdrawn with no successor: answered as gone, never redirected to a hub.
     expect(Object.keys(WITHDRAWN_SERVICES)).toEqual(["/services/digital-marketing"]);
@@ -166,15 +166,18 @@ describe("per-page metadata", () => {
     for (const destination of [
       ...Object.values(LEGACY_ANCHOR_REDIRECTS),
       ...Object.values(SERVICE_REDIRECTS),
+      ...Object.values(PAGE_REDIRECTS),
     ]) {
       expect(isKnownRoute(destination)).toBe(true);
       expect(resolveSeo(destination).robots).toBe("index, follow");
     }
 
-    // Nothing redirects to a page that was itself replaced.
+    // A current page is never redirected away, and nothing redirects to a page that was itself replaced.
+    for (const service of SITE_SERVICES) expect(SERVICE_REDIRECTS[`/services/${service.slug}`]).toBeUndefined();
     for (const destination of Object.values(SERVICE_REDIRECTS)) {
       expect(SERVICE_REDIRECTS[destination]).toBeUndefined();
     }
+    for (const path of Object.keys(PAGE_REDIRECTS)) expect(isKnownRoute(path)).toBe(false);
   });
 
   it("keeps an unpublished service off the site entirely", () => {
@@ -195,26 +198,17 @@ describe("per-page metadata", () => {
       new URL("../client/public/sitemap.xml", import.meta.url),
       "utf-8",
     );
-    for (const service of PUBLISHED_SERVICES) {
+    for (const service of SITE_SERVICES) {
       expect(sitemap).toContain(`https://www.darwish-co.com/services/${service.slug}</loc>`);
     }
-  });
-
-  it("never puts an unconfirmed delivery lead into structured data", () => {
-    for (const service of PUBLISHED_SERVICES) {
-      const html = injectSeo(SHELL, `/services/${service.slug}`);
-      // The page shows a visible "needs delivery lead" notice; the machine-readable
-      // record stays silent rather than naming nobody.
-      expect(html).not.toContain("Needs delivery lead");
-      expect(html).not.toContain('"employee"');
-      if (!service.deliveryLead) {
-        expect(html).not.toContain('"provider":{"@type":"Person"');
-      }
+    // Redirected and noindex addresses stay out of it.
+    for (const path of [...Object.keys(SERVICE_REDIRECTS), ...Object.keys(PAGE_REDIRECTS), "/privacy", "/growth-360", "/about/integrity"]) {
+      expect(sitemap).not.toContain(`https://www.darwish-co.com${path}</loc>`);
     }
   });
 
   it("claims delivery in Egypt only, whatever the target audience", () => {
-    for (const service of PUBLISHED_SERVICES) {
+    for (const service of SITE_SERVICES) {
       const html = injectSeo(SHELL, `/services/${service.slug}`);
       expect(html).toContain('"areaServed":{"@type":"Country","name":"Egypt"}');
       expect(html).not.toContain('"areaServed":"MENA"');
@@ -224,20 +218,19 @@ describe("per-page metadata", () => {
   it("references one organization record rather than restating it per page", () => {
     const orgId = '"@id":"https://www.darwish-co.com/#organization"';
     expect(injectSeo(SHELL, "/about")).toContain(orgId);
-    for (const service of PUBLISHED_SERVICES) {
+    for (const service of SITE_SERVICES) {
       expect(injectSeo(SHELL, `/services/${service.slug}`)).toContain(orgId);
     }
   });
 
   it("keeps private and unknown routes out of search results", () => {
-    for (const path of ["/client-login", "/admin/inbox", "/admin/client-access", "/does-not-exist", "/blog/not-an-article"]) {
+    for (const path of ["/client-login", "/admin/inbox", "/admin/client-access", "/does-not-exist", "/insights/not-an-article"]) {
       expect(resolveSeo(path).robots).toBe("noindex, nofollow");
       expect(injectSeo(SHELL, path)).toContain('<meta name="robots" content="noindex, nofollow" />');
     }
 
     expect(isKnownRoute("/about")).toBe(true);
-    expect(isKnownRoute(`/blog/${BLOG_ARTICLES[0].slug}`)).toBe(true);
-    expect(isKnownRoute("/blog/not-an-article")).toBe(false);
+    expect(isKnownRoute("/insights")).toBe(true);
     expect(isKnownRoute("/does-not-exist")).toBe(false);
   });
 

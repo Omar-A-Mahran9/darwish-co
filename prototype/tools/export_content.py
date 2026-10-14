@@ -46,6 +46,6 @@ write("services.ts", "Service page content: one entry per service, with the layo
 write("about.ts", "About us page content.", [("ABOUT", "any", ABOUT)])
 write("site.ts", "Shared site content: people, the services overview and industries.",
       [("PEOPLE", "Record<string, any>", {p["slug"]: p for p in sc.PEOPLE}),
-       ("SERVICES", "any[]", sc.SERVICES), ("CHALLENGES", "any[]", sc.CHALLENGES), ("INDUSTRIES", "any[]", sc.INDUSTRIES),
-       ("TOPICS", "any[]", sc.TOPICS), ("ARTICLES", "any[]", sc.ARTICLES)])
+       ("SERVICES", "any[]", sc.SERVICES), ("CHALLENGES", "any[]", sc.CHALLENGES), ("INDUSTRIES", "any[]", sc.INDUSTRIES)])
+# Topics and articles were moved to shared/insights.ts (the server needs them too), and the Our work content to shared/work.ts.
 print("exported to", os.path.normpath(OUT))

@@ -1632,3 +1632,10 @@ img.pp-hero-slot { width: 100%; height: 100%; aspect-ratio: 8 / 9; min-height: 1
 .ab-sectors { list-style: none; margin: 0; padding: 0; border-block-start: 1px solid var(--navy); }
 .ab-sectors li { padding-block: 16px; border-block-end: 1px solid var(--line); font: 600 19px/1.35 var(--serif); color: var(--navy); }
 .sx-about .ab-note { margin-block-start: 18px; color: var(--muted); }
+
+/* Pages that keep their earlier Tailwind design (the guides): undo this stylesheet's bare-element rules
+   (headings, links, paragraphs) so the Tailwind utilities on those pages apply again. :where keeps the
+   specificity at element level, so the pages' own class rules still win. */
+:where(.legacy-page) :is(h1, h2, h3, h4) { margin: revert-layer; font-family: revert-layer; font-weight: revert-layer; color: revert-layer; text-wrap: revert-layer; font-size: revert-layer; line-height: revert-layer; }
+:where(.legacy-page) p { margin: revert-layer; }
+:where(.legacy-page) a { color: revert-layer; text-underline-offset: revert-layer; }

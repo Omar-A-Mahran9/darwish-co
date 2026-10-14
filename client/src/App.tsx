@@ -1,10 +1,11 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Router as WouterRouter, Switch } from "wouter";
+import { Redirect, Route, Router as WouterRouter, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import SiteLayout from "./site/SiteLayout";
+import { PAGE_REDIRECTS } from "@shared/site";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -15,10 +16,6 @@ import Work, { CaseStudyPage } from './pages/Work';
 import Insights, { ArticlePage } from './pages/Insights';
 import { Growth360, Integrity, Privacy } from './pages/PolicyPages';
 import AdminInbox from './pages/AdminInbox';
-import Partners from './pages/Partners';
-import CorporatePartners from './pages/CorporatePartners';
-import Blog from './pages/Blog';
-import BlogPost from './pages/BlogPost';
 import GuideDetail from './pages/GuideDetail';
 import GuideIndex from './pages/GuideIndex';
 import ClientLogin from './pages/ClientLogin';
@@ -46,12 +43,30 @@ function Router() {
         <Route path="/privacy" component={Privacy} />
         <Route path="/growth-360" component={Growth360} />
         <Route path="/admin/inbox" component={AdminInbox} />
-        <Route path="/partners" component={Partners} />
-        <Route path="/corporate-partners" component={CorporatePartners} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/blog/:slug" component={BlogPost} />
-        <Route path="/guides" component={GuideIndex} />
-        <Route path="/guides/:slug" component={GuideDetail} />
+        {/* Folded into other pages by the redesign; the server answers these with a 301. */}
+        <Route path="/partners">
+          <Redirect to={PAGE_REDIRECTS["/partners"]} replace />
+        </Route>
+        <Route path="/corporate-partners">
+          <Redirect to={PAGE_REDIRECTS["/corporate-partners"]} replace />
+        </Route>
+        <Route path="/blog">
+          <Redirect to={PAGE_REDIRECTS["/blog"]} replace />
+        </Route>
+        <Route path="/blog/:slug">
+          <Redirect to={PAGE_REDIRECTS["/blog"]} replace />
+        </Route>
+        {/* Guides keep their earlier design and are not linked from the menus for now (decided 13 Oct 2026). */}
+        <Route path="/guides">
+          <div className="legacy-page">
+            <GuideIndex />
+          </div>
+        </Route>
+        <Route path="/guides/:slug">
+          <div className="legacy-page">
+            <GuideDetail />
+          </div>
+        </Route>
         <Route path="/client-login" component={ClientLogin} />
         <Route path="/admin/client-access" component={AdminClientAccess} />
         <Route component={NotFound} />

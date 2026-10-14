@@ -3,7 +3,7 @@ import fs from "fs";
 import { createServer } from "http";
 import path from "path";
 import { isKnownRoute } from "../shared/seo.js";
-import { SERVICE_REDIRECTS, WITHDRAWN_SERVICES } from "../shared/services.js";
+import { PAGE_REDIRECTS, SERVICE_REDIRECTS, WITHDRAWN_SERVICES } from "../shared/site.js";
 import { injectSeo } from "./seoHtml.js";
 import { fileURLToPath } from "url";
 import { sendGmailWebsiteRequestNotification } from "./gmailNotification.js";
@@ -478,7 +478,15 @@ async function startServer() {
   let indexHtml: string | null = null;
   const readShell = () => (indexHtml ??= fs.readFileSync(indexHtmlPath, "utf-8"));
 
-  // Addresses that changed in the v3 service restructure keep their value by
+  // Pages the redesign folded into others (Partners and Corporate partners into
+  // About, the blog into Insights) answer with a permanent redirect. The old
+  // blog articles have no counterpart, so each one goes to the Insights listing.
+  app.get(["/partners", "/corporate-partners", "/blog"], (req, res) => {
+    res.redirect(301, PAGE_REDIRECTS[req.path.replace(/\/+$/, "")]);
+  });
+  app.get("/blog/*", (_req, res) => res.redirect(301, PAGE_REDIRECTS["/blog"]));
+
+  // Service addresses from earlier versions of the site keep their value by
   // answering with a permanent redirect rather than a 404.
   app.get("/services/:slug", (req, res, next) => {
     const path = `/services/${req.params.slug}`;

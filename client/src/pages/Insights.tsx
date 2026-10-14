@@ -2,32 +2,20 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "wouter";
 import { CtaBand, PageHero, SampleTag } from "@/site/blocks";
-import { ARTICLES, TOPICS } from "@/site/content/site";
+import { SHOWN_ARTICLES, TOPICS, type Article } from "@shared/insights";
 import { ROUTES, SITE_SERVICES, serviceHref } from "@/site/nav";
 import NotFound from "./NotFound";
 
-/**
- * "preview" lists planned and sample articles with their status, as in the approved prototype;
- * "public" lists published articles only. Set VITE_INSIGHTS_MODE=public once real articles exist.
- */
-const MODE: "preview" | "public" = import.meta.env.VITE_INSIGHTS_MODE === "public" ? "public" : "preview";
-
-type Article = { slug: string; topic: string; title: string; status: "planned" | "sample" | "published"; featured?: boolean; summary: string; service: string; listing: string; author: string | null; date: string | null };
-
-const ALL = ARTICLES as Article[];
-const TOPIC_LIST = TOPICS as [string, string][];
-const TOPIC_NAME = Object.fromEntries(TOPIC_LIST);
+const TOPIC_NAME: Record<string, string> = Object.fromEntries(TOPICS);
 const STATUS_TAG: Record<Article["status"], [string | null, string]> = {
   planned: ["Planned article", "Preview draft"],
   sample: ["Sample article", "Preview example"],
   published: [null, "Read article"],
 };
 
-export const SHOWN_ARTICLES = ALL.filter((a) => a.status === "published" || MODE === "preview");
-
 export default function Insights() {
   const shown = SHOWN_ARTICLES;
-  const topics = TOPIC_LIST.filter(([k]) => shown.some((a) => a.topic === k));
+  const topics = TOPICS.filter(([k]) => shown.some((a) => a.topic === k));
   const [topic, setTopic] = useState("all");
 
   // The address hash (/insights#governance) preselects a topic.
