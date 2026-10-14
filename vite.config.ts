@@ -315,11 +315,11 @@ function vitePluginContactApi(): Plugin {
               const central = await import("./server/centralAuth.js");
               const portalKey = central.getPortalKeyForUrl(portalUrl);
               const portalRole = body.portalRole ?? "viewer";
-              const validationError = (!clientName && "Client name is required.") || auth.validateClientUsername(username) || auth.validateClientPassword(password) || auth.validatePortalUrl(portalUrl) || (!portalKey && "Choose Darwish Hub or Nabta Quest as the assigned portal.") || (!central.isPortalRole(portalRole) && "Choose a valid portal role.");
+              const validationError = (!clientName && "Client name is required.") || auth.validateClientUsername(username) || auth.validateClientCredential(password, portalKey ?? undefined) || auth.validatePortalUrl(portalUrl) || (!portalKey && "Choose Darwish Hub, Nabta Quest, or Training Server as the assigned portal.") || (!central.isPortalRole(portalRole) && "Choose a valid portal role.");
               if (validationError) return sendJson(res, 400, { success: false, error: validationError });
               if (!portalKey || !central.isPortalRole(portalRole)) return sendJson(res, 400, { success: false, error: "Choose a valid portal and role." });
               const now = Date.now();
-              await db.insertClientAccount({ clientName, username, passwordHash: await auth.hashClientPassword(password), portalUrl, portalKey, portalRole, isActive: true, failedAttempts: 0, lockedUntil: null, createdAt: now, updatedAt: now });
+              await db.insertClientAccount({ clientName, username, passwordHash: await auth.hashClientPassword(password, portalKey), portalUrl, portalKey, portalRole, isActive: true, failedAttempts: 0, lockedUntil: null, createdAt: now, updatedAt: now });
               return sendJson(res, 201, { success: true });
             }
 
@@ -332,21 +332,25 @@ function vitePluginContactApi(): Plugin {
               const portalRole = body.portalRole;
               const isActive = body.isActive;
               const password = body.password === undefined ? undefined : String(body.password);
+              const currentAccount = await db.getClientAccountById(id);
+              if (!currentAccount) return sendJson(res, 404, { success: false, error: "Client account not found." });
+              const credentialPortalKey = portalKey ?? currentAccount.portalKey;
               const validationError =
                 (clientName !== undefined && !clientName && "Client name is required.") ||
                 (portalUrl !== undefined && auth.validatePortalUrl(portalUrl)) ||
-                (portalUrl !== undefined && !portalKey && "Choose Darwish Hub or Nabta Quest as the assigned portal.") ||
+                (portalUrl !== undefined && !portalKey && "Choose Darwish Hub, Nabta Quest, or Training Server as the assigned portal.") ||
                 (portalRole !== undefined && !central.isPortalRole(portalRole) && "Choose a valid portal role.") ||
-                (password !== undefined && auth.validateClientPassword(password)) ||
+                (portalKey !== undefined && portalKey !== currentAccount.portalKey && password === undefined && "Changing the assigned portal requires setting a new password or access code.") ||
+                (password !== undefined && auth.validateClientCredential(password, credentialPortalKey)) ||
                 (isActive !== undefined && typeof isActive !== "boolean" && "Active status must be true or false.");
               if (validationError) return sendJson(res, 400, { success: false, error: validationError });
-              const update: { clientName?: string; portalUrl?: string; portalKey?: "darwish_hub" | "nabta_quest"; portalRole?: "owner" | "editor" | "viewer"; isActive?: boolean; passwordHash?: string; failedAttempts?: number; lockedUntil?: number | null; updatedAt: number } = { updatedAt: Date.now() };
+              const update: { clientName?: string; portalUrl?: string; portalKey?: "darwish_hub" | "nabta_quest" | "training_server"; portalRole?: "owner" | "editor" | "viewer"; isActive?: boolean; passwordHash?: string; failedAttempts?: number; lockedUntil?: number | null; updatedAt: number } = { updatedAt: Date.now() };
               if (clientName !== undefined) update.clientName = clientName;
               if (portalUrl !== undefined && portalKey) { update.portalUrl = portalUrl; update.portalKey = portalKey; }
               if (central.isPortalRole(portalRole)) update.portalRole = portalRole;
               if (typeof isActive === "boolean") update.isActive = isActive;
               if (password !== undefined) {
-                update.passwordHash = await auth.hashClientPassword(password);
+                update.passwordHash = await auth.hashClientPassword(password, credentialPortalKey);
                 update.failedAttempts = 0;
                 update.lockedUntil = null;
               }

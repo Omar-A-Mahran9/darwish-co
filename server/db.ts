@@ -140,6 +140,15 @@ export async function getClientAccountByUsername(username: string) {
   return records[0] ?? null;
 }
 
+export async function getClientAccountById(id: number) {
+  const records = await db
+    .select()
+    .from(clientAccounts)
+    .where(eq(clientAccounts.id, id))
+    .limit(1);
+  return records[0] ?? null;
+}
+
 export async function insertClientAccount(data: NewClientAccount) {
   await db.insert(clientAccounts).values(data);
 }
@@ -170,7 +179,7 @@ export async function resetClientLoginAttempts(id: number) {
 export async function createCentralAuthorizationCode(input: {
   clientAccountId: number;
   codeHash: string;
-  portalKey: "darwish_hub" | "nabta_quest";
+  portalKey: "darwish_hub" | "nabta_quest" | "training_server";
   expiresAt: number;
 }) {
   await db.insert(centralAuthCodes).values({
@@ -182,7 +191,7 @@ export async function createCentralAuthorizationCode(input: {
 
 export async function consumeCentralAuthorizationCode(input: {
   codeHash: string;
-  portalKey: "darwish_hub" | "nabta_quest";
+  portalKey: "darwish_hub" | "nabta_quest" | "training_server";
 }) {
   const now = Date.now();
   return db.transaction(async tx => {

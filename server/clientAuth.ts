@@ -1,5 +1,6 @@
 import { promisify } from "node:util";
 import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
+import type { PortalKey } from "./centralAuth.js";
 
 const scryptAsync = promisify(scrypt);
 const PASSWORD_KEY_LENGTH = 64;
@@ -23,6 +24,19 @@ export function validateClientPassword(value: string): string | null {
     : "Password must contain 12–128 characters.";
 }
 
+/**
+ * Training Server uses a client-requested six-digit access PIN. All other
+ * portals retain the stronger standard password policy.
+ */
+export function validateClientCredential(value: string, portalKey?: PortalKey): string | null {
+  if (portalKey === "training_server") {
+    return /^\d{6}$/.test(value)
+      ? null
+      : "Training Server access code must contain exactly six numeric digits.";
+  }
+  return validateClientPassword(value);
+}
+
 export function validatePortalUrl(value: string): string | null {
   try {
     const url = new URL(value);
@@ -32,8 +46,8 @@ export function validatePortalUrl(value: string): string | null {
   }
 }
 
-export async function hashClientPassword(password: string): Promise<string> {
-  const validationError = validateClientPassword(password);
+export async function hashClientPassword(password: string, portalKey?: PortalKey): Promise<string> {
+  const validationError = validateClientCredential(password, portalKey);
   if (validationError) throw new Error(validationError);
 
   const salt = randomBytes(16).toString("hex");

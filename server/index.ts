@@ -22,6 +22,7 @@ import {
   updateCorporatePartner,
   deleteCorporatePartner,
   getAllClientAccounts,
+  getClientAccountById,
   getClientAccountByUsername,
   insertClientAccount,
   updateClientAccount,
@@ -36,6 +37,7 @@ import {
   hashClientPassword,
   MAX_CLIENT_LOGIN_ATTEMPTS,
   normalizeUsername,
+  validateClientCredential,
   validateClientPassword,
   validateClientUsername,
   validatePortalUrl,
@@ -372,9 +374,9 @@ async function startServer() {
     const validationError =
       (!clientName && "Client name is required.") ||
       validateClientUsername(username) ||
-      validateClientPassword(password) ||
+      validateClientCredential(password, portalKey ?? undefined) ||
       validatePortalUrl(portalUrl) ||
-      (!portalKey && "Choose Darwish Hub or Nabta Quest as the assigned portal.") ||
+      (!portalKey && "Choose Darwish Hub, Nabta Quest, or Training Server as the assigned portal.") ||
       (!isPortalRole(portalRole) && "Choose a valid portal role.");
     if (validationError) return res.status(400).json({ success: false, error: validationError });
     if (!portalKey || !isPortalRole(portalRole)) {
@@ -386,7 +388,7 @@ async function startServer() {
       await insertClientAccount({
         clientName,
         username,
-        passwordHash: await hashClientPassword(password),
+        passwordHash: await hashClientPassword(password, portalKey),
         portalUrl,
         portalKey,
         portalRole,
@@ -413,12 +415,16 @@ async function startServer() {
     const portalRole = req.body?.portalRole;
     const isActive = req.body?.isActive;
     const password = req.body?.password === undefined ? undefined : String(req.body.password);
+    const currentAccount = await getClientAccountById(id);
+    if (!currentAccount) return res.status(404).json({ success: false, error: "Client account not found." });
+    const credentialPortalKey = portalKey ?? currentAccount.portalKey;
     const validationError =
       (clientName !== undefined && !clientName && "Client name is required.") ||
       (portalUrl !== undefined && validatePortalUrl(portalUrl)) ||
-      (portalUrl !== undefined && !portalKey && "Choose Darwish Hub or Nabta Quest as the assigned portal.") ||
+      (portalUrl !== undefined && !portalKey && "Choose Darwish Hub, Nabta Quest, or Training Server as the assigned portal.") ||
       (portalRole !== undefined && !isPortalRole(portalRole) && "Choose a valid portal role.") ||
-      (password !== undefined && validateClientPassword(password)) ||
+      (portalKey !== undefined && portalKey !== currentAccount.portalKey && password === undefined && "Changing the assigned portal requires setting a new password or access code.") ||
+      (password !== undefined && validateClientCredential(password, credentialPortalKey)) ||
       (isActive !== undefined && typeof isActive !== "boolean" && "Active status must be true or false.");
     if (validationError) return res.status(400).json({ success: false, error: validationError });
 
@@ -426,7 +432,7 @@ async function startServer() {
       const update: {
         clientName?: string;
         portalUrl?: string;
-        portalKey?: "darwish_hub" | "nabta_quest";
+        portalKey?: "darwish_hub" | "nabta_quest" | "training_server";
         portalRole?: "owner" | "editor" | "viewer";
         isActive?: boolean;
         passwordHash?: string;
@@ -442,7 +448,7 @@ async function startServer() {
       if (isPortalRole(portalRole)) update.portalRole = portalRole;
       if (typeof isActive === "boolean") update.isActive = isActive;
       if (password !== undefined) {
-        update.passwordHash = await hashClientPassword(password);
+        update.passwordHash = await hashClientPassword(password, credentialPortalKey);
         update.failedAttempts = 0;
         update.lockedUntil = null;
       }
