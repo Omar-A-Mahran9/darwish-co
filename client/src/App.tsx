@@ -14,7 +14,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import ContactPage from './pages/ContactPage';
 import Work, { CaseStudyPage } from './pages/Work';
 import Insights, { ArticlePage } from './pages/Insights';
-import { Growth360, Integrity, Privacy } from './pages/PolicyPages';
+import { Integrity, Privacy } from './pages/PolicyPages';
 import AdminInbox from './pages/AdminInbox';
 import GuideDetail from './pages/GuideDetail';
 import GuideIndex from './pages/GuideIndex';
@@ -41,7 +41,6 @@ function Router() {
         <Route path="/insights" component={Insights} />
         <Route path="/insights/:slug" component={ArticlePage} />
         <Route path="/privacy" component={Privacy} />
-        <Route path="/growth-360" component={Growth360} />
         <Route path="/admin/inbox" component={AdminInbox} />
         {/* Folded into other pages by the redesign; the server answers these with a 301. */}
         <Route path="/partners">

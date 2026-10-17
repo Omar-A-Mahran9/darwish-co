@@ -1052,7 +1052,7 @@ export const SERVICE_DETAIL: Record<string, any> = {
       ],
       "link": [
         "Explore Growth 360",
-        "/growth-360"
+        "/#g360"
       ]
     },
     "case": {

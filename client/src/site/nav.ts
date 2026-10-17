@@ -19,7 +19,6 @@ export const ROUTES = {
   contact: "/contact",
   privacy: "/privacy",
   integrity: "/about/integrity",
-  growth360: "/growth-360",
   clientLogin: "/client-login",
 } as const;
 

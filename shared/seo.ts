@@ -111,20 +111,15 @@ const STATIC_PAGES: Record<string, PageSeo> = {
     title: titled("Contact"),
     description: "Discuss your business challenge with Darwish & Co. Share a brief overview and our team will contact you to agree on the next step.",
   }),
-  // Placeholder pages until the approved text arrives: reachable, but kept out of search results.
+  // Pages still waiting for their approved text: reachable, but kept out of search results.
   "/privacy": page("/privacy", {
     title: titled("Privacy policy"),
-    description: "How Darwish & Co. handles personal information. The approved privacy policy will replace this page.",
+    description: "How Darwish & Co. handles personal information shared through this website and in our engagements.",
     robots: "noindex, nofollow",
   }),
   "/about/integrity": page("/about/integrity", {
     title: titled("Integrity commitments"),
     description: "Darwish & Co. commitments on independence, confidentiality and conflicts of interest.",
-    robots: "noindex, nofollow",
-  }),
-  "/growth-360": page("/growth-360", {
-    title: titled("Growth 360"),
-    description: "Growth 360: from business diagnosis to integrated growth execution.",
     robots: "noindex, nofollow",
   }),
   "/client-login": page("/client-login", {

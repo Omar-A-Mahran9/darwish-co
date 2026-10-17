@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "wouter";
 import ContactSection from "@/site/ContactSection";
+import Growth360Journey from "@/site/Growth360Journey";
 import { CountUp, FlipWord, Marquee } from "@/site/motion";
 import { ROUTES, SITE_SERVICES, serviceHref } from "@/site/nav";
 
@@ -78,12 +79,9 @@ const CHALLENGES = [
   },
 ];
 
-const G360 = [
-  { role: "Business advisory", mark: "darwish", name: "Darwish & Co.", title: "Diagnose. Strategize. Optimize.", text: "Business assessment, growth and marketing strategy, and performance review and growth advisory." },
-  { role: "Market activation", mark: "growthino", name: "Growthino", title: "Activate your market presence.", text: "SEO, GEO, digital marketing, and content activation." },
-  { role: "Capability development", mark: "blh", name: "Business Learning House", title: "Build organizational capability.", text: "Develop people, skills, and organizational capability." },
-  { role: "Digital enablement", mark: "logic-arrow", name: "Logic Arrow", title: "Enable growth through technology.", text: "Smart solutions, AI, automation, and technology." },
-];
+/** The founder portrait beside the "Who we are" copy; hidden for now (17 Oct 2026), the quote stays. */
+const SHOW_FOUNDER_PHOTO = false;
+
 const FLIP_WORDS = ["Growth", "Diagnose", "Understand", "Strategy", "Activate", "Optimize"];
 
 const PARTNERS = [
@@ -228,8 +226,10 @@ export default function Home() {
             </h2>
             <p>Darwish &amp; Co. is a consulting firm based in Egypt, helping organizations improve performance, strengthen governance, and pursue sustainable growth.</p>
           </div>
-          <div className="founder" id="founder">
-            <img className="founder-photo" src="/media/people/fouad-darwish.jpg" alt="Fouad Darwish, Founder and Managing Partner of Darwish & Co." width={505} height={670} loading="lazy" decoding="async" />
+          <div className={"founder" + (SHOW_FOUNDER_PHOTO ? "" : " no-photo")} id="founder">
+            {SHOW_FOUNDER_PHOTO && (
+              <img className="founder-photo" src="/media/people/fouad-darwish.jpg" alt="Fouad Darwish, Founder and Managing Partner of Darwish & Co." width={505} height={670} loading="lazy" decoding="async" />
+            )}
             <figure className="founder-quote">
               <blockquote>
                 <p>“True advisory is not just about identifying the right path, but ensuring the institution has the strength to walk it.”</p>
@@ -358,25 +358,11 @@ export default function Home() {
               activation, capability development, and digital enablement. The activation mix is tailored to diagnosed business needs.
             </p>
           </div>
-          <div className="g360-cards">
-            {G360.map((g) => (
-              <article className="g-card" key={g.role}>
-                <div className="g-card-top">
-                  <span className="g-role">{g.role}</span>
-                  <span className="g-mark" role="img" aria-label={g.name}>
-                    <img className="g-mark-glow" src={`/media/marks/${g.mark}.png`} alt="" aria-hidden="true" width={192} height={192} loading="lazy" />
-                    <img src={`/media/marks/${g.mark}.png`} alt="" width={192} height={192} loading="lazy" />
-                  </span>
-                </div>
-                <h3>{g.title}</h3>
-                <p>{g.text}</p>
-              </article>
-            ))}
-          </div>
+          <Growth360Journey />
           <div className="g360-cta">
-            <Link className="btn btn-navy" href={ROUTES.growth360}>
-              <span className="cta-label">Explore Growth 360</span>
-            </Link>
+            <a className="btn btn-navy" href="#contact">
+              <span className="cta-label">Discuss your challenge</span>
+            </a>
           </div>
         </div>
       </section>

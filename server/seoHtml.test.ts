@@ -104,7 +104,7 @@ describe("per-page metadata", () => {
   });
 
   it("keeps pages still waiting for approved text out of search results", () => {
-    for (const path of ["/privacy", "/about/integrity", "/growth-360"]) {
+    for (const path of ["/privacy", "/about/integrity"]) {
       expect(isKnownRoute(path)).toBe(true);
       expect(resolveSeo(path).robots).toBe("noindex, nofollow");
     }

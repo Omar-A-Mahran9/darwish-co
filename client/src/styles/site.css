@@ -359,6 +359,123 @@ html { scroll-padding-top: calc(var(--header-h) + 16px); }
   .g360-intro p { font-size: 17px; }
 }
 
+/* Growth 360 journey (17 Oct 2026, from the corporate profile slide): five steps on one line. Step 04,
+   Activate, is gold and opens the activation package: floating over the journey on desktop, in place
+   below 1080px. Motion is armed by script only (data-armed / data-ready), so without it everything shows. */
+.gj { position: relative; list-style: none; margin: 72px auto 0; padding: 0; max-width: 1200px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 20px; align-items: start; }
+.gj-step { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0; padding-block-start: 28px; }
+.gj-num { font: 600 40px/1 var(--serif); color: #8CBFDF; letter-spacing: -.01em; }
+.gj-step h3 { margin-block-start: 10px; font: 600 26px/1.2 var(--serif); color: var(--navy); }
+.gj-text { margin-block-start: 6px; min-height: 4.35em; font: 400 16px/1.45 var(--sans); color: var(--blue-text); }
+.gj-rail { position: relative; display: flex; justify-content: center; width: 100%; margin-block: 18px 16px; }
+.gj-rail::before { content: ""; position: absolute; top: 50%; inset-inline: -10px; height: 2px; margin-top: -1px; background: linear-gradient(90deg, #8CBFDF, var(--blue)); transform-origin: left center; }
+.gj-step:first-child .gj-rail::before { inset-inline-start: 0; }
+.gj-step:last-child .gj-rail::before { inset-inline-end: 50%; }
+.gj-node { position: relative; display: grid; place-items: center; width: 88px; height: 88px; padding: 0; border: 0; border-radius: 50%; background: var(--grad-blue); box-shadow: 0 0 0 8px var(--bg), 0 12px 30px rgba(0, 107, 163, .28); }
+.gj-node svg { width: 38px; height: 38px; fill: none; stroke: var(--white); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.gj-by { display: inline-flex; align-items: center; gap: 8px; margin-block-start: 4px; font: 600 16px/1.3 var(--serif); color: var(--navy); }
+.gj-by img { width: 28px; height: 28px; object-fit: contain; flex: none; }
+
+/* Step 04: gold from the start, so it reads as the step with more behind it. */
+.gj-activate { position: static; }
+.gj-activate .gj-num { color: #B8920A; }
+.gj-activate .gj-text { color: #7A6200; }
+.gj-open { cursor: pointer; background: var(--gold); box-shadow: 0 0 0 8px var(--bg), 0 12px 30px rgba(201, 164, 0, .35); transition: transform 220ms cubic-bezier(.34, 1.56, .64, 1), box-shadow 220ms ease-out; }
+.gj-open svg { stroke: var(--navy); stroke-width: 1.8; }
+.gj-open:focus-visible { outline: 3px solid var(--navy); outline-offset: 10px; }
+.gj-activate:hover .gj-open, .gj-activate.is-open .gj-open { transform: scale(1.07); box-shadow: 0 0 0 8px var(--bg), 0 0 0 14px rgba(255, 215, 23, .35), 0 16px 36px rgba(201, 164, 0, .45); }
+.gj-marks { display: inline-flex; }
+.gj-marks img { width: 24px; height: 24px; padding: 2px; border-radius: 50%; background: var(--white); box-shadow: 0 0 0 1px var(--line); }
+.gj-marks img + img { margin-inline-start: -6px; }
+.gj-hint { margin-block-start: 10px; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; font: 600 14px/1.3 var(--sans); color: var(--navy); cursor: pointer; border-block-end: 1px solid var(--gold); }
+.gj-plus { display: inline-block; font-size: 18px; line-height: 1; color: #B8920A; transition: transform 240ms ease-out; }
+.gj-activate.is-open .gj-plus { transform: rotate(45deg); }
+
+/* The package. Desktop: floats over the journey, its pointer under the gold circle, nothing else moves. */
+.gj-pack { position: absolute; z-index: 5; text-align: start; visibility: hidden; opacity: 0; transform: translateY(-10px) scale(.97); transform-origin: var(--gj-arrow, 50%) 0; pointer-events: none;
+  transition: opacity 240ms ease-out, transform 320ms cubic-bezier(.2, .8, .2, 1), visibility 0s linear 320ms; }
+.gj-activate.is-open .gj-pack { visibility: visible; opacity: 1; transform: none; pointer-events: auto; transition: opacity 240ms ease-out, transform 320ms cubic-bezier(.2, .8, .2, 1), visibility 0s; }
+.gj-pack::before { content: ""; position: absolute; inset: -20px 0 auto; height: 20px; }   /* hover bridge from the circle */
+.gj-pack-inner { position: relative; padding: 28px 24px 22px; background: var(--white); border: 2px solid var(--gold); box-shadow: 0 24px 60px rgba(15, 31, 51, .18); }
+.gj-pack-inner::before { content: ""; position: absolute; top: -9px; left: var(--gj-arrow, 50%); width: 16px; height: 16px; margin-left: -8px; background: var(--white); border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); transform: rotate(45deg); }
+.gj-pack-title { font: 600 24px/1.2 var(--serif); color: var(--navy); }
+.gj-pack-sub { margin-block-start: 6px; font: 400 16px/1.45 var(--sans); color: var(--muted); }
+.gj-tracks { list-style: none; margin: 22px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gj-track { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 8px 16px 4px; min-width: 0; transition: transform 200ms ease-out; }
+.gj-track + .gj-track { border-inline-start: 1px solid var(--line); }
+.gj-tnode { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: #FFF4C2; transition: background-color 200ms ease-out, box-shadow 200ms ease-out; }
+.gj-tnode svg { width: 30px; height: 30px; fill: none; stroke: var(--navy); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.gj-track h4 { margin: 4px 0 0; font: 600 19px/1.25 var(--serif); color: var(--navy); }
+.gj-items { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.gj-items li { padding: 3px 9px; border: 1px solid var(--line); background: var(--warm); font: 500 13px/1.4 var(--sans); color: var(--navy); text-align: center; }
+.gj-track .gj-by { margin-block-start: auto; padding-block-start: 16px; position: relative; flex-direction: column; gap: 6px; font-size: 15px; text-align: center; }
+.gj-track .gj-by::before { content: ""; position: absolute; top: 0; left: 50%; width: 40px; height: 2px; margin-left: -20px; background: var(--gold); }
+@media (hover: hover) {
+  .gj-track:hover { transform: translateY(-4px); }
+  .gj-track:hover .gj-tnode { background: var(--gold); box-shadow: 0 8px 22px rgba(201, 164, 0, .3); }
+}
+/* Without script there is no way to open it, so the package simply shows under the journey. */
+.gj:not([data-ready]) .gj-pack { position: relative; grid-column: 1 / -1; visibility: visible; opacity: 1; transform: none; pointer-events: auto; margin-block-start: 24px; }
+
+/* Vertical journey below 1080px: the line down the left, steps beside it; the package opens in place. */
+@media (max-width: 1079px) {
+  .gj { grid-template-columns: minmax(0, 1fr); gap: 28px; margin-block-start: 48px; }
+  .gj-step { display: grid; grid-template-columns: 72px minmax(0, 1fr); grid-template-areas: "rail num" "rail title" "rail text" "rail by" "rail hint" "pack pack"; column-gap: 20px; align-items: start; justify-items: start; text-align: start; padding: 0; }
+  .gj-num { grid-area: num; font-size: 30px; }
+  .gj-step h3 { grid-area: title; margin-block-start: 4px; font-size: 24px; }
+  .gj-step .gj-text { grid-area: text; min-height: 0; }
+  .gj-step .gj-by { grid-area: by; margin-block-start: 10px; }
+  .gj-hint { grid-area: hint; }
+  .gj-rail { grid-column: 1; grid-row: 1 / -1; align-self: stretch; align-items: flex-start; margin: 0; width: auto; }   /* spans the package row too, so the line runs on behind an open package */
+  /* The line runs down from each node to the next step (28px gap); the last step has none below it. */
+  .gj-rail::before, .gj-step:first-child .gj-rail::before { inset: 36px auto -28px 35px; width: 2px; height: auto; margin: 0; background: linear-gradient(180deg, #8CBFDF, var(--blue)); transform-origin: center top; }
+  .gj-step:last-child .gj-rail::before { display: none; }
+  .gj-node { width: 72px; height: 72px; }
+  .gj-node svg { width: 32px; height: 32px; }
+  .gj-activate { position: relative; }
+  /* In place: the row grows from nothing to the package's height. */
+  .gj-pack, .gj:not([data-ready]) .gj-pack { grid-area: pack; position: relative; z-index: 1; inset: auto; width: 100% !important; display: grid; grid-template-rows: 0fr; visibility: hidden; opacity: 0; transform: none; margin-block-start: 0;
+    transition: grid-template-rows 360ms cubic-bezier(.2, .8, .2, 1), opacity 240ms ease-out, margin 360ms ease, visibility 0s linear 360ms; }
+  .gj-activate.is-open .gj-pack, .gj:not([data-ready]) .gj-pack { grid-template-rows: 1fr; visibility: visible; opacity: 1; margin-block-start: 18px; transition: grid-template-rows 360ms cubic-bezier(.2, .8, .2, 1), opacity 240ms ease-out, margin 360ms ease, visibility 0s; }
+  .gj-pack-clip { overflow: hidden; min-height: 0; padding-block: 14px 4px; }
+  .gj-pack-inner { box-shadow: 0 6px 16px rgba(15, 31, 51, .08); }
+  .gj-pack::before { display: none; }
+  .gj-pack-inner::before { left: 36px; }
+}
+@media (max-width: 639px) {
+  .gj-pack-inner { padding: 22px 18px 18px; }
+  .gj-pack-title { font-size: 22px; }
+  .gj-tracks { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .gj-track { display: grid; grid-template-columns: 56px minmax(0, 1fr); grid-template-areas: "icon title" "icon items" "icon by"; column-gap: 16px; row-gap: 4px; justify-items: start; text-align: start; padding: 16px 0; }
+  .gj-track + .gj-track { border-inline-start: 0; border-block-start: 1px solid var(--line); }
+  .gj-tnode { grid-area: icon; align-self: start; width: 56px; height: 56px; }
+  .gj-track h4 { grid-area: title; margin: 0; }
+  .gj-items { grid-area: items; justify-content: flex-start; }
+  .gj-track .gj-by { grid-area: by; padding-block-start: 12px; flex-direction: row; text-align: start; }
+  .gj-track .gj-by::before { left: 0; margin-left: 0; width: 32px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gj[data-armed] .gj-step { opacity: 0; transform: translateY(18px); }
+  .gj[data-armed] .gj-node { transform: scale(.55); }
+  .gj[data-armed] .gj-rail::before { transform: scaleX(0); }
+  .gj.is-in .gj-step { opacity: 1; transform: none; transition: opacity 600ms ease-out, transform 600ms cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--i) * 170ms + 150ms); }
+  .gj.is-in .gj-rail::before { transform: none; transition: transform 520ms ease-out calc(var(--i) * 170ms); }
+  .gj.is-in .gj-node { transform: none; transition: transform 560ms cubic-bezier(.34, 1.56, .64, 1) calc(var(--i) * 170ms + 280ms); }
+  .gj.is-in .gj-activate:hover .gj-open, .gj.is-in .gj-activate.is-open .gj-open { transform: scale(1.07); transition: transform 220ms cubic-bezier(.34, 1.56, .64, 1), box-shadow 220ms ease-out; }
+  /* Opening the package: the tracks follow one after another. */
+  .gj-pack .gj-track { opacity: 0; transform: translateY(10px); }
+  .gj-activate.is-open .gj-track { opacity: 1; transform: none; transition: opacity 360ms ease-out, transform 360ms cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--j) * 90ms + 90ms); }
+  .gj-activate.is-open .gj-track:hover { transform: translateY(-4px); transition: transform 200ms ease-out; }
+  .gj:not([data-ready]) .gj-track { opacity: 1; transform: none; }
+  /* After the reveal: a slow ring pulses out of each blue step in turn; the gold step keeps its own beat. */
+  .gj.is-in .gj-node::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid rgba(0, 163, 240, .45); opacity: 0; animation: gj-ring 6s ease-out infinite; animation-delay: calc(var(--i) * 1.2s + 1.6s); pointer-events: none; }
+  .gj.is-in .gj-open::after { border-color: rgba(255, 215, 23, .85); animation: gj-ring 2.6s ease-out 1.4s infinite; }
+  .gj.is-in .gj-activate.is-open .gj-open::after { animation: none; }
+}
+@media (max-width: 1079px) and (prefers-reduced-motion: no-preference) { .gj[data-armed] .gj-rail::before { transform: scaleY(0); } .gj.is-in .gj-rail::before { transform: none; } }
+@keyframes gj-ring { 0% { opacity: .9; transform: scale(1); } 18% { opacity: 0; transform: scale(1.4); } 100% { opacity: 0; transform: scale(1.4); } }
+
 /* Partner chips */
 .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 900px; margin: 0 auto 40px; }
 .chip { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 7px 18px 7px 8px; background: var(--white); border: 1px solid var(--line); border-radius: 0; font: 600 15px/1.2 var(--sans); color: var(--navy); }
@@ -480,6 +597,9 @@ a.wcard:focus-visible { outline: 2px solid var(--blue); outline-offset: -4px; }
   .contact-grid { grid-template-columns: minmax(0, 1fr); gap: 48px; }
   .founder { justify-self: center; }
 }
+/* Founder portrait hidden (17 Oct 2026): the quote stands on its own as a navy panel. */
+.founder.no-photo .founder-quote { position: static; padding: 32px 32px 28px; background: var(--navy); border: 0; border-inline-start: 4px solid var(--blue); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.founder.no-photo .founder-quote blockquote p { font-size: 22px; }
 @media (max-width: 767px) { .contact-copy h2 { font-size: 34px; } }
 @media (max-width: 599px) {
   .founder-photo { border-radius: 0; }

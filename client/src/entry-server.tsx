@@ -41,7 +41,6 @@ export function prerenderRoutes(): string[] {
     "/contact",
     "/privacy",
     "/about/integrity",
-    "/growth-360",
   ];
 }
 
