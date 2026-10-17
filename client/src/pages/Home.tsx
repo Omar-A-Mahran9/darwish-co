@@ -1,755 +1,593 @@
-import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  ArrowRight, CheckCircle2, Shield, Users, TrendingUp,
-  Brain, Globe, BarChart3, Target, Layers, Star
-} from "lucide-react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "wouter";
+import { SHOWN_ARTICLES } from "@shared/insights";
+import ContactSection from "@/site/ContactSection";
+import Growth360Journey from "@/site/Growth360Journey";
+import { CountUp, FlipWord, Marquee } from "@/site/motion";
+import { ROUTES, SITE_SERVICES, serviceHref } from "@/site/nav";
 
-// ─── CDN assets ────────────────────────────────────────────────────────────
-const EMBLEM_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/darwish-emblem-nobg_fd180146.png";
-const LOGOIN_URL =
-  "/manus-storage/emblem-transparent_58f688d3.png";
-
-// ─── Partner logo CDN urls ──────────────────────────────────────────────────
-const PARTNER_LOGOS = [
-  { href: "https://visionethics.com",     src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/visionethics-logo_1effaf51.webp",      alt: "VisionEthics" },
-  { href: "https://widebot.ai",           src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/widebot-logo_48344ad3.webp",           alt: "WideBot AI" },
-  { href: "https://techno-management.com",src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/techno-management-logo_14119f1e.webp", alt: "Techno-Management" },
-  { href: "https://www.keheilan.com",     src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/keheilan-official-logo_bb492e13.png",  alt: "Keheilan" },
-  { href: "https://in-light.tech",        src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/inlight-logo_f1bdc052.jpg",           alt: "In Light" },
+const FACTS = [
+  { n: 8, label: "Consulting practices", note: "Organized around four challenges" },
+  { n: 8, label: "Senior advisors", note: "Founder and expert network" },
+  { n: 9, label: "Specialist partners", note: "Credited by name" },
+  { n: 6, label: "Sectors served", note: "Public and private" },
 ];
 
-// ─── Liquid-glass navbar ────────────────────────────────────────────────────
-function GlassNavbar() {
-  return (
-    <div
-      className="sticky top-[30px] z-50 mx-auto w-fit"
-      style={{ fontFamily: "'Inter', sans-serif" }}
-    >
-      <nav
-        style={{
-          backdropFilter: "blur(50px)",
-          WebkitBackdropFilter: "blur(50px)",
-          background: "rgba(255,255,255,0.3)",
-          borderRadius: "16px",
-          border: "1px solid rgba(0,0,0,0.1)",
-          boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.25)",
-          padding: "10px 20px",
-          display: "flex",
-          alignItems: "center",
-          gap: "32px",
-        }}
-      >
-        {/* Logo */}
-        <Link href="/">
-          <span
-            className="flex items-center gap-2 cursor-pointer select-none"
-            style={{ fontFamily: "'Fustat', sans-serif", fontWeight: 700, fontSize: "18px", color: "#111" }}
-          >
-            <img src="/manus-storage/logo-horizontal_9c3cf9d8.png" alt="Darwish & Co." className="h-14 w-auto object-contain" />
-          </span>
-        </Link>
+const ExternalIcon = () => (
+  <svg viewBox="0 0 12 12" aria-hidden="true">
+    <path d="M4.5 2.5h5v5M9.5 2.5 3 9" />
+  </svg>
+);
 
-        {/* Nav links — hidden on mobile */}
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-          {[
-            { label: "Strategy", href: "/services#strategy" },
-            { label: "Services", href: "/services" },
-            { label: "Projects", href: "/projects" },
-            { label: "Partners", href: "/partners" },
-            { label: "Blog", href: "/blog" },
-          ].map((item) => (
-            <Link key={item.href} href={item.href}>
-              <span className="hover:text-gray-900 transition-colors duration-150 cursor-pointer">
-                {item.label}
-              </span>
-            </Link>
-          ))}
-          <Link href="/client-login" className="hover:text-gray-900 transition-colors duration-150">Client Login</Link>
-        </div>
-
-        {/* Sign-up / CTA button */}
-        <Link href="/contact">
-          <button
-            style={{
-              background: "rgba(0,132,255,0.85)",
-              backdropFilter: "blur(2px)",
-              WebkitBackdropFilter: "blur(2px)",
-              borderRadius: "12px",
-              border: "none",
-              boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.35)",
-              color: "#fff",
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 500,
-              fontSize: "14px",
-              padding: "8px 18px",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              cursor: "pointer",
-              transition: "transform 200ms ease, opacity 200ms ease",
-            }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.02)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
-          >
-            Get Started
-            <span
-              style={{
-                background: "rgba(255,255,255,0.25)",
-                borderRadius: "50%",
-                width: "22px",
-                height: "22px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ArrowRight size={12} strokeWidth={2.5} />
-            </span>
-          </button>
-        </Link>
-      </nav>
-    </div>
-  );
-}
-
-// ─── Floating animated logo composition — hub-and-spoke orbital (rAF) ───────
-// Each satellite orbits at a fixed radius. The wrapper rotates; the img counter-rotates
-// so it always faces upright. Positions calculated with trigonometry each frame.
-const ORBIT_DEFS = [
-  // inner ring — 4 satellites, clockwise
-  { src: LOGOIN_URL,  size: 68,  radius: 150, speed:  0.40, startDeg:   0, opacity: 0.92 },
-  { src: EMBLEM_URL,  size: 54,  radius: 150, speed:  0.40, startDeg:  90, opacity: 0.78 },
-  { src: LOGOIN_URL,  size: 46,  radius: 150, speed:  0.40, startDeg: 180, opacity: 0.65 },
-  { src: EMBLEM_URL,  size: 40,  radius: 150, speed:  0.40, startDeg: 270, opacity: 0.55 },
-  // outer ring — 4 satellites, counter-clockwise
-  { src: EMBLEM_URL,  size: 58,  radius: 225, speed: -0.25, startDeg:  45, opacity: 0.80 },
-  { src: LOGOIN_URL,  size: 46,  radius: 225, speed: -0.25, startDeg: 135, opacity: 0.65 },
-  { src: EMBLEM_URL,  size: 40,  radius: 225, speed: -0.25, startDeg: 225, opacity: 0.55 },
-  { src: LOGOIN_URL,  size: 36,  radius: 225, speed: -0.25, startDeg: 315, opacity: 0.45 },
+const CHALLENGES = [
+  {
+    id: "ch-1",
+    tile: "t-strategy",
+    icon: (
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9.25" />
+        <path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1z" />
+        <path d="M12 2.75v1.5M12 19.75v1.5M2.75 12h1.5M19.75 12h1.5" />
+      </svg>
+    ),
+    title: "The gap between strategy and results.",
+    text: "Transformation ambitions can lose value during execution, before improvements become lasting results.",
+    img: { src: "/media/challenges/strategy-execution.png", alt: "Illustrative team reviewing performance charts and reports around a table.", w: 720, h: 1080 },
+    num: "42%",
+    stat: "Of potential transformation value is lost, on average, during execution and sustaining change.",
+    source: "McKinsey · 2023",
+    sourceLabel: "Source: McKinsey, How to implement transformations for long-term impact, 2023 (opens in a new tab)",
+    href: "https://www.mckinsey.com/capabilities/implementation/our-insights/how-to-implement-transformations-for-long-term-impact",
+  },
+  {
+    id: "ch-2",
+    tile: "t-port",
+    center: true,
+    icon: (
+      <svg viewBox="0 0 24 24">
+        <path d="M3.75 20.25h16.5" />
+        <path d="m4.5 16 5-5 3.5 3.5 6.5-7" />
+        <path d="M15 7.5h4.5V12" />
+      </svg>
+    ),
+    title: "Uncertainty holds growth back.",
+    text: "Geopolitical uncertainty can delay investment and make expansion decisions harder.",
+    img: { src: "/media/challenges/growth-port.png", alt: "Illustrative commercial port with a container vessel and cranes.", w: 720, h: 900 },
+    num: "32%",
+    stat: "Of surveyed CEOs say geopolitical uncertainty makes them less likely to make large new investments.",
+    source: "PwC Global CEO Survey · 2026",
+    sourceLabel: "Source: PwC Global CEO Survey, 2026 (opens in a new tab)",
+    href: "https://www.pwc.com/gx/en/1/issues/c-suite-insights/ceo-survey.html",
+  },
+  {
+    id: "ch-3",
+    tile: "t-interchange",
+    icon: (
+      <svg viewBox="0 0 24 24">
+        <path d="m12 3.25 8.75 4.5L12 12.25 3.25 7.75z" />
+        <path d="m3.25 12 8.75 4.5 8.75-4.5" />
+        <path d="m3.25 16.25 8.75 4.5 8.75-4.5" />
+      </svg>
+    ),
+    title: "Complexity is increasing.",
+    text: "Interconnected projects, shifting priorities, and competing demands make delivery harder to manage.",
+    img: { src: "/media/challenges/complexity-interchange.png", alt: "Illustrative urban interchange showing interconnected roads and bridges.", w: 720, h: 900 },
+    num: "81%",
+    stat: "Of surveyed project professionals say projects have become more complex in recent years.",
+    source: "PMI Pulse of the Profession · 2026",
+    sourceLabel: "Source: PMI Pulse of the Profession, 2026 (opens in a new tab)",
+    href: "https://www.pmi.org/about/press-media/2026/pulse-why-complex-projects-fail-best-practices-are-not-enough-system-thinking",
+  },
 ];
 
-function FloatingLogos() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number>(0);
-  const angleRefs = useRef<number[]>(ORBIT_DEFS.map(d => d.startDeg));
-  const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
-  const wrapRefs = useRef<(HTMLDivElement | null)[]>([]);
+const FEATURED_HREF = SHOWN_ARTICLES.some((a) => a.slug === "delegation-of-authority") ? `${ROUTES.insights}/delegation-of-authority` : ROUTES.insights;
 
+/** The founder portrait beside the "Who we are" copy; hidden for now (17 Oct 2026), the quote stays. */
+const SHOW_FOUNDER_PHOTO = false;
+
+const FLIP_WORDS = ["Growth", "Diagnose", "Understand", "Strategy", "Activate", "Optimize"];
+
+const PARTNERS = [
+  { file: "visionethics", name: "VisionEthics" },
+  { file: "techno-management", name: "Techno-Management" },
+  { file: "inlight", name: "In Light Consumer Insights" },
+  { file: "growthino", name: "Growthino" },
+  { file: "widebot", name: "WideBot AI" },
+  { file: "logic-arrow", name: "Logic Arrow" },
+  { file: "blh", name: "Business Learning House" },
+  { file: "cornerstone", name: "Cornerstone OnDemand", filled: true },
+  { file: "keheilan", name: "Keheilan Asset Management", filled: true },
+];
+
+const EXPERTS = [
+  ["fouad-darwish", "Fouad Darwish"],
+  ["doha-monir", "Dr. Doha Monir"],
+  ["teh-chau-chin", "Teh Chau Chin"],
+  ["ahmed-barakat", "Ahmed Barakat"],
+  ["amr-mohamed", "Dr. Amr Mohamed"],
+  ["engy-saeed", "Engy Saeed"],
+  ["ahmed-mohamed", "Ahmed Mohamed"],
+  ["mohamed-abdelsattar", "Mohamed Abdelsattar"],
+];
+
+const CLIENTS = [
+  ["mas-sofabed", "MAS Sofabed"],
+  ["ministry-water", "Egyptian Ministry of Water Resources & Irrigation"],
+  ["tanmia", "Tanmia Petroleum Company"],
+  ["nabta", "Nabta Advertising"],
+  ["firewall", "Firewall Security"],
+  ["nadim", "NADIM Group"],
+  ["itouch-plus", "iTouch Plus"],
+  ["mafa-organic", "MAFA Organic"],
+];
+
+const TOPICS: { key: string; label: string; icon: ReactNode }[] = [
+  { key: "strategy", label: "Strategy", icon: <><circle cx="12" cy="12" r="10" /><path d="m16.24 7.76-1.8 5.41a2 2 0 0 1-1.27 1.27L7.76 16.24l1.8-5.41a2 2 0 0 1 1.27-1.27z" /></> },
+  { key: "governance", label: "Governance", icon: <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> },
+  { key: "people", label: "People", icon: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></> },
+  { key: "operations", label: "Operations", icon: <><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></> },
+  { key: "growth", label: "Growth", icon: <><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" /></> },
+  { key: "research", label: "Research", icon: <><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></> },
+];
+
+const FAQS = [
+  ["Do I need to know which service I require before contacting you?", "No. We begin by understanding your business challenge and priorities to identify the appropriate advisory scope."],
+  ["What does an engagement include?", "Each proposal defines the advisory sessions, reviews, deliverables and follow-up activities. Any additional work is specified separately."],
+  ["Do you support implementation or only provide recommendations?", "Darwish & Co. provides diagnosis, strategy, advisory oversight and performance review. Specialist implementation is delivered by the entities identified in the project scope."],
+  ["How are consulting results measured?", "We agree success measures linked to the project objective, such as performance improvement, cost reduction or operational efficiency, and review progress against the engagement plan."],
+];
+
+/** Hero video: plays muted on loop; visitors who prefer reduced motion see the still poster instead. */
+function HeroVideo() {
+  const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
-    let last = performance.now();
-    function tick(now: number) {
-      const dt = (now - last) / 1000; // seconds
-      last = now;
-      ORBIT_DEFS.forEach((def, i) => {
-        angleRefs.current[i] += def.speed * dt * 60; // deg per frame at 60fps
-        const rad = (angleRefs.current[i] * Math.PI) / 180;
-        const cx = def.radius * Math.cos(rad);
-        const cy = def.radius * Math.sin(rad);
-        const wrap = wrapRefs.current[i];
-        const img  = imgRefs.current[i];
-        if (wrap) {
-          wrap.style.transform = `translate(${cx - def.size / 2}px, ${cy - def.size / 2}px)`;
-        }
-        if (img) {
-          // counter-rotate so logo stays upright
-          img.style.transform = `rotate(${-angleRefs.current[i]}deg)`;
-        }
-      });
-      rafRef.current = requestAnimationFrame(tick);
-    }
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
+    if (ref.current && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) ref.current.play()?.catch(() => {});
   }, []);
-
-  return (
-    <div
-      ref={containerRef}
-      className="relative flex items-center justify-center"
-      style={{ width: "520px", height: "520px" }}
-    >
-      {/* Radial glow backdrop */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(96,177,255,0.22) 0%, rgba(49,154,255,0.08) 55%, transparent 80%)",
-          filter: "blur(36px)",
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Orbit ring 1 — inner */}
-      <div style={{
-        position: "absolute", width: "300px", height: "300px",
-        borderRadius: "50%", border: "1px dashed rgba(49,154,255,0.2)",
-        top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none",
-      }} />
-
-      {/* Orbit ring 2 — outer */}
-      <div style={{
-        position: "absolute", width: "450px", height: "450px",
-        borderRadius: "50%", border: "1px dashed rgba(49,154,255,0.10)",
-        top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none",
-      }} />
-
-      {/* Orbiting satellites — positioned via rAF */}
-      {ORBIT_DEFS.map((def, i) => (
-        <div
-          key={i}
-          ref={el => { wrapRefs.current[i] = el; }}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: `${def.size}px`,
-            height: `${def.size}px`,
-            willChange: "transform",
-          }}
-        >
-          <img
-            ref={el => { imgRefs.current[i] = el; }}
-            src={def.src}
-            alt=""
-            aria-hidden="true"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              opacity: def.opacity,
-              filter: "drop-shadow(0 2px 8px rgba(49,154,255,0.28))",
-              willChange: "transform",
-            }}
-          />
-        </div>
-      ))}
-
-      {/* Central emblem — static slow-spinning logo PNG */}
-      <img
-        src={EMBLEM_URL}
-        alt="Darwish & Co. emblem"
-        aria-hidden="true"
-        className="spin-slow"
-        style={{
-          position: "relative",
-          zIndex: 10,
-          width: "150px",
-          height: "150px",
-          objectFit: "contain",
-          filter: "drop-shadow(0 6px 24px rgba(49,154,255,0.4))",
-        }}
-      />
-    </div>
-  );
+  return <video ref={ref} className="hero-media" src="/media/hero.mp4" poster="/media/hero-poster.jpg" muted loop playsInline preload="auto" aria-hidden="true" />;
 }
 
-// ─── Hero Section ───────────────────────────────────────────────────────────
-function HeroSection() {
+const WORK_ITEMS = [
+  <li className="mq-item" key="case-1">
+    <Link className="wcard" href={`${ROUTES.work}/furniture`} id="case-1">
+      <img src="/media/work/furniture.jpg" alt="Living room furnished with a sofa and dining set." width={720} height={510} loading="lazy" decoding="async" />
+      <span className="wcard-label">Furniture manufacturing</span>
+      <h3>From low digital visibility to a GEO strategy</h3>
+      <span className="wcard-pill">Search visibility &amp; GEO</span>
+    </Link>
+  </li>,
+  <li className="mq-item" key="case-2">
+    <Link className="wcard" href={`${ROUTES.work}/organization`} id="case-2">
+      <img src="/media/work/org-development.jpg" alt="Leadership team reviewing documents around a boardroom table." width={720} height={566} loading="lazy" decoding="async" />
+      <span className="wcard-label">Organizational development</span>
+      <h3>From a performance question to a management development roadmap</h3>
+      <span className="wcard-pill">Management development</span>
+    </Link>
+  </li>,
+  <li className="mq-item" key="case-3">
+    <div className="wcard" id="case-3">
+      <img src="/media/work/illustrative-expansion.jpg" alt="Illustrative photo: a professional holding a hard hat and plans in a shared office." width={720} height={480} loading="lazy" decoding="async" />
+      <span className="wcard-label">Illustrative example</span>
+      <h3>Turning expansion ambitions into a focused market-entry plan</h3>
+      <span className="wcard-pill">Growth &amp; market expansion</span>
+    </div>
+  </li>,
+];
+
+const LOGO_ITEMS = CLIENTS.map(([file, name]) => (
+  <li className="logo-item" key={file}>
+    <img src={`/media/clients/${file}.png`} alt={name} loading="lazy" decoding="async" />
+  </li>
+));
+
+export default function Home() {
   return (
-    <section
-      className="relative w-full overflow-hidden"
-      style={{
-        background: "#ffffff",
-        minHeight: "100vh",
-        maxWidth: "1600px",
-        margin: "0 auto",
-        WebkitFontSmoothing: "antialiased",
-      }}
-    >
-      {/* Background gradient glow blobs — top-left */}
-      <div
-        style={{
-          position: "absolute",
-          top: "-120px",
-          left: "-160px",
-          width: "700px",
-          height: "700px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(96,177,255,0.35) 0%, transparent 70%)",
-          filter: "blur(80px)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "60px",
-          left: "80px",
-          width: "400px",
-          height: "400px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(49,154,255,0.2) 0%, transparent 70%)",
-          filter: "blur(60px)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
-
-      {/* Content wrapper */}
-      <div className="relative z-10 flex flex-col" style={{ minHeight: "100vh" }}>
-        {/* Navbar */}
-        <div className="pt-6 px-4">
-          <GlassNavbar />
-        </div>
-
-        {/* Hero body */}
-        <div className="flex-1 flex items-center">
-          <div className="container mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-16 lg:py-24">
-
-            {/* ── Left: copy ── */}
-            <div className="space-y-8 order-2 lg:order-1">
-              {/* Social proof badge */}
-              <div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
-                style={{
-                  background: "rgba(255,255,255,0.7)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(0,0,0,0.08)",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-                  fontFamily: "'Inter', sans-serif",
-                  color: "#444",
-                }}
-              >
-                <span className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={13} fill="#FF801E" stroke="none" />
-                  ))}
-                </span>
-                <span>Rated 4.9/5 by 200+ clients</span>
-              </div>
-
-              {/* Headline */}
-              <h1
-                style={{
-                  fontFamily: "'Fustat', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "clamp(42px, 5vw, 75px)",
-                  lineHeight: 1.05,
-                  letterSpacing: "-2px",
-                  color: "#0a0a0a",
-                }}
-              >
-                A Wise Word<br />
-                <span style={{ color: "#0084FF" }}>In The Right</span><br />
-                Moment.
-              </h1>
-
-              {/* Sub-headline */}
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "18px",
-                  lineHeight: 1.65,
-                  letterSpacing: "-1px",
-                  color: "#555",
-                  maxWidth: "480px",
-                }}
-              >
-                Navigating complexity and unlocking potential for SMEs in the
-                MENA region through expert strategic management, GRC, HR, and
-                market research consulting.
-              </p>
-
-              {/* CTA */}
-              <div className="flex flex-wrap gap-4 items-center">
-                <Link href="/contact">
-                  <button
-                    style={{
-                      background: "rgba(0,132,255,0.8)",
-                      backdropFilter: "blur(2px)",
-                      WebkitBackdropFilter: "blur(2px)",
-                      borderRadius: "16px",
-                      border: "none",
-                      boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 4px 20px rgba(0,132,255,0.3)",
-                      color: "#fff",
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      padding: "14px 28px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                      cursor: "pointer",
-                      transition: "transform 200ms ease, box-shadow 200ms ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      const b = e.currentTarget as HTMLButtonElement;
-                      b.style.transform = "scale(1.02)";
-                      b.style.boxShadow = "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 8px 28px rgba(0,132,255,0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      const b = e.currentTarget as HTMLButtonElement;
-                      b.style.transform = "scale(1)";
-                      b.style.boxShadow = "inset 0px 4px 4px 0px rgba(255,255,255,0.35), 0 4px 20px rgba(0,132,255,0.3)";
-                    }}
-                  >
-                    Get Started Now
-                    <span
-                      style={{
-                        background: "rgba(255,255,255,0.25)",
-                        borderRadius: "50%",
-                        width: "28px",
-                        height: "28px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <ArrowRight size={14} strokeWidth={2.5} />
-                    </span>
-                  </button>
-                </Link>
-
-                <Link href="/services">
-                  <span
-                    className="cursor-pointer flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    Explore Services <ArrowRight size={14} />
-                  </span>
-                </Link>
-              </div>
-            </div>
-
-            {/* ── Right: animated logos ── */}
-            <div
-              className="order-1 lg:order-2 flex items-center justify-center"
-              style={{ minHeight: "400px" }}
-            >
-              <FloatingLogos />
-            </div>
-          </div>
-        </div>
-
-        {/* ── Trusted-by footer strip ── */}
-        <div
-          className="px-6 lg:px-12 pb-12"
-          style={{ fontFamily: "'Inter', sans-serif" }}
-        >
-          <p
-            className="text-center text-xs font-medium uppercase tracking-widest mb-8"
-            style={{ color: "#999" }}
-          >
-            Trusted by top-tier companies across MENA
-          </p>
-
-          {/* Desktop: static row */}
-          <div className="hidden md:flex items-center justify-center" style={{ gap: "100px" }}>
-            {PARTNER_LOGOS.map((p) => (
-              <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer"
-                className="opacity-80 hover:opacity-100 transition-opacity duration-300 flex items-center">
-                <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain" />
+    <>
+      {/* Hero */}
+      <section className="hero dark" aria-labelledby="hero-title" id="hero">
+        <HeroVideo />
+        <div className="wrap hero-grid">
+          <div className="hero-copy">
+            <span className="pill">Strategic management &amp; business consulting · Egypt</span>
+            <h1 id="hero-title">
+              A wise word in the <span className="acc">right moment.</span>
+            </h1>
+            <p className="sub">We help organizations improve performance, strengthen governance, and turn growth priorities into practical action.</p>
+            <div className="btns">
+              <a className="btn btn-blue" href="#contact">
+                <span className="cta-label">Discuss your challenge</span>
               </a>
-            ))}
-          </div>
-
-          {/* Mobile: marquee */}
-          <div className="md:hidden overflow-hidden"
-            style={{
-              maskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-            }}>
-            <div className="flex items-center marquee-track" style={{ width: "max-content" }}>
-              {[...Array(2)].map((_, setIdx) => (
-                <div key={setIdx} className="flex items-center gap-12 px-6">
-                  {PARTNER_LOGOS.map((p) => (
-                    <a key={p.href + setIdx} href={p.href} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center opacity-80 hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
-                      <img src={p.src} alt={p.alt} className="h-10 w-auto object-contain" />
-                    </a>
-                  ))}
-                </div>
-              ))}
+              <Link className="btn btn-ghost" href={`${ROUTES.about}#how-we-work`}>
+                <span className="cta-label">Explore our approach</span>
+              </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Facts strip */}
+      <div className="facts-lift">
+        <div className="wrap facts">
+          <div className="facts-row">
+            {FACTS.map((f, i) => (
+              <div className="fact" key={f.label}>
+                <CountUp value={f.n} delay={i * 150} />
+                <span>{f.label}</span>
+                <small>{f.note}</small>
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </section>
-  );
-}
 
-// ─── Main Page ──────────────────────────────────────────────────────────────
-export default function Home() {
-  return (
-    <div className="flex flex-col min-h-screen">
-      {/* ── HERO ── */}
-      <HeroSection />
+      {/* Who we are */}
+      <section className="section" aria-labelledby="who-title" id="about">
+        <div className="wrap about-grid">
+          <div className="about-copy">
+            <span className="pill">Who we are</span>
+            <h2 id="who-title">
+              Advisory that improves the <span className="acc">quality of decisions</span>
+            </h2>
+            <p>Darwish &amp; Co. is a consulting firm based in Egypt, helping organizations improve performance, strengthen governance, and pursue sustainable growth.</p>
+          </div>
+          <div className={"founder" + (SHOW_FOUNDER_PHOTO ? "" : " no-photo")} id="founder">
+            {SHOW_FOUNDER_PHOTO && (
+              <img className="founder-photo" src="/media/people/fouad-darwish.jpg" alt="Fouad Darwish, Founder and Managing Partner of Darwish & Co." width={505} height={670} loading="lazy" decoding="async" />
+            )}
+            <figure className="founder-quote">
+              <blockquote>
+                <p>“True advisory is not just about identifying the right path, but ensuring the institution has the strength to walk it.”</p>
+              </blockquote>
+              <figcaption>
+                <strong>Fouad Darwish</strong>
+                <span>Founder &amp; Managing Partner</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
 
-      {/* ── Strategic Management — Primary Focus ── */}
-      <section className="py-32 bg-white">
-        <div className="container">
-          <div className="grid lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-5 space-y-6">
-              <span className="text-xs font-bold uppercase tracking-widest text-primary">
-                Core Practice
-              </span>
-              <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground leading-tight">
-                Strategic Management
-              </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Every engagement begins with strategy. We work with leadership
-                teams to define direction, align resources, and build the
-                performance systems that turn vision into execution.
-              </p>
-              <div className="w-20 h-1 bg-primary" />
-              <Link href="/services#strategy">
-                <Button size="lg" className="bg-primary text-white hover:bg-primary/90 font-bold rounded-none px-8 mt-4">
-                  Explore Strategy Practice <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
-            </div>
+      {/* What we do */}
+      <section className="section" style={{ paddingBlockStart: 0 }} aria-labelledby="do-title">
+        <div className="wrap center">
+          <div className="head center">
+            <span className="pill">What we do</span>
+            <h2 id="do-title">
+              We diagnose. We advise.
+              <br />
+              <span className="acc">We support execution.</span>
+            </h2>
+          </div>
+          <div className="feature">
+            <h3>
+              <svg className="ico" viewBox="0 0 32 32" aria-hidden="true">
+                <circle cx="14" cy="14" r="9" />
+                <path d="m21 21 7 7" />
+                <path d="M10 14h8M14 10v8" />
+              </svg>
+              Diagnosis before solutions
+            </h3>
+            <p>Every engagement starts by defining the decision to be improved. Specialist capability is brought in only where the work requires it.</p>
+          </div>
+        </div>
+      </section>
 
-            <div className="lg:col-span-7 grid sm:grid-cols-3 gap-6">
-              {[
-                { icon: Target, color: "text-primary", border: "border-t-primary", title: "Strategic Planning", desc: "Structured frameworks to define goals, allocate resources, and set measurable milestones." },
-                { icon: BarChart3, color: "text-chart-2", border: "border-t-chart-2", title: "Performance Systems", desc: "KPI design, balanced scorecards, and OKR implementation aligned to your strategic objectives." },
-                { icon: Layers, color: "text-chart-3", border: "border-t-chart-3", title: "Org Design", desc: "Restructuring, role clarity, and governance models that support your growth trajectory." },
-              ].map(({ icon: Icon, color, border, title, desc }) => (
-                <Card key={title} className={`border-t-4 ${border} border-x-0 border-b-0 shadow-lg rounded-none bg-white`}>
-                  <CardHeader>
-                    <Icon className={`w-10 h-10 ${color} mb-4`} />
-                    <CardTitle className="font-heading text-lg text-foreground">{title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{desc}</p>
-                  </CardContent>
-                </Card>
+      {/* Challenges */}
+      <section className="challenges" aria-labelledby="ch-title" id="challenges">
+        <div className="wrap">
+          <div className="ch-head">
+            <span className="ch-pill">The leadership agenda</span>
+            <h2 id="ch-title">Three challenges shaping business today.</h2>
+          </div>
+          <div className="ch-grid">
+            {CHALLENGES.map((c) => (
+              <article className={"ch-group" + (c.center ? " is-center" : "")} aria-labelledby={c.id} key={c.id}>
+                <div className="ch-desc">
+                  <span className="ch-icon" aria-hidden="true">
+                    {c.icon}
+                  </span>
+                  <h3 id={c.id}>{c.title}</h3>
+                  <p>{c.text}</p>
+                </div>
+                <figure className={`ch-tile ${c.tile}`}>
+                  <img src={c.img.src} alt={c.img.alt} width={c.img.w} height={c.img.h} loading="lazy" decoding="async" />
+                  <figcaption className="ch-stat">
+                    <span className="num">{c.num}</span>
+                    <p>{c.stat}</p>
+                    <a href={c.href} target="_blank" rel="noopener noreferrer" aria-label={c.sourceLabel}>
+                      {c.source} <ExternalIcon />
+                    </a>
+                  </figcaption>
+                </figure>
+              </article>
+            ))}
+          </div>
+          <p className="ch-note">Findings from international research. Sources and survey years shown.</p>
+        </div>
+      </section>
+
+      {/* Practices */}
+      <section className="section" aria-labelledby="pr-title" id="practices">
+        <div className="wrap center">
+          <div className="head center">
+            <span className="pill">Our Services</span>
+            <h2 id="pr-title">
+              Eight practices.
+              <br />
+              <span className="acc">Four decisions you face.</span>
+            </h2>
+          </div>
+          <div className="svc-panel">
+            <div className="svc-grid">
+              {SITE_SERVICES.map((s, i) => (
+                <Link className="svc" href={serviceHref(s.slug)} aria-labelledby={`svc-${i + 1}-t`} aria-describedby={`svc-${i + 1}-d`} key={s.slug}>
+                  <span className="svc-num" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 id={`svc-${i + 1}-t`}>{s.gridTitle}</h3>
+                  <span className="svc-tag" id={`svc-${i + 1}-d`}>
+                    {s.group}
+                  </span>
+                </Link>
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ── Supporting Services ── */}
-      <section className="py-24 bg-secondary/20">
-        <div className="container">
-          <div className="text-center mb-14">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">Supporting Practices</span>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mt-3 mb-4">Built Around Your Strategy</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Once the strategic direction is set, our specialist practices deliver the governance, people, and growth capabilities that bring it to life.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Shield, color: "text-primary", border: "border-t-primary", title: "Governance & Risk", desc: "Robust GRC frameworks that protect your business while enabling sustainable growth.", href: "/services#grc" },
-              { icon: Users, color: "text-chart-2", border: "border-t-chart-2", title: "Human Resources", desc: "Strategic HR planning and talent acquisition tailored for the MENA market.", href: "/services#hr" },
-              { icon: TrendingUp, color: "text-chart-3", border: "border-t-chart-3", title: "Business Development", desc: "Market entry strategies and partnerships to accelerate your expansion.", href: "/services#bizdev" },
-              { icon: Brain, color: "text-primary", border: "border-t-primary", title: "Digital & AI", desc: "Digital marketing, AI tools, and consumer insights to sharpen your competitive edge.", href: "/services" },
-            ].map(({ icon: Icon, color, border, title, desc, href }) => (
-              <Card key={title} className={`border-t-4 ${border} border-x-0 border-b-0 shadow-md hover:-translate-y-1 transition-transform duration-300 bg-white rounded-none`}>
-                <CardHeader>
-                  <Icon className={`w-9 h-9 ${color} mb-3`} />
-                  <CardTitle className="font-heading text-lg text-foreground">{title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4">{desc}</p>
-                  <Link href={href}>
-                    <span className={`${color} font-bold text-sm flex items-center hover:underline cursor-pointer group`}>
-                      Learn more <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Quote / Image Break ── */}
-      <section className="relative py-32 bg-white">
-        <div className="container grid md:grid-cols-2 gap-16 items-center">
-          <div className="relative">
-            <div className="absolute -top-6 -left-6 w-24 h-24 bg-chart-3/20 z-0" />
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 z-0" />
-            <img
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028612285/LHPNBN3zGrpoTVXQgWZTZw/meeting-insight_58b81ff9.jpg"
-              alt="Strategic Meeting"
-              className="relative z-10 w-full h-auto shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
-            />
-          </div>
-          <div className="space-y-8">
-            <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground leading-tight">
-              "The difference between a missed opportunity and a{" "}
-              <span className="text-primary">strategic breakthrough</span>."
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              We don't just advise; we partner. Our integrated approach ensures that your governance structures support your people, and your people drive your growth.
-            </p>
-            <Link href="/about">
-              <Button size="lg" className="bg-foreground text-white hover:bg-foreground/90 font-bold rounded-none px-8">
-                Read Our Story
-              </Button>
+          <div className="svc-cta">
+            <Link className="btn btn-navy" href={ROUTES.services}>
+              <span className="cta-label">See all services</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── Why Darwish & Co ── */}
-      <section className="py-32 bg-secondary/10">
-        <div className="container max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">Why Partner with Darwish &amp; Co?</h2>
-            <div className="w-16 h-1 bg-chart-2 mx-auto" />
+      {/* Growth 360 */}
+      <section className="g360" aria-labelledby="g-title" id="g360">
+        <div className="wrap">
+          <div className="g360-head">
+            <span className="pill">Growth 360</span>
           </div>
-          <div className="grid md:grid-cols-3 gap-12">
-            {[
-              { color: "bg-secondary text-primary", title: "Regional Expertise", desc: "Deeply rooted in MENA culture and regulations, ensuring compliance and cultural alignment." },
-              { color: "bg-chart-2/10 text-chart-2", title: "Tailored for SMEs", desc: "Agile, practical strategies designed specifically for growth-stage companies, not corporations." },
-              { color: "bg-chart-3/10 text-chart-3", title: "Integrated Approach", desc: "Bridging strategy, governance, and people for a holistic, executable business plan." },
-            ].map(({ color, title, desc }) => (
-              <div key={title} className="text-center space-y-4">
-                <div className={`w-16 h-16 ${color} rounded-full flex items-center justify-center mx-auto`}>
-                  <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <h3 className="font-bold text-xl text-foreground">{title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Smart Solutions Teaser ── */}
-      <section className="py-24 bg-secondary/10">
-        <div className="container">
-          <div className="text-center mb-14 space-y-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">Smart Solutions</span>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
-              Decision Intelligence for School Leadership
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              The Audex family turns complex school data into clear, actionable decisions — from strategic simulation to governance execution.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { name: "Audex Compass", tagline: "Test Before You Commit", desc: "Simulate future scenarios and compare strategic options before committing resources or investments.", color: "#00CC66", bg: "rgba(0,204,102,0.07)", border: "rgba(0,204,102,0.2)", anchor: "audex-compass" },
-              { name: "Audex Command", tagline: "Governance Intelligence", desc: "Turn every insight into a tracked, accountable action with controlled execution workflows.", color: "#FF9900", bg: "rgba(255,153,0,0.07)", border: "rgba(255,153,0,0.2)", anchor: "audex-command" },
-              { name: "Audex Perfect", tagline: "Where Simulation Meets Reality", desc: "The complete school digital twin — simulation and live intelligence in one unified platform.", color: "#0099CC", bg: "rgba(0,153,204,0.07)", border: "rgba(0,153,204,0.2)", anchor: "audex-perfect" },
-            ].map(({ name, tagline, desc, color, bg, border, anchor }) => (
-              <Link key={name} href={`/smart-solutions#${anchor}`}>
-                <div
-                  className="p-8 rounded-sm space-y-4 h-full hover:-translate-y-1 transition-transform duration-300 cursor-pointer"
-                  style={{ background: bg, border: `1px solid ${border}` }}
-                >
-                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color }}>{tagline}</p>
-                  <h3 className="font-heading text-xl font-bold text-foreground">{name}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-                  <span className="inline-flex items-center gap-1 text-sm font-bold" style={{ color }}>
-                    Explore <ArrowRight className="w-4 h-4" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Link href="/smart-solutions">
-              <Button size="lg" className="bg-primary text-white hover:bg-primary/90 font-bold rounded-none px-10">
-                Explore Smart Solutions <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Projects Teaser ── */}
-      <section className="py-24 bg-foreground text-white">
-        <div className="container">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-            <div className="space-y-3">
-              <span className="text-xs font-bold uppercase tracking-widest text-primary">Our Work</span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight">Platforms We've Built</h2>
-              <p className="text-white/60 text-lg max-w-xl">Beyond consulting, we deliver digital solutions that create lasting operational impact for our clients.</p>
-            </div>
-            <Link href="/projects">
-              <span className="flex items-center gap-2 text-primary font-bold text-sm hover:underline cursor-pointer whitespace-nowrap">
-                View all projects <ArrowRight className="w-4 h-4" />
+          <div className="g360-intro">
+            <h2 id="g-title">
+              <span className="sr-only">Growth 360</span>
+              <span className="flip-line" aria-hidden="true">
+                <span className="flip">
+                  <span className="flip-sizer">Understand</span>
+                  <FlipWord words={FLIP_WORDS} rootId="g360" />
+                </span>
+                <span className="flip-num">360</span>
               </span>
-            </Link>
+            </h2>
+            <p>
+              From business diagnosis to integrated growth execution. Growth 360 brings together Darwish &amp; Co.’s advisory expertise, market and consumer research from In Light, and specialist support across market
+              activation, capability development, and digital enablement. The activation mix is tailored to diagnosed business needs.
+            </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              { icon: Brain, color: "text-primary", accentColor: "bg-primary", borderHover: "hover:border-primary/50", tagColor: "text-primary", tags: ["React", "tRPC", "MySQL", "Resend Email"], label: "AI Initiative", title: "AI POC Collaboration Platform", desc: "A full-stack platform enabling Techno-Management and Widebot to collaboratively manage AI proof-of-concept projects.", href: "/projects#ai-poc", cta: "Explore platform" },
-              { icon: Globe, color: "text-chart-3", accentColor: "bg-chart-3", borderHover: "hover:border-chart-3/50", tagColor: "text-chart-3", tags: ["React", "Bilingual", "Trade Data", "Sector Maps"], label: "International Trade", title: "Hebei–Egypt Industrial Partnership Portal", desc: "A bilingual trade intelligence platform connecting Egyptian investors with Hebei Province's 107 industrial clusters.", href: "/projects#trade-portal", cta: "Explore portal" },
-            ].map(({ icon: Icon, color, accentColor, borderHover, tagColor, tags, label, title, desc, href, cta }) => (
-              <div key={title} className={`group relative bg-white/5 border border-white/10 ${borderHover} transition-all duration-300 overflow-hidden`}>
-                <div className={`h-1 w-full ${accentColor}`} />
-                <div className="p-8 space-y-6">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-full ${accentColor}/20 flex items-center justify-center`}>
-                      <Icon className={`w-5 h-5 ${color}`} />
-                    </div>
-                    <span className={`text-xs font-bold uppercase tracking-widest ${tagColor}`}>{label}</span>
-                  </div>
-                  <div className="space-y-3">
-                    <h3 className="font-heading text-2xl font-bold text-white">{title}</h3>
-                    <p className="text-white/60 leading-relaxed text-sm">{desc}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <span key={tag} className="px-2.5 py-1 text-xs font-medium bg-white/10 text-white/70 rounded-sm">{tag}</span>
-                    ))}
-                  </div>
-                  <Link href={href}>
-                    <span className={`inline-flex items-center gap-2 ${tagColor} font-bold text-sm hover:underline cursor-pointer`}>
-                      {cta} <ArrowRight className="w-4 h-4" />
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            ))}
+          <Growth360Journey />
+          <div className="g360-cta">
+            <a className="btn btn-navy" href="#contact">
+              <span className="cta-label">Discuss your challenge</span>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section className="py-24 bg-primary text-white">
-        <div className="container text-center max-w-3xl mx-auto space-y-8">
-          <h2 className="font-heading text-4xl md:text-5xl font-bold">Ready to Navigate Your Future?</h2>
-          <p className="text-xl text-white/90 font-light">Let's build a resilient and thriving future for your business, together.</p>
-          <Link href="/contact">
-            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 font-bold text-lg px-12 py-8 h-auto rounded-none mt-8 shadow-xl">
-              Get in Touch
-            </Button>
+      {/* Partners */}
+      <section className="section" style={{ paddingBlockStart: 0 }} aria-labelledby="pt-title" id="partners">
+        <div className="wrap center">
+          <div className="head center">
+            <span className="pill">Partner ecosystem</span>
+            <h2 id="pt-title">
+              Specialist partners,
+              <br />
+              <span className="acc">credited by name</span>
+            </h2>
+          </div>
+          <div className="chips">
+            {PARTNERS.map((p) => (
+              <span className="chip" key={p.file}>
+                <img className={p.filled ? "is-filled" : undefined} src={`/media/partners/${p.file}.png`} alt="" width={36} height={36} loading="lazy" />
+                {p.name}
+              </span>
+            ))}
+          </div>
+          <div className="btns">
+            <a className="btn btn-navy" href="#contact">
+              <span className="cta-label">Discuss your challenge</span>
+            </a>
+            <Link className="btn btn-line" href={`${ROUTES.about}#partners`}>
+              <span className="cta-label">Explore the ecosystem</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* What sets us apart */}
+      <section className="section" style={{ paddingBlockStart: 0 }} aria-labelledby="ap-title" id="apart">
+        <div className="wrap">
+          <div className="head center">
+            <span className="pill">Why Darwish &amp; Co.</span>
+            <h2 id="ap-title">
+              What sets us <span className="acc">apart</span>
+            </h2>
+          </div>
+          <div className="mosaic">
+            <div className="mcol">
+              <article className="m" id="people">
+                <h3>Senior advisory</h3>
+                <p>Direct access to experienced leadership and seasoned experts.</p>
+                <ul className="avatars" aria-label="Fouad Darwish and seven experts">
+                  {EXPERTS.map(([file, name]) => (
+                    <li key={file}>
+                      <img src={`/media/people/${file}-avatar.jpg`} alt={name} width={48} height={48} loading="lazy" decoding="async" />
+                    </li>
+                  ))}
+                </ul>
+                <Link className="more" href={`${ROUTES.about}#experts`}>
+                  <span className="cta-label">Meet our experts →</span>
+                </Link>
+              </article>
+              <article className="m blue">
+                <svg className="m-art h90" viewBox="0 0 120 90" preserveAspectRatio="xMinYMid meet" aria-hidden="true" focusable="false">
+                  <g stroke="#fff" strokeOpacity=".5" strokeWidth="1" strokeLinecap="round">
+                    <line x1="60.0" y1="12.0" x2="92.3" y2="35.5" /><line x1="60.0" y1="12.0" x2="80.0" y2="73.5" /><line x1="60.0" y1="12.0" x2="40.0" y2="73.5" /><line x1="60.0" y1="12.0" x2="27.7" y2="35.5" /><line x1="92.3" y1="35.5" x2="80.0" y2="73.5" /><line x1="92.3" y1="35.5" x2="40.0" y2="73.5" /><line x1="92.3" y1="35.5" x2="27.7" y2="35.5" /><line x1="80.0" y1="73.5" x2="40.0" y2="73.5" /><line x1="80.0" y1="73.5" x2="27.7" y2="35.5" /><line x1="40.0" y1="73.5" x2="27.7" y2="35.5" />
+                  </g>
+                  <g fill="#fff" fillOpacity=".22" stroke="#fff" strokeWidth="1.2">
+                    <circle cx="60.0" cy="12.0" r="7" /><circle cx="92.3" cy="35.5" r="7" /><circle cx="80.0" cy="73.5" r="7" /><circle cx="40.0" cy="73.5" r="7" /><circle cx="27.7" cy="35.5" r="7" />
+                  </g>
+                  <circle cx="60" cy="46" r="3" fill="#fff" fillOpacity=".7" />
+                </svg>
+                <h3>Integrated thinking</h3>
+                <p>Strategy, governance, people, operations and growth, treated as one system.</p>
+              </article>
+            </div>
+            <div className="mcol">
+              <article className="m navy">
+                <svg className="m-art h110" viewBox="0 0 200 110" preserveAspectRatio="xMinYMid meet" aria-hidden="true" focusable="false">
+                  <g stroke="#8FD6F8" strokeOpacity=".35" strokeWidth="1" strokeLinecap="round">
+                    <path d="M14 96h150" /><path d="M14 96V12" /><path d="M14 68h150M14 40h150" strokeDasharray="2 5" />
+                  </g>
+                  <g fill="#00A3F0" fillOpacity=".16">
+                    <rect x="28" y="70" width="14" height="26" rx="3" /><rect x="52" y="58" width="14" height="38" rx="3" /><rect x="76" y="64" width="14" height="32" rx="3" /><rect x="100" y="46" width="14" height="50" rx="3" /><rect x="124" y="34" width="14" height="62" rx="3" />
+                  </g>
+                  <polyline points="35,62 59,50 83,56 107,38 131,26" fill="none" stroke="#00A3F0" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  <g fill="#0F1F33" stroke="#00A3F0" strokeWidth="1.6">
+                    <circle cx="35" cy="62" r="3.5" /><circle cx="59" cy="50" r="3.5" /><circle cx="83" cy="56" r="3.5" /><circle cx="107" cy="38" r="3.5" /><circle cx="131" cy="26" r="3.5" />
+                  </g>
+                  <g fill="none" stroke="#8FD6F8" strokeWidth="1.8" strokeLinecap="round">
+                    <circle cx="150" cy="44" r="22" fill="#8FD6F8" fillOpacity=".08" />
+                    <path d="m166 60 18 18" />
+                  </g>
+                </svg>
+                <h3>Evidence before recommendation</h3>
+                <p>Research and market intelligence reduce uncertainty before action.</p>
+              </article>
+              <article className="m">
+                <ol className="steps3" aria-label="Priorities, then ownership, then action">
+                  <li>
+                    <span className="step">Priorities</span>
+                    <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h11M10 5l4 4-4 4" /></svg>
+                  </li>
+                  <li>
+                    <span className="step">Ownership</span>
+                    <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h11M10 5l4 4-4 4" /></svg>
+                  </li>
+                  <li>
+                    <span className="step">Action</span>
+                  </li>
+                </ol>
+                <h3>Practical implementation</h3>
+                <p>Frameworks with clear ownership and next steps.</p>
+              </article>
+            </div>
+            <div className="mcol">
+              <article className="m">
+                <svg className="m-art h110" viewBox="-4 -4 124 96" preserveAspectRatio="xMinYMid meet" aria-hidden="true" focusable="false">
+                  <path d="M4.6 2.9 L21.8 4.6 L36.1 8.8 L44.5 5.9 L48.7 3.8 L53.8 2.5 L60.5 3.4 L64.7 5.5 L77.3 6.3 L81.1 5.0 L86.5 20.2 L84.4 24.4 L83.2 28.6 L81.7 33.6 L81.1 35.0 L75.6 30.7 L68.0 19.3 L66.8 16.4 L71.4 29.8 L77.3 39.1 L78.5 43.3 L81.5 48.7 L86.5 57.5 L91.6 67.2 L100.8 79.8 L103.3 83.2 L57.1 83.2 L3.4 83.2 L3.4 20.2 L2.5 14.3 Z" fill="#EAF6FD" stroke="#172B43" strokeWidth="1.2" strokeLinejoin="round" />
+                  <g fill="none" stroke="#0B6FA4" strokeOpacity=".6" strokeWidth=".9" strokeLinecap="round" strokeDasharray="2 4">
+                    <path d="M50 40 C 70 28, 92 18, 116 10" /><path d="M50 40 C 72 44, 96 46, 118 52" /><path d="M50 40 C 40 22, 34 8, 30 -2" />
+                  </g>
+                  <g fill="#0B6FA4">
+                    <circle cx="116" cy="10" r="2.2" /><circle cx="118" cy="52" r="2.2" /><circle cx="30" cy="-2" r="2.2" />
+                  </g>
+                </svg>
+                <h3>Local market understanding</h3>
+                <p>Egypt and regional business and regulatory realities.</p>
+              </article>
+              <article className="m navy">
+                <svg className="m-art h90" viewBox="0 0 186 80" preserveAspectRatio="xMinYMid meet" aria-hidden="true" focusable="false">
+                  <g stroke="#8FD6F8" strokeOpacity=".3" strokeWidth="1" strokeLinecap="round">
+                    <line x1="18" y1="30" x2="46" y2="14" /><line x1="46" y1="14" x2="78" y2="26" /><line x1="78" y1="26" x2="108" y2="12" /><line x1="108" y1="12" x2="140" y2="30" /><line x1="140" y1="30" x2="168" y2="16" /><line x1="18" y1="30" x2="30" y2="62" /><line x1="30" y1="62" x2="96" y2="58" /><line x1="78" y1="26" x2="96" y2="58" /><line x1="96" y1="58" x2="152" y2="64" /><line x1="140" y1="30" x2="152" y2="64" /><line x1="46" y1="14" x2="30" y2="62" /><line x1="108" y1="12" x2="96" y2="58" /><line x1="168" y1="16" x2="152" y2="64" />
+                  </g>
+                  <g fill="#00A3F0" fillOpacity=".85" stroke="#8FD6F8" strokeOpacity=".6" strokeWidth="1">
+                    <circle cx="18" cy="30" r="4" /><circle cx="46" cy="14" r="4" /><circle cx="78" cy="26" r="5" /><circle cx="108" cy="12" r="4" /><circle cx="140" cy="30" r="5" /><circle cx="168" cy="16" r="4" /><circle cx="30" cy="62" r="4" /><circle cx="96" cy="58" r="5" /><circle cx="152" cy="64" r="4" />
+                  </g>
+                </svg>
+                <CountUp value={9} as="span" className="big" />
+                <h3>Partner-enabled scale</h3>
+                <p>Specialist partners assembled around larger or multidisciplinary work.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our work */}
+      <section className="work dark" aria-labelledby="rs-title" id="work">
+        <div className="wrap">
+          <div className="head center">
+            <span className="pill">Our work</span>
+            <h2 id="rs-title">
+              Real organizations. <span className="acc">Selected engagements.</span>
+            </h2>
+          </div>
+        </div>
+        <Marquee className="mq-cases" items={WORK_ITEMS} speed={20} dir={1} label="Selected engagements" />
+        <Marquee className="mq-logos" items={LOGO_ITEMS} speed={14} dir={-1} label="Organizations we work with" id="clients" />
+      </section>
+
+      {/* Insights */}
+      <section className="section" aria-labelledby="in-title" id="insights">
+        <div className="wrap mag">
+          <div className="mag-left">
+            <span className="pill">Our perspectives</span>
+            <h2 id="in-title">Insights</h2>
+            <p>Practical perspectives for leaders. Pick a topic.</p>
+            <ul className="topics" aria-label="Insight topics">
+              {TOPICS.map((t) => (
+                <li key={t.key}>
+                  <Link href={`${ROUTES.insights}#${t.key}`}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      {t.icon}
+                    </svg>
+                    {t.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Featured article. Author credit and description are provisional pending editorial approval.
+              Until the article is published it has no page, so the card opens the Insights listing. */}
+          <Link className="mag-feature" href={FEATURED_HREF} aria-labelledby="mag-title-text" aria-describedby="mag-desc">
+            <img src="/media/insights/delegation.jpg" alt="" width={1400} height={933} loading="lazy" decoding="async" />
+            <div className="mag-glass">
+              <div className="mag-author">
+                <img src="/media/people/fouad-darwish-avatar.jpg" alt="" width={44} height={44} loading="lazy" />
+                <div>
+                  <strong>Fouad Darwish</strong>
+                  <span>Founder &amp; Managing Partner</span>
+                </div>
+              </div>
+              <span className="mag-kind">Governance</span>
+              <div className="mag-title">
+                <h3 id="mag-title-text">Delegation of Authority: how to delegate decisions without losing oversight</h3>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 17 17 7" />
+                  <path d="M7 7h10v10" />
+                </svg>
+              </div>
+              <p id="mag-desc">A perspective on decision rights, accountability, and effective oversight.</p>
+            </div>
           </Link>
         </div>
       </section>
 
-      {/* ── Client Login ── */}
-      <section id="client-login" className="relative overflow-hidden bg-foreground py-24 text-white">
-        <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at 82% 18%, rgba(0,153,204,0.52), transparent 28%), radial-gradient(circle at 8% 90%, rgba(0,204,102,0.16), transparent 26%)" }} />
-        <div className="container relative z-10 grid items-center gap-12 lg:grid-cols-[1.35fr_0.65fr]">
-          <div className="max-w-2xl space-y-6">
-            <span className="inline-flex items-center border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white/80">
-              Client Access
-            </span>
-            <h2 className="font-heading text-4xl font-bold leading-tight md:text-5xl">Client Login</h2>
-            <p className="max-w-xl text-lg leading-relaxed text-white/75">
-              Access Darwish Hub, our secure client portal for your shared workspace, engagement materials, and collaboration with our consulting team.
-            </p>
-            <Link href="/client-login" className="inline-flex items-center gap-3 bg-white px-7 py-4 text-sm font-bold text-foreground transition-colors hover:bg-chart-2 hover:text-white">
-              Sign in to Darwish Hub <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="border border-white/20 bg-white/5 p-8 backdrop-blur-sm">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-chart-2">Darwish Hub</p>
-            <div className="my-6 h-px w-full bg-white/15" />
-            <ul className="space-y-4 text-sm leading-relaxed text-white/75">
-              <li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-chart-2" />Secure client workspace</li>
-              <li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-chart-2" />Direct access to engagement resources</li>
-              <li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-chart-2" />Sign in with your approved client account</li>
-            </ul>
+      {/* FAQ */}
+      <section className="section" style={{ background: "var(--white)" }} aria-labelledby="fq-title">
+        <div className="wrap faq-grid">
+          <h2 id="fq-title">FAQs</h2>
+          <div className="faqs">
+            {FAQS.map(([q, a], i) => (
+              <details key={q} open={i === 0}>
+                <summary>{q}</summary>
+                <p>{a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
-    </div>
+
+      <div className="sx sx-gov sx-about">
+        <ContactSection idPrefix="ab" />
+      </div>
+    </>
   );
 }

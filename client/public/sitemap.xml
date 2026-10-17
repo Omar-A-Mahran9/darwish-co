@@ -16,62 +16,67 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.darwish-co.com/services#strategy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.darwish-co.com/services#grc</loc>
+    <loc>https://www.darwish-co.com/services/strategy-performance</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.darwish-co.com/services#hr</loc>
+    <loc>https://www.darwish-co.com/services/governance-risk-compliance</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.darwish-co.com/services#bizdev</loc>
+    <loc>https://www.darwish-co.com/services/human-resources</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.darwish-co.com/services#digital-marketing</loc>
+    <loc>https://www.darwish-co.com/services/operational-excellence</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.darwish-co.com/services#market-research</loc>
+    <loc>https://www.darwish-co.com/services/business-development</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.darwish-co.com/services#integrity</loc>
+    <loc>https://www.darwish-co.com/services/negotiation-deal-advisory</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/services/market-research</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/services/company-liquidation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/industries</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.darwish-co.com/projects</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.darwish-co.com/partners</loc>
-    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.darwish-co.com/corporate-partners</loc>
+    <loc>https://www.darwish-co.com/projects/furniture</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.darwish-co.com/training</loc>
+    <loc>https://www.darwish-co.com/projects/organization</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.darwish-co.com/blog</loc>
+    <loc>https://www.darwish-co.com/insights</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -79,5 +84,30 @@
     <loc>https://www.darwish-co.com/contact</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/guides/anti-bribery-questionnaire</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/guides/delegation-of-authority</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/guides</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/guides/governance-for-growing-smes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/guides/employee-ai-use</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

@@ -161,7 +161,7 @@ export default function AdminInbox() {
               />
               <Button
                 type="submit"
-                className="w-full h-12 bg-primary text-white hover:bg-primary/90 font-bold rounded-none"
+                className="w-full h-12 bg-primary text-white hover:bg-primary/90 font-bold "
                 disabled={loading}
               >
                 {loading ? "Verifying..." : "Access Inbox"}
@@ -181,7 +181,7 @@ export default function AdminInbox() {
     <div className="min-h-screen bg-secondary/10 font-body">
       {/* Header */}
       <div className="bg-white border-b border-border sticky top-0 z-10">
-        <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="site-container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
               <Inbox className="w-5 h-5 text-primary" />
@@ -199,7 +199,6 @@ export default function AdminInbox() {
               variant="outline"
               size="sm"
               onClick={() => window.location.assign("/admin/client-access")}
-              className="rounded-none"
             >
               Client Access
             </Button>
@@ -226,7 +225,7 @@ export default function AdminInbox() {
         </div>
       </div>
 
-      <div className="container max-w-6xl mx-auto px-4 py-6">
+      <div className="site-container max-w-6xl mx-auto px-4 py-6">
         {messages.length === 0 ? (
           <div className="text-center py-24">
             <Inbox className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
@@ -298,7 +297,7 @@ export default function AdminInbox() {
                             <AtSign className="w-4 h-4" />
                             <a
                               href={`mailto:${selectedMessage.email}`}
-                              className="text-primary hover:underline"
+                              className="link"
                             >
                               {selectedMessage.email}
                             </a>
@@ -330,7 +329,7 @@ export default function AdminInbox() {
                     </div>
                     <div className="mt-6 flex gap-3">
                       <a href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject || ""}`}>
-                        <Button className="bg-primary text-white hover:bg-primary/90 rounded-none gap-2">
+                        <Button className="bg-primary text-white hover:bg-primary/90 gap-2">
                           <Mail className="w-4 h-4" />
                           Reply via Email
                         </Button>

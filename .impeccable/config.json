@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-09-28T15:20:07.299Z",
+        "reason": "user specified Arial/Helvetica explicitly in the services-showcase design brief, to match a supplied prototype"
+      }
+    ]
+  }
+}

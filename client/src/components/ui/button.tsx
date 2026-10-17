@@ -5,7 +5,13 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  // One button system for the site: 6px corners (the brand doc's 6-8px
+  // button target, matching input.tsx's existing radius), body font,
+  // semibold, no glow. Pages should not override the shape or the weight.
+  // (Some pages still hardcode `rounded-none` on individual buttons — that's
+  // a page-level leftover from the old square-corner system, not this
+  // component; sweep those separately.)
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
@@ -21,11 +27,14 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+        // sm and icon-sm are visually compact by design; `touch-target`
+        // expands their tappable area to 44×44 without growing them on
+        // screen (brand doc: "practical minimum touch target: 44 × 44 px").
+        default: "h-10 px-5 py-2 has-[>svg]:px-4",
+        sm: "h-9 gap-1.5 px-3.5 has-[>svg]:px-3 touch-target",
+        lg: "h-12 px-7 has-[>svg]:px-6",
         icon: "size-9",
-        "icon-sm": "size-8",
+        "icon-sm": "size-8 touch-target",
         "icon-lg": "size-10",
       },
     },

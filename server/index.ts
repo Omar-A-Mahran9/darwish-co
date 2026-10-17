@@ -1,6 +1,10 @@
 import express from "express";
+import fs from "fs";
 import { createServer } from "http";
 import path from "path";
+import { isKnownRoute } from "../shared/seo.js";
+import { PAGE_REDIRECTS, SERVICE_REDIRECTS, WITHDRAWN_SERVICES } from "../shared/site.js";
+import { injectSeo } from "./seoHtml.js";
 import { fileURLToPath } from "url";
 import { sendGmailWebsiteRequestNotification } from "./gmailNotification.js";
 import {
@@ -474,11 +478,89 @@ async function startServer() {
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
 
-  app.use(express.static(staticPath));
+  // The shell is read once and reused: the SPA fallback and the withdrawn-page
+  // response both serve it with the metadata of the address that was asked for.
+  const indexHtmlPath = path.join(staticPath, "index.html");
+  let indexHtml: string | null = null;
+  const readShell = () => (indexHtml ??= fs.readFileSync(indexHtmlPath, "utf-8"));
 
-  // Client-side routing fallback
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
+  // Pages the redesign folded into others (Partners and Corporate partners into
+  // About, the blog into Insights) answer with a permanent redirect. The old
+  // blog articles have no counterpart, so each one goes to the Insights listing.
+  app.get(["/partners", "/corporate-partners", "/blog"], (req, res) => {
+    res.redirect(301, PAGE_REDIRECTS[req.path.replace(/\/+$/, "")]);
+  });
+  app.get("/blog/*", (_req, res) => res.redirect(301, PAGE_REDIRECTS["/blog"]));
+
+  // Service addresses from earlier versions of the site keep their value by
+  // answering with a permanent redirect rather than a 404.
+  app.get("/services/:slug", (req, res, next) => {
+    const path = `/services/${req.params.slug}`;
+
+    const destination = SERVICE_REDIRECTS[path];
+    if (destination) return res.redirect(301, destination);
+
+    // Withdrawn with no successor. 410 says the page is deliberately gone,
+    // rather than redirecting to a hub and creating a soft 404.
+    const withdrawn = WITHDRAWN_SERVICES[path];
+    if (withdrawn) {
+      try {
+        return res.status(410).type("html").send(injectSeo(readShell(), path));
+      } catch (error) {
+        console.error("[SEO] Could not serve the withdrawn-page shell:", error);
+        return res.status(410).type("text/plain").send(withdrawn);
+      }
+    }
+
+    return next();
+  });
+
+  app.use(express.static(staticPath, { index: false, redirect: false }));
+
+  /**
+   * Pages written to disk at build time by scripts/prerender.mjs. Serving one
+   * of these hands the visitor — or a crawler that never runs JavaScript — the
+   * finished page rather than an empty shell.
+   */
+  const prerendered = new Map<string, string>();
+
+  const readPrerendered = (pathname: string): string | null => {
+    const key = pathname.replace(/\/+$/, "") || "/";
+    const cached = prerendered.get(key);
+    if (cached !== undefined) return cached;
+
+    const file =
+      key === "/"
+        ? path.join(staticPath, "index.html")
+        : path.join(staticPath, key.slice(1), "index.html");
+
+    // Keep the lookup inside the build output, whatever the request contained.
+    if (!path.resolve(file).startsWith(path.resolve(staticPath))) return null;
+
+    try {
+      const html = fs.readFileSync(file, "utf-8");
+      prerendered.set(key, html);
+      return html;
+    } catch {
+      return null;
+    }
+  };
+
+  // Client-side routing fallback. A prerendered page is served when one exists;
+  // everything else gets the shell with the metadata of the address asked for.
+  app.get("*", (req, res) => {
+    try {
+      const page = readPrerendered(req.path);
+      if (page) return res.status(200).type("html").send(page);
+
+      res
+        .status(isKnownRoute(req.path) ? 200 : 404)
+        .type("html")
+        .send(injectSeo(readShell(), req.path));
+    } catch (error) {
+      console.error("[SEO] Falling back to the unmodified shell:", error);
+      res.sendFile(indexHtmlPath);
+    }
   });
 
   const port = process.env.PORT || 3000;

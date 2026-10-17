@@ -1,0 +1,474 @@
+/*
+ * Darwish & Co. — the `/guides` library as a bookshelf.
+ *
+ * Matches the supplied prototype (guide-bookshelf.html) for proportions,
+ * palette, binding lines, shelf rules and spacing, set in the site's own
+ * Playfair Display + Inter pairing (`--font-heading` / `--font-body`) rather
+ * than the prototype's Georgia/Arial stand-ins.
+ *
+ * Every selector is prefixed `.guide-shelf-*` / `.guide-book*` so nothing here
+ * collides with Tailwind utilities in the site's single global stylesheet.
+ */
+
+.guide-library {
+  --gs-navy: #172b43;
+  --gs-muted: #58636c;
+  --gs-line: #d7dbda;
+  --gs-shelf: #a7aaa4;
+  font-family: var(--font-body);
+  padding-block: 51px 72px;
+}
+
+.guide-library-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  border-bottom: 1px solid var(--gs-line);
+  padding-bottom: 14px;
+  margin-bottom: 34px;
+}
+
+.guide-library-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.2px;
+  color: var(--gs-navy);
+}
+
+.guide-library-eyebrow,
+.guide-library-count {
+  white-space: nowrap;
+}
+
+.guide-library-count {
+  font-size: 12px;
+  color: var(--gs-muted);
+}
+
+/* ── One shelf ── */
+
+.guide-shelf {
+  margin-bottom: 52px;
+}
+.guide-shelf:last-child {
+  margin-bottom: 0;
+}
+
+.guide-shelf-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 27px;
+}
+
+.guide-shelf-title {
+  font: 400 26px/1.25 var(--font-heading);
+  margin: 0;
+  color: var(--gs-navy);
+}
+
+.guide-shelf-number {
+  font: 11px var(--font-body);
+  color: #76828b;
+  margin-right: 13px;
+  vertical-align: middle;
+}
+
+.guide-shelf-head p {
+  font-size: 12px;
+  color: var(--gs-muted);
+  margin: 0;
+}
+
+/* The shelf itself: the overview and its topic pages standing on one rule. */
+.guide-shelf-books {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 24px;
+  align-items: end;
+  padding: 0 15px 0 6px;
+  border-bottom: 2px solid var(--gs-shelf);
+  position: relative;
+}
+.guide-shelf-books::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 6px;
+  background: linear-gradient(#dcded8, transparent);
+  pointer-events: none;
+}
+
+.guide-shelf-topics-wrap {
+  min-width: 0;
+}
+
+.guide-shelf-topic-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 14px;
+  color: var(--gs-muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.guide-shelf-scroll-cue {
+  font-size: 10px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Native sideways scrolling: no carousel, no autoplay. The top and side
+   padding give a lifted book and a focus ring room inside the scroller. */
+.guide-shelf-topics {
+  display: flex;
+  align-items: flex-end;
+  gap: 13px;
+  list-style: none;
+  padding: 10px 6px 0;
+  margin: -10px -6px 0;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 6px;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #89979d #e8e9e4;
+}
+.guide-shelf-topics li {
+  flex: 0 0 176px;
+  scroll-snap-align: start;
+}
+@media (min-width: 1100px) {
+  .guide-shelf-topics li {
+    flex: 1 0 176px;
+    max-width: 214px;
+  }
+}
+
+.guide-shelf-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 28px;
+  margin: 23px 6px 0;
+}
+.guide-shelf-caption p {
+  margin: 0;
+  color: var(--gs-muted);
+  font-size: 12px;
+  max-width: 620px;
+  line-height: 1.8;
+}
+.guide-shelf-caption a {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.guide-shelf-caption a:hover {
+  text-decoration: none;
+}
+
+/* ── One book ── */
+
+.guide-book {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-decoration: none;
+  border-radius: 3px 5px 0 0;
+  isolation: isolate;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+  box-shadow:
+    3px 0 5px #172b4312,
+    inset -3px 0 0 #00000008;
+  overflow-wrap: break-word;
+}
+/* Binding lines: a crease near the spine and a fainter one at the fore-edge. */
+.guide-book::before,
+.guide-book::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: currentColor;
+  pointer-events: none;
+}
+.guide-book::before {
+  left: 9px;
+  opacity: 0.16;
+}
+.guide-book::after {
+  right: 7px;
+  opacity: 0.08;
+}
+
+.guide-book:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+  z-index: 2;
+}
+
+/* A slight lift, only where there is a real pointer to hover with. */
+@media (hover: hover) and (pointer: fine) and (min-width: 640px) {
+  .guide-book:hover {
+    transform: translateY(-7px);
+    box-shadow: 4px 8px 14px #172b431a;
+  }
+}
+
+.guide-book-type {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.7px;
+  text-transform: uppercase;
+}
+
+.guide-book-title {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  /* A single long word ("questionnaires") is wider than a narrow spine. */
+  hyphens: auto;
+}
+
+.guide-book-description {
+  display: block;
+}
+
+.guide-book-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #ffffff35;
+  font-size: 11px;
+}
+
+.guide-book-arrow {
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* The overview: the thick navy volume. */
+.guide-book--hub {
+  min-height: 344px;
+  padding: 25px 27px 23px 30px;
+  background: var(--gs-navy);
+  color: #fff;
+}
+.guide-book--hub .guide-book-type {
+  color: #c5d1dd;
+}
+.guide-book--hub .guide-book-title {
+  font-size: 35px;
+  line-height: 1.14;
+  letter-spacing: -0.5px;
+  margin: 34px 0 18px;
+}
+.guide-book--hub .guide-book-description {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #d0dae1;
+  margin: 0 0 25px;
+}
+
+/* Topic pages: narrower, muted spines of slightly different heights. */
+.guide-book--topic {
+  min-height: 302px;
+  padding: 22px 20px 20px 25px;
+  background: #e0e5df;
+  color: #253a35;
+}
+.guide-shelf-topics li:nth-child(3n + 2) .guide-book--topic {
+  background: #e9e1d1;
+  color: #463b29;
+  min-height: 316px;
+}
+.guide-shelf-topics li:nth-child(3n + 3) .guide-book--topic {
+  background: #dfe6eb;
+  color: #273c4d;
+  min-height: 294px;
+}
+.guide-book--topic .guide-book-type {
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  opacity: 0.8;
+}
+.guide-book--topic .guide-book-title {
+  font-size: 23px;
+  line-height: 1.17;
+  letter-spacing: -0.4px;
+  margin: 36px 0 17px;
+}
+.guide-book--topic .guide-book-description {
+  font-size: 11px;
+  line-height: 1.65;
+  margin: 0 0 22px;
+}
+.guide-book--topic .guide-book-bottom {
+  border-color: #172b432b;
+}
+/* Inside the scroller the ring is drawn inside the book, where the strip's
+   own edges cannot clip it. */
+.guide-book--topic:focus-visible {
+  outline-offset: -5px;
+}
+
+/* ── Tablet: the overview stays beside a scrolling strip of topics. ── */
+@media (max-width: 1023px) {
+  .guide-shelf-books {
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 20px;
+  }
+  .guide-book--hub .guide-book-title {
+    font-size: 32px;
+  }
+  .guide-shelf-head {
+    display: block;
+  }
+  .guide-shelf-head p {
+    margin-top: 9px;
+  }
+}
+
+/* ── Phone: a compact overview above a sideways strip of topics. ── */
+@media (max-width: 639px) {
+  .guide-library {
+    padding-block: 30px 45px;
+  }
+  .guide-library-top {
+    margin-bottom: 25px;
+  }
+  .guide-library-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+  .guide-library-count {
+    font-size: 10px;
+  }
+  .guide-shelf {
+    margin-bottom: 35px;
+  }
+  .guide-shelf-head {
+    margin-bottom: 21px;
+  }
+  .guide-shelf-title {
+    font-size: 23px;
+  }
+  .guide-shelf-number {
+    margin-right: 8px;
+  }
+  .guide-shelf-head p {
+    font-size: 11px;
+  }
+  .guide-shelf-books {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+  .guide-shelf-books::after {
+    display: none;
+  }
+  .guide-book--hub {
+    min-height: 225px;
+    padding: 21px 25px 20px 29px;
+  }
+  .guide-book--hub .guide-book-title {
+    font-size: 32px;
+    max-width: 280px;
+    margin: 22px 0 12px;
+  }
+  .guide-book--hub .guide-book-description {
+    font-size: 11px;
+    margin-bottom: 20px;
+    max-width: 270px;
+  }
+  .guide-book--hub .guide-book-bottom {
+    padding-top: 13px;
+  }
+  .guide-shelf-topics-wrap {
+    margin-top: 23px;
+    border-bottom: 2px solid var(--gs-shelf);
+  }
+  .guide-shelf-topic-label {
+    font-size: 9px;
+    margin-bottom: 13px;
+    letter-spacing: 0.7px;
+  }
+  .guide-shelf-topics {
+    padding-top: 9px;
+  }
+  .guide-shelf-topics li {
+    flex-basis: 154px;
+  }
+  .guide-book--topic {
+    min-height: 260px;
+    padding: 19px 17px 17px 22px;
+  }
+  .guide-shelf-topics li:nth-child(3n + 2) .guide-book--topic {
+    min-height: 273px;
+  }
+  .guide-shelf-topics li:nth-child(3n + 3) .guide-book--topic {
+    min-height: 254px;
+  }
+  .guide-book--topic .guide-book-title {
+    font-size: 21px;
+    margin-top: 27px;
+  }
+  .guide-book--topic .guide-book-description {
+    font-size: 10px;
+  }
+  .guide-shelf-caption {
+    display: block;
+    margin: 19px 0 0;
+  }
+  .guide-shelf-caption p {
+    font-size: 11px;
+  }
+  .guide-shelf-caption a {
+    display: inline-block;
+    margin-top: 13px;
+    font-size: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-book {
+    transition: none;
+  }
+  .guide-book:hover {
+    transform: none;
+  }
+}
+
+@media print {
+  .guide-shelf-topics {
+    overflow: visible;
+    flex-wrap: wrap;
+  }
+  .guide-shelf-books {
+    break-inside: avoid;
+  }
+  .guide-book {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

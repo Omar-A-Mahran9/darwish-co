@@ -40,14 +40,14 @@ export default function ClientLogin() {
 
   return (
     <div className="min-h-[calc(100vh-7rem)] bg-secondary/20 py-16 sm:py-24">
-      <div className="container grid max-w-5xl items-stretch overflow-hidden border border-border bg-white shadow-xl lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="site-container grid max-w-5xl items-stretch overflow-hidden border border-border bg-white shadow-xl lg:grid-cols-[1.05fr_0.95fr]">
         <section className="bg-foreground px-8 py-12 text-white sm:px-12">
           <div className="flex h-full flex-col justify-between gap-14">
             <div>
               <span className="inline-flex items-center gap-2 border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-white/85">
                 <ShieldCheck className="h-3.5 w-3.5 text-chart-2" /> Secure access
               </span>
-              <h1 className="mt-6 font-heading text-4xl font-bold leading-tight sm:text-5xl">Client Login</h1>
+              <h1 className="mt-6 font-heading text-h1 font-bold">Client Login</h1>
               <p className="mt-5 max-w-md text-base leading-relaxed text-white/75 sm:text-lg">
                 Sign in with the username and password issued by Darwish &amp; Co. to access your dedicated client portal.
               </p>
@@ -75,7 +75,7 @@ export default function ClientLogin() {
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
                 placeholder="Your issued username"
-                className="h-12 rounded-none"
+                className="h-12 "
               />
             </label>
             <label className="block space-y-2 text-sm font-semibold text-foreground">
@@ -86,16 +86,16 @@ export default function ClientLogin() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="Your issued password"
-                className="h-12 rounded-none"
+                className="h-12 "
               />
             </label>
-            <Button type="submit" disabled={submitting} className="h-12 w-full rounded-none bg-primary text-white hover:bg-primary/90">
+            <Button type="submit" disabled={submitting} className="h-12 w-full bg-primary text-white hover:bg-primary/90">
               {submitting ? "Checking access…" : <>Access my portal <ArrowRight className="ml-2 h-4 w-4" /></>}
             </Button>
           </form>
 
           <Link href="/contact">
-            <span className="mt-8 inline-block cursor-pointer text-sm font-medium text-primary hover:underline">Need help with access?</span>
+            <span className="link mt-8 inline-block cursor-pointer text-sm font-medium">Need help with access?</span>
           </Link>
         </section>
       </div>

@@ -164,7 +164,7 @@ export default function AdminClientAccess() {
           <CardContent>
             <form onSubmit={handleAdminLogin} className="space-y-4">
               <Input type="password" placeholder="Admin token" value={tokenInput} onChange={(event) => setTokenInput(event.target.value)} className="h-12 text-center" autoFocus />
-              <Button type="submit" disabled={loading} className="h-12 w-full rounded-none bg-primary text-white hover:bg-primary/90">{loading ? "Verifying…" : "Access Client Accounts"}</Button>
+              <Button type="submit" disabled={loading} className="h-12 w-full bg-primary text-white hover:bg-primary/90">{loading ? "Verifying…" : "Access Client Accounts"}</Button>
             </form>
           </CardContent>
         </Card>
@@ -175,32 +175,32 @@ export default function AdminClientAccess() {
   return (
     <div className="min-h-screen bg-secondary/10 pb-16 font-body">
       <header className="sticky top-0 z-10 border-b border-border bg-white/95 backdrop-blur">
-        <div className="container flex items-center justify-between py-4">
+        <div className="site-container flex items-center justify-between py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center bg-primary/10 text-primary"><KeyRound className="h-5 w-5" /></div>
             <div><h1 className="font-heading text-lg font-bold text-foreground">Client Access Management</h1><p className="text-xs text-muted-foreground">Issue credentials and assign secure portal routes</p></div>
           </div>
           <div className="flex items-center gap-2">
-            <Link href="/admin/inbox"><Button variant="outline" size="sm" className="rounded-none">Inbox</Button></Link>
-            <Button variant="outline" size="sm" onClick={() => fetchAccounts()} disabled={loading} className="rounded-none"><RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /></Button>
-            <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2 rounded-none text-destructive"><LogOut className="h-4 w-4" />Logout</Button>
+            <Link href="/admin/inbox"><Button variant="outline" size="sm">Inbox</Button></Link>
+            <Button variant="outline" size="sm" onClick={() => fetchAccounts()} disabled={loading}><RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /></Button>
+            <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2 text-destructive"><LogOut className="h-4 w-4" />Logout</Button>
           </div>
         </div>
       </header>
 
-      <main className="container grid max-w-7xl gap-8 py-8 lg:grid-cols-[0.85fr_1.15fr]">
+      <main className="site-container grid max-w-7xl gap-8 py-8 lg:grid-cols-[0.85fr_1.15fr]">
         <div className="space-y-6">
           <Card className="border-0 shadow-md">
             <CardHeader><CardTitle className="font-heading text-xl">{editing ? "Update client access" : "Issue client credentials"}</CardTitle><p className="text-sm text-muted-foreground">Passwords are hashed before they are saved. The selected role is carried securely into the assigned portal.</p></CardHeader>
             <CardContent>
               <form onSubmit={handleSave} className="space-y-4">
-                <label className="block space-y-1.5 text-sm font-semibold">Client or organisation<Input value={form.clientName} onChange={(event) => updateForm("clientName", event.target.value)} placeholder="Client organisation name" className="h-11 rounded-none" /></label>
-                <label className="block space-y-1.5 text-sm font-semibold">Username<Input value={form.username} disabled={Boolean(editing)} onChange={(event) => updateForm("username", event.target.value)} placeholder="e.g. acme.client" className="h-11 rounded-none" /></label>
-                <label className="block space-y-1.5 text-sm font-semibold">{editing ? "New password or access code (optional)" : "Temporary password or access code"}<Input type="password" inputMode={form.portalKey === "training_server" ? "numeric" : "text"} value={form.password} onChange={(event) => updateForm("password", event.target.value)} placeholder={editing ? "Leave empty to keep current credential" : form.portalKey === "training_server" ? "Six numeric digits" : "At least 12 characters"} className="h-11 rounded-none" /></label>
-                <label className="block space-y-1.5 text-sm font-semibold">Assigned portal<select value={form.portalKey} onChange={(event) => selectPortal(event.target.value as AccountForm["portalKey"])} className="h-11 w-full rounded-none border border-input bg-background px-3 text-sm"><option value="darwish_hub">Darwish Hub</option><option value="nabta_quest">Nabta Quest</option><option value="training_server">Training Server</option></select></label>
-                <label className="block space-y-1.5 text-sm font-semibold">Portal role<select value={form.portalRole} onChange={(event) => updateForm("portalRole", event.target.value)} className="h-11 w-full rounded-none border border-input bg-background px-3 text-sm"><option value="owner">Owner — full administration</option><option value="editor">Editor — can update content</option><option value="viewer">Viewer — read-only access</option></select></label>
+                <label className="block space-y-1.5 text-sm font-semibold">Client or organisation<Input value={form.clientName} onChange={(event) => updateForm("clientName", event.target.value)} placeholder="Client organisation name" className="h-11 " /></label>
+                <label className="block space-y-1.5 text-sm font-semibold">Username<Input value={form.username} disabled={Boolean(editing)} onChange={(event) => updateForm("username", event.target.value)} placeholder="e.g. acme.client" className="h-11 " /></label>
+                <label className="block space-y-1.5 text-sm font-semibold">{editing ? "New password or access code (optional)" : "Temporary password or access code"}<Input type="password" inputMode={form.portalKey === "training_server" ? "numeric" : "text"} value={form.password} onChange={(event) => updateForm("password", event.target.value)} placeholder={editing ? "Leave empty to keep current credential" : form.portalKey === "training_server" ? "Six numeric digits" : "At least 12 characters"} className="h-11 " /></label>
+                <label className="block space-y-1.5 text-sm font-semibold">Assigned portal<select value={form.portalKey} onChange={(event) => selectPortal(event.target.value as AccountForm["portalKey"])} className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm"><option value="darwish_hub">Darwish Hub</option><option value="nabta_quest">Nabta Quest</option><option value="training_server">Training Server</option></select></label>
+                <label className="block space-y-1.5 text-sm font-semibold">Portal role<select value={form.portalRole} onChange={(event) => updateForm("portalRole", event.target.value)} className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm"><option value="owner">Owner — full administration</option><option value="editor">Editor — can update content</option><option value="viewer">Viewer — read-only access</option></select></label>
                 {editing && <label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" checked={form.isActive} onChange={(event) => updateForm("isActive", event.target.checked)} className="h-4 w-4 accent-primary" />Account is active</label>}
-                <div className="flex gap-3"><Button type="submit" disabled={loading} className="rounded-none bg-primary text-white hover:bg-primary/90">{editing ? "Save changes" : <><Plus className="mr-2 h-4 w-4" />Issue credentials</>}</Button>{editing && <Button type="button" variant="outline" className="rounded-none" onClick={resetForm}>Cancel</Button>}</div>
+                <div className="flex gap-3"><Button type="submit" disabled={loading} className="bg-primary text-white hover:bg-primary/90">{editing ? "Save changes" : <><Plus className="mr-2 h-4 w-4" />Issue credentials</>}</Button>{editing && <Button type="button" variant="outline" onClick={resetForm}>Cancel</Button>}</div>
               </form>
             </CardContent>
           </Card>
@@ -209,9 +209,9 @@ export default function AdminClientAccess() {
         </div>
 
         <Card className="border-0 shadow-md">
-          <CardHeader className="border-b border-border"><div className="flex items-center justify-between gap-4"><div><CardTitle className="font-heading text-xl">Issued client accounts</CardTitle><p className="mt-1 text-sm text-muted-foreground">{accounts.length} configured client {accounts.length === 1 ? "account" : "accounts"}</p></div><Badge className="rounded-none bg-primary text-white">{accounts.filter(account => account.isActive).length} active</Badge></div></CardHeader>
+          <CardHeader className="border-b border-border"><div className="flex items-center justify-between gap-4"><div><CardTitle className="font-heading text-xl">Issued client accounts</CardTitle><p className="mt-1 text-sm text-muted-foreground">{accounts.length} configured client {accounts.length === 1 ? "account" : "accounts"}</p></div><Badge className="bg-primary text-white">{accounts.filter(account => account.isActive).length} active</Badge></div></CardHeader>
           <CardContent className="p-0">
-            {accounts.length === 0 ? <div className="p-12 text-center text-muted-foreground"><KeyRound className="mx-auto mb-3 h-10 w-10 text-muted-foreground/30" /><p className="font-semibold">No client accounts issued yet</p><p className="mt-1 text-sm">Create the first client access record from the form.</p></div> : <div className="divide-y divide-border">{accounts.map(account => <div key={account.id} className="space-y-4 p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-semibold text-foreground">{account.clientName}</p><p className="mt-1 font-mono text-xs text-muted-foreground">{account.username}</p></div><div className="flex items-center gap-2"><Badge variant="outline" className={account.isActive ? "border-chart-2/30 bg-chart-2/10 text-chart-2" : "border-destructive/30 bg-destructive/10 text-destructive"}>{account.isActive ? "Active" : "Inactive"}</Badge>{account.lockedUntil && account.lockedUntil > Date.now() && <Badge variant="outline" className="border-chart-3/30 bg-chart-3/10 text-chart-3">Temporarily locked</Badge>}</div></div><a href={account.portalUrl} target="_blank" rel="noopener noreferrer" className="inline-flex max-w-full items-center gap-1 truncate text-sm text-primary hover:underline">{account.portalUrl}<ExternalLink className="h-3.5 w-3.5 shrink-0" /></a><div className="flex gap-2"><Button size="sm" variant="outline" className="gap-2 rounded-none" onClick={() => beginEdit(account)}><Pencil className="h-3.5 w-3.5" />Edit</Button><Button size="sm" variant="outline" className="gap-2 rounded-none text-destructive" onClick={() => handleDelete(account)}><Trash2 className="h-3.5 w-3.5" />Delete</Button></div></div>)}</div>}
+            {accounts.length === 0 ? <div className="p-12 text-center text-muted-foreground"><KeyRound className="mx-auto mb-3 h-10 w-10 text-muted-foreground/30" /><p className="font-semibold">No client accounts issued yet</p><p className="mt-1 text-sm">Create the first client access record from the form.</p></div> : <div className="divide-y divide-border">{accounts.map(account => <div key={account.id} className="space-y-4 p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-semibold text-foreground">{account.clientName}</p><p className="mt-1 font-mono text-xs text-muted-foreground">{account.username}</p></div><div className="flex items-center gap-2"><Badge variant="outline" className={account.isActive ? "border-chart-2/30 bg-chart-2/10 text-chart-2" : "border-destructive/30 bg-destructive/10 text-destructive"}>{account.isActive ? "Active" : "Inactive"}</Badge>{account.lockedUntil && account.lockedUntil > Date.now() && <Badge variant="outline" className="border-chart-3/30 bg-chart-3/10 text-chart-3-foreground">Temporarily locked</Badge>}</div></div><a href={account.portalUrl} target="_blank" rel="noopener noreferrer" className="link inline-flex max-w-full items-center gap-1 truncate text-sm">{account.portalUrl}<ExternalLink className="h-3.5 w-3.5 shrink-0" /></a><div className="flex gap-2"><Button size="sm" variant="outline" className="gap-2 " onClick={() => beginEdit(account)}><Pencil className="h-3.5 w-3.5" />Edit</Button><Button size="sm" variant="outline" className="gap-2 text-destructive" onClick={() => handleDelete(account)}><Trash2 className="h-3.5 w-3.5" />Delete</Button></div></div>)}</div>}
           </CardContent>
         </Card>
       </main>
