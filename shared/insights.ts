@@ -129,15 +129,15 @@ export const ARTICLES: Article[] = [
 const env = (import.meta as { env?: Record<string, string | undefined> }).env;
 
 /**
- * "preview" lists planned and sample articles with their status, as in the
- * approved prototype; "public" lists published articles only. Set
- * VITE_INSIGHTS_MODE=public (at build time and on the server) once real
- * articles exist.
+ * "public" (the default, decided 17 Oct 2026 for launch) lists published articles only; with none
+ * published, Insights says the first insights are being prepared. "preview" also lists the planned and
+ * sample articles with their status, as in the approved prototype: set VITE_INSIGHTS_MODE=preview at
+ * build time and on the server for a review copy.
  */
 export const INSIGHTS_MODE: "preview" | "public" =
-  (env?.VITE_INSIGHTS_MODE ?? (typeof process !== "undefined" ? process.env.VITE_INSIGHTS_MODE : undefined)) === "public"
-    ? "public"
-    : "preview";
+  (env?.VITE_INSIGHTS_MODE ?? (typeof process !== "undefined" ? process.env.VITE_INSIGHTS_MODE : undefined)) === "preview"
+    ? "preview"
+    : "public";
 
 /** Articles that have a page and a card in the current mode. */
 export const SHOWN_ARTICLES = ARTICLES.filter((a) => a.status === "published" || INSIGHTS_MODE === "preview");

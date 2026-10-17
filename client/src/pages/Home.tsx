@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "wouter";
+import { SHOWN_ARTICLES } from "@shared/insights";
 import ContactSection from "@/site/ContactSection";
 import Growth360Journey from "@/site/Growth360Journey";
 import { CountUp, FlipWord, Marquee } from "@/site/motion";
@@ -78,6 +79,8 @@ const CHALLENGES = [
     href: "https://www.pmi.org/about/press-media/2026/pulse-why-complex-projects-fail-best-practices-are-not-enough-system-thinking",
   },
 ];
+
+const FEATURED_HREF = SHOWN_ARTICLES.some((a) => a.slug === "delegation-of-authority") ? `${ROUTES.insights}/delegation-of-authority` : ROUTES.insights;
 
 /** The founder portrait beside the "Who we are" copy; hidden for now (17 Oct 2026), the quote stays. */
 const SHOW_FOUNDER_PHOTO = false;
@@ -541,8 +544,9 @@ export default function Home() {
               ))}
             </ul>
           </div>
-          {/* Featured article. Author credit and description are provisional pending editorial approval. */}
-          <Link className="mag-feature" href={`${ROUTES.insights}/delegation-of-authority`} aria-labelledby="mag-title-text" aria-describedby="mag-desc">
+          {/* Featured article. Author credit and description are provisional pending editorial approval.
+              Until the article is published it has no page, so the card opens the Insights listing. */}
+          <Link className="mag-feature" href={FEATURED_HREF} aria-labelledby="mag-title-text" aria-describedby="mag-desc">
             <img src="/media/insights/delegation.jpg" alt="" width={1400} height={933} loading="lazy" decoding="async" />
             <div className="mag-glass">
               <div className="mag-author">

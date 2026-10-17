@@ -4,6 +4,7 @@
  */
 import { Redirect, useParams } from "wouter";
 import { SERVICE_REDIRECTS } from "@shared/site";
+import { SHOWN_ARTICLES } from "@shared/insights";
 import ContactSection from "@/site/ContactSection";
 import { SITE_SERVICES } from "@/site/nav";
 import { SERVICE_DETAIL } from "@/site/content/services";
@@ -114,21 +115,26 @@ function InsightConcept({ item, cls, idx }: { item: any; cls: string; idx: numbe
       <img src={item.img[0]} alt={item.img[1]} width={item.img[2]} height={item.img[3]} loading="lazy" />
     </div>
   );
-  if (item.href)
+  if (item.href) {
+    // Links only once the article has a page; until then the card says it is not yet published.
+    const live = SHOWN_ARTICLES.some((a) => item.href === `/insights/${a.slug}`);
     return (
       <article className={cls}>
         {vis}
         <div className="sx-ins-copy">
           <span className="sx-ins-k">Planned article</span>
-          <h3>
-            <SiteLink href={item.href}>{item.title}</SiteLink>
-          </h3>
-          <SiteLink className="sx-pill-link" href={item.href} aria-hidden="true" tabIndex={-1}>
-            Read more
-          </SiteLink>
+          <h3>{live ? <SiteLink href={item.href}>{item.title}</SiteLink> : item.title}</h3>
+          {live ? (
+            <SiteLink className="sx-pill-link" href={item.href} aria-hidden="true" tabIndex={-1}>
+              Read more
+            </SiteLink>
+          ) : (
+            <p className="sx-mini">Not yet published</p>
+          )}
         </div>
       </article>
     );
+  }
   return (
     <article className={cls}>
       {vis}

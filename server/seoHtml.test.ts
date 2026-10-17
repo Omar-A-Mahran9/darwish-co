@@ -74,8 +74,7 @@ describe("per-page metadata", () => {
     expect(titleOf(html)).not.toMatch(/ & /);
   });
 
-  it("keeps placeholder articles reachable but out of search results", () => {
-    expect(SHOWN_ARTICLES.length).toBeGreaterThan(0);
+  it("publishes an article only once it is written, and indexes only published ones", () => {
     for (const article of SHOWN_ARTICLES) {
       const path = `/insights/${article.slug}`;
       const seo = resolveSeo(path);
@@ -87,6 +86,10 @@ describe("per-page metadata", () => {
       expect(injectSeo(SHELL, path).includes('"@type":"Article"')).toBe(article.status === "published");
     }
     expect(ARTICLES.filter((article) => article.status === "published")).toHaveLength(0);
+    // Published-only by default: unwritten articles have no page at all.
+    for (const article of ARTICLES.filter((entry) => entry.status !== "published")) {
+      expect(isKnownRoute(`/insights/${article.slug}`)).toBe(false);
+    }
     expect(isKnownRoute("/insights/not-an-article")).toBe(false);
   });
 
