@@ -81,6 +81,21 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.darwish-co.com/insights/ai-institutional-bias</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/insights/ai-human-oversight</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/insights/ai-bias-mena-education</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.darwish-co.com/contact</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>

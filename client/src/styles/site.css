@@ -906,6 +906,9 @@ a.article-card:focus-visible { outline: 2px solid var(--blue); outline-offset: 3
 .prose { max-width: 70ch; display: grid; gap: 18px; }
 .prose h2 { font-size: 28px; margin-block-start: 12px; }
 .prose p, .prose li { font-size: 17px; line-height: 1.7; color: var(--charcoal); }
+.prose figure { margin: 8px 0 24px; }
+.prose figure img { display: block; width: 100%; height: auto; }
+.prose figcaption { margin-block-start: 8px; font-size: 15px; line-height: 1.5; color: var(--muted); }
 .contact-cols { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; align-items: start; }
 @media (max-width: 899px) { .contact-cols { grid-template-columns: minmax(0, 1fr); } }
 .contact-panel { background: var(--white); border: 1px solid var(--line); padding: 28px; display: grid; gap: 18px; }

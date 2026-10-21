@@ -64,6 +64,30 @@ export const ARTICLES: Article[] = [
     "date": "2026-07"
   },
   {
+    "slug": "ai-human-oversight",
+    "topic": "governance",
+    "title": "When AI Accelerates the Wrong Decision: Why Human Oversight Is a Governance Requirement",
+    "status": "published",
+    "sample": false,
+    "summary": "AI can accelerate decisions, but without effective governance it can also scale outdated data, hidden bias and institutional error. The central question is who remains responsible when an AI-supported decision causes harm.",
+    "service": "governance-risk-compliance",
+    "listing": "Why a human approval button is not oversight, and six controls that keep AI-supported decisions accountable.",
+    "author": "Fouad Darwish",
+    "date": "2026-07"
+  },
+  {
+    "slug": "ai-bias-mena-education",
+    "topic": "governance",
+    "title": "AI in MENA Education: When Automation Reinforces Existing Inequality",
+    "status": "published",
+    "sample": false,
+    "summary": "AI can improve education across the MENA region, but biased historical data and weak institutional oversight may reinforce inequality in admissions, grading, scholarships and student monitoring.",
+    "service": "governance-risk-compliance",
+    "listing": "Where bias enters admissions, grading, scholarships and student monitoring, and six principles for institutions adopting AI.",
+    "author": "Fouad Darwish",
+    "date": "2026-07"
+  },
+  {
     "slug": "delegation-of-authority",
     "topic": "governance",
     "title": "Delegation of Authority: how to delegate decisions without losing oversight",

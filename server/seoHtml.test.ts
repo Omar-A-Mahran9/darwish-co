@@ -12,6 +12,7 @@ import {
   WITHDRAWN_SERVICES,
 } from "../shared/site.js";
 import { ARTICLES, SHOWN_ARTICLES } from "../shared/insights.js";
+import { ARTICLE_BODIES } from "../shared/articleBodies.js";
 import { PUBLIC_CASES } from "../shared/work.js";
 import { SERVICE_DETAIL } from "../client/src/site/content/services.js";
 
@@ -85,7 +86,10 @@ describe("per-page metadata", () => {
       expect(seo.robots).toBe(article.status === "published" ? "index, follow" : "noindex, nofollow");
       expect(injectSeo(SHELL, path).includes('"@type":"Article"')).toBe(article.status === "published");
     }
-    expect(ARTICLES.filter((article) => article.status === "published")).toHaveLength(0);
+    // A published article must have its approved text.
+    for (const article of ARTICLES.filter((entry) => entry.status === "published")) {
+      expect(ARTICLE_BODIES[article.slug]).toBeTruthy();
+    }
     // Published-only by default: unwritten articles have no page at all.
     for (const article of ARTICLES.filter((entry) => entry.status !== "published")) {
       expect(isKnownRoute(`/insights/${article.slug}`)).toBe(false);
