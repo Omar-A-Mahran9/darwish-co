@@ -81,6 +81,41 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.darwish-co.com/insights/delegation-of-authority</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/insights/anti-bribery-questionnaire</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/insights/strategy-into-decision-rights</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/insights/role-clarity-before-restructuring</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/insights/decision-handoffs</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/insights/decision-ready-market-brief</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.darwish-co.com/insights/consumer-research-mena-market-entry</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.darwish-co.com/insights/ai-institutional-bias</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
