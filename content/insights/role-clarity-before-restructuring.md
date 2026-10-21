@@ -7,6 +7,7 @@ summary: "Many reorganizations change boxes and reporting lines but leave unclea
 listing: "Why responsibilities and reporting relationships deserve attention before changing the organization chart."
 author: Fouad Darwish
 date: "2026-10"
+order: 4
 status: published
 cover: /images/article-role-clarity-before-restructuring-cover.webp
 cover_alt: "Senior managers standing around a whiteboard sketching an organization chart with sticky notes for roles and responsibilities"

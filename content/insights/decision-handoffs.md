@@ -7,6 +7,7 @@ summary: "Most delays in approvals and decisions come not from the work itself b
 listing: "A practical perspective on coordination, ownership, and the points where work loses momentum."
 author: Fouad Darwish
 date: "2026-10"
+order: 5
 status: published
 cover: /images/article-decision-handoffs-cover.webp
 cover_alt: "Documents and a folder being passed between colleagues across an office desk, suggesting a handoff between teams"

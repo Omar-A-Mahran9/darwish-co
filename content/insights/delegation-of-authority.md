@@ -7,6 +7,8 @@ summary: "A clear Delegation of Authority framework lets decisions move at the r
 listing: "Why everything ends up on the CEO's desk, and how a well-designed DoA framework fixes it without weakening control."
 author: Fouad Darwish
 date: "2026-10"
+order: 1
+featured: true
 status: published
 cover: /images/article-delegation-of-authority-cover.webp
 cover_alt: "A senior executive handing a signed document across a meeting table to a colleague, with an approval matrix visible on a screen in the background"

@@ -1,5 +1,7 @@
+import { MARKDOWN_BODIES } from "./insightsContent";
+
 /** Full article text (HTML) keyed by article slug. Articles without a body show the pending placeholder. */
-export const ARTICLE_BODIES: Record<string, string> = {
+const HTML_BODIES: Record<string, string> = {
   "ai-institutional-bias": `
 <p>Organizations frequently invest in artificial intelligence with the expectation that technology will make decisions more objective. The assumption is understandable. Unlike people, an algorithm does not have personal relationships, political loyalties, emotional reactions, or financial interests.</p>
 <p>But this does not mean that the decisions produced by the system are neutral. AI learns from institutional data. It operates within institutional rules. It reflects institutional priorities. And it is deployed through institutional processes.</p>
@@ -131,3 +133,5 @@ export const ARTICLE_BODIES: Record<string, string> = {
 <p><em>Is your educational institution exploring AI without a clear adoption and governance framework? Darwish &amp; Co. supports educational institutions in assessing AI readiness, prioritizing practical use cases, strengthening governance, and building role-based capabilities for responsible adoption.</em></p>
 `,
 };
+
+export const ARTICLE_BODIES: Record<string, string> = { ...MARKDOWN_BODIES, ...HTML_BODIES };

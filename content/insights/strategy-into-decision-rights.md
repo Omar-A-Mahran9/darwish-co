@@ -7,6 +7,7 @@ summary: "Most strategies stall between the board presentation and daily work. C
 listing: "Why good strategies stall after approval, and a simple system of owners, measures and monthly reviews that keeps them moving."
 author: Fouad Darwish
 date: "2026-10"
+order: 2
 status: published
 cover: /images/article-strategy-into-decision-rights-cover.webp
 cover_alt: "A leadership team seated around a table in a monthly review meeting, with a one-page performance summary on a wall screen"

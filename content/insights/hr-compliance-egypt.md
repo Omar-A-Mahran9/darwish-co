@@ -7,6 +7,7 @@ summary: "Egypt's new Labour Law No. 14 of 2025 changed rules on contracts, leav
 listing: "The main changes in Egypt's new Labour Law, and a practical HR compliance review for small and mid-sized employers."
 author: Fouad Darwish
 date: "2026-10"
+order: 9
 status: planned
 cover: /images/article-hr-compliance-egypt-cover.webp
 cover_alt: "HR manager reviewing employment contracts with an employee in a bright office"

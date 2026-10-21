@@ -4,6 +4,8 @@
  * Exported from the approved prototype; edit here from now on.
  */
 
+import { MARKDOWN_ARTICLES } from "./insightsContent";
+
 export type ArticleStatus = "planned" | "sample" | "published";
 
 export type Article = {
@@ -53,7 +55,8 @@ export const TOPICS: [key: string, name: string][] = [
   ]
 ];
 
-export const ARTICLES: Article[] = [
+/** Articles written in TypeScript; the rest come from content/insights/*.md. */
+const HTML_ARTICLES: Article[] = [
   {
     "slug": "ai-institutional-bias",
     "topic": "governance",
@@ -89,81 +92,11 @@ export const ARTICLES: Article[] = [
     "listing": "Where bias enters admissions, grading, scholarships and student monitoring, and six principles for institutions adopting AI.",
     "author": "Fouad Darwish",
     "date": "2026-07"
-  },
-  {
-    "slug": "delegation-of-authority",
-    "topic": "governance",
-    "title": "Delegation of Authority: how to delegate decisions without losing oversight",
-    "status": "planned",
-    "sample": false,
-    "featured": true,
-    "summary": "A perspective on decision rights, accountability, and effective oversight.",
-    "service": "governance-risk-compliance",
-    "listing": "A perspective on decision rights, accountability, and effective oversight.",
-    "author": null,
-    "date": null
-  },
-  {
-    "slug": "anti-bribery-questionnaire",
-    "topic": "governance",
-    "title": "What to do when a major client sends an anti-bribery questionnaire",
-    "status": "planned",
-    "sample": false,
-    "summary": "How to prepare evidence, policies and owners before the questionnaire arrives.",
-    "service": "governance-risk-compliance",
-    "listing": "How to prepare evidence, policies, and owners before the questionnaire arrives.",
-    "author": null,
-    "date": null
-  },
-  {
-    "slug": "strategy-into-decision-rights",
-    "topic": "strategy",
-    "title": "How to turn strategy into decision rights, measures and monthly reviews",
-    "status": "planned",
-    "sample": false,
-    "summary": "Connecting priorities to owners, KPIs and a review rhythm leadership will keep.",
-    "service": "strategy-performance",
-    "listing": "Connecting priorities to owners, KPIs, and a review rhythm leadership can sustain.",
-    "author": null,
-    "date": null
-  },
-  {
-    "slug": "sample-role-clarity",
-    "topic": "people",
-    "title": "Role clarity before restructuring",
-    "status": "sample",
-    "sample": true,
-    "summary": "Sample article card used to show the People topic.",
-    "service": "human-resources",
-    "listing": "Why responsibilities and reporting relationships deserve attention before changing the organization chart.",
-    "author": null,
-    "date": null
-  },
-  {
-    "slug": "sample-handoffs",
-    "topic": "operations",
-    "title": "Finding the handoffs that slow decisions down",
-    "status": "sample",
-    "sample": true,
-    "summary": "Sample article card used to show the Operations topic.",
-    "service": "operational-excellence",
-    "listing": "A practical perspective on coordination, ownership, and the points where work loses momentum.",
-    "author": null,
-    "date": null
-  },
-  {
-    "slug": "sample-market-entry",
-    "topic": "research",
-    "title": "What a decision-ready market brief contains",
-    "status": "sample",
-    "sample": true,
-    "summary": "Sample article card used to show the Research topic.",
-    "service": "market-research",
-    "listing": "Organizing market evidence around the question leadership needs to answer.",
-    "author": null,
-    "date": null
   }
 ];
+
+/** Batch 2 (Markdown, newest) first, then the three AI articles. */
+export const ARTICLES: Article[] = [...MARKDOWN_ARTICLES, ...HTML_ARTICLES];
 
 const env = (import.meta as { env?: Record<string, string | undefined> }).env;
 

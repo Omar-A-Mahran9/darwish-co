@@ -7,6 +7,7 @@ summary: "Entering a MENA market on assumptions is expensive. A focused consumer
 listing: "Which research methods work in MENA, how to handle language and fieldwork norms, and how to scope a study to your entry decision."
 author: Fouad Darwish
 date: "2026-10"
+order: 7
 status: published
 cover: /images/article-consumer-research-mena-market-entry-cover.webp
 cover_alt: "Researcher interviewing shoppers in a busy Middle Eastern retail market"

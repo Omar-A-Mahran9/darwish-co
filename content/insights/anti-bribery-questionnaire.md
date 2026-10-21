@@ -7,6 +7,7 @@ summary: "Large clients increasingly ask suppliers and partners to prove they ma
 listing: "Why multinational clients send anti-bribery questionnaires, what they ask, and a 30/60/90-day plan to be ready."
 author: Fouad Darwish
 date: "2026-10"
+order: 3
 status: published
 cover: /images/article-anti-bribery-questionnaire-cover.webp
 cover_alt: "A business owner at a desk reviewing a printed compliance questionnaire beside a laptop, with policy documents and a pen"

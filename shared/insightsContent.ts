@@ -7,6 +7,35 @@ import type { Article } from "./insights";
 
 export const MARKDOWN_ARTICLES: Article[] = [
   {
+    "slug": "delegation-of-authority",
+    "topic": "governance",
+    "title": "Delegation of Authority: How to Delegate Decisions Without Losing Oversight",
+    "status": "published",
+    "sample": false,
+    "featured": true,
+    "summary": "A clear Delegation of Authority framework lets decisions move at the right level while the board and CEO keep sight of what matters. Here is how to design one and keep it working.",
+    "service": "governance-risk-compliance",
+    "listing": "Why everything ends up on the CEO's desk, and how a well-designed DoA framework fixes it without weakening control.",
+    "author": "Fouad Darwish",
+    "date": "2026-10",
+    "cover": "/images/article-delegation-of-authority-cover.webp",
+    "coverAlt": "A senior executive handing a signed document across a meeting table to a colleague, with an approval matrix visible on a screen in the background"
+  },
+  {
+    "slug": "strategy-into-decision-rights",
+    "topic": "strategy",
+    "title": "How to Turn Strategy into Decision Rights, Measures and Monthly Reviews",
+    "status": "published",
+    "sample": false,
+    "summary": "Most strategies stall between the board presentation and daily work. Clear owners, decision rights, a few good measures and a steady monthly review close that gap.",
+    "service": "strategy-performance",
+    "listing": "Why good strategies stall after approval, and a simple system of owners, measures and monthly reviews that keeps them moving.",
+    "author": "Fouad Darwish",
+    "date": "2026-10",
+    "cover": "/images/article-strategy-into-decision-rights-cover.webp",
+    "coverAlt": "A leadership team seated around a table in a monthly review meeting, with a one-page performance summary on a wall screen"
+  },
+  {
     "slug": "anti-bribery-questionnaire",
     "topic": "governance",
     "title": "What to Do When a Major Client Sends an Anti-Bribery Questionnaire",
@@ -21,18 +50,18 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "coverAlt": "A business owner at a desk reviewing a printed compliance questionnaire beside a laptop, with policy documents and a pen"
   },
   {
-    "slug": "consumer-research-mena-market-entry",
-    "topic": "research",
-    "title": "Consumer Research in MENA: A Practical Guide for Market Entry",
+    "slug": "role-clarity-before-restructuring",
+    "topic": "people",
+    "title": "Role Clarity Before Restructuring",
     "status": "published",
     "sample": false,
-    "summary": "Entering a MENA market on assumptions is expensive. A focused consumer research programme, designed around the entry decision and the region's cultural realities, reduces that risk.",
-    "service": "market-research",
-    "listing": "Which research methods work in MENA, how to handle language and fieldwork norms, and how to scope a study to your entry decision.",
+    "summary": "Many reorganizations change boxes and reporting lines but leave unclear accountabilities untouched. Clarifying roles and decision rights first often solves the real problem, or shows what structure is actually needed.",
+    "service": "human-resources",
+    "listing": "Why responsibilities and reporting relationships deserve attention before changing the organization chart.",
     "author": "Fouad Darwish",
     "date": "2026-10",
-    "cover": "/images/article-consumer-research-mena-market-entry-cover.webp",
-    "coverAlt": "Researcher interviewing shoppers in a busy Middle Eastern retail market"
+    "cover": "/images/article-role-clarity-before-restructuring-cover.webp",
+    "coverAlt": "Senior managers standing around a whiteboard sketching an organization chart with sticky notes for roles and responsibilities"
   },
   {
     "slug": "decision-handoffs",
@@ -63,18 +92,18 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "coverAlt": "Executive reviewing a concise printed market brief with charts and notes on a meeting table"
   },
   {
-    "slug": "delegation-of-authority",
-    "topic": "governance",
-    "title": "Delegation of Authority: How to Delegate Decisions Without Losing Oversight",
+    "slug": "consumer-research-mena-market-entry",
+    "topic": "research",
+    "title": "Consumer Research in MENA: A Practical Guide for Market Entry",
     "status": "published",
     "sample": false,
-    "summary": "A clear Delegation of Authority framework lets decisions move at the right level while the board and CEO keep sight of what matters. Here is how to design one and keep it working.",
-    "service": "governance-risk-compliance",
-    "listing": "Why everything ends up on the CEO's desk, and how a well-designed DoA framework fixes it without weakening control.",
+    "summary": "Entering a MENA market on assumptions is expensive. A focused consumer research programme, designed around the entry decision and the region's cultural realities, reduces that risk.",
+    "service": "market-research",
+    "listing": "Which research methods work in MENA, how to handle language and fieldwork norms, and how to scope a study to your entry decision.",
     "author": "Fouad Darwish",
     "date": "2026-10",
-    "cover": "/images/article-delegation-of-authority-cover.webp",
-    "coverAlt": "A senior executive handing a signed document across a meeting table to a colleague, with an approval matrix visible on a screen in the background"
+    "cover": "/images/article-consumer-research-mena-market-entry-cover.webp",
+    "coverAlt": "Researcher interviewing shoppers in a busy Middle Eastern retail market"
   },
   {
     "slug": "grc-egypt-smes",
@@ -103,34 +132,6 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "date": "2026-10",
     "cover": "/images/article-hr-compliance-egypt-cover.webp",
     "coverAlt": "HR manager reviewing employment contracts with an employee in a bright office"
-  },
-  {
-    "slug": "role-clarity-before-restructuring",
-    "topic": "people",
-    "title": "Role Clarity Before Restructuring",
-    "status": "published",
-    "sample": false,
-    "summary": "Many reorganizations change boxes and reporting lines but leave unclear accountabilities untouched. Clarifying roles and decision rights first often solves the real problem, or shows what structure is actually needed.",
-    "service": "human-resources",
-    "listing": "Why responsibilities and reporting relationships deserve attention before changing the organization chart.",
-    "author": "Fouad Darwish",
-    "date": "2026-10",
-    "cover": "/images/article-role-clarity-before-restructuring-cover.webp",
-    "coverAlt": "Senior managers standing around a whiteboard sketching an organization chart with sticky notes for roles and responsibilities"
-  },
-  {
-    "slug": "strategy-into-decision-rights",
-    "topic": "strategy",
-    "title": "How to Turn Strategy into Decision Rights, Measures and Monthly Reviews",
-    "status": "published",
-    "sample": false,
-    "summary": "Most strategies stall between the board presentation and daily work. Clear owners, decision rights, a few good measures and a steady monthly review close that gap.",
-    "service": "strategy-performance",
-    "listing": "Why good strategies stall after approval, and a simple system of owners, measures and monthly reviews that keeps them moving.",
-    "author": "Fouad Darwish",
-    "date": "2026-10",
-    "cover": "/images/article-strategy-into-decision-rights-cover.webp",
-    "coverAlt": "A leadership team seated around a table in a monthly review meeting, with a one-page performance summary on a wall screen"
   }
 ];
 

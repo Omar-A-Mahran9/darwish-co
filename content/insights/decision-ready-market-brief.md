@@ -7,6 +7,7 @@ summary: "Many market studies describe a market well but leave leadership no clo
 listing: "Organizing market evidence around the question leadership needs to answer."
 author: Fouad Darwish
 date: "2026-10"
+order: 6
 status: published
 cover: /images/article-decision-ready-market-brief-cover.webp
 cover_alt: "Executive reviewing a concise printed market brief with charts and notes on a meeting table"

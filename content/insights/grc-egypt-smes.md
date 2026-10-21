@@ -7,6 +7,7 @@ summary: "Governance, risk and compliance is no longer only for large corporatio
 listing: "What GRC means for an Egyptian SME, why lenders and large clients now ask for it, and a phased roadmap to build it."
 author: Fouad Darwish
 date: "2026-10"
+order: 8
 status: planned
 cover: /images/article-grc-egypt-smes-cover.webp
 cover_alt: "Business owner and adviser reviewing a governance checklist and company documents at a meeting table"
