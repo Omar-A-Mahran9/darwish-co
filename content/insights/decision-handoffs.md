@@ -10,7 +10,7 @@ date: "2026-10"
 order: 5
 status: published
 cover: /images/article-decision-handoffs-cover.webp
-cover_alt: "Documents and a folder being passed between colleagues across an office desk, suggesting a handoff between teams"
+cover_alt: "A colleague passing a document across the desks to a co-worker in an open-plan office"
 cover_search: "colleagues passing documents office"
 ---
 

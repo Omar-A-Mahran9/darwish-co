@@ -10,7 +10,7 @@ date: "2026-10"
 order: 2
 status: published
 cover: /images/article-strategy-into-decision-rights-cover.webp
-cover_alt: "A leadership team seated around a table in a monthly review meeting, with a one-page performance summary on a wall screen"
+cover_alt: "A leadership team in a strategy meeting around a boardroom table"
 cover_search: "leadership team strategy review meeting"
 ---
 

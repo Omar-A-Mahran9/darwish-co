@@ -11,7 +11,7 @@ order: 1
 featured: true
 status: published
 cover: /images/article-delegation-of-authority-cover.webp
-cover_alt: "A senior executive handing a signed document across a meeting table to a colleague, with an approval matrix visible on a screen in the background"
+cover_alt: "Close-up of one executive handing a pen to another to sign a document"
 cover_search: "executive signing approval document meeting"
 ---
 

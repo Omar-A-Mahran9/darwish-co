@@ -67,7 +67,9 @@ const HTML_ARTICLES: Article[] = [
     "service": "governance-risk-compliance",
     "listing": "Why automating a weak process makes the weakness faster, and six controls that keep institutional AI accountable.",
     "author": "Fouad Darwish",
-    "date": "2026-07"
+    "date": "2026-07",
+    "cover": "/images/article-ai-institutional-bias-cover.webp",
+    "coverAlt": "Two executives reviewing an institutional decision workflow on a tablet"
   },
   {
     "slug": "ai-human-oversight",
@@ -79,7 +81,9 @@ const HTML_ARTICLES: Article[] = [
     "service": "governance-risk-compliance",
     "listing": "Why a human approval button is not oversight, and six controls that keep AI-supported decisions accountable.",
     "author": "Fouad Darwish",
-    "date": "2026-07"
+    "date": "2026-07",
+    "cover": "/images/article-ai-human-oversight-cover.webp",
+    "coverAlt": "Executive reviewing an AI-generated analytics dashboard"
   },
   {
     "slug": "ai-bias-mena-education",
@@ -91,7 +95,9 @@ const HTML_ARTICLES: Article[] = [
     "service": "governance-risk-compliance",
     "listing": "Where bias enters admissions, grading, scholarships and student monitoring, and six principles for institutions adopting AI.",
     "author": "Fouad Darwish",
-    "date": "2026-07"
+    "date": "2026-07",
+    "cover": "/images/article-ai-bias-education-cover.webp",
+    "coverAlt": "Students and an educator at a university campus reviewing work on a tablet"
   }
 ];
 

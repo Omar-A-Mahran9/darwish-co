@@ -71,6 +71,7 @@ export default function Insights() {
                   const meta = [a.author, a.date].filter(Boolean).join(" · ");
                   return (
                     <li className="in-card" data-topic={a.topic} hidden={!(topic === "all" || a.topic === topic)} key={a.slug}>
+                      {a.cover && <img className="in-cover" src={a.cover} alt="" width={1200} height={676} loading="lazy" decoding="async" />}
                       <p className="in-topic">{TOPIC_NAME[a.topic]}</p>
                       <h3>{a.title}</h3>
                       <p className="in-sum">{a.listing}</p>
@@ -170,6 +171,7 @@ export function ArticlePage() {
           </div>
           {ARTICLE_BODIES[a.slug] ? (
             <div className="prose">
+              {a.cover && <img className="article-cover" src={a.cover} alt={a.coverAlt ?? ""} width={1200} height={676} decoding="async" />}
               <div dangerouslySetInnerHTML={{ __html: ARTICLE_BODIES[a.slug] }} />
               <p>
                 <Link className="arrow-link" href={ROUTES.insights}>

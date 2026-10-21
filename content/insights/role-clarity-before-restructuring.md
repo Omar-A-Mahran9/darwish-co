@@ -10,7 +10,7 @@ date: "2026-10"
 order: 4
 status: published
 cover: /images/article-role-clarity-before-restructuring-cover.webp
-cover_alt: "Senior managers standing around a whiteboard sketching an organization chart with sticky notes for roles and responsibilities"
+cover_alt: "A manager at a whiteboard taking colleagues through a plan in a meeting room"
 cover_search: "team planning organization chart whiteboard"
 ---
 

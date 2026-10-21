@@ -10,7 +10,7 @@ date: "2026-10"
 order: 9
 status: planned
 cover: /images/article-hr-compliance-egypt-cover.webp
-cover_alt: "HR manager reviewing employment contracts with an employee in a bright office"
+cover_alt: "A manager handing a document to an employee seated at an office desk"
 cover_search: "HR manager reviewing employment contract"
 ---
 

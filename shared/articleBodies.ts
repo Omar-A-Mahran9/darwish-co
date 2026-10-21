@@ -6,10 +6,6 @@ const HTML_BODIES: Record<string, string> = {
 <p>Organizations frequently invest in artificial intelligence with the expectation that technology will make decisions more objective. The assumption is understandable. Unlike people, an algorithm does not have personal relationships, political loyalties, emotional reactions, or financial interests.</p>
 <p>But this does not mean that the decisions produced by the system are neutral. AI learns from institutional data. It operates within institutional rules. It reflects institutional priorities. And it is deployed through institutional processes.</p>
 <p>If those processes are unfair, inconsistent, politically influenced, poorly documented, or vulnerable to corruption, AI will not automatically correct them. It may make them faster, less visible, and more difficult to challenge.</p>
-<figure>
-<img src="/images/article-ai-institutional-bias-cover.webp" alt="Two executives reviewing an institutional decision workflow on a tablet" width="1200" height="676" loading="lazy" />
-<figcaption>AI operates within institutional rules and processes. If those processes are weak, automation can make the weakness faster and less visible.</figcaption>
-</figure>
 <h2>AI learns from what the institution has done</h2>
 <p>Machine-learning systems identify patterns in historical data. In a well-governed institution, historical data may provide a useful basis for forecasting demand, allocating resources, identifying risk, or improving operations.</p>
 <p>But historical records may also reflect preferential treatment, unequal access, inconsistent enforcement, informal influence, unexplained exceptions, political pressure, weak documentation, manipulated performance indicators, and procurement decisions shaped by relationships rather than value.</p>
@@ -52,10 +48,6 @@ const HTML_BODIES: Record<string, string> = {
 <p>Artificial intelligence is often presented as a way to make organizational decisions faster, more consistent, and more objective. In many cases, it can. AI systems can analyze large volumes of information, identify patterns, prioritize cases, generate recommendations, and reduce the time required to reach a decision.</p>
 <p>But speed is not the same as accuracy. Consistency is not the same as fairness. And an algorithmic recommendation is not the same as an accountable institutional decision.</p>
 <p>The greater the impact of a decision, the more dangerous it becomes to treat AI-generated output as an automatic instruction rather than one source of evidence within a governed decision process.</p>
-<figure>
-<img src="/images/article-ai-human-oversight-cover.webp" alt="Executive reviewing an AI-generated analytics dashboard" width="1200" height="676" loading="lazy" />
-<figcaption>AI systems can surface powerful insights, but without human oversight a confident-looking recommendation can mask flawed data, outdated assumptions, or hidden bias.</figcaption>
-</figure>
 <h2>What under-governed AI really means</h2>
 <p>Under-governed AI does not necessarily mean that a system operates without any human involvement. A person may still click the final approval button. A manager may still receive the recommendation. A committee may still officially authorize the decision.</p>
 <p>However, human involvement becomes meaningless when decision-makers cannot understand how the recommendation was produced, cannot verify the underlying data, do not know the system's confidence level, lack the authority or time to challenge the result, or automatically approve recommendations because they appear technically credible.</p>
@@ -98,10 +90,6 @@ const HTML_BODIES: Record<string, string> = {
 <p>Artificial intelligence has the potential to improve education across the Middle East and North Africa. Educational institutions can use AI to support personalized learning, reduce administrative workload, identify students requiring additional support, improve resource planning, and provide decision-makers with faster access to performance data.</p>
 <p>However, AI does not enter an educational system as a neutral force. It enters an existing institutional environment shaped by differences in access, income, geography, gender, language, disability, technology availability, and educational quality.</p>
 <p>When these differences are reflected in historical data, an AI system may reproduce them at scale. The risk is not simply that an algorithm might make an occasional mistake. The greater risk is that existing inequality becomes automated, standardized, and presented as an objective result.</p>
-<figure>
-<img src="/images/article-ai-bias-education-cover.webp" alt="Students and an educator at a university campus reviewing work on a tablet" width="1200" height="676" loading="lazy" />
-<figcaption>Without local validation and governance, AI systems trained on other contexts may disadvantage the very students they are meant to support.</figcaption>
-</figure>
 <h2>Historical data is not automatically fair data</h2>
 <p>Most AI systems learn from historical information. In education, this information may include previous examination results, attendance records, school rankings, scholarship awards, university admissions, disciplinary records, family income, geographic location, student engagement data, and teacher assessments.</p>
 <p>These records describe what happened in the past. They do not necessarily represent what should happen in the future. For example, if students from a particular region historically received fewer educational opportunities, their performance data may reflect underinvestment rather than lower potential.</p>

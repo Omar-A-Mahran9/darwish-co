@@ -10,7 +10,7 @@ date: "2026-10"
 order: 6
 status: published
 cover: /images/article-decision-ready-market-brief-cover.webp
-cover_alt: "Executive reviewing a concise printed market brief with charts and notes on a meeting table"
+cover_alt: "Managers at a meeting table reviewing printed charts and market data"
 cover_search: "executive reviewing business report"
 ---
 

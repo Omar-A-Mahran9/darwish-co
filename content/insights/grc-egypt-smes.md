@@ -10,7 +10,7 @@ date: "2026-10"
 order: 8
 status: planned
 cover: /images/article-grc-egypt-smes-cover.webp
-cover_alt: "Business owner and adviser reviewing a governance checklist and company documents at a meeting table"
+cover_alt: "An adviser and a business owner reviewing documents together at a meeting table"
 cover_search: "small business governance meeting documents"
 ---
 

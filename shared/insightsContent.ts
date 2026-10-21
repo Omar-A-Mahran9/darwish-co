@@ -19,7 +19,7 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "author": "Fouad Darwish",
     "date": "2026-10",
     "cover": "/images/article-delegation-of-authority-cover.webp",
-    "coverAlt": "A senior executive handing a signed document across a meeting table to a colleague, with an approval matrix visible on a screen in the background"
+    "coverAlt": "Close-up of one executive handing a pen to another to sign a document"
   },
   {
     "slug": "strategy-into-decision-rights",
@@ -33,7 +33,7 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "author": "Fouad Darwish",
     "date": "2026-10",
     "cover": "/images/article-strategy-into-decision-rights-cover.webp",
-    "coverAlt": "A leadership team seated around a table in a monthly review meeting, with a one-page performance summary on a wall screen"
+    "coverAlt": "A leadership team in a strategy meeting around a boardroom table"
   },
   {
     "slug": "anti-bribery-questionnaire",
@@ -47,7 +47,7 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "author": "Fouad Darwish",
     "date": "2026-10",
     "cover": "/images/article-anti-bribery-questionnaire-cover.webp",
-    "coverAlt": "A business owner at a desk reviewing a printed compliance questionnaire beside a laptop, with policy documents and a pen"
+    "coverAlt": "A businessman at his desk reviewing printed documents beside a laptop, with a colleague working in the background"
   },
   {
     "slug": "role-clarity-before-restructuring",
@@ -61,7 +61,7 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "author": "Fouad Darwish",
     "date": "2026-10",
     "cover": "/images/article-role-clarity-before-restructuring-cover.webp",
-    "coverAlt": "Senior managers standing around a whiteboard sketching an organization chart with sticky notes for roles and responsibilities"
+    "coverAlt": "A manager at a whiteboard taking colleagues through a plan in a meeting room"
   },
   {
     "slug": "decision-handoffs",
@@ -75,7 +75,7 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "author": "Fouad Darwish",
     "date": "2026-10",
     "cover": "/images/article-decision-handoffs-cover.webp",
-    "coverAlt": "Documents and a folder being passed between colleagues across an office desk, suggesting a handoff between teams"
+    "coverAlt": "A colleague passing a document across the desks to a co-worker in an open-plan office"
   },
   {
     "slug": "decision-ready-market-brief",
@@ -89,7 +89,7 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "author": "Fouad Darwish",
     "date": "2026-10",
     "cover": "/images/article-decision-ready-market-brief-cover.webp",
-    "coverAlt": "Executive reviewing a concise printed market brief with charts and notes on a meeting table"
+    "coverAlt": "Managers at a meeting table reviewing printed charts and market data"
   },
   {
     "slug": "consumer-research-mena-market-entry",
@@ -103,7 +103,7 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "author": "Fouad Darwish",
     "date": "2026-10",
     "cover": "/images/article-consumer-research-mena-market-entry-cover.webp",
-    "coverAlt": "Researcher interviewing shoppers in a busy Middle Eastern retail market"
+    "coverAlt": "Shoppers and visitors walking through Souq Waqif, a traditional market in Doha, Qatar"
   },
   {
     "slug": "grc-egypt-smes",
@@ -117,7 +117,7 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "author": "Fouad Darwish",
     "date": "2026-10",
     "cover": "/images/article-grc-egypt-smes-cover.webp",
-    "coverAlt": "Business owner and adviser reviewing a governance checklist and company documents at a meeting table"
+    "coverAlt": "An adviser and a business owner reviewing documents together at a meeting table"
   },
   {
     "slug": "hr-compliance-egypt",
@@ -131,7 +131,7 @@ export const MARKDOWN_ARTICLES: Article[] = [
     "author": "Fouad Darwish",
     "date": "2026-10",
     "cover": "/images/article-hr-compliance-egypt-cover.webp",
-    "coverAlt": "HR manager reviewing employment contracts with an employee in a bright office"
+    "coverAlt": "A manager handing a document to an employee seated at an office desk"
   }
 ];
 

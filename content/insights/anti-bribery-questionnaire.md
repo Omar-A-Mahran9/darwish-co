@@ -10,7 +10,7 @@ date: "2026-10"
 order: 3
 status: published
 cover: /images/article-anti-bribery-questionnaire-cover.webp
-cover_alt: "A business owner at a desk reviewing a printed compliance questionnaire beside a laptop, with policy documents and a pen"
+cover_alt: "A businessman at his desk reviewing printed documents beside a laptop, with a colleague working in the background"
 cover_search: "business compliance questionnaire paperwork desk"
 ---
 

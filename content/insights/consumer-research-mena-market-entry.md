@@ -10,7 +10,7 @@ date: "2026-10"
 order: 7
 status: published
 cover: /images/article-consumer-research-mena-market-entry-cover.webp
-cover_alt: "Researcher interviewing shoppers in a busy Middle Eastern retail market"
+cover_alt: "Shoppers and visitors walking through Souq Waqif, a traditional market in Doha, Qatar"
 cover_search: "market research interview shoppers Middle East"
 ---
 
