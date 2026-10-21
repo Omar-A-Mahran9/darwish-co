@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "wouter";
 import { CtaBand, PageHero, SampleTag } from "@/site/blocks";
 import { SHOWN_ARTICLES, TOPICS, type Article } from "@shared/insights";
+import { ARTICLE_BODIES } from "@shared/articleBodies";
 import { ROUTES, SITE_SERVICES, serviceHref } from "@/site/nav";
 import NotFound from "./NotFound";
 
@@ -167,7 +168,17 @@ export function ArticlePage() {
               </Link>
             )}
           </div>
-          <div className="prose">
+          {ARTICLE_BODIES[a.slug] ? (
+            <div className="prose">
+              <div dangerouslySetInnerHTML={{ __html: ARTICLE_BODIES[a.slug] }} />
+              <p>
+                <Link className="arrow-link" href={ROUTES.insights}>
+                  &larr; Back to all insights
+                </Link>
+              </p>
+            </div>
+          ) : (
+            <div className="prose">
             <p className="pending-text">The approved article will replace this text. Articles naming Egyptian or Gulf laws or regulators need a named, qualified reviewer before publishing.</p>
             <h2>Why this matters</h2>
             <p className="pending-text">[Approved text pending]</p>
@@ -181,6 +192,7 @@ export function ArticlePage() {
               </Link>
             </p>
           </div>
+          )}
         </div>
       </section>
       <CtaBand />

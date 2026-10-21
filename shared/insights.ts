@@ -52,6 +52,18 @@ export const TOPICS: [key: string, name: string][] = [
 
 export const ARTICLES: Article[] = [
   {
+    "slug": "ai-institutional-bias",
+    "topic": "governance",
+    "title": "AI Does Not Eliminate Institutional Bias \u2014 It Can Scale It",
+    "status": "published",
+    "sample": false,
+    "summary": "AI learns from institutional data. If that data reflects unfair practices, weak governance, or corruption, AI may automate those problems rather than fix them.",
+    "service": "governance-risk-compliance",
+    "listing": "Why automating a weak process makes the weakness faster, and six controls that keep institutional AI accountable.",
+    "author": "Fouad Darwish",
+    "date": "2026-07"
+  },
+  {
     "slug": "delegation-of-authority",
     "topic": "governance",
     "title": "Delegation of Authority: how to delegate decisions without losing oversight",
