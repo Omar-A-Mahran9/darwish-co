@@ -21,6 +21,9 @@ export type Article = {
   listing: string;
   author: string | null;
   date: string | null;
+  /** Cover photo (1200x676) and its alt text, shown on the card and at the top of the article. */
+  cover?: string;
+  coverAlt?: string;
 };
 
 export const TOPICS: [key: string, name: string][] = [

@@ -230,6 +230,9 @@ importers:
       esbuild:
         specifier: ^0.25.0
         version: 0.25.10
+      marked:
+        specifier: ^18.1.1
+        version: 18.1.1
       pnpm:
         specifier: ^10.15.1
         version: 10.18.1
@@ -2950,6 +2953,11 @@ packages:
 
   marked@16.4.1:
     resolution: {integrity: sha512-ntROs7RaN3EvWfy3EZi14H4YxmT6A5YvywfhO+0pm+cH/dnSQRmdAmoFIc3B9aiwTehyk7pESH4ofyBY+V5hZg==}
+    engines: {node: '>= 20'}
+    hasBin: true
+
+  marked@18.1.1:
+    resolution: {integrity: sha512-zEGgrtUG8crk+TrMacJSVABU4DYDDkS8uqgU3ohrn/2fW9C2AEfUrO3m6IhpIpQpl7YcVpiXXC9cSMWDANT3dg==}
     engines: {node: '>= 20'}
     hasBin: true
 
@@ -6493,6 +6501,8 @@ snapshots:
   markdown-table@3.0.4: {}
 
   marked@16.4.1: {}
+
+  marked@18.1.1: {}
 
   math-intrinsics@1.1.0: {}
 

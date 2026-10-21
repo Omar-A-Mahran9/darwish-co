@@ -5,14 +5,15 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build && vite build --ssr src/entry-server.tsx --outDir ../dist/server && node scripts/prerender.mjs && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "build": "node scripts/build-insights.mjs && vite build && vite build --ssr src/entry-server.tsx --outDir ../dist/server && node scripts/prerender.mjs && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "NODE_ENV=production node dist/index.js",
     "preview": "vite preview --host",
     "share": "node scripts/preview.mjs",
-    "check": "tsc --noEmit",
+    "check": "node scripts/build-insights.mjs && tsc --noEmit",
     "test": "vitest run",
     "format": "prettier --write .",
-    "db:push": "drizzle-kit generate && drizzle-kit migrate"
+    "db:push": "drizzle-kit generate && drizzle-kit migrate",
+    "insights": "node scripts/build-insights.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -88,6 +89,7 @@
     "autoprefixer": "^10.4.20",
     "drizzle-kit": "^0.31.9",
     "esbuild": "^0.25.0",
+    "marked": "^18.1.1",
     "pnpm": "^10.15.1",
     "postcss": "^8.4.47",
     "prettier": "^3.6.2",
