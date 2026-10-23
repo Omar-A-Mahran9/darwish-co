@@ -25,7 +25,7 @@ const { render, prerenderRoutes, injectSeo } = await import(pathToFileURL(server
 const shell = readFileSync(join(publicDir, "index.html"), "utf-8");
 const routes = prerenderRoutes();
 
-/** "/" becomes index.html; "/about" becomes about/index.html. */
+/** "/" b.   ecomes index.html; "/about" becomes about/index.html. */
 const fileFor = (route) =>
   route === "/" ? join(publicDir, "index.html") : join(publicDir, route.slice(1), "index.html");
 
