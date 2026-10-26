@@ -36,9 +36,8 @@ import NotFound from "./NotFound";
 type Svc = { slug: string; title: string };
 type Props = { s: Svc; d: any; crumbs: React.ReactNode };
 
-const LEAD = "Share a brief overview of your challenge. Our team will review it and contact you to agree on the next step.";
-const Contact = ({ s, d, prefix }: { s: Svc; d: any; prefix: string }) => (
-  <ContactSection title={d.contact.title} text={d.contact.text} lead={LEAD} idPrefix={prefix} service={s.title} />
+const Contact = ({ d, prefix }: { s: Svc; d: any; prefix: string }) => (
+  <ContactSection title={d.contact.title} text={d.contact.text} idPrefix={prefix} />
 );
 
 /* ================================================================== Strategy (default layout) */
@@ -466,15 +465,7 @@ function StrategyLayout({ s, d, crumbs }: Props) {
         </div>
       </section>
 
-      <ContactSection
-        title={d.contact.title}
-        text={d.contact.text}
-        lead=""
-        idPrefix="sx"
-        service={s.title}
-        variant="strategy"
-        privacy="We use these details only to respond to your enquiry."
-      />
+      <ContactSection title={d.contact.title} text={d.contact.text} idPrefix="sx" privacy="We use these details only to respond to your enquiry." />
 
       <section className="sx-sec sx-white" aria-labelledby="sx-faq-h">
         <div className="sx-wrap">
