@@ -3,7 +3,7 @@ import fs from "fs";
 import { createServer } from "http";
 import path from "path";
 import { isKnownRoute } from "../shared/seo.js";
-import { PAGE_REDIRECTS, SERVICE_REDIRECTS, WITHDRAWN_SERVICES } from "../shared/site.js";
+import { GUIDE_REDIRECTS, PAGE_REDIRECTS, SERVICE_REDIRECTS, WITHDRAWN_SERVICES } from "../shared/site.js";
 import { injectSeo } from "./seoHtml.js";
 import { fileURLToPath } from "url";
 import { sendGmailWebsiteRequestNotification } from "./gmailNotification.js";
@@ -491,6 +491,10 @@ async function startServer() {
     res.redirect(301, PAGE_REDIRECTS[req.path.replace(/\/+$/, "")]);
   });
   app.get("/blog/*", (_req, res) => res.redirect(301, PAGE_REDIRECTS["/blog"]));
+  // Guides now covered by a published Insights article go to that article.
+  app.get(Object.keys(GUIDE_REDIRECTS), (req, res) => {
+    res.redirect(301, GUIDE_REDIRECTS[req.path.replace(/\/+$/, "")]);
+  });
 
   // Service addresses from earlier versions of the site keep their value by
   // answering with a permanent redirect rather than a 404.

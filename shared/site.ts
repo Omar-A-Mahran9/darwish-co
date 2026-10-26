@@ -135,3 +135,12 @@ export const PAGE_REDIRECTS: Record<string, string> = {
   "/corporate-partners": "/about#partners",
   "/blog": "/insights",
 };
+
+/**
+ * Guides that the published Insights articles replace (26 Oct 2026). The same topic at two addresses
+ * splits search ranking, so the guide answers with a 301 to its article. The other guides stay live.
+ */
+export const GUIDE_REDIRECTS: Record<string, string> = {
+  "/guides/delegation-of-authority": "/insights/delegation-of-authority",
+  "/guides/anti-bribery-questionnaire": "/insights/anti-bribery-questionnaire",
+};

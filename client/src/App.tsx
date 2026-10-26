@@ -5,7 +5,7 @@ import { Redirect, Route, Router as WouterRouter, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import SiteLayout from "./site/SiteLayout";
-import { PAGE_REDIRECTS } from "@shared/site";
+import { GUIDE_REDIRECTS, PAGE_REDIRECTS } from "@shared/site";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -61,6 +61,12 @@ function Router() {
             <GuideIndex />
           </div>
         </Route>
+        {/* Guides replaced by an Insights article go there; the server answers the same addresses with a 301. */}
+        {Object.entries(GUIDE_REDIRECTS).map(([from, to]) => (
+          <Route path={from} key={from}>
+            <Redirect to={to} replace />
+          </Route>
+        ))}
         <Route path="/guides/:slug">
           <div className="legacy-page">
             <GuideDetail />

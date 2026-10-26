@@ -5,6 +5,7 @@ import { isKnownRoute, resolveSeo } from "../shared/seo.js";
 import { GUIDES, PUBLISHED_GUIDES } from "../shared/guides.js";
 import { SERVICES } from "../shared/services.js";
 import {
+  GUIDE_REDIRECTS,
   LEGACY_ANCHOR_REDIRECTS,
   PAGE_REDIRECTS,
   SERVICE_REDIRECTS,
@@ -22,10 +23,10 @@ const SHELL = `<!doctype html>
     <meta charset="UTF-8" />
     <title>Darwish &amp; Co — homepage title</title>
     <meta name="description" content="Homepage description." />
-    <meta property="og:url" content="https://www.darwish-co.com/" />
+    <meta property="og:url" content="https://darwish-co.com/" />
     <meta property="og:title" content="Homepage title" />
     <meta name="twitter:title" content="Homepage title" />
-    <link rel="canonical" href="https://www.darwish-co.com/" />
+    <link rel="canonical" href="https://darwish-co.com/" />
     <script type="application/ld+json">{"@type":"Organization"}</script>
   </head>
   <body><div id="root"></div></body>
@@ -45,11 +46,10 @@ describe("per-page metadata", () => {
       const seo = resolveSeo(path);
       titles.add(seo.title);
       descriptions.add(seo.description);
-      expect(seo.canonical).toBe(`https://www.darwish-co.com${path === "/" ? "/" : path}`);
+      expect(seo.canonical).toBe(`https://darwish-co.com${path === "/" ? "/" : path}`);
       expect(seo.description.length).toBeGreaterThanOrEqual(50);
-      // 160 is the usual display limit; the homepage and About keep their
-      // approved descriptions, which are one character over it.
-      expect(seo.description.length).toBeLessThanOrEqual(path === "/" || path === "/about" ? 161 : 160);
+      // 160 is the usual display limit; About keeps its approved description, one character over it.
+      expect(seo.description.length).toBeLessThanOrEqual(path === "/about" ? 161 : 160);
       expect(seo.title.length).toBeLessThanOrEqual(80);
     }
 
@@ -63,7 +63,7 @@ describe("per-page metadata", () => {
     expect(titleOf(html)).toContain("Services | Darwish");
     expect(canonicalsOf(html)).toHaveLength(1);
     expect(descriptionsOf(html)).toHaveLength(1);
-    expect(html).toContain('href="https://www.darwish-co.com/services"');
+    expect(html).toContain('href="https://darwish-co.com/services"');
     expect(html).not.toContain("Homepage description.");
     // The site-wide structured data in the shell is left alone.
     expect(html).toContain('{"@type":"Organization"}');
@@ -80,7 +80,7 @@ describe("per-page metadata", () => {
       const path = `/insights/${article.slug}`;
       const seo = resolveSeo(path);
       expect(isKnownRoute(path)).toBe(true);
-      expect(seo.canonical).toBe(`https://www.darwish-co.com${path}`);
+      expect(seo.canonical).toBe(`https://darwish-co.com${path}`);
       expect(seo.ogType).toBe("article");
       // Only a published article, with its approved text, is indexed.
       expect(seo.robots).toBe(article.status === "published" ? "index, follow" : "noindex, nofollow");
@@ -126,13 +126,13 @@ describe("per-page metadata", () => {
       titles.add(seo.title);
 
       expect(seo.title).toBe(`${service.title} | Darwish & Co.`);
-      expect(seo.canonical).toBe(`https://www.darwish-co.com${path}`);
+      expect(seo.canonical).toBe(`https://darwish-co.com${path}`);
       expect(seo.description.length).toBeGreaterThanOrEqual(50);
       expect(seo.description.length).toBeLessThanOrEqual(160);
       expect(isKnownRoute(path)).toBe(true);
 
       const html = injectSeo(SHELL, path);
-      expect(html).toContain(`href="https://www.darwish-co.com${path}"`);
+      expect(html).toContain(`href="https://darwish-co.com${path}"`);
       expect(html).toContain('"@type":"Service"');
       expect(html).toContain('"@type":"FAQPage"');
       expect(html).toContain('"@type":"BreadcrumbList"');
@@ -143,7 +143,7 @@ describe("per-page metadata", () => {
         expect(html).toContain(JSON.stringify(question).slice(1, -1));
       }
       // Partner expertise is the partner's; the record names Darwish & Co. only.
-      expect(html).toContain('"provider":{"@id":"https://www.darwish-co.com/#organization"}');
+      expect(html).toContain('"provider":{"@id":"https://darwish-co.com/#organization"}');
     }
 
     expect(titles.size).toBe(SITE_SERVICES.length);
@@ -206,11 +206,11 @@ describe("per-page metadata", () => {
       "utf-8",
     );
     for (const service of SITE_SERVICES) {
-      expect(sitemap).toContain(`https://www.darwish-co.com/services/${service.slug}</loc>`);
+      expect(sitemap).toContain(`https://darwish-co.com/services/${service.slug}</loc>`);
     }
     // Redirected and noindex addresses stay out of it.
     for (const path of [...Object.keys(SERVICE_REDIRECTS), ...Object.keys(PAGE_REDIRECTS), "/privacy", "/growth-360", "/about/integrity"]) {
-      expect(sitemap).not.toContain(`https://www.darwish-co.com${path}</loc>`);
+      expect(sitemap).not.toContain(`https://darwish-co.com${path}</loc>`);
     }
   });
 
@@ -223,7 +223,7 @@ describe("per-page metadata", () => {
   });
 
   it("references one organization record rather than restating it per page", () => {
-    const orgId = '"@id":"https://www.darwish-co.com/#organization"';
+    const orgId = '"@id":"https://darwish-co.com/#organization"';
     expect(injectSeo(SHELL, "/about")).toContain(orgId);
     for (const service of SITE_SERVICES) {
       expect(injectSeo(SHELL, `/services/${service.slug}`)).toContain(orgId);
@@ -262,17 +262,25 @@ describe("per-page metadata", () => {
   it("publishes a guide with its own metadata, breadcrumb and cluster links", () => {
     const sitemap = readFileSync(new URL("../client/public/sitemap.xml", import.meta.url), "utf-8");
 
-    for (const guide of PUBLISHED_GUIDES) {
+    // Guides replaced by an Insights article redirect there and are not pages of their own.
+    for (const [from, to] of Object.entries(GUIDE_REDIRECTS)) {
+      expect(isKnownRoute(from)).toBe(false);
+      expect(sitemap).not.toContain(`https://darwish-co.com${from}</loc>`);
+      expect(isKnownRoute(to)).toBe(true);
+      expect(resolveSeo(to).robots).toBe("index, follow");
+    }
+
+    for (const guide of PUBLISHED_GUIDES.filter((entry) => !GUIDE_REDIRECTS[`/guides/${entry.slug}`])) {
       const path = `/guides/${guide.slug}`;
       const seo = resolveSeo(path);
 
       expect(isKnownRoute(path)).toBe(true);
       expect(seo.robots).toBe("index, follow");
       expect(seo.ogType).toBe("article");
-      expect(seo.canonical).toBe(`https://www.darwish-co.com${path}`);
+      expect(seo.canonical).toBe(`https://darwish-co.com${path}`);
       expect(seo.description.length).toBeGreaterThanOrEqual(50);
       expect(seo.description.length).toBeLessThanOrEqual(160);
-      expect(sitemap).toContain(`https://www.darwish-co.com${path}</loc>`);
+      expect(sitemap).toContain(`https://darwish-co.com${path}</loc>`);
 
       const html = injectSeo(SHELL, path);
       expect(html).toContain('"@type":"BreadcrumbList"');
@@ -294,6 +302,6 @@ describe("per-page metadata", () => {
   it("treats trailing slashes and query strings as the same page", () => {
     expect(resolveSeo("/about/")).toEqual(resolveSeo("/about"));
     expect(resolveSeo("/about?utm_source=x")).toEqual(resolveSeo("/about"));
-    expect(resolveSeo("/services#grc").canonical).toBe("https://www.darwish-co.com/services");
+    expect(resolveSeo("/services#grc").canonical).toBe("https://darwish-co.com/services");
   });
 });

@@ -514,7 +514,28 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginContactApi(), vitePluginRouteSeo(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+/** Only for the dev server: these tag every element with its source file (jsx-loc) and inline the Manus
+ *  editor runtime, about 350 KB per page. The production build serves neither (26 Oct 2026). */
+const devOnly = (plugin: Plugin): Plugin => ({ ...plugin, apply: "serve" });
+
+/** Umami analytics, added only when both settings exist at build time. Without them the tag pointed at the
+ *  literal "%VITE_ANALYTICS_ENDPOINT%/umami" and every page made a failed request. */
+function vitePluginAnalytics(): Plugin {
+  let env: Record<string, string> = {};
+  return {
+    name: "darwish-analytics",
+    configResolved(config) {
+      env = config.env as Record<string, string>;
+    },
+    transformIndexHtml() {
+      const endpoint = env.VITE_ANALYTICS_ENDPOINT, id = env.VITE_ANALYTICS_WEBSITE_ID;
+      if (!endpoint || !id) return [];
+      return [{ tag: "script", attrs: { defer: true, src: `${endpoint.replace(/\/+$/, "")}/umami`, "data-website-id": id }, injectTo: "body" }];
+    },
+  };
+}
+
+const plugins = [react(), tailwindcss(), devOnly(jsxLocPlugin()), devOnly(vitePluginManusRuntime()), vitePluginAnalytics(), vitePluginContactApi(), vitePluginRouteSeo(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
 
 export default defineConfig({
   plugins,

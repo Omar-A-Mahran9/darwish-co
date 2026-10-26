@@ -7,7 +7,7 @@
  * side is what crawlers and AI assistants that do not run JavaScript see.
  */
 
-import { SITE_SERVICES, WITHDRAWN_SERVICES } from "./site.js";
+import { SITE_SERVICES, WITHDRAWN_SERVICES, GUIDE_REDIRECTS } from "./site.js";
 import { PUBLIC_CASES } from "./work.js";
 import { SHOWN_ARTICLES, TOPICS } from "./insights.js";
 import { SERVICE_DETAIL } from "../client/src/site/content/services.js";
@@ -21,7 +21,7 @@ import {
   spokesOf,
 } from "./guides.js";
 
-export const SITE_URL = "https://www.darwish-co.com";
+export const SITE_URL = "https://darwish-co.com";
 export const SITE_NAME = "Darwish & Co.";
 const DEFAULT_OG_IMAGE = "/images/logo.png";
 
@@ -62,8 +62,9 @@ function page(path: string, input: PageSeoInput): PageSeo {
   };
 }
 
+// The homepage's own "Who we are" sentence (26 Oct 2026), within the 160-character display limit.
 const COMPANY_DESCRIPTION =
-  "Governance and management consultancy in Egypt for SMEs across the MENA region — the governance, controls and strategy to delegate decisions without losing oversight.";
+  "Darwish & Co. is a consulting firm based in Egypt, helping organizations improve performance, strengthen governance, and pursue sustainable growth.";
 
 /**
  * Points at the Organization record in index.html rather than restating it, so
@@ -370,7 +371,7 @@ export function isKnownRoute(pathname: string): boolean {
   if (path.startsWith("/projects/")) return caseSeo(path.slice("/projects/".length)) !== null;
   if (path.startsWith("/insights/")) return articleSeo(path.slice("/insights/".length)) !== null;
   if (path === "/guides") return guideIndexSeo() !== null;
-  if (path.startsWith("/guides/")) return guideSeo(path.slice("/guides/".length)) !== null;
+  if (path.startsWith("/guides/")) return !GUIDE_REDIRECTS[path] && guideSeo(path.slice("/guides/".length)) !== null;
   return false;
 }
 

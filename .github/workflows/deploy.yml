@@ -37,11 +37,9 @@ jobs:
       - run: pnpm check
       - run: pnpm build
 
-      # Not yet a gate: three tests fail on main today (two need production
-      # secrets, one is an over-length SEO description). Remove
-      # continue-on-error once they pass.
+      # A failing test stops the deploy. Tests that need production secrets are
+      # skipped unless asked for (RUN_LIVE_*), so the suite runs without them.
       - run: pnpm test
-        continue-on-error: true
 
   deploy:
     needs: verify
