@@ -80,13 +80,7 @@ export default function SiteFooter() {
         <div className="foot-bottom">
           <span>© {new Date().getFullYear()} Darwish &amp; Co.</span>
           <div className="foot-util">
-            <Link className="portal-link" href={ROUTES.clientLogin}>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="4" y="10" width="16" height="11" />
-                <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-              </svg>
-              Client portal
-            </Link>
+            {/* The client portal link is hidden (26 Oct 2026); the login stays at /client-login for clients who have the address. */}
             <Link href={ROUTES.privacy}>Privacy</Link>
           </div>
           <ul className="socials" aria-label="Darwish & Co. on social media">
