@@ -83,7 +83,7 @@ export async function sendContactEmailNotification(
           </div>
           <div style="padding: 16px 24px; background: #f8f9fa; border-radius: 0 0 6px 6px; text-align: center;">
             <p style="color: #888; font-size: 12px; margin: 0;">Darwish &amp; Co. — Consulting &amp; Business Development</p>
-            <p style="color: #888; font-size: 12px; margin: 4px 0 0;">www.darwish-co.com</p>
+            <p style="color: #888; font-size: 12px; margin: 4px 0 0;">darwish-co.com</p>
           </div>
         </div>
       `,

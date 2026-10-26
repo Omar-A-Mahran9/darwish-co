@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /client-login
 
-Sitemap: https://www.darwish-co.com/sitemap.xml
+Sitemap: https://darwish-co.com/sitemap.xml
