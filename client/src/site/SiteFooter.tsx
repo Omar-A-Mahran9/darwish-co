@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { CONTACT, ROUTES, SITE_SERVICES, serviceHref } from "./nav";
-import { showToast } from "./toast";
 
+/** Official social profiles (confirmed 25 Oct 2026). Also listed as sameAs in the Organization record in index.html. */
 const SOCIALS = [
   {
     name: "LinkedIn",
+    href: "https://www.linkedin.com/company/darwishandcoeg/",
     path: "M5 3.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM1.2 8h3.6v13H1.2zM8.2 8h3.5v1.8h.05c.5-.9 1.7-1.9 3.5-1.9 3.7 0 4.4 2.4 4.4 5.6V21h-3.6v-6.6c0-1.6 0-3.6-2.2-3.6s-2.5 1.7-2.5 3.5V21H8.2z",
   },
-  { name: "Facebook", path: "M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H7v4h2v8h4v-8h3l1-4h-4V9c0-.6.4-1 1-1z" },
-  { name: "Instagram", path: "" },
-  { name: "X", path: "M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z" },
+  { name: "Facebook", href: "https://www.facebook.com/darwishandcoeg", path: "M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H7v4h2v8h4v-8h3l1-4h-4V9c0-.6.4-1 1-1z" },
+  { name: "Instagram", href: "https://www.instagram.com/darwishandcoeg/", path: "" },
 ];
 
 /**
@@ -89,18 +89,10 @@ export default function SiteFooter() {
             </Link>
             <Link href={ROUTES.privacy}>Privacy</Link>
           </div>
-          {/* The official account addresses are not confirmed yet, so each icon explains that instead of linking. */}
           <ul className="socials" aria-label="Darwish & Co. on social media">
             {SOCIALS.map((s) => (
               <li key={s.name}>
-                <a
-                  href="#social"
-                  aria-label={`Darwish & Co. on ${s.name} (link to be confirmed)`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    showToast(`The official ${s.name} link will be added once the account address is confirmed.`);
-                  }}
-                >
+                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`Darwish & Co. on ${s.name} (opens in a new tab)`}>
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     {s.name === "Instagram" ? (
                       <>

@@ -46,9 +46,10 @@
     <!--
       Site-wide identity. Fields are limited to what is verified: legal name and
       form, founder and founding date, full address, registration identifiers,
-      review aggregates, partner relationships and external profiles are held
-      back until confirmed (docs/entity-facts.md). areaServed states delivery
-      today (Egypt), not the target audience.
+      review aggregates and partner relationships are held back until confirmed
+      (docs/entity-facts.md). sameAs lists the official social profiles
+      (confirmed 25 Oct 2026). areaServed states delivery today (Egypt), not the
+      target audience.
     -->
     <script type="application/ld+json">
     {
@@ -62,6 +63,11 @@
           "logo": "https://www.darwish-co.com/images/logo.png",
           "description": "Darwish & Co. is a governance and management consultancy based in New Cairo, Egypt, for SMEs in the MENA region.",
           "areaServed": { "@type": "Country", "name": "Egypt" },
+          "sameAs": [
+            "https://www.linkedin.com/company/darwishandcoeg/",
+            "https://www.facebook.com/darwishandcoeg",
+            "https://www.instagram.com/darwishandcoeg/"
+          ],
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer service",
