@@ -84,7 +84,7 @@ const titled = (name: string) => `${name} | Darwish & Co.`;
 
 const STATIC_PAGES: Record<string, PageSeo> = {
   "/": page("/", {
-    title: "Delegate Decisions Without Losing Oversight | Darwish & Co",
+    title: "Darwish & Co. | Strategic Management & Business Consulting in Egypt",
     description: COMPANY_DESCRIPTION,
   }),
   "/about": page("/about", { title: ABOUT.title, description: ABOUT.meta }),
