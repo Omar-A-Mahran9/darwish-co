@@ -784,12 +784,11 @@ a.mag-feature:focus-visible { outline: 3px solid var(--blue); outline-offset: 3p
 /* Insights label on the gradient panel */
 .mag-left .pill { align-self: flex-start; background: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .4); color: var(--white); }
 
-/* Footer utility row: client portal, privacy, social icons */
+/* Footer utility row: privacy, social icons */
 .foot-bottom { align-items: center; }
 .foot-util { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 24px; }
 .foot-util a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--on-navy); }
 .foot-util a:hover { color: #8FD6F8; }
-.portal-link svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
 .site-footer .socials { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; }
 .site-footer .socials a { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--line-navy); color: var(--white); }
 .site-footer .socials a:hover { color: #8FD6F8; border-color: #8FD6F8; }
