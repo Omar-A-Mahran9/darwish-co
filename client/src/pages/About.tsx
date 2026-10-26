@@ -3,7 +3,6 @@ import ContactSection from "@/site/ContactSection";
 import { ABOUT } from "@/site/content/about";
 import { AssetSlot, Crumbs, DarkHero, Icon, SiteLink, n2 } from "@/site/sx";
 
-const LEAD = "Share a brief overview of your challenge. Our team will review it and contact you to agree on the next step.";
 
 export default function About() {
   const a = ABOUT;
@@ -236,7 +235,7 @@ export default function About() {
         </div>
       </section>
 
-      <ContactSection title={a.contact.title} text={a.contact.text} lead={LEAD} idPrefix="ab" />
+      <ContactSection title={a.contact.title} text={a.contact.text} idPrefix="ab" />
     </div>
   );
 }

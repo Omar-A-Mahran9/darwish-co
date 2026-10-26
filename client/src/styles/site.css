@@ -1310,6 +1310,18 @@ body:has(.sx:not(.sx-about)) { --max: 1360px; --gutter: 40px; }
 .sx-status a { color: var(--blue-text); font-weight: 600; }
 @media (max-width: 1023px) { .sx-ct { grid-template-columns: minmax(0, 1fr); gap: 40px; } }
 @media (max-width: 599px) { .sx-form { padding: 24px 20px; } .sx-frow { grid-template-columns: minmax(0, 1fr); } .sx-submit { width: 100%; } }
+/* Zoho form (27 Oct 2026): the iframe fills its white card; Zoho reports its height so it never scrolls inside.
+   680px is the starting height for the four fields before the first report arrives. */
+.zf-card { display: grid; gap: 14px; }
+.zf-frame { display: block; width: 100%; height: 680px; border: 0; background: transparent; }
+/* The form brings its own panel, so the card adds no frame; the invitation stays at the top beside it. */
+.sx-form.zf-card { padding: 0; background: none; }
+.sx-ct:has(.zf-card) { align-items: start; }
+.sx-ct:has(.zf-card) .sx-ct-copy { padding-block-start: 48px; }
+.sx-form.zf-card .sx-privacy { color: var(--on-navy); }
+.sx-form.zf-card .sx-privacy a { color: var(--link-on-navy); }
+@media (max-width: 1023px) { .sx-ct:has(.zf-card) .sx-ct-copy { padding-block-start: 0; } }
+@media (max-width: 599px) { .zf-frame { height: 760px; } }
 
 /* 14. FAQ */
 .sx-faq { margin-block-start: 36px; border-block-start: 1px solid var(--line); }
