@@ -55,6 +55,9 @@ export default function SiteFooter() {
               <li>
                 <Link href={ROUTES.industries}>Industries</Link>
               </li>
+              <li>
+                <Link href={ROUTES.contact}>Contact</Link>
+              </li>
             </ul>
           </div>
           <div>
