@@ -12,11 +12,12 @@ const Chevron = () => (
 );
 
 /** Which top-level section the current address belongs to. */
-function sectionOf(path: string): "services" | "about" | "work" | "insights" | null {
+function sectionOf(path: string): "services" | "about" | "work" | "insights" | "contact" | null {
   if (path.startsWith("/services") || path.startsWith("/industries")) return "services";
   if (path.startsWith("/about")) return "about";
   if (path.startsWith(ROUTES.work)) return "work";
   if (path.startsWith(ROUTES.insights)) return "insights";
+  if (path.startsWith(ROUTES.contact)) return "contact";
   return null;
 }
 
@@ -234,6 +235,7 @@ export default function SiteHeader() {
               {navLink(ROUTES.about, "About us", "about")}
               {navLink(ROUTES.work, "Our work", "work")}
               {navLink(ROUTES.insights, "Insights", "insights")}
+              {navLink(ROUTES.contact, "Contact", "contact")}
             </ul>
             <CtaLink className="btn btn-blue header-cta" />
           </nav>
@@ -288,6 +290,9 @@ export default function SiteHeader() {
               </li>
               <li className="m-row">
                 <Link href={ROUTES.insights}>Insights</Link>
+              </li>
+              <li className="m-row">
+                <Link href={ROUTES.contact}>Contact</Link>
               </li>
             </ul>
             <CtaLink className="btn btn-blue" />
