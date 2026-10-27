@@ -20,7 +20,7 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const publicDir = join(projectRoot, "dist", "public");
 const serverEntry = join(projectRoot, "dist", "server", "entry-server.js");
 
-const { render, prerenderRoutes, injectSeo } = await import(pathToFileURL(serverEntry).href);
+const { render, prerenderRoutes, injectSeo, sitemapXml } = await import(pathToFileURL(serverEntry).href);
 
 const shell = readFileSync(join(publicDir, "index.html"), "utf-8");
 const routes = prerenderRoutes();
@@ -54,6 +54,11 @@ for (const route of routes) {
 }
 
 console.log(`[prerender] wrote ${written} of ${routes.length} pages`);
+
+// The sitemap comes from the same address list, so a newly published article is always in it.
+const sitemap = sitemapXml();
+writeFileSync(join(publicDir, "sitemap.xml"), sitemap, "utf-8");
+console.log(`[prerender] wrote sitemap.xml with ${(sitemap.match(/<url>/g) || []).length} addresses`);
 
 for (const failure of failures) {
   console.warn(`[prerender] skipped ${failure.route}: ${failure.message}`);

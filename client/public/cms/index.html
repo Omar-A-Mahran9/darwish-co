@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Darwish &amp; Co. Insights CMS</title>
+    <!-- Explicit, so the config loads whether the page is opened as /cms/ or /cms/index.html. -->
+    <link href="/cms/config.yml" type="application/yaml" rel="cms-config-url" />
+  </head>
+  <body>
+    <!--
+      Sveltia CMS: a Git-based editor for content/insights/*.md. Configuration: ./config.yml.
+      Writer and setup guide: docs/insights-cms.md. The version is pinned on purpose (the one
+      Growthino runs); bump it deliberately and re-run the round-trip check in that guide.
+    -->
+    <script src="https://unpkg.com/@sveltia/cms@0.217.0/dist/sveltia-cms.js"></script>
+  </body>
+</html>

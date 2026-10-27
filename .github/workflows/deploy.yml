@@ -7,13 +7,18 @@ name: Deploy
 on:
   push:
     branches: [main]
+  # Pull requests (including every CMS save) get the same checks, so a broken
+  # article shows a failed check before anyone merges it. Only main deploys.
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 # One deploy at a time; a newer push waits rather than cancelling a deploy
-# that is part-way through.
+# that is part-way through. Each pull request checks in its own group, and a
+# newer push to the same pull request replaces its older check.
 concurrency:
-  group: production-deploy
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'production-deploy' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -43,7 +48,7 @@ jobs:
 
   deploy:
     needs: verify
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:

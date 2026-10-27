@@ -5,6 +5,7 @@ import path from "path";
 import { isKnownRoute } from "../shared/seo.js";
 import { GUIDE_REDIRECTS, PAGE_REDIRECTS, SERVICE_REDIRECTS, WITHDRAWN_SERVICES } from "../shared/site.js";
 import { injectSeo } from "./seoHtml.js";
+import { registerCmsAuth } from "./cmsAuth.js";
 import { fileURLToPath } from "url";
 import { sendGmailWebsiteRequestNotification } from "./gmailNotification.js";
 import {
@@ -102,6 +103,9 @@ async function startServer() {
   const server = createServer(app);
 
   app.use(express.json());
+
+  // "Sign in with GitHub" for the Insights CMS at /cms (docs/insights-cms.md).
+  registerCmsAuth(app);
 
   // ── Contact Form API ──────────────────────────────────────────────────────
   app.post("/api/contact", async (req, res) => {
@@ -517,6 +521,15 @@ async function startServer() {
     }
 
     return next();
+  });
+
+  // The Insights CMS: a static page that loads Sveltia CMS. It needs the trailing slash so its
+  // relative files resolve, and it is never indexed (robots.txt and its own meta tag).
+  // (Express matches /cms and /cms/ with one route, so the slash is checked here.)
+  app.get("/cms", (req, res) => {
+    if (!req.originalUrl.split("?")[0].endsWith("/")) return res.redirect(301, "/cms/");
+    res.set("Cache-Control", "no-store");
+    res.sendFile(path.join(staticPath, "cms", "index.html"));
   });
 
   app.use(express.static(staticPath, { index: false, redirect: false }));

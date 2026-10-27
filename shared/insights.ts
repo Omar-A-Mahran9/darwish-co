@@ -55,54 +55,8 @@ export const TOPICS: [key: string, name: string][] = [
   ]
 ];
 
-/** Articles written in TypeScript; the rest come from content/insights/*.md. */
-const HTML_ARTICLES: Article[] = [
-  {
-    "slug": "ai-institutional-bias",
-    "topic": "governance",
-    "title": "AI Does Not Eliminate Institutional Bias \u2014 It Can Scale It",
-    "status": "published",
-    "sample": false,
-    "summary": "AI learns from institutional data. If that data reflects unfair practices, weak governance, or corruption, AI may automate those problems rather than fix them.",
-    "service": "governance-risk-compliance",
-    "listing": "Why automating a weak process makes the weakness faster, and six controls that keep institutional AI accountable.",
-    "author": "Fouad Darwish",
-    "date": "2026-07",
-    "cover": "/images/article-ai-institutional-bias-cover.webp",
-    "coverAlt": "Two executives reviewing an institutional decision workflow on a tablet"
-  },
-  {
-    "slug": "ai-human-oversight",
-    "topic": "governance",
-    "title": "When AI Accelerates the Wrong Decision: Why Human Oversight Is a Governance Requirement",
-    "status": "published",
-    "sample": false,
-    "summary": "AI can accelerate decisions, but without effective governance it can also scale outdated data, hidden bias and institutional error. The central question is who remains responsible when an AI-supported decision causes harm.",
-    "service": "governance-risk-compliance",
-    "listing": "Why a human approval button is not oversight, and six controls that keep AI-supported decisions accountable.",
-    "author": "Fouad Darwish",
-    "date": "2026-07",
-    "cover": "/images/article-ai-human-oversight-cover.webp",
-    "coverAlt": "Executive reviewing an AI-generated analytics dashboard"
-  },
-  {
-    "slug": "ai-bias-mena-education",
-    "topic": "governance",
-    "title": "AI in MENA Education: When Automation Reinforces Existing Inequality",
-    "status": "published",
-    "sample": false,
-    "summary": "AI can improve education across the MENA region, but biased historical data and weak institutional oversight may reinforce inequality in admissions, grading, scholarships and student monitoring.",
-    "service": "governance-risk-compliance",
-    "listing": "Where bias enters admissions, grading, scholarships and student monitoring, and six principles for institutions adopting AI.",
-    "author": "Fouad Darwish",
-    "date": "2026-07",
-    "cover": "/images/article-ai-bias-education-cover.webp",
-    "coverAlt": "Students and an educator at a university campus reviewing work on a tablet"
-  }
-];
-
-/** Batch 2 (Markdown, newest) first, then the three AI articles. */
-export const ARTICLES: Article[] = [...MARKDOWN_ARTICLES, ...HTML_ARTICLES];
+/** Every article comes from content/insights/*.md (edited in the CMS at /cms), in their `order`. */
+export const ARTICLES: Article[] = MARKDOWN_ARTICLES;
 
 const env = (import.meta as { env?: Record<string, string | undefined> }).env;
 
