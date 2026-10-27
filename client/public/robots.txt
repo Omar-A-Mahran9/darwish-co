@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /client-login
+Disallow: /cms/
 
 Sitemap: https://darwish-co.com/sitemap.xml

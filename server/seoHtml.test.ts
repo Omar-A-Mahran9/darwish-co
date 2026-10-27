@@ -1,7 +1,7 @@
-import { readFileSync } from "fs";
 import { describe, expect, it } from "vitest";
 import { injectSeo } from "./seoHtml.js";
 import { isKnownRoute, resolveSeo } from "../shared/seo.js";
+import { sitemapXml } from "../shared/sitemap.js";
 import { GUIDES, PUBLISHED_GUIDES } from "../shared/guides.js";
 import { SERVICES } from "../shared/services.js";
 import {
@@ -191,7 +191,7 @@ describe("per-page metadata", () => {
     const unpublished = SERVICES.filter((service) => !service.published);
     expect(unpublished.map((service) => service.slug)).toEqual(["ai-governance"]);
 
-    const sitemap = readFileSync(new URL("../client/public/sitemap.xml", import.meta.url), "utf-8");
+    const sitemap = sitemapXml();
     for (const service of unpublished) {
       const path = `/services/${service.slug}`;
       expect(isKnownRoute(path)).toBe(false);
@@ -201,10 +201,7 @@ describe("per-page metadata", () => {
   });
 
   it("lists every service page in the sitemap", () => {
-    const sitemap = readFileSync(
-      new URL("../client/public/sitemap.xml", import.meta.url),
-      "utf-8",
-    );
+    const sitemap = sitemapXml();
     for (const service of SITE_SERVICES) {
       expect(sitemap).toContain(`https://darwish-co.com/services/${service.slug}</loc>`);
     }
@@ -242,7 +239,7 @@ describe("per-page metadata", () => {
   });
 
   it("gives an unpublished guide no address at all", () => {
-    const sitemap = readFileSync(new URL("../client/public/sitemap.xml", import.meta.url), "utf-8");
+    const sitemap = sitemapXml();
 
     for (const guide of GUIDES.filter((entry) => !entry.published)) {
       const path = `/guides/${guide.slug}`;
@@ -260,7 +257,7 @@ describe("per-page metadata", () => {
   });
 
   it("publishes a guide with its own metadata, breadcrumb and cluster links", () => {
-    const sitemap = readFileSync(new URL("../client/public/sitemap.xml", import.meta.url), "utf-8");
+    const sitemap = sitemapXml();
 
     // Guides replaced by an Insights article redirect there and are not pages of their own.
     for (const [from, to] of Object.entries(GUIDE_REDIRECTS)) {

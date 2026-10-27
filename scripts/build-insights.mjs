@@ -1,51 +1,64 @@
 /**
  * Turns the Markdown articles in content/insights/ into shared/insightsContent.ts.
  *
- * Each file starts with front matter (slug, title, topic, service, summary,
- * listing, author, date, status, cover, cover_alt, optional featured and order)
- * followed by the article in Markdown. Only published articles have their text
- * written out, so a planned article's draft never reaches the site's code.
+ * Each file starts with YAML front matter (slug, title, topic, service, summary,
+ * listing, author, date, status, cover, cover_alt, optional featured and order),
+ * as the CMS at /cms writes it, followed by the article in Markdown. Every file is
+ * checked against scripts/insights-schema.mjs first; any problem stops the build
+ * (and so the deploy) with a list naming the file, field or line. Only published
+ * articles have their text written out, so a planned article's draft never
+ * reaches the site's code.
  *
  * Runs at the start of `pnpm run check` and `pnpm run build`, or on its own with
  * `pnpm run insights`. The output is committed so tests run without it.
  */
 
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { marked } from "marked";
+import { parse as parseYaml } from "yaml";
+import { checkArticle } from "./insights-schema.mjs";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourceDir = join(projectRoot, "content", "insights");
+const publicDir = join(projectRoot, "client", "public");
 const outFile = join(projectRoot, "shared", "insightsContent.ts");
 
-const STATUSES = ["planned", "sample", "published"];
-const REQUIRED = ["slug", "title", "topic", "service", "summary", "listing", "status"];
-
-/** Reads `key: value` front matter; double-quoted values are JSON strings. */
+/** Splits front matter (YAML, as the CMS writes it) from the Markdown body. */
 function parse(file, text) {
   const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/.exec(text);
   if (!match) return null;
-  const meta = {};
-  for (const line of match[1].split(/\r?\n/)) {
-    if (!line.trim()) continue;
-    const pair = /^([a-z_]+):\s*(.*)$/.exec(line);
-    if (!pair) throw new Error(`${file}: cannot read front matter line "${line}"`);
-    const raw = pair[2].trim();
-    meta[pair[1]] = raw.startsWith('"') ? JSON.parse(raw) : raw === "true" ? true : raw === "false" ? false : raw;
+  let meta;
+  try {
+    meta = parseYaml(match[1]) ?? {};
+  } catch (error) {
+    throw new Error(`${file}: the settings at the top cannot be read (${error.message.split("\n")[0]})`);
   }
-  for (const key of REQUIRED) if (!meta[key]) throw new Error(`${file}: front matter is missing "${key}"`);
-  if (!STATUSES.includes(meta.status)) throw new Error(`${file}: unknown status "${meta.status}"`);
-  if (`${meta.slug}.md` !== file) throw new Error(`${file}: slug "${meta.slug}" does not match the file name`);
   return { meta, body: match[2] };
+}
+
+const fileInfo = (path) => {
+  const full = join(publicDir, path);
+  return existsSync(full) ? { exists: true, kb: Math.round(statSync(full).size / 1024) } : { exists: false, kb: 0 };
+};
+
+const parsed = [];
+for (const file of readdirSync(sourceDir).filter((name) => name.endsWith(".md")).sort()) {
+  const result = parse(file, readFileSync(join(sourceDir, file), "utf-8"));
+  if (result) parsed.push({ file, ...result }); // Notes such as IMAGE_CREDITS.md have no front matter.
+}
+const publishedSlugs = parsed.filter((p) => p.meta.status === "published").map((p) => p.meta.slug);
+const problems = parsed.flatMap(({ file, meta, body }) => checkArticle(file, meta, body, { fileInfo, publishedSlugs }));
+if (problems.length) {
+  console.error(`[insights] ${problems.length} problem${problems.length === 1 ? "" : "s"} to fix before this can be published:`);
+  for (const problem of problems) console.error(`  - ${problem}`);
+  process.exit(1);
 }
 
 const articles = [];
 const bodies = {};
-for (const file of readdirSync(sourceDir).filter((name) => name.endsWith(".md")).sort()) {
-  const parsed = parse(file, readFileSync(join(sourceDir, file), "utf-8"));
-  if (!parsed) continue; // Notes such as IMAGE_CREDITS.md have no front matter.
-  const { meta, body } = parsed;
+for (const { meta, body } of parsed) {
   articles.push({
     order: Number(meta.order ?? 999),
     entry: {

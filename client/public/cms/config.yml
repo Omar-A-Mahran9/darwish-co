@@ -1,0 +1,197 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.217.0/schema/sveltia-cms.json
+#
+# Darwish & Co. Insights CMS (Sveltia), at darwish-co.com/cms. Edits content/insights/*.md.
+#
+# scripts/insights-schema.mjs is the source of truth and runs on every build and pull request;
+# the limits and lists below mirror it so writers rarely meet a failed check. Keep them in sync:
+# topics -> TOPIC_KEYS, services -> SERVICE_SLUGS, lengths -> LIMITS, image sizes -> MAX_KB.
+
+app_title: Darwish & Co. Insights CMS
+site_url: https://darwish-co.com
+display_url: https://darwish-co.com/insights
+
+backend:
+  name: github
+  repo: Omar-A-Mahran9/darwish-co
+  branch: main
+  # "Sign in with GitHub" is handled by the website's own server (server/cmsAuth.ts), which holds the
+  # GitHub OAuth app's secret. Setup: docs/insights-cms.md.
+  base_url: https://darwish-co.com
+  auth_endpoint: api/cms/auth
+  commit_messages:
+    create: "content(insights): create “{{slug}}”"
+    update: "content(insights): update “{{slug}}”"
+    delete: "content(insights): delete “{{slug}}”"
+    uploadMedia: "content(insights): upload “{{path}}”"
+    deleteMedia: "content(insights): delete “{{path}}”"
+
+# Every save goes to its own branch and pull request, where the build checks the article.
+# Nothing reaches the live site until the pull request is merged into main, which deploys it.
+publish_mode: editorial_workflow
+
+media_folder: client/public/images/insights
+public_folder: /images/insights
+
+media_libraries:
+  default:
+    config:
+      max_file_size: 15000000
+      slugify_filename: true
+      transformations:
+        # scripts/insights-schema.mjs caps photos at 250 KB.
+        raster_image:
+          format: webp
+          quality: 80
+          width: 1600
+          height: 1600
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+output:
+  # The checks reject empty values such as cover: "", so empty optional fields are left out.
+  omit_empty_optional_fields: true
+  yaml:
+    # Quoted, so a value such as 2026-10 stays text.
+    quote: double
+
+collections:
+  - name: insights
+    label: Insights articles
+    label_singular: Article
+    description: Articles at darwish-co.com/insights. Saving opens a pull request for review; merging it publishes the article.
+    folder: content/insights
+    extension: md
+    format: frontmatter
+    create: true
+    delete: true
+    identifier_field: title
+    # The file name is the slug and the web address. It is fixed once the article is created.
+    slug: "{{fields.slug}}"
+    preview_path: /insights/{{slug}}
+    summary: "{{title}} · {{status}}"
+    sortable_fields:
+      fields: [order, title, date]
+      default:
+        field: order
+        direction: ascending
+    view_filters:
+      filters:
+        - name: published
+          label: Published
+          field: status
+          pattern: published
+        - name: planned
+          label: Planned
+          field: status
+          pattern: planned
+    fields:
+      - name: slug
+        label: Web address
+        widget: string
+        pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "Lowercase words joined by hyphens, e.g. delegation-of-authority."]
+        hint: The article's address, darwish-co.com/insights/… Lowercase words joined by hyphens. It cannot change after the article is created.
+
+      - name: title
+        label: Title
+        widget: string
+        minlength: 10
+        maxlength: 110
+        hint: 10–110 characters. Shown on the article, the listing card and in search results.
+
+      - name: summary
+        label: Summary
+        widget: text
+        minlength: 50
+        maxlength: 260
+        hint: 50–260 characters. Shown under the title and in search results.
+
+      - name: listing
+        label: Listing card text
+        widget: text
+        minlength: 30
+        maxlength: 160
+        hint: 30–160 characters. The short line on the article's card on the Insights page.
+
+      - name: topic
+        label: Topic
+        widget: select
+        options:
+          - { value: strategy, label: Strategy }
+          - { value: governance, label: Governance }
+          - { value: people, label: People }
+          - { value: operations, label: Operations }
+          - { value: growth, label: Growth }
+          - { value: research, label: Research }
+
+      - name: service
+        label: Related service
+        widget: select
+        options:
+          - { value: strategy-performance, label: Strategy & Performance Management }
+          - { value: governance-risk-compliance, label: "Governance, Risk & Institutional Excellence" }
+          - { value: human-resources, label: Organizational Development & Human Capital Advisory }
+          - { value: operational-excellence, label: Operational Excellence & Project Advisory }
+          - { value: business-development, label: Business Growth & Market Expansion }
+          - { value: negotiation-deal-advisory, label: Strategic Negotiation & Deal Advisory }
+          - { value: market-research, label: "Research, Feasibility & Business Intelligence" }
+          - { value: company-liquidation, label: Company Liquidation & Dissolution }
+
+      - name: author
+        label: Author
+        widget: string
+        required: false
+        default: Fouad Darwish
+        hint: The name shown on the article. Partner expertise is credited to the partner by name.
+
+      - name: date
+        label: Date
+        widget: string
+        required: false
+        pattern: ["^\\d{4}-\\d{2}(-\\d{2})?$", "Use 2026-10 or 2026-10-27."]
+        hint: Year and month (2026-10), or a full date (2026-10-27).
+
+      - name: status
+        label: Status
+        widget: select
+        default: planned
+        options:
+          - { value: planned, label: "Planned (not on the site yet)" }
+          - { value: published, label: "Published (on the site once merged)" }
+        hint: Only published articles appear on the site, in the sitemap and in search results.
+
+      - name: featured
+        label: Featured
+        widget: boolean
+        required: false
+        default: false
+
+      - name: order
+        label: Order on the Insights page
+        widget: number
+        value_type: int
+        required: false
+        hint: Lower numbers come first. Leave empty to place it after the numbered ones.
+
+      - name: cover
+        label: Cover photo
+        widget: image
+        required: false
+        hint: 1200×676 (16:9) works best. Uploads become WebP automatically and must end up at 250 KB or less.
+
+      - name: cover_alt
+        label: Cover photo description
+        widget: string
+        required: false
+        minlength: 10
+        maxlength: 200
+        hint: Required when there is a cover photo. Describe what the photo shows, for people who cannot see it.
+
+      - name: body
+        label: Article
+        widget: markdown
+        use_emoji_autocomplete: false
+        hint: >-
+          Use ## for section headings (a published article needs at least one). No raw HTML.
+          Upload images here, not links to other sites, and give each a description.
