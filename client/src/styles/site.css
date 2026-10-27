@@ -1822,3 +1822,57 @@ img.pp-hero-slot { width: 100%; height: 100%; aspect-ratio: 8 / 9; min-height: 1
 :where(.legacy-page) :is(h1, h2, h3, h4) { margin: revert-layer; font-family: revert-layer; font-weight: revert-layer; color: revert-layer; text-wrap: revert-layer; font-size: revert-layer; line-height: revert-layer; }
 :where(.legacy-page) p { margin: revert-layer; }
 :where(.legacy-page) a { color: revert-layer; text-underline-offset: revert-layer; }
+
+/* Contact page (27 Oct 2026): quick actions in the hero, the Zoho form on a navy panel beside the direct
+   contacts, three next steps, the office map with a card over it, and the homepage FAQ. */
+.ct-quick { margin-block-start: 10px; }
+.ct-main { background: var(--bg); }
+.ct-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: start; }
+.ct-form { display: grid; gap: 14px; padding: 8px; background: #1E2741; box-shadow: 0 18px 44px rgba(15, 31, 51, .16); }   /* frames Zoho's dark theme */
+.ct-privacy { padding: 0 16px 12px; font-size: 14px; line-height: 1.5; color: var(--on-navy); }
+.ct-privacy a { color: var(--link-on-navy); }
+.ct-direct { position: sticky; top: calc(var(--header-h) + 24px); display: grid; gap: 20px; padding: 32px; background: var(--white); border: 1px solid var(--line); border-block-start: 3px solid var(--blue); }
+.ct-direct h2 { font-size: 28px; line-height: 1.2; }
+.ct-direct-lead { color: var(--muted); font-size: 16px; }
+.ct-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.ct-list li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; align-items: start; }
+.ct-list li > div { display: grid; gap: 2px; min-width: 0; }
+.ct-ico { display: grid; place-items: center; width: 44px; height: 44px; background: #EAF6FD; color: #006BA3; }
+.ct-ico svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ct-k { font: 600 13px/1.3 var(--sans); color: var(--muted); }
+.ct-list a { font: 600 17px/1.4 var(--sans); color: var(--navy); text-decoration: none; overflow-wrap: anywhere; }
+.ct-list a:hover { color: var(--blue-text); text-decoration: underline; text-underline-offset: 3px; }
+.ct-list address { font-style: normal; font-size: 16px; line-height: 1.5; color: var(--charcoal); }
+.ct-list .ct-dir { margin-block-start: 6px; font-size: 15px; color: var(--blue-text); display: inline-flex; align-items: center; gap: 6px; min-height: 32px; justify-self: start; }
+.ct-social { display: grid; gap: 10px; padding-block-start: 18px; border-block-start: 1px solid var(--line); }
+.ct-social .socials { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; }
+.ct-social .socials a { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line); color: var(--navy); }
+.ct-social .socials a:hover { border-color: var(--blue); color: var(--blue-text); }
+.ct-social .socials svg { width: 18px; height: 18px; fill: currentColor; }
+.ct-steps-band h2 { font-size: 32px; line-height: 1.2; }
+.ct-steps { list-style: none; margin: 32px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.ct-steps li { position: relative; display: grid; gap: 10px; align-content: start; padding: 28px; background: var(--warm); border: 1px solid var(--line); }
+.ct-step-n { font: 600 20px/1 var(--sans); color: #006BA3; font-variant-numeric: tabular-nums; }
+.ct-steps h3 { font: 600 20px/1.3 var(--serif); color: var(--navy); }
+.ct-steps p { font-size: 16px; line-height: 1.55; color: var(--muted); }
+.ct-map { position: relative; min-height: 440px; background: var(--bg); }
+.ct-map-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: saturate(.85); }
+.ct-map-wrap { position: relative; display: flex; align-items: center; justify-content: flex-end; min-height: 440px; pointer-events: none; }   /* card on the right: Google puts its place label top left and the pin in the centre */
+.ct-map-card { pointer-events: auto; display: grid; gap: 12px; justify-items: start; max-width: 360px; padding: 28px; background: var(--white); border-block-start: 3px solid var(--blue); box-shadow: 0 18px 44px rgba(15, 31, 51, .22); }
+.ct-map-card h2 { font-size: 26px; line-height: 1.2; }
+.ct-map-card address { font-style: normal; font-size: 16px; line-height: 1.5; color: var(--charcoal); }
+@media (max-width: 1023px) {
+  .ct-grid { grid-template-columns: minmax(0, 1fr); }
+  .ct-direct { position: static; }
+}
+@media (max-width: 767px) {
+  .ct-steps { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .ct-steps-band h2 { font-size: 26px; }
+  .ct-direct { padding: 24px; }
+  .ct-quick .btn { flex: 1 1 100%; justify-content: center; }
+  .ct-map { min-height: 0; display: flex; flex-direction: column; }
+  .ct-map-frame { position: static; height: 300px; }
+  .ct-map-wrap { min-height: 0; padding-block: 0; }
+  .ct-map-card { max-width: none; width: 100%; margin-block: -40px 32px; }
+}
+

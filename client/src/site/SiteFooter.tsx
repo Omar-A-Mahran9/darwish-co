@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { CONTACT, ROUTES, SITE_SERVICES, serviceHref } from "./nav";
-
-/** Official social profiles (confirmed 25 Oct 2026). Also listed as sameAs in the Organization record in index.html. */
-const SOCIALS = [
-  {
-    name: "LinkedIn",
-    href: "https://www.linkedin.com/company/darwishandcoeg/",
-    path: "M5 3.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM1.2 8h3.6v13H1.2zM8.2 8h3.5v1.8h.05c.5-.9 1.7-1.9 3.5-1.9 3.7 0 4.4 2.4 4.4 5.6V21h-3.6v-6.6c0-1.6 0-3.6-2.2-3.6s-2.5 1.7-2.5 3.5V21H8.2z",
-  },
-  { name: "Facebook", href: "https://www.facebook.com/darwishandcoeg", path: "M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H7v4h2v8h4v-8h3l1-4h-4V9c0-.6.4-1 1-1z" },
-  { name: "Instagram", href: "https://www.instagram.com/darwishandcoeg/", path: "" },
-];
+import { CONTACT, ROUTES, SITE_SERVICES, SOCIALS, serviceHref } from "./nav";
 
 /**
  * Footer. The "A wise word in the right moment" strip is dropped on pages that already end with a
@@ -22,7 +11,7 @@ export default function SiteFooter() {
   const [showTop, setShowTop] = useState(true);
 
   useEffect(() => {
-    setShowTop(!document.querySelector("main .sx-contact, main .cta-band"));
+    setShowTop(!document.querySelector("main .sx-contact, main .cta-band, main .ct-page"));
   }, [location]);
 
   return (

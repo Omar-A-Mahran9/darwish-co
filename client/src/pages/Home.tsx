@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "wouter";
 import { SHOWN_ARTICLES } from "@shared/insights";
 import ContactSection from "@/site/ContactSection";
+import { FAQS } from "@/site/content/faqs";
 import Growth360Journey from "@/site/Growth360Journey";
 import { CountUp, FlipWord, Marquee } from "@/site/motion";
 import { ROUTES, SITE_SERVICES, serviceHref } from "@/site/nav";
@@ -130,12 +131,6 @@ const TOPICS: { key: string; label: string; icon: ReactNode }[] = [
   { key: "research", label: "Research", icon: <><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></> },
 ];
 
-const FAQS = [
-  ["Do I need to know which service I require before contacting you?", "No. We begin by understanding your business challenge and priorities to identify the appropriate advisory scope."],
-  ["What does an engagement include?", "Each proposal defines the advisory sessions, reviews, deliverables and follow-up activities. Any additional work is specified separately."],
-  ["Do you support implementation or only provide recommendations?", "Darwish & Co. provides diagnosis, strategy, advisory oversight and performance review. Specialist implementation is delivered by the entities identified in the project scope."],
-  ["How are consulting results measured?", "We agree success measures linked to the project objective, such as performance improvement, cost reduction or operational efficiency, and review progress against the engagement plan."],
-];
 
 /** Hero video: plays muted on loop; visitors who prefer reduced motion see the still poster instead. */
 function HeroVideo() {
