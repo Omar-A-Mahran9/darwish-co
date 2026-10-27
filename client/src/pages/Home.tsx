@@ -320,12 +320,21 @@ export default function Home() {
             <div className="svc-grid">
               {SITE_SERVICES.map((s, i) => (
                 <Link className="svc" href={serviceHref(s.slug)} aria-labelledby={`svc-${i + 1}-t`} aria-describedby={`svc-${i + 1}-d`} key={s.slug}>
-                  <span className="svc-num" aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
+                  <span className="svc-top" aria-hidden="true">
+                    <span className="svc-num">{String(i + 1).padStart(2, "0")}</span>
+                    {/* Always visible, so the card reads as a link on touch screens too. */}
+                    <span className="svc-go">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M7 17 17 7M8 7h9v9" />
+                      </svg>
+                    </span>
                   </span>
                   <h3 id={`svc-${i + 1}-t`}>{s.gridTitle}</h3>
                   <span className="svc-tag" id={`svc-${i + 1}-d`}>
                     {s.group}
+                  </span>
+                  <span className="svc-more" aria-hidden="true">
+                    Explore service
                   </span>
                 </Link>
               ))}

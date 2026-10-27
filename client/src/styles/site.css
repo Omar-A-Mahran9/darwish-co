@@ -323,6 +323,16 @@ html { scroll-padding-top: calc(var(--header-h) + 16px); }
 .svc:focus-visible .svc-num, .svc:focus-visible h3, .svc:focus-visible .svc-tag { color: var(--white); }
 .svc:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .svc:hover, .svc:focus-visible { transform: none; } }
+/* Link cues (27 Oct 2026): an arrow in a circle across from the number and an "Explore service" label at the
+   foot, both always shown. On hover or keyboard focus the circle fills and the arrow and label move. */
+.svc-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.svc-go { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border: 1px solid #9CCBE6; border-radius: 50%; color: #006BA3; transition: background-color 200ms ease-out, border-color 200ms ease-out, color 200ms ease-out; }
+.svc-go svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 200ms ease-out; }
+.svc-more { margin-block-start: auto; padding-block-start: 18px; align-self: flex-start; font: 600 15px/1.3 var(--sans); color: #006BA3; border-block-end: 1px solid currentColor; transition: color 200ms ease-out, transform 200ms ease-out; }
+.svc:hover .svc-go, .svc:focus-visible .svc-go { background: var(--white); border-color: var(--white); color: var(--navy); }
+.svc:hover .svc-go svg, .svc:focus-visible .svc-go svg { transform: translate(2px, -2px); }
+.svc:hover .svc-more, .svc:focus-visible .svc-more { color: var(--white); transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) { .svc-go svg, .svc-more { transition: none; } .svc:hover .svc-go svg, .svc:focus-visible .svc-go svg, .svc:hover .svc-more, .svc:focus-visible .svc-more { transform: none; } }
 /* After the base .svc rules so it wins: on phones each card fits its content. */
 @media (max-width: 559px) { .svc { min-height: 0; } .svc h3 { margin-block-start: 24px; } }
 .svc-cta { margin-block-start: 44px; display: flex; justify-content: center; }
