@@ -34,6 +34,8 @@ export default function SiteHeader() {
   const [hasContactSection, setHasContactSection] = useState(false);
   const navItemRef = useRef<HTMLLIElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const hoverTimer = useRef<number | undefined>(undefined);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const section = sectionOf(location);
 
@@ -71,6 +73,16 @@ export default function SiteHeader() {
       window.removeEventListener("pageshow", updateHeader);
     };
   }, [updateHeader]);
+
+  // Services menu on a pointer that can hover: opens after a short pause, so passing over it does nothing,
+  // and closes a little after the pointer leaves, so crossing to the panel never shuts it.
+  const canHover = () => window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const hoverMenu = (open: boolean) => {
+    if (!canHover()) return;
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => setMegaOpen(open), open ? 120 : 260);
+  };
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
 
   // Services menu: closes on an outside click, when focus leaves it, and on Escape.
   useEffect(() => {
@@ -151,8 +163,10 @@ export default function SiteHeader() {
           <nav className="nav" aria-label="Main">
             <ul>
               <li
-                className="nav-item"
+                className="nav-item nav-item-mega"
                 ref={navItemRef}
+                onMouseEnter={() => hoverMenu(true)}
+                onMouseLeave={() => hoverMenu(false)}
                 onBlur={(e) => {
                   if (!navItemRef.current?.contains(e.relatedTarget as Node)) setMegaOpen(false);
                 }}
@@ -163,28 +177,57 @@ export default function SiteHeader() {
                   type="button"
                   aria-expanded={megaOpen}
                   aria-controls="menu-practices"
-                  onClick={() => setMegaOpen((open) => !open)}
+                  onClick={() => {
+                    window.clearTimeout(hoverTimer.current);
+                    setMegaOpen((open) => !open);
+                  }}
+                  onKeyDown={(e) => {
+                    // Arrow down opens the menu and moves to its first service.
+                    if (e.key !== "ArrowDown") return;
+                    e.preventDefault();
+                    setMegaOpen(true);
+                    requestAnimationFrame(() => panelRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
+                  }}
                 >
                   Services <Chevron />
                 </button>
-                <div className="menu-panel mega" id="menu-practices" hidden={!megaOpen}>
+                {/* Kept in the page while closed (visibility, not display), so it can fade in; closed, it is out of the tab order and hidden from assistive tech. */}
+                <div className={"mega" + (megaOpen ? " is-open" : "")} id="menu-practices" ref={panelRef} aria-hidden={!megaOpen} inert={!megaOpen}>
+                  <div className="mega-intro">
+                    <p className="mega-kicker">Our services</p>
+                    <p className="mega-title">
+                      Eight practices.{" "}
+                      <br />
+                      Four decisions you face.
+                    </p>
+                    <Link className="mega-all" href={ROUTES.services}>
+                      All services <span aria-hidden="true">→</span>
+                    </Link>
+                    <Link className="mega-all" href={ROUTES.industries}>
+                      Industries we serve <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
                   <div className="mega-grid">
                     {SERVICE_GROUPS.map((group) => (
-                      <div key={group}>
+                      <div className="mega-col" key={group}>
                         <h3>{group}</h3>
                         <ul>
-                          {SITE_SERVICES.filter((s) => s.group === group).map((s) => (
-                            <li key={s.slug}>
-                              <Link href={serviceHref(s.slug)}>{s.title}</Link>
-                            </li>
-                          ))}
+                          {SITE_SERVICES.filter((s) => s.group === group).map((s) => {
+                            const href = serviceHref(s.slug);
+                            return (
+                              <li key={s.slug}>
+                                <Link href={href} aria-current={location === href ? "page" : undefined}>
+                                  <span>{s.short}</span>
+                                  <span className="mega-arrow" aria-hidden="true">
+                                    →
+                                  </span>
+                                </Link>
+                              </li>
+                            );
+                          })}
                         </ul>
                       </div>
                     ))}
-                  </div>
-                  <div className="mega-foot">
-                    <Link href={ROUTES.services}>All services</Link>
-                    <Link href={ROUTES.industries}>Industries</Link>
                   </div>
                 </div>
               </li>
