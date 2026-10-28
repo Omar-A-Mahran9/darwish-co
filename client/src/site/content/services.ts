@@ -1051,7 +1051,7 @@ export const SERVICE_DETAIL: Record<string, any> = {
         ]
       ],
       "link": [
-        "Explore Growth 360",
+        "See how we work",
         "/#g360"
       ]
     },

@@ -1,7 +1,8 @@
 /**
- * Growth 360 on the homepage: five steps from diagnosis to optimization (layout from the corporate
- * profile slide, 17 Oct 2026). Step 04, Activate, is gold: hovering it (or tapping, or pressing Enter)
- * opens the activation package with its three partner tracks. Partner work is attributed to the partner.
+ * "How we work" on the homepage (formerly Growth 360): five steps from understanding to optimization,
+ * renamed and reordered 28 Oct 2026 (layout from the corporate profile slide, 17 Oct 2026). Step 04,
+ * Execution, is gold: hovering it (or tapping, or pressing Enter) opens the activation with its three
+ * partner tracks. Partner work is attributed to the partner.
  *
  * On desktop the package floats over the journey so nothing on the page moves; below 1080px it opens in
  * place under the step. The package text is always in the page, open or not, so crawlers read it.
@@ -84,11 +85,11 @@ const ICONS: Record<string, ReactNode> = {
 type Step = { n: string; title: string; text: string; icon: string; by: Provider };
 
 const BEFORE: Step[] = [
-  { n: "01", title: "Diagnose", text: "Business assessment", icon: "diagnose", by: DARWISH },
-  { n: "02", title: "Understand", text: "Market & consumer research", icon: "understand", by: IN_LIGHT },
-  { n: "03", title: "Strategize", text: "Growth & marketing strategy", icon: "strategize", by: DARWISH },
+  { n: "01", title: "Understand", text: "Growth priorities, market and customers.", icon: "understand", by: IN_LIGHT },
+  { n: "02", title: "Diagnose", text: "Root causes and growth gaps.", icon: "diagnose", by: DARWISH },
+  { n: "03", title: "Design", text: "Growth strategy and clear roadmap.", icon: "strategize", by: DARWISH },
 ];
-const AFTER: Step = { n: "05", title: "Optimize", text: "Performance review & growth advisory", icon: "optimize", by: DARWISH };
+const AFTER: Step = { n: "05", title: "Optimize", text: "Measure results, refine performance.", icon: "optimize", by: DARWISH };
 
 const TRACKS: { title: string; items: string[]; icon: string; by: Provider }[] = [
   { title: "Market activation", items: ["SEO", "GEO", "Digital marketing", "Content activation"], icon: "market", by: { name: "Growthino", mark: "/media/marks/growthino.png" } },
@@ -195,9 +196,9 @@ function ActivateStep() {
         04
       </span>
       <h3>
-        <span className="sr-only">Step 4: </span>Activate
+        <span className="sr-only">Step 4: </span>Execution
       </h3>
-      <p className="gj-text">Growth 360 activation package</p>
+      <p className="gj-text">Activation with specialist partners.</p>
       <span className="gj-rail">
         <button
           ref={btn}
@@ -205,7 +206,7 @@ function ActivateStep() {
           className="gj-node gj-open"
           aria-expanded={open}
           aria-controls={PACK_ID}
-          aria-label="See the Growth 360 activation package"
+          aria-label="See the activation with specialist partners"
           onClick={() => {
             window.clearTimeout(timer.current);
             show(!open);
@@ -225,11 +226,11 @@ function ActivateStep() {
       <span className="gj-hint" aria-hidden="true" onClick={() => show(!open)}>
         {open ? "Close the package" : "See the package"} <span className="gj-plus">+</span>
       </span>
-      <div className="gj-pack" id={PACK_ID} role="region" aria-label="Growth 360 activation package" style={place}>
+      <div className="gj-pack" id={PACK_ID} role="region" aria-label="Activation with specialist partners" style={place}>
         <div className="gj-pack-clip">
           <div className="gj-pack-inner">
             <div className="gj-pack-head">
-              <p className="gj-pack-title">Growth 360 activation package</p>
+              <p className="gj-pack-title">Activation with specialist partners</p>
               <p className="gj-pack-sub">An activation mix based on diagnosed business needs.</p>
             </div>
             <ul className="gj-tracks">
@@ -280,7 +281,7 @@ export default function Growth360Journey() {
   }, []);
 
   return (
-    <ol className="gj" ref={ref} aria-label="The Growth 360 journey">
+    <ol className="gj" ref={ref} aria-label="How we work, step by step">
       {BEFORE.map((s, i) => (
         <StepItem s={s} i={i} key={s.n} />
       ))}
