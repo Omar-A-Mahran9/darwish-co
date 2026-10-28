@@ -218,7 +218,7 @@ export const ABOUT: any = {
           [
             "Growthino",
             "/media/partners/growthino-logo.png",
-            "Digital marketing, SEO, GEO, and visibility activation within Growth 360."
+            "Digital marketing, SEO, GEO, and visibility activation in our growth engagements."
           ]
         ]
       ],

@@ -986,13 +986,8 @@ export const SERVICE_DETAIL: Record<string, any> = {
     },
     "g360": {
       "title": "When the strategy needs coordinated activation",
-      "text": "Growth 360 connects Darwish & Co.'s business diagnosis and growth strategy with market understanding, a tailored activation mix, and performance review. One, two, or all three activation arms may be used according to diagnosed needs.",
+      "text": "This practice follows how we work, end to end: understanding the market, diagnosis, strategy, activation with specialist partners, and performance review. One, two or all three activation partners are brought in, according to what the diagnosis shows.",
       "stages": [
-        [
-          "Diagnose",
-          "Darwish & Co.",
-          null
-        ],
         [
           "Understand",
           "In Light Consumer Insights",
@@ -1003,12 +998,17 @@ export const SERVICE_DETAIL: Record<string, any> = {
           ]
         ],
         [
-          "Strategize",
+          "Diagnose",
           "Darwish & Co.",
           null
         ],
         [
-          "Activate",
+          "Design",
+          "Darwish & Co.",
+          null
+        ],
+        [
+          "Execution",
           "specialist delivery partners",
           null
         ],
@@ -1097,8 +1097,8 @@ export const SERVICE_DETAIL: Record<string, any> = {
         "Yes. Market assessment and opportunity prioritization help structure the choices before a market-entry or expansion plan is developed."
       ],
       [
-        "What is the difference between this service and Growth 360?",
-        "This practice focuses on growth choices, market entry, partnerships, and go-to-market planning. Growth 360 extends the journey into a tailored activation mix and performance review where required."
+        "Do you stay involved after the strategy is set?",
+        "Yes, where needed. Beyond growth choices, market entry and go-to-market planning, we can coordinate activation with specialist partners and review performance against the plan."
       ],
       [
         "Will you deliver the marketing or technology work?",

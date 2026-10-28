@@ -895,7 +895,7 @@ function GrowthLayout({ s, d, crumbs }: Props) {
                 {lt}
               </SiteLink>
             </div>
-            <ol className="gr-seq" aria-label="Growth 360 stages">
+            <ol className="gr-seq" aria-label="How we work, step by step">
               {(g.stages as any[]).map(([name, who, logo], i) => (
                 <li key={name}>
                   <span className="gr-st-n">{i + 1}</span>
