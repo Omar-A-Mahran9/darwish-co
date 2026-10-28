@@ -86,7 +86,7 @@ const FEATURED_HREF = SHOWN_ARTICLES.some((a) => a.slug === "delegation-of-autho
 /** The founder portrait beside the "Who we are" copy; hidden for now (17 Oct 2026), the quote stays. */
 const SHOW_FOUNDER_PHOTO = false;
 
-const FLIP_WORDS = ["Growth", "Diagnose", "Understand", "Strategy", "Activate", "Optimize"];
+const FLIP_WORDS = ["Growth", "Understand", "Diagnose", "Design", "Execution", "Optimize"];
 
 const PARTNERS = [
   { file: "visionethics", name: "VisionEthics" },
@@ -343,15 +343,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Growth 360 */}
+      {/* How we work: the full journey, end to end ("360"), led by Darwish & Co. with named partners (28 Oct 2026). */}
       <section className="g360" aria-labelledby="g-title" id="g360">
         <div className="wrap">
           <div className="g360-head">
-            <span className="pill">Growth 360</span>
+            <span className="pill">How we work</span>
           </div>
           <div className="g360-intro">
             <h2 id="g-title">
-              <span className="sr-only">Growth 360</span>
+              <span className="sr-only">How we work: the full journey, from understanding to results</span>
               <span className="flip-line" aria-hidden="true">
                 <span className="flip">
                   <span className="flip-sizer">Understand</span>
@@ -361,8 +361,8 @@ export default function Home() {
               </span>
             </h2>
             <p>
-              From business diagnosis to integrated growth execution. Growth 360 brings together Darwish &amp; Co.’s advisory expertise, market and consumer research from In Light, and specialist support across market
-              activation, capability development, and digital enablement. The activation mix is tailored to diagnosed business needs.
+              One connected approach, from understanding to results. Darwish &amp; Co. leads the diagnosis, design and review, and brings in specialist partners where the work needs them: market and consumer research
+              from In Light, and market activation, capability development and digital enablement through our partner network.
             </p>
           </div>
           <Growth360Journey />
