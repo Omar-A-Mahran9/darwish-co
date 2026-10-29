@@ -153,9 +153,11 @@ export function ArticlePage() {
                 </div>
               </div>
             )}
-            <p style={{ marginTop: 6 }}>
-              <SampleTag />
-            </p>
+            {STATUS_TAG[a.status][0] && (
+              <p style={{ marginTop: 6 }}>
+                <SampleTag>{STATUS_TAG[a.status][0]}</SampleTag>
+              </p>
+            )}
           </>
         }
       />
