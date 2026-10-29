@@ -186,7 +186,7 @@ export default function Home() {
             <h1 id="hero-title">
               A wise word in the <span className="acc">right moment.</span>
             </h1>
-            <p className="sub">We help organizations improve performance, strengthen governance, and turn growth priorities into practical action.</p>
+            <p className="sub">Egypt’s #1 Management &amp; Business Consulting, Bringing Together the Nation’s Top Experts Across Multiple Business Disciplines.</p>
             <div className="btns">
               <a className="btn btn-blue" href="#contact">
                 <span className="cta-label">Discuss your challenge</span>
