@@ -44,10 +44,12 @@ export function injectSeo(html: string, pathname: string): string {
     `<meta property="og:title" content="${title}" />`,
     `<meta property="og:description" content="${description}" />`,
     `<meta property="og:image" content="${escapeAttribute(seo.ogImage)}" />`,
+    ...(seo.ogImageAlt ? [`<meta property="og:image:alt" content="${escapeAttribute(seo.ogImageAlt)}" />`] : []),
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${title}" />`,
     `<meta name="twitter:description" content="${description}" />`,
     `<meta name="twitter:image" content="${escapeAttribute(seo.ogImage)}" />`,
+    ...(seo.ogImageAlt ? [`<meta name="twitter:image:alt" content="${escapeAttribute(seo.ogImageAlt)}" />`] : []),
     `<link rel="canonical" href="${escapeAttribute(seo.canonical)}" />`,
   ];
 
