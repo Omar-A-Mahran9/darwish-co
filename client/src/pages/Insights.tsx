@@ -5,6 +5,7 @@ import { CtaBand, PageHero, SampleTag } from "@/site/blocks";
 import { SHOWN_ARTICLES, TOPICS, type Article } from "@shared/insights";
 import { ARTICLE_BODIES } from "@shared/articleBodies";
 import { ROUTES, SITE_SERVICES, serviceHref } from "@/site/nav";
+import PreferredSource from "@/site/PreferredSource";
 import NotFound from "./NotFound";
 
 const TOPIC_NAME: Record<string, string> = Object.fromEntries(TOPICS);
@@ -103,6 +104,7 @@ export default function Insights() {
                   View all insights
                 </button>
               </div>
+              <PreferredSource />
             </>
           ) : (
             <div className="in-empty">
@@ -173,6 +175,7 @@ export function ArticlePage() {
             <div className="prose">
               {a.cover && <img className="article-cover" src={a.cover} alt={a.coverAlt ?? ""} width={1200} height={676} decoding="async" />}
               <div dangerouslySetInnerHTML={{ __html: ARTICLE_BODIES[a.slug] }} />
+              <PreferredSource />
               <p>
                 <Link className="arrow-link" href={ROUTES.insights}>
                   &larr; Back to all insights
