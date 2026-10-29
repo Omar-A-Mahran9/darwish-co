@@ -132,13 +132,21 @@ const TOPICS: { key: string; label: string; icon: ReactNode }[] = [
 ];
 
 
-/** Hero video: plays muted on loop; visitors who prefer reduced motion see the still poster instead. */
+/**
+ * Hero video (2.1 MB, re-encoded 29 Oct 2026 from 14 MB): plays muted on loop. The page ships with the poster
+ * only and the video is attached after load, so it never competes with the page's own content. Visitors who
+ * prefer reduced motion or have data saver on keep the still poster.
+ */
 function HeroVideo() {
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
-    if (ref.current && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) ref.current.play()?.catch(() => {});
+    const video = ref.current;
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    if (!video || saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    video.src = "/media/hero.mp4";
+    video.play()?.catch(() => {});
   }, []);
-  return <video ref={ref} className="hero-media" src="/media/hero.mp4" poster="/media/hero-poster.jpg" muted loop playsInline preload="auto" aria-hidden="true" />;
+  return <video ref={ref} className="hero-media" poster="/media/hero-poster.jpg" muted loop playsInline preload="none" aria-hidden="true" />;
 }
 
 const WORK_ITEMS = [
