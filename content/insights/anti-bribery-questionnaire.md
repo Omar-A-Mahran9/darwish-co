@@ -1,6 +1,7 @@
 ---
 slug: anti-bribery-questionnaire
 title: "What to Do When a Major Client Sends an Anti-Bribery Questionnaire"
+seo_title: "How to Answer a Client’s Anti-Bribery Questionnaire"
 topic: governance
 service: governance-risk-compliance
 summary: "Large clients increasingly ask suppliers and partners to prove they manage bribery risk. Honest answers backed by real evidence matter more than a perfect-looking form."

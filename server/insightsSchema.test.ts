@@ -50,6 +50,11 @@ describe("Insights article rules", () => {
     for (const p of problems) expect(p.startsWith("sample-article.md: ")).toBe(true);
   });
 
+  it("accepts an optional search title of 20–60 characters", () => {
+    expect(check({ ...good, seo_title: "A shorter title for Google results" })).toEqual([]);
+    expect(check({ ...good, seo_title: "x".repeat(61) }).join("\n")).toContain("seo_title is 61 characters; it must be 20–60");
+  });
+
   it("requires the file name to match the slug and alt text for the cover", () => {
     const text = check({ ...good, cover_alt: "" }, body, "other-name.md").join("\n");
     expect(text).toContain("must match the file name");

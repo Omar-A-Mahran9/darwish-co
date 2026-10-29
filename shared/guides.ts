@@ -129,7 +129,7 @@ export const GUIDES: Guide[] = [
     navLabel: "Overview",
     shortTitle: "Governance for Growing SMEs",
     audience: "A practical guide for owners of SMEs in Egypt and the MENA region",
-    metaTitle: "Governance for Growing SMEs — A Practical Guide | Darwish & Co",
+    metaTitle: "Governance for Growing SMEs — A Practical Guide | Darwish & Co.",
     metaDescription:
       "A practical guide for owners of SMEs in Egypt and the MENA region: decision rights, accountability, controls and review routines, with a nine-question check.",
     summary:
@@ -292,7 +292,7 @@ export const GUIDES: Guide[] = [
     title: "Delegation of Authority: How to Delegate Decisions Without Losing Oversight",
     navLabel: "Delegation of authority",
     shelfDescription: "Delegate decisions without losing oversight.",
-    metaTitle: "Delegation of Authority: Delegating Without Losing Oversight | Darwish & Co",
+    metaTitle: "Delegation of Authority: Delegating Without Losing Oversight | Darwish & Co.",
     metaDescription:
       "A delegation of authority matrix keeps each decision with the person authorised to take it while its conditions hold, and routes exceptions to a named role.",
     summary:
@@ -535,7 +535,7 @@ export const GUIDES: Guide[] = [
     title: "What to Do When a Major Client Sends an Anti-Bribery Questionnaire",
     navLabel: "Anti-bribery questionnaires",
     shelfDescription: "When a major client asks about your controls.",
-    metaTitle: "Answering a Client's Anti-Bribery Questionnaire | Darwish & Co",
+    metaTitle: "Answering a Client's Anti-Bribery Questionnaire | Darwish & Co.",
     metaDescription:
       "Most questions on a client compliance questionnaire ask for four things: a policy, a procedure, a record and a named responsible person. How to answer honestly.",
     summary:
@@ -821,7 +821,7 @@ export const GUIDES: Guide[] = [
     relatedService: "strategy-execution",
     title: "How to Turn Strategy into Decision Rights, Measures and Monthly Reviews",
     navLabel: "Strategy into decision rights",
-    metaTitle: "Turning Strategy into Decision Rights and Monthly Reviews | Darwish & Co",
+    metaTitle: "Turning Strategy into Decision Rights and Monthly Reviews | Darwish & Co.",
     metaDescription:
       "Why strategies stall, and how an objective becomes an owner, a measure and a decision right — reviewed on a rhythm the company can keep.",
     summary:
@@ -842,7 +842,7 @@ export const GUIDES: Guide[] = [
     title: "Setting the Rules for Employee AI Use: A Governance Starting Point",
     navLabel: "Employee AI use",
     shelfDescription: "A governance starting point for setting the rules.",
-    metaTitle: "Employee AI Use Rules: A Governance Starting Point | Darwish & Co",
+    metaTitle: "Employee AI Use Rules: A Governance Starting Point | Darwish & Co.",
     metaDescription:
       "How owners of growing SMEs can set practical rules for employee AI use: an inventory, approved uses, information categories, action limits and human review.",
     summary:
