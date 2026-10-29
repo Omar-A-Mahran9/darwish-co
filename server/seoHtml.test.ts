@@ -350,3 +350,15 @@ describe("per-page metadata", () => {
     expect(resolveSeo("/services#grc").canonical).toBe("https://darwish-co.com/services");
   });
 });
+
+describe("llms.txt", () => {
+  it("lists every service and published article with the firm's identity facts", async () => {
+    const { llmsTxt } = await import("../shared/llms.js");
+    const text = llmsTxt();
+    expect(text.startsWith("# Darwish & Co.\n\n> ")).toBe(true);
+    expect(text).toContain("Fouad Darwish Business & Consulting Development");
+    for (const s of SITE_SERVICES) expect(text).toContain(`https://darwish-co.com/services/${s.slug})`);
+    for (const a of SHOWN_ARTICLES.filter((x) => x.status === "published")) expect(text).toContain(`https://darwish-co.com/insights/${a.slug})`);
+    for (const a of SHOWN_ARTICLES.filter((x) => x.status !== "published")) expect(text).not.toContain(`/insights/${a.slug})`);
+  });
+});

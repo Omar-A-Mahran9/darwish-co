@@ -31,6 +31,9 @@ Choose **New Article** and fill in the form:
 - **Web address**: lowercase words joined by hyphens, such as `delegation-of-authority`. It becomes
   `darwish-co.com/insights/delegation-of-authority` and cannot change later.
 - **Title**: 10–110 characters. **Summary**: 50–260. **Listing card text**: 30–160.
+- **Search title** (optional): 20–60 characters, used whole in Google results and the browser tab. Add one
+  when the title is longer than about 45 characters, or Google cuts it off. Google shows the summary as the
+  description when it fits in 160 characters, and the listing card text when it doesn't.
 - **Topic** and **Related service**: pick from the lists.
 - **Author**: defaults to Fouad Darwish. Partner expertise is credited to the partner by name.
 - **Date**: `2026-10` or `2026-10-27`.
