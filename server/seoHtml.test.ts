@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { injectSeo } from "./seoHtml.js";
 import { isKnownRoute, resolveSeo } from "../shared/seo.js";
@@ -230,6 +231,34 @@ describe("per-page metadata", () => {
     for (const service of SITE_SERVICES) {
       expect(injectSeo(SHELL, `/services/${service.slug}`)).toContain(orgId);
     }
+  });
+
+  it("describes the firm once, with the identity facts search engines and assistants match on", () => {
+    const html = readFileSync(new URL("../client/index.html", import.meta.url), "utf-8");
+    const graph = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)![1])["@graph"];
+    const org = graph.find((n: { "@id": string }) => n["@id"] === "https://darwish-co.com/#organization");
+    const founder = graph.find((n: { "@id": string }) => n["@id"] === "https://darwish-co.com/#fouad-darwish");
+    expect(org["@type"]).toBe("ProfessionalService");
+    expect(org.legalName).toBe("Fouad Darwish Business & Consulting Development");
+    expect(org.address.addressLocality).toBe("New Cairo");
+    expect(org.telephone).toBe("+201101101090");
+    expect(org.founder).toEqual({ "@id": founder["@id"] });
+    expect(org.knowsAbout).toEqual(SITE_SERVICES.map((s) => s.title));
+    expect(founder).toMatchObject({ "@type": "Person", name: "Fouad Darwish", worksFor: { "@id": org["@id"] } });
+  });
+
+  it("credits articles to their named author and gives them their cover image", () => {
+    for (const article of SHOWN_ARTICLES.filter((a) => a.status === "published")) {
+      const ld = resolveSeo(`/insights/${article.slug}`).jsonLd as Record<string, unknown>;
+      if (article.author === "Fouad Darwish") expect(ld.author).toEqual({ "@id": "https://darwish-co.com/#fouad-darwish" });
+      if (article.cover) expect(ld.image).toBe(`https://darwish-co.com${article.cover}`);
+    }
+  });
+
+  it("marks up the homepage FAQ", () => {
+    const ld = resolveSeo("/").jsonLd as { "@type": string; mainEntity: unknown[] };
+    expect(ld["@type"]).toBe("FAQPage");
+    expect(ld.mainEntity.length).toBeGreaterThan(0);
   });
 
   it("keeps private and unknown routes out of search results", () => {

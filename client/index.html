@@ -56,13 +56,37 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "Organization",
+          "@type": "ProfessionalService",
           "@id": "https://darwish-co.com/#organization",
           "name": "Darwish & Co.",
+          "alternateName": "Darwish and Co.",
+          "legalName": "Fouad Darwish Business & Consulting Development",
+          "identifier": { "@type": "PropertyValue", "name": "Organisation number", "value": "291746" },
           "url": "https://darwish-co.com/",
           "logo": "https://darwish-co.com/images/logo.png",
-          "description": "Darwish & Co. is a governance and management consultancy based in New Cairo, Egypt, for SMEs in the MENA region.",
+          "image": "https://darwish-co.com/images/logo.png",
+          "description": "Darwish & Co. is a consulting firm based in Egypt, helping organizations improve performance, strengthen governance, and pursue sustainable growth.",
+          "founder": { "@id": "https://darwish-co.com/#fouad-darwish" },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Office T-10, 3rd Floor, RIO Mall, Dr. Ahmed Okasha St., off Sadat Axis",
+            "addressLocality": "New Cairo",
+            "addressRegion": "Cairo Governorate",
+            "addressCountry": "EG"
+          },
+          "telephone": "+201101101090",
+          "email": "info@darwish-co.com",
           "areaServed": { "@type": "Country", "name": "Egypt" },
+          "knowsAbout": [
+            "Strategy & Performance Management",
+            "Governance, Risk & Institutional Excellence",
+            "Organizational Development & Human Capital Advisory",
+            "Operational Excellence & Project Advisory",
+            "Business Growth & Market Expansion",
+            "Strategic Negotiation & Deal Advisory",
+            "Research, Feasibility & Business Intelligence",
+            "Company Liquidation & Dissolution"
+          ],
           "sameAs": [
             "https://www.linkedin.com/company/darwishandcoeg/",
             "https://www.facebook.com/darwishandcoeg",
@@ -71,9 +95,18 @@
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer service",
+            "telephone": "+201101101090",
             "email": "info@darwish-co.com",
             "url": "https://darwish-co.com/contact"
           }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://darwish-co.com/#fouad-darwish",
+          "name": "Fouad Darwish",
+          "jobTitle": "Founder & Managing Partner",
+          "worksFor": { "@id": "https://darwish-co.com/#organization" },
+          "url": "https://darwish-co.com/about"
         },
         {
           "@type": "WebSite",

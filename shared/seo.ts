@@ -12,6 +12,7 @@ import { PUBLIC_CASES } from "./work.js";
 import { SHOWN_ARTICLES, TOPICS } from "./insights.js";
 import { SERVICE_DETAIL } from "../client/src/site/content/services.js";
 import { ABOUT } from "../client/src/site/content/about.js";
+import { FAQS } from "../client/src/site/content/faqs.js";
 import {
   getGuide,
   groupOf,
@@ -79,6 +80,13 @@ const ORGANISATION_REFERENCE = { "@id": `${SITE_URL}/#organization` };
  */
 const AREA_SERVED = { "@type": "Country", name: "Egypt" };
 
+/** The founder's Person record in index.html, credited as the author of the articles he wrote. */
+const FOUNDER_REFERENCE = { "@id": `${SITE_URL}/#fouad-darwish` };
+
+/** An article's named author as a Person (the founder by reference); the firm when no author is named. */
+const authorOf = (name: string | null) =>
+  !name ? ORGANISATION_REFERENCE : name === "Fouad Darwish" ? FOUNDER_REFERENCE : { "@type": "Person", name };
+
 /** Titles follow the approved prototype: "<page> | Darwish & Co.". */
 const titled = (name: string) => `${name} | Darwish & Co.`;
 
@@ -86,6 +94,12 @@ const STATIC_PAGES: Record<string, PageSeo> = {
   "/": page("/", {
     title: "Darwish & Co. | Egypt’s #1 Management & Business Consulting",
     description: COMPANY_DESCRIPTION,
+    // The homepage FAQ, so assistants can lift each answer as written.
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: FAQS.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })),
+    },
   }),
   "/about": page("/about", { title: ABOUT.title, description: ABOUT.meta }),
   "/services": page("/services", {
@@ -226,6 +240,7 @@ function articleSeo(slug: string): PageSeo | null {
     title: titled(article.title),
     description: article.sample ? article.listing : article.summary,
     ogType: "article",
+    ...(article.cover ? { ogImage: article.cover } : {}),
     robots: published ? "index, follow" : "noindex, nofollow",
     jsonLd: published
       ? {
@@ -233,9 +248,10 @@ function articleSeo(slug: string): PageSeo | null {
           "@type": "Article",
           headline: article.title,
           description: article.summary,
+          ...(article.cover ? { image: absolute(article.cover) } : {}),
           ...(article.date ? { datePublished: article.date } : {}),
           ...(topic ? { articleSection: topic } : {}),
-          author: ORGANISATION_REFERENCE,
+          author: authorOf(article.author),
           publisher: ORGANISATION_REFERENCE,
           mainEntityOfPage: absolute(path),
         }
