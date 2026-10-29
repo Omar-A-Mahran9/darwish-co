@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
+import { openCookieSettings, trackingEnabled } from "./consent";
 import { CONTACT, ROUTES, SITE_SERVICES, SOCIALS, serviceHref } from "./nav";
 
 /**
@@ -74,6 +75,11 @@ export default function SiteFooter() {
           <div className="foot-util">
             {/* The client portal link is hidden (26 Oct 2026); the login stays at /client-login for clients who have the address. */}
             <Link href={ROUTES.privacy}>Privacy</Link>
+            {trackingEnabled() && (
+              <button type="button" className="foot-link-btn" onClick={openCookieSettings}>
+                Cookie settings
+              </button>
+            )}
           </div>
           <ul className="socials" aria-label="Darwish & Co. on social media">
             {SOCIALS.map((s) => (

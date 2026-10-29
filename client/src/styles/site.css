@@ -833,6 +833,35 @@ a.mag-feature:focus-visible { outline: 3px solid var(--blue); outline-offset: 3p
 .site-footer .socials { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; }
 .site-footer .socials a { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--line-navy); color: var(--white); }
 .site-footer .socials a:hover { color: #8FD6F8; border-color: #8FD6F8; }
+.foot-link-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: none; color: var(--on-navy); font: inherit; cursor: pointer; }
+.foot-link-btn:hover { color: #8FD6F8; }
+
+/* Cookie banner (site/CookieBanner.tsx) */
+.cookie-banner { position: fixed; inset-inline: 0; inset-block-end: 0; z-index: 60; max-height: 85vh; overflow-y: auto; background: var(--navy-deep); color: var(--on-navy); border-block-start: 3px solid var(--blue); box-shadow: 0 -12px 32px rgba(15, 31, 51, .3); padding-block: 22px calc(22px + env(safe-area-inset-bottom, 0px)); }
+.cookie-banner .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 40px; }
+.cb-text { flex: 1 1 520px; display: grid; gap: 6px; }
+.cookie-banner h2 { color: var(--white); font: 600 17px/1.4 var(--sans); }
+.cookie-banner p { margin: 0; font-size: 15px; line-height: 1.55; max-width: 75ch; }
+.cookie-banner a { color: #8FD6F8; }
+.cb-options { display: grid; gap: 10px; margin-block-start: 10px; }
+.cb-option { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.5; cursor: pointer; }
+.cb-option input { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--blue); }
+.cb-option input:disabled { cursor: default; }
+.cb-option strong { color: var(--white); font-weight: 600; margin-inline-end: 6px; }
+.cb-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.cb-actions .btn { min-height: 44px; padding: 10px 20px; }
+@media (max-width: 640px) {
+  .cb-actions { width: 100%; }
+  .cb-actions .btn { flex: 1 1 auto; }
+}
+
+/* Privacy policy tables */
+.policy-table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
+.policy-table th, .policy-table td { text-align: start; vertical-align: top; padding: 10px 12px; border-block-end: 1px solid var(--line); }
+.policy-table th { color: var(--navy); font-weight: 600; background: var(--bg); }
+.policy-table-wrap { overflow-x: auto; }
+.prose h3 { font: 600 19px/1.4 var(--sans); color: var(--navy); margin-block-start: 4px; }
+.prose ul { margin: 0; padding-inline-start: 22px; display: grid; gap: 6px; }
 .socials a:focus-visible, .foot-util a:focus-visible { outline: 2px solid #8FD6F8; outline-offset: 2px; }
 .socials svg { width: 18px; height: 18px; fill: currentColor; }
 

@@ -111,10 +111,15 @@ describe("per-page metadata", () => {
   });
 
   it("keeps pages still waiting for approved text out of search results", () => {
-    for (const path of ["/privacy", "/about/integrity"]) {
+    for (const path of ["/about/integrity"]) {
       expect(isKnownRoute(path)).toBe(true);
       expect(resolveSeo(path).robots).toBe("noindex, nofollow");
     }
+  });
+
+  it("lists the approved privacy policy in search results and the sitemap", () => {
+    expect(resolveSeo("/privacy").robots).toBe("index, follow");
+    expect(sitemapXml()).toContain("https://darwish-co.com/privacy</loc>");
   });
 
   it("gives each service page its own metadata and service structured data", () => {
@@ -206,7 +211,7 @@ describe("per-page metadata", () => {
       expect(sitemap).toContain(`https://darwish-co.com/services/${service.slug}</loc>`);
     }
     // Redirected and noindex addresses stay out of it.
-    for (const path of [...Object.keys(SERVICE_REDIRECTS), ...Object.keys(PAGE_REDIRECTS), "/privacy", "/growth-360", "/about/integrity"]) {
+    for (const path of [...Object.keys(SERVICE_REDIRECTS), ...Object.keys(PAGE_REDIRECTS), "/growth-360", "/about/integrity"]) {
       expect(sitemap).not.toContain(`https://darwish-co.com${path}</loc>`);
     }
   });
