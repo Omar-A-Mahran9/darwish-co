@@ -15,17 +15,18 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import sharp from "sharp";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const publicDir = join(projectRoot, "dist", "public");
 const serverEntry = join(projectRoot, "dist", "server", "entry-server.js");
 
-const { render, prerenderRoutes, injectSeo, sitemapXml, llmsTxt } = await import(pathToFileURL(serverEntry).href);
+const { render, prerenderRoutes, injectSeo, sitemapXml, llmsTxt, shareImageJobs } = await import(pathToFileURL(serverEntry).href);
 
 const shell = readFileSync(join(publicDir, "index.html"), "utf-8");
 const routes = prerenderRoutes();
 
-/** "/" b.   ecomes index.html; "/about" becomes about/index.html. */
+/** "/" becomes index.html; "/about" becomes about/index.html. */
 const fileFor = (route) =>
   route === "/" ? join(publicDir, "index.html") : join(publicDir, route.slice(1), "index.html");
 
@@ -63,6 +64,20 @@ console.log(`[prerender] wrote sitemap.xml with ${(sitemap.match(/<url>/g) || []
 // llms.txt: the same facts and pages in plain Markdown for AI assistants (shared/llms.ts).
 writeFileSync(join(publicDir, "llms.txt"), llmsTxt(), "utf-8");
 console.log("[prerender] wrote llms.txt");
+
+// JPEG share images for article covers (shared/seo.ts shareImageFor): LinkedIn does not reliably show
+// WebP previews. 1200x630 is the shape social sites crop to. A missing cover fails the build, because
+// the article's page already points at the file.
+const jobs = shareImageJobs();
+for (const { source, target } of jobs) {
+  const out = join(publicDir, target.slice(1));
+  mkdirSync(dirname(out), { recursive: true });
+  await sharp(join(publicDir, source.slice(1)))
+    .resize(1200, 630, { fit: "cover", position: "centre" })
+    .jpeg({ quality: 82, mozjpeg: true })
+    .toFile(out);
+}
+console.log(`[prerender] wrote ${jobs.length} JPEG share images`);
 
 for (const failure of failures) {
   console.warn(`[prerender] skipped ${failure.route}: ${failure.message}`);

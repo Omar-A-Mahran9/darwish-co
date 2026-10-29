@@ -277,7 +277,7 @@ describe("per-page metadata", () => {
     }
     const article = SHOWN_ARTICLES.find((a) => a.status === "published" && a.cover)!;
     const seo = resolveSeo(`/insights/${article.slug}`);
-    expect(seo.ogImage).toBe(`https://darwish-co.com${article.cover}`);
+    expect(seo.ogImage).toBe(`https://darwish-co.com/images/share/${article.cover!.split("/").pop()!.replace(/\.webp$/, "")}.jpg`);
     expect(seo.ogImageAlt).toBe(article.coverAlt);
   });
 
