@@ -3,7 +3,7 @@
 // Exported once from the approved prototype (prototype/tools/export_content.py); edit here from now on.
 
 export const ABOUT: any = {
-  "title": "About Darwish & Co. | Strategic Management & Business Consulting",
+  "title": "About Darwish & Co. | Management & Business Consulting",
   "meta": "Meet Darwish & Co., an independent Egypt-based consulting firm connecting senior advisory, evidence, and practical implementation around business priorities.",
   "hero": {
     "label": "About Darwish & Co.",

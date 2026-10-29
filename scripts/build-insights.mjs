@@ -2,7 +2,7 @@
  * Turns the Markdown articles in content/insights/ into shared/insightsContent.ts.
  *
  * Each file starts with YAML front matter (slug, title, topic, service, summary,
- * listing, author, date, status, cover, cover_alt, optional featured and order),
+ * listing, author, date, status, cover, cover_alt, optional featured, order and seo_title),
  * as the CMS at /cms writes it, followed by the article in Markdown. Every file is
  * checked against scripts/insights-schema.mjs first; any problem stops the build
  * (and so the deploy) with a list naming the file, field or line. Only published
@@ -65,6 +65,7 @@ for (const { meta, body } of parsed) {
       slug: meta.slug,
       topic: meta.topic,
       title: meta.title,
+      ...(meta.seo_title ? { seoTitle: meta.seo_title } : {}),
       status: meta.status,
       sample: false,
       ...(meta.featured === true ? { featured: true } : {}),

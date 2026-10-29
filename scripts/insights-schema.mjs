@@ -27,6 +27,8 @@ export const LIMITS = {
   title: [10, 110],
   summary: [50, 260],
   listing: [30, 160],
+  /** Optional shorter title for search results and browser tabs, used whole (no " | Darwish & Co." added). */
+  seoTitle: [20, 60],
   coverAlt: [10, 200],
 };
 
@@ -34,7 +36,7 @@ export const LIMITS = {
 export const MAX_KB = { cover: 250, inline: 250, svg: 100 };
 
 const REQUIRED = ["slug", "title", "topic", "service", "summary", "listing", "status"];
-const KNOWN = new Set([...REQUIRED, "author", "date", "order", "featured", "cover", "cover_alt", "cover_search"]);
+const KNOWN = new Set([...REQUIRED, "author", "date", "order", "featured", "cover", "cover_alt", "cover_search", "seo_title"]);
 const STATIC_ROUTES = new Set(["/", "/about", "/about/integrity", "/services", "/industries", "/projects", "/insights", "/contact", "/privacy"]);
 
 /**
@@ -60,6 +62,11 @@ export function checkArticle(file, meta, body, { fileInfo, publishedSlugs }) {
     const [min, max] = LIMITS[key];
     const n = text(key).length;
     if (n && (n < min || n > max)) fail(`${key} is ${n} characters; it must be ${min}–${max}`);
+  }
+  if (meta.seo_title !== undefined) {
+    const [min, max] = LIMITS.seoTitle;
+    const n = text("seo_title").length;
+    if (n < min || n > max) fail(`seo_title is ${n} characters; it must be ${min}–${max}`);
   }
   if (meta.date !== undefined && meta.date !== null && !/^\d{4}-\d{2}(-\d{2})?$/.test(String(meta.date))) fail(`date "${meta.date}" must look like 2026-10 or 2026-10-27`);
   if (meta.order !== undefined && !Number.isFinite(meta.order)) fail(`order must be a number`);

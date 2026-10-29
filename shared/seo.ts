@@ -87,8 +87,15 @@ const FOUNDER_REFERENCE = { "@id": `${SITE_URL}/#fouad-darwish` };
 const authorOf = (name: string | null) =>
   !name ? ORGANISATION_REFERENCE : name === "Fouad Darwish" ? FOUNDER_REFERENCE : { "@type": "Person", name };
 
-/** Titles follow the approved prototype: "<page> | Darwish & Co.". */
-const titled = (name: string) => `${name} | Darwish & Co.`;
+/**
+ * Titles follow the approved prototype: "<page> | Darwish & Co.". When that runs past the ~60 characters
+ * Google shows, the page name stands alone rather than being cut off mid-word.
+ */
+const TITLE_MAX = 60;
+const titled = (name: string) => {
+  const full = `${name} | Darwish & Co.`;
+  return full.length <= TITLE_MAX ? full : name;
+};
 
 const STATIC_PAGES: Record<string, PageSeo> = {
   "/": page("/", {
@@ -237,8 +244,9 @@ function articleSeo(slug: string): PageSeo | null {
   const published = article.status === "published";
   const topic = TOPICS.find(([key]) => key === article.topic)?.[1];
   return page(path, {
-    title: titled(article.title),
-    description: article.sample ? article.listing : article.summary,
+    title: article.seoTitle ?? titled(article.title),
+    // The summary when it fits Google's ~160 characters; otherwise the one-line listing text.
+    description: article.sample || article.summary.length > 160 ? article.listing : article.summary,
     ogType: "article",
     ...(article.cover ? { ogImage: article.cover } : {}),
     robots: published ? "index, follow" : "noindex, nofollow",

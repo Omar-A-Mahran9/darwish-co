@@ -19,6 +19,8 @@ export type Article = {
   summary: string;
   /** Slug of the related service. */
   service: string;
+  /** Shorter title for search results and browser tabs, used whole; falls back to the title. */
+  seoTitle?: string;
   /** Text on the listing card. */
   listing: string;
   author: string | null;

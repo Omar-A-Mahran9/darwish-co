@@ -1,6 +1,7 @@
 ---
 slug: delegation-of-authority
 title: "Delegation of Authority: How to Delegate Decisions Without Losing Oversight"
+seo_title: "Delegation of Authority: Delegating Without Losing Oversight"
 topic: governance
 service: governance-risk-compliance
 summary: "A clear Delegation of Authority framework lets decisions move at the right level while the board and CEO keep sight of what matters. Here is how to design one and keep it working."

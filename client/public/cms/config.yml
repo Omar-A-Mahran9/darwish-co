@@ -98,7 +98,15 @@ collections:
         widget: string
         minlength: 10
         maxlength: 110
-        hint: 10–110 characters. Shown on the article, the listing card and in search results.
+        hint: 10–110 characters. Shown on the article and the listing card.
+
+      - name: seo_title
+        label: Search title (optional)
+        widget: string
+        required: false
+        minlength: 20
+        maxlength: 60
+        hint: 20–60 characters. A shorter title for Google and the browser tab, when the title is longer than about 45 characters. Leave empty to use the title.
 
       - name: summary
         label: Summary

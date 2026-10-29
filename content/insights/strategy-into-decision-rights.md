@@ -1,6 +1,7 @@
 ---
 slug: strategy-into-decision-rights
 title: "How to Turn Strategy into Decision Rights, Measures and Monthly Reviews"
+seo_title: "Turning Strategy into Decision Rights and Monthly Reviews"
 topic: strategy
 service: strategy-performance
 summary: "Most strategies stall between the board presentation and daily work. Clear owners, decision rights, a few good measures and a steady monthly review close that gap."

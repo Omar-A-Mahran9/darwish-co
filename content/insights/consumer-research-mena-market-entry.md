@@ -1,6 +1,7 @@
 ---
 slug: consumer-research-mena-market-entry
 title: "Consumer Research in MENA: A Practical Guide for Market Entry"
+seo_title: "Consumer Research in MENA: A Guide for Market Entry"
 topic: research
 service: market-research
 summary: "Entering a MENA market on assumptions is expensive. A focused consumer research programme, designed around the entry decision and the region's cultural realities, reduces that risk."

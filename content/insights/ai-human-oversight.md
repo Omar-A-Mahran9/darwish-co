@@ -1,6 +1,7 @@
 ---
 slug: ai-human-oversight
 title: "When AI Accelerates the Wrong Decision: Why Human Oversight Is a Governance Requirement"
+seo_title: "Why Human Oversight of AI Is a Governance Requirement"
 topic: governance
 service: governance-risk-compliance
 summary: "AI can accelerate decisions, but without effective governance it can also scale outdated data, hidden bias and institutional error. The central question is who remains responsible when an AI-supported decision causes harm."

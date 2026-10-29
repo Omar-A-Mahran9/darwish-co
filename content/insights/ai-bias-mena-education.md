@@ -1,6 +1,7 @@
 ---
 slug: ai-bias-mena-education
 title: "AI in MENA Education: When Automation Reinforces Existing Inequality"
+seo_title: "AI in MENA Education: When Automation Reinforces Inequality"
 topic: governance
 service: governance-risk-compliance
 summary: "AI can improve education across the MENA region, but biased historical data and weak institutional oversight may reinforce inequality in admissions, grading, scholarships and student monitoring."
