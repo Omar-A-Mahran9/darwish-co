@@ -24,6 +24,16 @@ import {
 
 export const SITE_URL = "https://darwish-co.com";
 export const SITE_NAME = "Darwish & Co.";
+/**
+ * The JPEG copy of an article cover used when the article is shared (/images/share/<name>.jpg, 1200x630).
+ * LinkedIn does not reliably show WebP previews; scripts/prerender.mjs writes these files on every build.
+ */
+export const shareImageFor = (cover: string) => `/images/share/${cover.split("/").pop()!.replace(/\.[a-z0-9]+$/i, "")}.jpg`;
+
+/** Every share image the build must write: one per published article with a cover. */
+export const shareImageJobs = () =>
+  SHOWN_ARTICLES.filter((a) => a.status === "published" && a.cover).map((a) => ({ source: a.cover!, target: shareImageFor(a.cover!) }));
+
 /** The default share image (1200x630, 29 Oct 2026): brand, homepage headline and category over the hero photo. */
 const DEFAULT_OG_IMAGE = "/images/social-default.jpg";
 const DEFAULT_OG_IMAGE_ALT = "Darwish & Co.: A wise word in the right moment. Management & business consulting, New Cairo, Egypt.";
@@ -253,7 +263,7 @@ function articleSeo(slug: string): PageSeo | null {
     // The summary when it fits Google's ~160 characters; otherwise the one-line listing text.
     description: article.sample || article.summary.length > 160 ? article.listing : article.summary,
     ogType: "article",
-    ...(article.cover ? { ogImage: article.cover, ogImageAlt: article.coverAlt ?? "" } : {}),
+    ...(article.cover && published ? { ogImage: shareImageFor(article.cover), ogImageAlt: article.coverAlt ?? "" } : {}),
     robots: published ? "index, follow" : "noindex, nofollow",
     jsonLd: published
       ? {

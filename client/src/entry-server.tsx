@@ -1,6 +1,6 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
-import { resolveSeo } from "@shared/seo";
+import { resolveSeo, shareImageJobs } from "@shared/seo";
 import { publicRoutes } from "@shared/routes";
 import { sitemapXml } from "@shared/sitemap";
 import { llmsTxt } from "@shared/llms";
@@ -20,4 +20,4 @@ export function render(pathname: string): string {
 /** Every address worth writing to disk (shared/routes.ts). */
 export const prerenderRoutes = publicRoutes;
 
-export { injectSeo, llmsTxt, resolveSeo, sitemapXml };
+export { injectSeo, llmsTxt, resolveSeo, shareImageJobs, sitemapXml };
