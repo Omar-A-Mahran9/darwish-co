@@ -855,6 +855,18 @@ a.mag-feature:focus-visible { outline: 3px solid var(--blue); outline-offset: 3p
   .cb-actions .btn { flex: 1 1 auto; }
 }
 
+/* "Add as a preferred source on Google" (site/PreferredSource.tsx) */
+.ps-box { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; margin-block-start: 48px; padding: 24px 28px; background: var(--warm); border: 1px solid var(--line); border-inline-start: 3px solid var(--blue); }
+.prose .ps-box { margin-block: 24px 8px; }
+.ps-box > div { flex: 1 1 340px; display: grid; gap: 6px; }
+.ps-box h2, .prose .ps-box h2 { margin: 0; font: 600 19px/1.35 var(--sans); color: var(--navy); }
+.ps-box p, .prose .ps-box p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--charcoal); max-width: 60ch; }
+.ps-box .btn { min-height: 44px; padding: 10px 20px; text-align: center; }
+@media (max-width: 640px) {
+  .ps-box { padding: 20px; }
+  .ps-box .btn { width: 100%; }
+}
+
 /* Privacy policy tables */
 .policy-table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
 .policy-table th, .policy-table td { text-align: start; vertical-align: top; padding: 10px 12px; border-block-end: 1px solid var(--line); }

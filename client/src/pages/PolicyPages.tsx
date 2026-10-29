@@ -53,7 +53,7 @@ function PolicyTable({ head, rows }: { head: string[]; rows: string[][] }) {
 
 const external = { target: "_blank", rel: "noopener noreferrer" } as const;
 
-/** Privacy policy, approved by Fouad Darwish on 29 Oct 2026. The cookie section describes site/CookieBanner.tsx and site/consent.ts. */
+/** Privacy policy, approved by Fouad Darwish on 29 Oct 2026 (Google preferred-source button added to "Content from Google" the same day). The cookie section describes site/CookieBanner.tsx and site/consent.ts. */
 export function Privacy() {
   return (
     <>
@@ -107,7 +107,7 @@ export function Privacy() {
               for. The server keeps these in short-lived logs for security and fault-finding. We do not use them to identify you.
             </p>
             <p>
-              <strong>Content from Google.</strong> The site loads its fonts from Google Fonts, and the Contact page shows a Google map. When these load, Google receives your IP address and
+              <strong>Content from Google.</strong> The site loads its fonts from Google Fonts, the Contact page shows a Google map, and the Insights pages load Google's button for adding us as a preferred source. When these load, Google receives your IP address and
               browser details. Google's use of this information is covered by its own{" "}
               <a href="https://policies.google.com/privacy" {...external}>
                 privacy policy
