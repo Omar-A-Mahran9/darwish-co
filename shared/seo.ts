@@ -112,12 +112,11 @@ const STATIC_PAGES: Record<string, PageSeo> = {
     title: titled("Contact"),
     description: "Discuss your business challenge with Darwish & Co. Share a brief overview and our team will contact you to agree on the next step.",
   }),
-  // Pages still waiting for their approved text: reachable, but kept out of search results.
   "/privacy": page("/privacy", {
     title: titled("Privacy policy"),
     description: "How Darwish & Co. handles personal information shared through this website and in our engagements.",
-    robots: "noindex, nofollow",
   }),
+  // Pages still waiting for their approved text: reachable, but kept out of search results.
   "/about/integrity": page("/about/integrity", {
     title: titled("Integrity commitments"),
     description: "Darwish & Co. commitments on independence, confidentiality and conflicts of interest.",

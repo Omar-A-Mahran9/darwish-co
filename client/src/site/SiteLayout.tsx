@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import CookieBanner from "./CookieBanner";
 import SiteFooter from "./SiteFooter";
 import SiteHeader from "./SiteHeader";
 import { TOAST_EVENT } from "./toast";
@@ -23,6 +24,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
       <SiteHeader />
       <main id="main">{children}</main>
       <SiteFooter />
+      <CookieBanner />
       <div className="toast" role="status" aria-live="polite" hidden={!toast}>
         {toast}
       </div>
