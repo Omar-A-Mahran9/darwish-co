@@ -269,6 +269,18 @@ describe("per-page metadata", () => {
     }
   });
 
+  it("shares pages with the designed image, and articles with their cover", () => {
+    for (const route of ["/", "/about", "/contact", `/services/${SITE_SERVICES[0].slug}`]) {
+      const html = injectSeo(SHELL, route);
+      expect(html).toContain('<meta property="og:image" content="https://darwish-co.com/images/social-default.jpg" />');
+      expect(html).toContain('<meta property="og:image:alt" content="Darwish &amp; Co.: A wise word in the right moment.');
+    }
+    const article = SHOWN_ARTICLES.find((a) => a.status === "published" && a.cover)!;
+    const seo = resolveSeo(`/insights/${article.slug}`);
+    expect(seo.ogImage).toBe(`https://darwish-co.com${article.cover}`);
+    expect(seo.ogImageAlt).toBe(article.coverAlt);
+  });
+
   it("marks up the homepage FAQ", () => {
     const ld = resolveSeo("/").jsonLd as { "@type": string; mainEntity: unknown[] };
     expect(ld["@type"]).toBe("FAQPage");

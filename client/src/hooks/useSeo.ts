@@ -52,11 +52,13 @@ export function useSeo() {
     setMetaByProperty("og:title", seo.title);
     setMetaByProperty("og:description", seo.description);
     setMetaByProperty("og:image", seo.ogImage);
+    setMetaByProperty("og:image:alt", seo.ogImageAlt);
 
     setMetaByName("twitter:card", "summary_large_image");
     setMetaByName("twitter:title", seo.title);
     setMetaByName("twitter:description", seo.description);
     setMetaByName("twitter:image", seo.ogImage);
+    setMetaByName("twitter:image:alt", seo.ogImageAlt);
 
     upsertTag("link", 'link[rel="canonical"]', (element) => {
       element.setAttribute("rel", "canonical");

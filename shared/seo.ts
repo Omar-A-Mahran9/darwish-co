@@ -24,7 +24,9 @@ import {
 
 export const SITE_URL = "https://darwish-co.com";
 export const SITE_NAME = "Darwish & Co.";
-const DEFAULT_OG_IMAGE = "/images/logo.png";
+/** The default share image (1200x630, 29 Oct 2026): brand, homepage headline and category over the hero photo. */
+const DEFAULT_OG_IMAGE = "/images/social-default.jpg";
+const DEFAULT_OG_IMAGE_ALT = "Darwish & Co.: A wise word in the right moment. Management & business consulting, New Cairo, Egypt.";
 
 export type PageSeo = {
   /** Browser tab and search-result title. */
@@ -35,6 +37,8 @@ export type PageSeo = {
   canonical: string;
   /** Absolute address of the social sharing image. */
   ogImage: string;
+  /** What the sharing image shows, for people who cannot see it. */
+  ogImageAlt: string;
   /** Open Graph object type. */
   ogType: "website" | "article";
   /** Value for the robots meta tag. */
@@ -57,6 +61,7 @@ function page(path: string, input: PageSeoInput): PageSeo {
     description: input.description,
     canonical: absolute(path === "/" ? "/" : path.replace(/\/+$/, "")),
     ogImage: absolute(input.ogImage ?? DEFAULT_OG_IMAGE),
+    ogImageAlt: input.ogImage ? (input.ogImageAlt ?? "") : DEFAULT_OG_IMAGE_ALT,
     ogType: input.ogType ?? "website",
     robots: input.robots ?? "index, follow",
     jsonLd: input.jsonLd,
@@ -248,7 +253,7 @@ function articleSeo(slug: string): PageSeo | null {
     // The summary when it fits Google's ~160 characters; otherwise the one-line listing text.
     description: article.sample || article.summary.length > 160 ? article.listing : article.summary,
     ogType: "article",
-    ...(article.cover ? { ogImage: article.cover } : {}),
+    ...(article.cover ? { ogImage: article.cover, ogImageAlt: article.coverAlt ?? "" } : {}),
     robots: published ? "index, follow" : "noindex, nofollow",
     jsonLd: published
       ? {
