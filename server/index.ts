@@ -6,6 +6,7 @@ import { isKnownRoute } from "../shared/seo.js";
 import { GUIDE_REDIRECTS, PAGE_REDIRECTS, SERVICE_REDIRECTS, WITHDRAWN_SERVICES } from "../shared/site.js";
 import { injectSeo } from "./seoHtml.js";
 import { registerCmsAuth } from "./cmsAuth.js";
+import { precompressed, securityHeaders, setStaticHeaders, trailingSlashRedirect } from "./delivery.js";
 import { fileURLToPath } from "url";
 import { sendGmailWebsiteRequestNotification } from "./gmailNotification.js";
 import {
@@ -102,6 +103,9 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
+  app.disable("x-powered-by");
+  app.use(securityHeaders);
+  app.use(trailingSlashRedirect);
   app.use(express.json());
 
   // "Sign in with GitHub" for the Insights CMS at /cms (docs/insights-cms.md).
@@ -532,7 +536,8 @@ async function startServer() {
     res.sendFile(path.join(staticPath, "cms", "index.html"));
   });
 
-  app.use(express.static(staticPath, { index: false, redirect: false }));
+  app.use(precompressed(staticPath));
+  app.use(express.static(staticPath, { index: false, redirect: false, setHeaders: (res, file) => setStaticHeaders(res, file, staticPath) }));
 
   /**
    * Pages written to disk at build time by scripts/prerender.mjs. Serving one
