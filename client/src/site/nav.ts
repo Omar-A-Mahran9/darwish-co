@@ -24,8 +24,8 @@ export const ROUTES = {
 
 export const CONTACT = {
   email: "info@darwish-co.com",
-  phone: "+20 110 110 1090",
-  phoneHref: "tel:+201101101090",
+  phone: "+20 113 284 2250",
+  phoneHref: "tel:+201132842250",
   address: "Office T-10, 3rd Floor, RIO Mall, Dr. Ahmed Okasha St., off Sadat Axis, New Cairo",
 } as const;
 

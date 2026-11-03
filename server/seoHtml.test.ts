@@ -243,7 +243,7 @@ describe("per-page metadata", () => {
     expect(org["@type"]).toBe("ProfessionalService");
     expect(org.legalName).toBe("Fouad Darwish Business & Consulting Development");
     expect(org.address.addressLocality).toBe("New Cairo");
-    expect(org.telephone).toBe("+201101101090");
+    expect(org.telephone).toBe("+201132842250");
     expect(org.founder).toEqual({ "@id": founder["@id"] });
     expect(org.knowsAbout).toEqual(SITE_SERVICES.map((s) => s.title));
     expect(founder).toMatchObject({ "@type": "Person", name: "Fouad Darwish", worksFor: { "@id": org["@id"] } });

@@ -16,7 +16,7 @@ export function llmsTxt(): string {
 
 - Legal name: Fouad Darwish Business & Consulting Development (organisation number 291746)
 - Office: Office T-10, 3rd Floor, RIO Mall, Dr. Ahmed Okasha St., off Sadat Axis, New Cairo, Egypt
-- Phone: +20 110 110 1090
+- Phone: +20 113 284 2250
 - Email: info@darwish-co.com
 - Website: ${SITE_URL}
 - LinkedIn: https://www.linkedin.com/company/darwishandcoeg/
