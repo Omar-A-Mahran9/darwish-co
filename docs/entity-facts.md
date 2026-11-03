@@ -36,8 +36,8 @@ still applies before any of them is added to structured data.
 | Field | Value on site | Why it is not in structured data |
 |---|---|---|
 | Office address | RIO Mall, New Cairo (Contact page) | Which address is registered and which is operational is unresolved — the agreement gives Capital Mall |
-| Telephone | +20 110 110 1090 | Ownership and routing unconfirmed |
-| WhatsApp | wa.me/201101101090 | Same |
+| Telephone | +20 113 284 2250 | In structured data since 29 Oct 2026; changed from +20 110 110 1090 on 3 Nov 2026 |
+| WhatsApp | None (the site has no WhatsApp link; an earlier draft used wa.me/201101101090) | — |
 | Working hours | Mon–Fri, 9:00–18:00 | Actual hours, holidays and timezone unconfirmed |
 | Google Maps link | The share link on the Contact page | Destination, ownership and duplicate status unconfirmed |
 
