@@ -118,7 +118,8 @@ export function Privacy() {
               <strong>Analytics and advertising.</strong> If you accept cookies, we use Google Analytics, Microsoft Clarity, and the Meta Pixel to understand how the site is used and to measure
               our advertising. They collect information such as the pages you visit, how long you stay, where you click and scroll, the site you came from, your device and browser, and your
               approximate location. Clarity also makes recordings and heatmaps of how visitors move through pages; it does not record what you type into the enquiry form. If you do not accept,
-              Google Analytics receives only a basic signal that a page was viewed, without cookies and without identifying you. We may add similar tools later and will list them here first.
+              Google Analytics receives only a basic signal that a page was viewed, without cookies and without identifying you. These tools are loaded through Google Tag Manager, which
+              receives your IP address and browser details when a page loads but sets no cookies of its own. We may add similar tools later and will list them here first.
             </p>
             <p>We do not ask for sensitive personal data, such as health, religious, or financial information. Please do not include it in your enquiry.</p>
 

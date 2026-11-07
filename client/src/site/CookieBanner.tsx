@@ -35,8 +35,9 @@ export default function CookieBanner() {
     setChoosing(false);
     saveConsent(next);
   };
-  const hasAnalytics = Boolean(TRACKING.googleAnalytics || TRACKING.clarity);
-  const hasAds = Boolean(TRACKING.metaPixel);
+  // Tag Manager can hold any tool, so it offers both choices.
+  const hasAnalytics = Boolean(TRACKING.tagManager || TRACKING.googleAnalytics || TRACKING.clarity);
+  const hasAds = Boolean(TRACKING.tagManager || TRACKING.metaPixel);
 
   return (
     <section className="cookie-banner" aria-labelledby={`${id}-title`}>
