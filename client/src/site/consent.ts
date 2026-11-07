@@ -10,8 +10,15 @@
  * - Microsoft Clarity and the Meta Pixel load only after a visitor accepts them.
  * All three notice address changes in this single-page site by themselves (GA4 enhanced measurement,
  * Clarity, and the Pixel's history tracking), so no page-view code runs on navigation.
+ *
+ * Google Tag Manager (7 Nov 2026): its snippet sits at the top of client/index.html, after a consent default
+ * that reads the saved choice. Tags inside the container must respect consent (Google tags do so through
+ * Consent Mode; others, such as Clarity or Meta, need "Require additional consent" set in Tag Manager).
+ * The banner sends each choice as a consent update plus a "dc_consent_update" event for triggers.
  */
 export const TRACKING = {
+  /** Google Tag Manager container ID; the snippet itself is in client/index.html. */
+  tagManager: "GTM-5JG3FZDV",
   /** Google Analytics 4 measurement ID, such as "G-XXXXXXXXXX". */
   googleAnalytics: "",
   /** Microsoft Clarity project ID, such as "abcd1234ef". */
@@ -27,7 +34,7 @@ const MAX_AGE = 60 * 60 * 24 * 180; // ask again after six months
 /** Fired by the footer's "Cookie settings" link to reopen the banner. */
 export const OPEN_SETTINGS_EVENT = "dc:cookie-settings";
 
-export const trackingEnabled = () => Boolean(TRACKING.googleAnalytics || TRACKING.clarity || TRACKING.metaPixel);
+export const trackingEnabled = () => Boolean(TRACKING.tagManager || TRACKING.googleAnalytics || TRACKING.clarity || TRACKING.metaPixel);
 export const openCookieSettings = () => window.dispatchEvent(new Event(OPEN_SETTINGS_EVENT));
 
 /** The visitor's saved choice, or null when they have not chosen yet. Stored as "a1.m0". */
@@ -54,6 +61,11 @@ export function applyConsent(consent: Consent | null) {
   const w = window as any;
   // A tool refused after it ran can rewrite its cookies while the page unloads; clear them on every load.
   if (consent) clearTrackingCookies(consent);
+  if (TRACKING.tagManager && typeof w.gtag === "function") {
+    const analytics = consent?.analytics ? "granted" : "denied", ads = consent?.ads ? "granted" : "denied";
+    w.gtag("consent", "update", { analytics_storage: analytics, ad_storage: ads, ad_user_data: ads, ad_personalization: ads });
+    w.dataLayer.push({ event: "dc_consent_update", analytics_consent: analytics, ads_consent: ads });
+  }
   if (TRACKING.googleAnalytics) {
     loadGoogleAnalytics();
     w.gtag("consent", "update", { analytics_storage: consent?.analytics ? "granted" : "denied" });
