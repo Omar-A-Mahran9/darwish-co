@@ -16,6 +16,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import sharp from "sharp";
+import Beasties from "beasties";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const publicDir = join(projectRoot, "dist", "public");
@@ -25,6 +26,38 @@ const { render, prerenderRoutes, injectSeo, sitemapXml, llmsTxt, shareImageJobs 
 
 const shell = readFileSync(join(publicDir, "index.html"), "utf-8");
 const routes = prerenderRoutes();
+
+/*
+ * Speed on phones (PageSpeed, 10 Nov 2026). Each page carries the CSS rules its own markup uses inline in the
+ * head, and the full stylesheet loads without blocking, so the browser can draw the page as soon as the HTML
+ * arrives instead of waiting for the stylesheet and, on slow connections, the site's code. Beasties matches
+ * rules against the page's elements; rules for states that script adds later (open menus, animations) come
+ * with the full stylesheet, which arrives before they are needed. The cookie banner and the armed motion
+ * states are added by script straight after load, so their rules are always inlined too: if the code runs
+ * before the full stylesheet arrives, they still look right.
+ */
+const beasties = new Beasties({
+  allowRules: [/cookie-banner|\.cb-/, /data-ready|data-armed/],
+  path: publicDir,
+  publicPath: "/",
+  preload: "media",
+  noscriptFallback: true,
+  inlineFonts: false,
+  pruneSource: false,
+  reduceInlineStyles: false,
+  logLevel: "warn",
+});
+
+/*
+ * The homepage's hero image is the element PageSpeed times. On phones, asking for it first thing in the head,
+ * before Tag Manager, the stylesheet and the code, gives it the head start on slow connections. The media query
+ * matches the phone <source> of the hero's <picture> in client/src/pages/Home.tsx. Desktop needs no head start
+ * (its image is already high priority and desktop scores well), and a second, desktop-only preload risked a
+ * phone fetching both versions.
+ */
+const HERO_PRELOAD =
+  '<link rel="preload" as="image" href="/media/hero-poster-mobile.webp" media="(max-width: 767px)" fetchpriority="high" />';
+const withHeroPreload = (html) => html.replace(/(<meta charset="UTF-8" \/>)/, `$1\n    ${HERO_PRELOAD}`);
 
 /** "/" becomes index.html; "/about" becomes about/index.html. */
 const fileFor = (route) =>
@@ -36,7 +69,7 @@ const failures = [];
 for (const route of routes) {
   try {
     const body = render(route);
-    const html = injectSeo(shell, route).replace(
+    let html = injectSeo(shell, route).replace(
       '<div id="root"></div>',
       `<div id="root">${body}</div>`,
     );
@@ -44,6 +77,9 @@ for (const route of routes) {
     if (!html.includes('<div id="root">')) {
       throw new Error("the shell no longer contains the root element to fill");
     }
+
+    if (route === "/") html = withHeroPreload(html);
+    html = await beasties.process(html);
 
     const file = fileFor(route);
     mkdirSync(dirname(file), { recursive: true });
