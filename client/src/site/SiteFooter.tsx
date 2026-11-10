@@ -29,7 +29,7 @@ export default function SiteFooter() {
         <div className="foot-grid">
           <div style={{ display: "grid", gap: 14, alignContent: "start" }}>
             <Link className="brand" href="/" aria-label="Darwish & Co. home">
-              <img src="/media/emblem.png" alt="" width={34} height={34} />
+              <img src="/media/emblem-68.webp" alt="" width={34} height={34} />
               <span className="brand-name">Darwish &amp; Co.</span>
             </Link>
             <p style={{ maxWidth: "34ch", fontSize: 14 }}>Strategic management and business consulting, New Cairo, Egypt.</p>

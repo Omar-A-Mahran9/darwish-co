@@ -111,15 +111,16 @@ const EXPERTS = [
   ["mohamed-abdelsattar", "Mohamed Abdelsattar"],
 ];
 
-const CLIENTS = [
-  ["mas-sofabed", "MAS Sofabed"],
-  ["ministry-water", "Egyptian Ministry of Water Resources & Irrigation"],
-  ["tanmia", "Tanmia Petroleum Company"],
-  ["nabta", "Nabta Advertising"],
-  ["firewall", "Firewall Security"],
-  ["nadim", "NADIM Group"],
-  ["itouch-plus", "iTouch Plus"],
-  ["mafa-organic", "MAFA Organic"],
+/** Client logos: file in /media/clients (WebP), name, and the file's own width and height (kept so nothing shifts as they load). */
+const CLIENTS: [string, string, number, number][] = [
+  ["mas-sofabed", "MAS Sofabed", 329, 95],
+  ["ministry-water", "Egyptian Ministry of Water Resources & Irrigation", 169, 169],
+  ["tanmia", "Tanmia Petroleum Company", 175, 174],
+  ["nabta", "Nabta Advertising", 410, 180],
+  ["firewall", "Firewall Security", 164, 161],
+  ["nadim", "NADIM Group", 268, 141],
+  ["itouch-plus", "iTouch Plus", 274, 68],
+  ["mafa-organic", "MAFA Organic", 357, 89],
 ];
 
 const TOPICS: { key: string; label: string; icon: ReactNode }[] = [
@@ -133,11 +134,13 @@ const TOPICS: { key: string; label: string; icon: ReactNode }[] = [
 
 
 /**
- * Hero video (2.1 MB, re-encoded 29 Oct 2026 from 14 MB): plays muted on loop. The page ships with the poster
- * only and the video is attached after load, so it never competes with the page's own content. Visitors who
- * prefer reduced motion or have data saver on keep the still poster. Phones and small tablets (under 768px
- * wide) get hero-mobile.mp4 instead (413 KB, 10 Nov 2026): the same clip cropped from the centre to a vertical
- * 406x720 at 30 fps, approved by the user, because the 2 MB desktop file slowed mobile PageSpeed.
+ * Hero background. The poster is a real image fetched first, at high priority: it is the page's largest
+ * element, the one PageSpeed times. Phones (under 768px) get a vertical crop of it (28 KB; desktop 78 KB).
+ * The video (hero.mp4 2.1 MB on desktop; hero-mobile.mp4 413 KB on phones, the same clip cropped to 406x720
+ * at 30 fps, approved by the user 10 Nov 2026) is laid over the poster and only attached once the page has
+ * finished loading, so it never takes bandwidth from the poster. Until its first frame shows, the video is
+ * transparent and the poster shows through. Visitors who prefer reduced motion or have data saver on keep the
+ * still poster.
  */
 function HeroVideo() {
   const ref = useRef<HTMLVideoElement>(null);
@@ -145,10 +148,29 @@ function HeroVideo() {
     const video = ref.current;
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     if (!video || saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    video.src = window.matchMedia("(max-width: 767px)").matches ? "/media/hero-mobile.mp4" : "/media/hero.mp4";
-    video.play()?.catch(() => {});
+    let timer = 0;
+    const start = () => {
+      timer = window.setTimeout(() => {
+        video.src = window.matchMedia("(max-width: 767px)").matches ? "/media/hero-mobile.mp4" : "/media/hero.mp4";
+        video.play()?.catch(() => {});
+      }, 300);
+    };
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
+    return () => {
+      window.removeEventListener("load", start);
+      window.clearTimeout(timer);
+    };
   }, []);
-  return <video ref={ref} className="hero-media" poster="/media/hero-poster.webp" muted loop playsInline preload="none" aria-hidden="true" />;
+  return (
+    <>
+      <picture>
+        <source media="(max-width: 767px)" srcSet="/media/hero-poster-mobile.webp" width={406} height={720} />
+        <img className="hero-media" src="/media/hero-poster.webp" alt="" width={1280} height={720} fetchPriority="high" />
+      </picture>
+      <video ref={ref} className="hero-media" muted loop playsInline preload="none" aria-hidden="true" />
+    </>
+  );
 }
 
 const WORK_ITEMS = [
@@ -178,9 +200,9 @@ const WORK_ITEMS = [
   </li>,
 ];
 
-const LOGO_ITEMS = CLIENTS.map(([file, name]) => (
+const LOGO_ITEMS = CLIENTS.map(([file, name, w, h]) => (
   <li className="logo-item" key={file}>
-    <img src={`/media/clients/${file}.png`} alt={name} loading="lazy" decoding="async" />
+    <img src={`/media/clients/${file}.webp`} alt={name} width={w} height={h} loading="lazy" decoding="async" />
   </li>
 ));
 
