@@ -14,8 +14,8 @@ describe("file delivery", () => {
 
   it("caches hashed build files for a year and media for a week", () => {
     expect(cacheControlFor("/assets/index-BCGERIlz.js")).toBe("public, max-age=31536000, immutable");
-    expect(cacheControlFor("/media/hero.mp4")).toBe("public, max-age=604800");
-    expect(cacheControlFor("/images/logo.png")).toBe("public, max-age=604800");
+    expect(cacheControlFor("/media/hero.mp4")).toBe("public, max-age=2592000, stale-while-revalidate=86400");
+    expect(cacheControlFor("/images/logo.png")).toBe("public, max-age=2592000, stale-while-revalidate=86400");
     expect(cacheControlFor("/sitemap.xml")).toBe(null);
     expect(cacheControlFor("/cms/config.yml")).toBe(null);
   });

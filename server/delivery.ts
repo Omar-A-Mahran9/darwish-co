@@ -30,10 +30,13 @@ export function trailingSlashRedirect(req: express.Request, res: express.Respons
   next();
 }
 
-/** Cache rules by path: Vite's hashed files never change, so browsers may keep them for a year. */
+/**
+ * Cache rules by path: Vite's hashed files never change, so browsers may keep them for a year. Media and images
+ * keep their names when replaced, so they get 30 days (plus a day of quiet background refresh), not a year.
+ */
 export function cacheControlFor(urlPath: string): string | null {
   if (urlPath.startsWith("/assets/")) return "public, max-age=31536000, immutable";
-  if (/^\/(media|images|fonts)\//.test(urlPath)) return "public, max-age=604800";
+  if (/^\/(media|images|fonts)\//.test(urlPath)) return "public, max-age=2592000, stale-while-revalidate=86400";
   return null;
 }
 

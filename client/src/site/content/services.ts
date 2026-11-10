@@ -291,13 +291,13 @@ export const SERVICE_DETAIL: Record<string, any> = {
       ],
       "images": [
         [
-          "/media/challenges/strategy-execution.png",
+          "/media/challenges/strategy-execution.webp",
           "Illustrative photo: a team reviewing charts and reports around a table.",
           720,
           1080
         ],
         [
-          "/media/challenges/complexity-interchange.png",
+          "/media/challenges/complexity-interchange.webp",
           "Illustrative photo: an urban interchange of connected roads and bridges.",
           720,
           900
@@ -364,7 +364,7 @@ export const SERVICE_DETAIL: Record<string, any> = {
           ],
           "outputs": "An objective-to-initiative map, an accountability matrix and a review structure.",
           "img": [
-            "/media/challenges/growth-port.png",
+            "/media/challenges/growth-port.webp",
             "Illustrative photo: a commercial port with a container vessel and cranes.",
             720,
             900

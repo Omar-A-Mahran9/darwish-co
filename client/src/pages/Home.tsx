@@ -33,7 +33,7 @@ const CHALLENGES = [
     ),
     title: "The gap between strategy and results.",
     text: "Transformation ambitions can lose value during execution, before improvements become lasting results.",
-    img: { src: "/media/challenges/strategy-execution.png", alt: "Illustrative team reviewing performance charts and reports around a table.", w: 720, h: 1080 },
+    img: { src: "/media/challenges/strategy-execution.webp", alt: "Illustrative team reviewing performance charts and reports around a table.", w: 720, h: 1080 },
     num: "42%",
     stat: "Of potential transformation value is lost, on average, during execution and sustaining change.",
     source: "McKinsey · 2023",
@@ -53,7 +53,7 @@ const CHALLENGES = [
     ),
     title: "Uncertainty holds growth back.",
     text: "Geopolitical uncertainty can delay investment and make expansion decisions harder.",
-    img: { src: "/media/challenges/growth-port.png", alt: "Illustrative commercial port with a container vessel and cranes.", w: 720, h: 900 },
+    img: { src: "/media/challenges/growth-port.webp", alt: "Illustrative commercial port with a container vessel and cranes.", w: 720, h: 900 },
     num: "32%",
     stat: "Of surveyed CEOs say geopolitical uncertainty makes them less likely to make large new investments.",
     source: "PwC Global CEO Survey · 2026",
@@ -72,7 +72,7 @@ const CHALLENGES = [
     ),
     title: "Complexity is increasing.",
     text: "Interconnected projects, shifting priorities, and competing demands make delivery harder to manage.",
-    img: { src: "/media/challenges/complexity-interchange.png", alt: "Illustrative urban interchange showing interconnected roads and bridges.", w: 720, h: 900 },
+    img: { src: "/media/challenges/complexity-interchange.webp", alt: "Illustrative urban interchange showing interconnected roads and bridges.", w: 720, h: 900 },
     num: "81%",
     stat: "Of surveyed project professionals say projects have become more complex in recent years.",
     source: "PMI Pulse of the Profession · 2026",
@@ -135,7 +135,9 @@ const TOPICS: { key: string; label: string; icon: ReactNode }[] = [
 /**
  * Hero video (2.1 MB, re-encoded 29 Oct 2026 from 14 MB): plays muted on loop. The page ships with the poster
  * only and the video is attached after load, so it never competes with the page's own content. Visitors who
- * prefer reduced motion or have data saver on keep the still poster.
+ * prefer reduced motion or have data saver on keep the still poster. Phones and small tablets (under 768px
+ * wide) get hero-mobile.mp4 instead (413 KB, 10 Nov 2026): the same clip cropped from the centre to a vertical
+ * 406x720 at 30 fps, approved by the user, because the 2 MB desktop file slowed mobile PageSpeed.
  */
 function HeroVideo() {
   const ref = useRef<HTMLVideoElement>(null);
@@ -143,10 +145,10 @@ function HeroVideo() {
     const video = ref.current;
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     if (!video || saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    video.src = "/media/hero.mp4";
+    video.src = window.matchMedia("(max-width: 767px)").matches ? "/media/hero-mobile.mp4" : "/media/hero.mp4";
     video.play()?.catch(() => {});
   }, []);
-  return <video ref={ref} className="hero-media" poster="/media/hero-poster.jpg" muted loop playsInline preload="none" aria-hidden="true" />;
+  return <video ref={ref} className="hero-media" poster="/media/hero-poster.webp" muted loop playsInline preload="none" aria-hidden="true" />;
 }
 
 const WORK_ITEMS = [
