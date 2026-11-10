@@ -158,7 +158,7 @@ export default function SiteHeader() {
       <header className={classes}>
         <div className="wrap header-row">
           <Link className="brand" href="/" aria-label="Darwish & Co. home" id="logo">
-            <img src="/media/emblem.png" alt="" width={34} height={34} />
+            <img src="/media/emblem-68.webp" alt="" width={34} height={34} />
             <span className="brand-name">Darwish &amp; Co.</span>
           </Link>
           <nav className="nav" aria-label="Main">

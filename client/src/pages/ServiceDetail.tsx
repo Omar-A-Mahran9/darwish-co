@@ -237,7 +237,7 @@ function StrategyLayout({ s, d, crumbs }: Props) {
             <span className="sx-st-label">{b.panel_label}</span>
             <p>{b.panel_text}</p>
             <span className="sx-st-mark" aria-hidden="true">
-              <img src="/media/emblem.png" alt="" width={34} height={34} />
+              <img src="/media/emblem-68.webp" alt="" width={34} height={34} />
               Darwish &amp; Co.
             </span>
           </figure>

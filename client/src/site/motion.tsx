@@ -143,10 +143,9 @@ function cloneItem(node: ReactNode, key: string): ReactNode {
     const props: Record<string, unknown> = {};
     if (el.props.id) props.id = undefined;
     if (el.type === "a") props.tabIndex = -1;
-    if (el.type === "img") {
-      props.alt = "";
-      props.loading = "eager";
-    }
+    // Copies keep the original's loading="lazy": they use the same file, so they show from cache as they scroll
+    // in, and none of them download during the first load (PageSpeed, 10 Nov 2026).
+    if (el.type === "img") props.alt = "";
     const kids = el.props.children;
     const children = kids === undefined ? undefined : Children.map(kids, (c: ReactNode) => (isValidElement(c) ? strip(c as ReactElement<any>) : c));
     return cloneElement(el, props, children);

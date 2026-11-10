@@ -50,7 +50,7 @@ export default function Work() {
           <ul className="ow-logos">
             {CLIENTS.map((c) => (
               <li key={c.file}>
-                <img src={`/media/clients/${c.file}.png`} alt={c.name} width={c.w} height={c.h} loading="lazy" />
+                <img src={`/media/clients/${c.file}.webp`} alt={c.name} width={c.w} height={c.h} loading="lazy" />
               </li>
             ))}
           </ul>
