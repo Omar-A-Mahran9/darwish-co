@@ -2,6 +2,11 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import "./styles/site.css";
+import { flushPendingLead, installContactClickTracking } from "./site/leadTracking";
+
+// Lead events for Google Tag Manager (site/leadTracking.ts).
+installContactClickTracking();
+flushPendingLead();
 
 const container = document.getElementById("root")!;
 

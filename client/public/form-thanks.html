@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Thank you | Darwish &amp; Co.</title>
+  <!--
+    Zoho Forms redirects here after it accepts an enquiry (Zoho: form settings > After submission > Redirect to
+    URL: https://darwish-co.com/form-thanks.html). Shown inside the site's form frame, it tells the page around
+    it that a lead came in (client/src/site/leadTracking.ts) and resizes the frame to fit this message.
+    The event carries no personal data.
+  -->
+  <style>
+    html, body { margin: 0; background: #fff; }
+    body { font: 16px/1.6 Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #252525; -webkit-font-smoothing: antialiased; }
+    main { padding: 32px 28px; border-inline-start: 3px solid #00A3F0; }
+    h1 { margin: 0 0 8px; font: 600 26px/1.25 "Playfair Display", Georgia, serif; color: #172B43; }
+    p { margin: 0; max-width: 52ch; }
+    a { color: #0B6FA4; }
+    .back { margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Thank you. Your enquiry has reached us.</h1>
+    <p>Our team will contact you to agree on the next step.</p>
+    <p class="back" id="back" hidden><a href="/">Back to darwish-co.com</a></p>
+  </main>
+  <script>
+    (function () {
+      var framed = false;
+      try { framed = window.parent !== window && window.parent.location.origin === location.origin; } catch (e) {}
+      if (framed) {
+        var page = window.parent;
+        (page.dataLayer = page.dataLayer || []).push({ event: "generate_lead", lead_source: "contact_form", page_path: page.location.pathname });
+        if (window.frameElement) window.frameElement.style.height = document.querySelector("main").offsetHeight + 15 + "px";
+        return;
+      }
+      // Opened as a full page: record the lead for the site to send on its next load, then go back.
+      var from = "/";
+      try {
+        var ref = document.referrer ? new URL(document.referrer) : null;
+        if (ref && ref.origin === location.origin) from = ref.pathname;
+        sessionStorage.setItem("dc_pending_lead", from);
+      } catch (e) {}
+      document.getElementById("back").hidden = false;
+      setTimeout(function () { location.replace(from); }, 4000);
+    })();
+  </script>
+</body>
+</html>
