@@ -34,7 +34,7 @@
       if (framed) {
         var page = window.parent;
         (page.dataLayer = page.dataLayer || []).push({ event: "generate_lead", lead_source: "contact_form", page_path: page.location.pathname });
-        if (window.frameElement) window.frameElement.style.height = document.documentElement.scrollHeight + 15 + "px";
+        if (window.frameElement) window.frameElement.style.height = document.querySelector("main").offsetHeight + 15 + "px";
         return;
       }
       // Opened as a full page: record the lead for the site to send on its next load, then go back.
