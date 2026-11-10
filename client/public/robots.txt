@@ -3,5 +3,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /client-login
 Disallow: /cms/
+Disallow: /form-thanks.html
 
 Sitemap: https://darwish-co.com/sitemap.xml
